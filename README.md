@@ -30,17 +30,34 @@ Notebook 01 — source database structure profile — is complete:
 - `src/inside_rails/source_sqlite.py`
 - `scripts/validate_source_profile.py`
 
-Notebook 02 — source field quality profile — is complete locally and has passed a clean-kernel Run All. Its report and closeout record are published; the notebook file itself remains to be committed from the local checkout:
+Notebook 02 — source field quality profile — is complete:
 
 - `notebooks/02_source_field_quality_profile.ipynb`
 - `docs/REPORT_02_SOURCE_FIELD_QUALITY_PROFILE.md`
 - `docs/NOTEBOOK_02_CLOSEOUT.json`
 
-The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 apparent races. It has no declared primary key, foreign keys, indexes or uniqueness constraints. The supplied `race_id` is reused across different races and cannot serve as a reliable standalone key.
+Notebook 03 — race identity and source-key reconstruction — is complete and has passed a clean-kernel Run All:
+
+- `notebooks/03_race_identity_and_source_key_reconstruction.ipynb`
+- `docs/REPORT_03_RACE_IDENTITY_AND_SOURCE_KEY_RECONSTRUCTION.md`
+- `docs/NOTEBOOK_03_CLOSEOUT.json`
+
+The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
 
-The next analytical stage is race identity and source-key reconstruction before target-schema design.
+Notebook 03 established that:
+
+- the supplied `race_id` is reused and cannot serve as a unique race key;
+- even `date + race_id` collides for eight pairs of genuinely different races;
+- `date + course + off` is unique across the current extract and is the leading candidate natural race identity;
+- `race_name` should remain attached as a descriptive validation field;
+- adding `horse` identifies one unique runner record within every reconstructed race;
+- `num` cannot identify an individual runner because it includes zero sentinels and shared betting-entry numbers;
+- original SQLite `rowid` should be preserved as source lineage, not business identity;
+- later staging tables will require independent surrogate race and runner-record identifiers.
+
+The next bounded study is course, jurisdiction and surface mapping. Final target-schema design remains deferred.
 
 ## Working method
 
@@ -76,3 +93,5 @@ PYTHONPATH=src python scripts/validate_source_profile.py \
 ```
 
 The validation script opens the raw database in read-only mode and checks the stable structural findings from Notebook 01.
+
+Notebook-specific analytical assertions are retained inside each completed profiling notebook and run during clean-kernel validation.
