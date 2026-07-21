@@ -1,0 +1,49 @@
+{
+  "notebook": "notebooks/01_source_database_structure_profile.ipynb",
+  "status": "complete",
+  "scope": "Structural profiling of the immutable raceform.db source database",
+  "source": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "completed_commit": "d345298779eb018b800de47ecc63e09d585549f8",
+  "report": "docs/REPORT_01_SOURCE_DATABASE_STRUCTURE_PROFILE.md",
+  "reusable_code": [
+    "src/inside_rails/source_sqlite.py"
+  ],
+  "validation": [
+    "scripts/validate_source_profile.py"
+  ],
+  "established_facts": {
+    "sqlite_table": "data",
+    "declared_columns": 37,
+    "physical_rows": 1851286,
+    "imported_header_rows": 1,
+    "data_rows": 1851285,
+    "apparent_races": 189043,
+    "minimum_date": "2015-01-01",
+    "maximum_date": "2026-05-27",
+    "likely_grain": "one horse participating in one race",
+    "provisional_runner_key_duplicates": 0,
+    "quick_check": "ok"
+  },
+  "decisions": [
+    "Preserve the raw source unchanged",
+    "Treat the source as a denormalised runner-grain table",
+    "Do not accept race_id as a globally reliable standalone key",
+    "Do not accept num as a universal runner identifier",
+    "Do not treat name strings as stable entity identifiers",
+    "Do not apply generic missing-value rules",
+    "Keep provisional composite keys as profiling aids only"
+  ],
+  "open_investigations": [
+    "race identity",
+    "course jurisdiction and surface",
+    "runner numbering",
+    "finishing outcome codes",
+    "ratings",
+    "prize and currency",
+    "starting prices",
+    "distance",
+    "carried weight",
+    "race time"
+  ],
+  "next_notebook": "Field and domain-value profiling"
+}
