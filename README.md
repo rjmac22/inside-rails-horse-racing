@@ -30,9 +30,17 @@ Notebook 01 — source database structure profile — is complete:
 - `src/inside_rails/source_sqlite.py`
 - `scripts/validate_source_profile.py`
 
+Notebook 02 — source field quality profile — is complete locally and has passed a clean-kernel Run All. Its report and closeout record are published; the notebook file itself remains to be committed from the local checkout:
+
+- `notebooks/02_source_field_quality_profile.ipynb`
+- `docs/REPORT_02_SOURCE_FIELD_QUALITY_PROFILE.md`
+- `docs/NOTEBOOK_02_CLOSEOUT.json`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 apparent races. It has no declared primary key, foreign keys, indexes or uniqueness constraints. The supplied `race_id` is reused across different races and cannot serve as a reliable standalone key.
 
-The next stage is field and racing-domain profiling before target-schema design.
+Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
+
+The next analytical stage is race identity and source-key reconstruction before target-schema design.
 
 ## Working method
 
