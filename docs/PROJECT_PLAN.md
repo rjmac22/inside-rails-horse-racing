@@ -50,25 +50,26 @@ Established:
 
 ### Notebook 02 — Field and domain-value profile
 
-**Status:** next
+**Status:** complete locally; notebook commit pending
 
-Purpose:
+Established:
 
-- profile every source field systematically;
-- distinguish blanks, placeholders, codes and valid values;
-- document formats and jurisdiction-specific conventions;
-- prioritise fields for dedicated parsing studies.
-
-Expected outputs:
-
-- field-level completeness and storage-class profile;
-- controlled value dictionaries for categorical fields;
-- representative examples for mixed-format fields;
-- investigation register refined into notebook sequence.
+- field-specific missing-value conventions across all 37 source columns;
+- blank strings and sentinel values are used instead of SQL `NULL`;
+- mixed SQLite storage classes occur in several declared numeric fields;
+- finishing positions combine numeric placings with non-finisher codes;
+- official placings can differ from the physical finishing order;
+- runner-level time values are closely linked to recorded finishing margins;
+- weights, starting prices, headgear and prize values require dedicated parsing;
+- prize values combine numeric amounts with euro-prefixed text;
+- `or`, `rpr` and `ts` use an en dash for missing values;
+- one isolated `rpr = 775` anomaly should be retained raw and flagged;
+- pedigree and ownership fields are nearly complete;
+- long comments contain legitimate steward-enquiry text and must not be truncated.
 
 ## Phase 2 — Domain interpretation and parsing
 
-Provisional notebook sequence, subject to Notebook 02 evidence:
+Provisional notebook sequence, refined by Notebook 02 evidence:
 
 - race identity and source-key reconstruction;
 - course, jurisdiction and surface mapping;
@@ -126,4 +127,6 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Create Notebook 02 as a systematic field and domain-value profile. Do not begin target-schema design yet.
+First commit the completed local Notebook 02 file and the legitimate Notebook 01 closeout-cell additions.
+
+Then begin Phase 2 with a bounded domain study of race identity and source-key reconstruction. Use the Notebook 01 and Notebook 02 findings to determine how races and runner records should be identified across jurisdictions without prematurely designing the final target schema.
