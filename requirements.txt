@@ -1,0 +1,9 @@
+jupyterlab
+ipykernel
+pandas
+numpy
+matplotlib
+sqlalchemy
+pyarrow
+pytest
+ruff
