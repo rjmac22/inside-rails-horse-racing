@@ -1,0 +1,56 @@
+{
+  "notebook_number": "00",
+  "notebook_title": "Project Scope and Methodology",
+  "notebook_path": "notebooks/00_project_scope_and_methodology.ipynb",
+  "report_path": "docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md",
+  "status": "complete",
+  "purpose": "Define the controlling scope, methodology, architectural boundaries and working rules for the Inside Rails horse-racing database project.",
+  "primary_source": {
+    "dataset": "Horse Racing Results UK/Ireland 2015-2025",
+    "provider": "deltaromeo",
+    "platform": "Kaggle",
+    "primary_file": "data/raw/form_2015-present/form_2015-present/raceform.db"
+  },
+  "key_decisions": [
+    "Preserve all raw source files unchanged.",
+    "Treat the downloaded dataset as several related but separate data products.",
+    "Use raceform.db as the first source product for structural investigation.",
+    "Profile source data before cleaning, integration or target-schema design.",
+    "Understand racing-domain meaning before transforming values.",
+    "Do not blindly impute missing values, remove duplicate-looking rows or treat outliers as errors.",
+    "Test source identifiers, business keys and joins rather than assuming they are valid.",
+    "Use conceptual raw, staging, core and analytical layers.",
+    "Keep the final database platform open until profiling provides sufficient evidence.",
+    "Use Jupyter notebooks as the publishable project audit trail."
+  ],
+  "open_decisions": [
+    "Target database platform",
+    "Physical implementation of staging, core and analytical layers",
+    "Final relational entity model",
+    "Expected grain of each core table",
+    "Business-key and surrogate-key strategy",
+    "Integration rules for other supplied source products",
+    "Long-term ingestion and update process",
+    "Analytical engine and deployment approach"
+  ],
+  "validation": {
+    "notebook_is_valid_nbformat_json": true,
+    "all_cells_are_markdown": true,
+    "scope_documented": true,
+    "source_boundary_documented": true,
+    "methodological_principles_documented": true,
+    "target_platform_prematurely_selected": false,
+    "next_step_defined": true
+  },
+  "outputs": [
+    "notebooks/00_project_scope_and_methodology.ipynb",
+    "docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md",
+    "docs/NOTEBOOK_00_CLOSEOUT.json"
+  ],
+  "next_notebook": {
+    "number": "01",
+    "title": "Source Database Structure Profile",
+    "path": "notebooks/01_source_database_structure_profile.ipynb",
+    "purpose": "Inspect the supplied raceform.db structure and metadata without cleaning, transforming or redesigning the source data."
+  }
+}
