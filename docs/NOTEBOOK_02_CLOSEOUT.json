@@ -1,0 +1,50 @@
+{
+  "notebook": "notebooks/02_source_field_quality_profile.ipynb",
+  "status": "complete_locally_pending_notebook_commit",
+  "scope": "Systematic field-level quality and domain-value profiling of the immutable raceform.db source",
+  "source": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "completed_commit": null,
+  "report": "docs/REPORT_02_SOURCE_FIELD_QUALITY_PROFILE.md",
+  "reusable_code": [],
+  "validation": [
+    "Clean-kernel Run All completed successfully in Jupyter"
+  ],
+  "established_facts": {
+    "data_rows": 1851285,
+    "apparent_races": 189043,
+    "sql_null_usage": "none meaningful",
+    "parseable_time_rows": 1756877,
+    "dash_time_rows": 94408,
+    "blank_draw_rows": 592778,
+    "blank_headgear_rows": 1122490,
+    "blank_prize_rows": 839715,
+    "euro_text_prize_rows": 168466,
+    "blank_comment_rows": 340394,
+    "maximum_comment_length": 2206,
+    "isolated_rpr_anomaly": 775
+  },
+  "decisions": [
+    "Preserve every original raw field",
+    "Apply only field-specific missing-value rules",
+    "Add parsed values alongside raw values",
+    "Use nullable numeric types in transformed layers",
+    "Flag anomalies instead of silently correcting them",
+    "Do not assume contiguous placings or pos less than or equal to ran",
+    "Do not treat names as stable entity identifiers",
+    "Do not truncate long comments",
+    "Do not begin final target-schema design yet"
+  ],
+  "open_investigations": [
+    "race identity and source-key reconstruction",
+    "course jurisdiction and surface mapping",
+    "finishing position and non-finish outcomes",
+    "distance parsing",
+    "carried-weight parsing",
+    "starting-price parsing",
+    "prize and currency parsing",
+    "race-time semantics",
+    "ratings semantics and availability",
+    "horse trainer jockey and owner identity risks"
+  ],
+  "next_notebook": "Race identity and source-key reconstruction"
+}
