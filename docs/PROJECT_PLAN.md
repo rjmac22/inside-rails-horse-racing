@@ -50,7 +50,7 @@ Established:
 
 ### Notebook 02 — Field and domain-value profile
 
-**Status:** complete locally; notebook commit pending
+**Status:** complete
 
 Established:
 
@@ -67,33 +67,62 @@ Established:
 - pedigree and ownership fields are nearly complete;
 - long comments contain legitimate steward-enquiry text and must not be truncated.
 
+### Notebook 03 — Race identity and source-key reconstruction
+
+**Status:** complete
+
+Established:
+
+- 188,782 distinct supplied `race_id` values across 189,043 reconstructed races;
+- 206 `race_id` values occur on multiple dates;
+- eight `date + race_id` pairs each identify two different races;
+- `date + course + off` produces 189,043 unique race groups;
+- `race_name` adds no groups in this extract but remains a required descriptive validation field;
+- omitting `off` would merge 516 races and affect 10,410 runner rows;
+- race identity plus `horse` is unique across all 1,851,285 data-like rows;
+- 700 race-and-number groups contain multiple horses;
+- `num` has sentinel and jurisdiction-dependent betting-entry behaviour;
+- no exact duplicate source records were found;
+- original SQLite `rowid` is unique and should be retained as source lineage;
+- physical source adjacency cannot be used to reconstruct race membership;
+- later staging tables will require surrogate race and runner-record identifiers;
+- no final target schema was designed.
+
+Candidate matching rules:
+
+- race: `date + course + off`;
+- conservative race grouping: `date + course + off + race_name`;
+- runner record: candidate race identity plus `horse`.
+
 ## Phase 2 — Domain interpretation and parsing
 
-Provisional notebook sequence, refined by Notebook 02 evidence:
+Current notebook sequence, refined by Notebooks 02 and 03:
 
-- race identity and source-key reconstruction;
-- course, jurisdiction and surface mapping;
-- finishing position and non-finish outcomes;
-- distance parsing;
-- carried-weight parsing;
-- starting-price parsing;
-- prize and currency parsing;
-- race-time parsing;
-- ratings semantics and availability;
-- horse, trainer, jockey and owner identity risks.
+1. course, jurisdiction and surface mapping;
+2. finishing position and non-finish outcomes;
+3. distance parsing;
+4. carried-weight parsing;
+5. starting-price parsing;
+6. prize and currency parsing;
+7. race-time parsing;
+8. ratings semantics and availability;
+9. horse, trainer, jockey and owner identity risks;
+10. coupled-entry interpretation where justified.
 
 Each study should produce tested parsing or mapping utilities only when the evidence supports them.
 
 ## Phase 3 — Entity and key design
 
-Questions:
+Notebook 03 has established candidate source-record matching rules, but permanent entity and key design remains deferred.
 
-- What constitutes one race across jurisdictions and source editions?
-- What constitutes one runner record?
-- Which source identifiers can be retained as attributes?
-- Which surrogate identifiers are required?
+Questions still to resolve:
+
+- How stable are descriptive race fields across replacement source snapshots?
+- How should jurisdiction-qualified courses be represented?
+- Which names require entity-resolution rules rather than exact matching?
 - How should amended or repeated source records be versioned?
-- How should names and jurisdiction-qualified entities be represented?
+- How should coupled entries be represented?
+- Which surrogate identifiers and reconciliation controls should the staging layer use?
 
 Outputs:
 
@@ -127,6 +156,14 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-First commit the completed local Notebook 02 file and the legitimate Notebook 01 closeout-cell additions.
+Create Notebook 04 as a bounded study of course, jurisdiction and surface mapping.
 
-Then begin Phase 2 with a bounded domain study of race identity and source-key reconstruction. Use the Notebook 01 and Notebook 02 findings to determine how races and runner records should be identified across jurisdictions without prematurely designing the final target schema.
+The notebook should determine:
+
+- how course names encode jurisdiction and course variants;
+- whether jurisdiction can be parsed reliably from course text;
+- how all-weather, turf and other surface information is represented;
+- where course naming varies across time or source jurisdictions;
+- which raw and canonical course attributes a later staging layer must preserve.
+
+The study must remain observational and must not begin final target-schema design.
