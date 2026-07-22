@@ -1,0 +1,92 @@
+{
+  "notebook": "notebooks/07_carried_weight_parsing.ipynb",
+  "status": "complete",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "source_commit": "1355832",
+  "bounded_question": "How is carried weight represented in the source, and which values can be parsed reproducibly?",
+  "profiling_grain": {
+    "runner_record": "one physical SQLite source row",
+    "data_rows": 1851285,
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "provisional_races": 189043
+  },
+  "validated_findings": {
+    "weight_source_column": "wgt",
+    "observed_sqlite_storage_class": "text",
+    "sql_null_rows": 0,
+    "blank_string_rows": 0,
+    "distinct_raw_weight_values": 79,
+    "parsed_distinct_values": 79,
+    "parsed_runner_records": 1851285,
+    "unresolved_runner_records": 0,
+    "minimum_observed_stones": 6,
+    "maximum_observed_stones": 12,
+    "minimum_observed_pounds_component": 0,
+    "maximum_observed_pounds_component": 13,
+    "minimum_source_implied_total_pounds": 96,
+    "maximum_source_implied_total_pounds": 179,
+    "minimum_source_implied_kilograms": 43.54486752,
+    "maximum_source_implied_kilograms": 81.19303423,
+    "component_mismatches_against_sql": 0,
+    "total_pound_mismatches_against_sql": 0,
+    "independent_validation_passed": true,
+    "official_weight_verified_rows": 0
+  },
+  "observed_notation": {
+    "family": "stones_and_pounds",
+    "structure": "canonical integer-hyphen-integer",
+    "observed_metric_notation": false,
+    "observed_pounds_only_notation": false,
+    "observed_decimal_notation": false,
+    "observed_fractional_notation": false,
+    "observed_leading_zero_variants": false,
+    "observed_whitespace_variants": false,
+    "pounds_component_range": [
+      0,
+      13
+    ]
+  },
+  "provenance_limitation": {
+    "finding": "The source uses stones-and-pounds notation even for jurisdictions that ordinarily publish carried weight in kilograms.",
+    "consequence": "Source-implied kilograms are deterministic SI conversions of the stored source expression, not independently verified original official metric declarations.",
+    "analytical_use": "The converted kilograms are suitable as a consistent analytical variable when their provenance label is retained."
+  },
+  "decisions": [
+    "Preserve exact raw wgt unchanged.",
+    "Parse canonical stones-and-pounds notation only when the pounds component is between 0 and 13.",
+    "Retain parsed stones and parsed pounds separately.",
+    "Use source_implied_total_pounds for the exact interpretation of the stored expression.",
+    "Use source_implied_kilograms only as a literal SI conversion of the stored expression.",
+    "Do not treat reconverted kilograms as independently verified original official metric declarations.",
+    "Keep contextual race anomalies separate from weight parse validity.",
+    "Allow unseen future values to parse only when they use the same unambiguous canonical notation.",
+    "Return unsupported future values as unresolved rather than trimming, normalising or guessing.",
+    "Retain official_weight_verified as false until authoritative runner-level enrichment exists.",
+    "Do not reopen race-distance analysis or design the final target schema in this notebook."
+  ],
+  "reusable_outputs": {
+    "module": "src/inside_rails/carried_weight.py",
+    "validation_script": "scripts/validate_carried_weight.py",
+    "report": "docs/REPORT_07_CARRIED_WEIGHT_PARSING.md"
+  },
+  "validation": {
+    "independent_script": "passed",
+    "runner_records_checked": 1851285,
+    "distinct_raw_values_checked": 79,
+    "parsed_runner_records": 1851285,
+    "unresolved_runner_records": 0,
+    "official_weight_verified_rows": 0,
+    "clean_kernel_run_all": true,
+    "result": "passed",
+    "validation_commit": "0b09d90"
+  },
+  "next_notebook": {
+    "number": 8,
+    "topic": "starting-price parsing"
+  }
+}
