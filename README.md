@@ -42,6 +42,16 @@ Notebook 03 — race identity and source-key reconstruction — is complete and 
 - `docs/REPORT_03_RACE_IDENTITY_AND_SOURCE_KEY_RECONSTRUCTION.md`
 - `docs/NOTEBOOK_03_CLOSEOUT.json`
 
+Notebook 04 — course jurisdiction and surface mapping — is complete and has passed a clean-kernel Run All:
+
+- `notebooks/04_course_jurisdiction_and_surface_mapping.ipynb`
+- `docs/NOTEBOOK_04_CLOSEOUT.json`
+
+Notebook 05 — finishing position and non-finish outcomes — has completed analytical reconciliation; clean-kernel Run All remains pending:
+
+- `notebooks/05_finishing_position_and_non_finish_outcomes.ipynb`
+- `docs/NOTEBOOK_05_CLOSEOUT.json`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
@@ -68,7 +78,21 @@ Notebook 04 established that:
 - the remaining 156,020 surface values require later external race-level enrichment;
 - eight reproducible explicit NH Flat/type conflicts require separate validation.
 
-The next bounded study is finishing position and non-finish outcomes. Final target-schema design remains deferred.
+Notebook 05 established that:
+
+- all 1,851,285 source runner records can be represented without replacing raw `ran`, `pos`, `btn` or `ovr_btn`;
+- 1,756,666 rows contain positive numeric finishing positions;
+- 94,611 rows contain one of 11 validated textual result codes;
+- 619 `DSQ` rows retain numeric beaten-distance values and must remain separate from ordinary non-finish outcomes;
+- 3,006 duplicated race-position groups covering 6,020 runners are supported candidate dead heats;
+- eight `pos = 0` rows remain unresolved;
+- ten rows have numeric `pos > ran`;
+- five provisional races contain fewer source rows than recorded `ran`;
+- two duplicated-position rows have conflicting cumulative distances;
+- one Morphettville row was externally verified as a source anomaly and is retained as an audit record rather than overwritten;
+- `btn` and `ovr_btn` are related but cannot be forced into a universally additive sequence, especially after amended results.
+
+The next bounded study is distance parsing. Final target-schema design remains deferred.
 
 ## Working method
 
