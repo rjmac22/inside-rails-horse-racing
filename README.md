@@ -60,6 +60,14 @@ Notebook 06 — race distance parsing — is complete and has passed independent
 - `src/inside_rails/race_distance.py`
 - `scripts/validate_race_distance.py`
 
+Notebook 07 — carried weight parsing — is complete and has passed independent validation and a clean-kernel Run All:
+
+- `notebooks/07_carried_weight_parsing.ipynb`
+- `docs/REPORT_07_CARRIED_WEIGHT_PARSING.md`
+- `docs/NOTEBOOK_07_CLOSEOUT.json`
+- `src/inside_rails/carried_weight.py`
+- `scripts/validate_carried_weight.py`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
@@ -113,7 +121,21 @@ Notebook 06 established that:
 - official metric-jurisdiction distances require separate race-level enrichment;
 - early analytical work will prioritise UK and Irish racing while preserving international records and their provenance limitation.
 
-The next bounded study is carried-weight parsing. Final target-schema design remains deferred.
+Notebook 07 established that:
+
+- all 1,851,285 runner records contain a non-blank text `wgt` value;
+- 79 distinct raw values cover the complete source;
+- every current value uses canonical stones-and-pounds notation;
+- all current records parse reproducibly into stones, pounds, total pounds and source-implied kilograms;
+- the observed range is `6-12` to `12-11`, equivalent to 96–179 source-implied pounds;
+- independent Python and SQLite calculations agree for every current value;
+- zero current records remain unresolved;
+- unsupported future values remain unresolved rather than being trimmed, normalised or guessed;
+- source-implied kilograms are suitable for consistent analysis but are not necessarily exact recovered official metric declarations for international jurisdictions;
+- unusual race-context values remain separate from weight parse validity;
+- official metric weights require separate runner-level enrichment when exact original declarations are needed.
+
+The next bounded study is starting-price parsing. Final target-schema design remains deferred.
 
 ## Working method
 
