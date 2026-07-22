@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/05_finishing_position_and_non_finish_outcomes.ipynb",
-  "status": "analysis_complete_pending_clean_kernel_validation",
+  "status": "complete",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "source_table": "data",
   "source_commit": "8418003",
@@ -79,7 +79,7 @@
   },
   "validation": {
     "notebook_internal_reconciliation": "passed_13_of_13",
-    "clean_kernel_run_all": false,
-    "result": "pending"
+    "clean_kernel_run_all": true,
+    "result": "passed"
   }
 }
