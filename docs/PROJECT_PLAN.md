@@ -96,10 +96,10 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02, 03 and 04:
+Current notebook sequence, refined by Notebooks 02–05:
 
 1. course, jurisdiction and surface mapping — complete;
-2. finishing position and non-finish outcomes;
+2. finishing position and non-finish outcomes — analytical reconciliation complete; clean-kernel Run All pending;
 3. distance parsing;
 4. carried-weight parsing;
 5. starting-price parsing;
@@ -110,6 +110,53 @@ Current notebook sequence, refined by Notebooks 02, 03 and 04:
 10. coupled-entry interpretation where justified.
 
 Each study should produce tested parsing or mapping utilities only when the evidence supports them.
+
+### Notebook 04 — Course, jurisdiction and surface mapping
+
+**Status:** complete
+
+Established:
+
+- candidate jurisdiction for all 189,043 provisional races;
+- 528 raw course values and 395 jurisdiction-qualified candidate venue/configuration identities;
+- 135 candidate identities represented by multiple raw source forms;
+- no same-date collisions among those multiple raw forms;
+- direct all-weather evidence for 33,023 races from explicit `(AW)` course markers;
+- 156,020 races whose surface remains unresolved from the source alone;
+- eight explicit NH Flat/type conflicts requiring later validation;
+- no derivation of canonical surface from race-name wording.
+
+### Notebook 05 — Finishing position and non-finish outcomes
+
+**Status:** analytical reconciliation complete; clean-kernel Run All pending
+
+Established:
+
+- complete candidate result representation for all 1,851,285 source runner rows;
+- 1,756,666 positive numeric finishing-position rows;
+- 94,611 textual-position rows using 11 validated source codes;
+- one-to-one semantic mappings for `BD`, `CO`, `DSQ`, `F`, `LFT`, `PU`, `REF`, `RO`, `RR`, `SU` and `UR`;
+- 619 `DSQ` rows retaining numeric `btn` and `ovr_btn` values;
+- 3,006 supported candidate dead-heat race-position groups covering 6,020 runner records;
+- eight unresolved numeric `pos = 0` rows;
+- ten numeric positions above `ran`;
+- five incomplete provisional race extracts containing 32 observed runner rows;
+- two duplicated-position rows with conflicting cumulative distances;
+- one externally verified Morphettville source anomaly retained as a separate audit record;
+- evidence that amended official positions can coexist with beaten distances anchored to the original on-course order;
+- no universal exact-addition rule for `btn` and `ovr_btn`;
+- raw and candidate result attributes must remain separate;
+- no final target schema was designed.
+
+Candidate result attributes supported:
+
+- positive numeric finishing position;
+- raw textual outcome code;
+- mapped candidate outcome and broad result category;
+- candidate result representation;
+- candidate dead-heat flag;
+- numeric-distance-availability flag;
+- separate runner-level and race-level validation flags.
 
 ## Phase 3 — Entity and key design
 
@@ -156,14 +203,14 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Create Notebook 05 as a bounded study of finishing position and non-finish outcomes.
+Complete a clean-kernel Run All of Notebook 05, then begin Notebook 06 as a bounded study of distance parsing.
 
-The notebook should determine:
+Notebook 06 should determine:
 
-- how numeric finishing positions and non-finish codes are represented;
-- how dead heats, disqualifications and amended results appear;
-- how `pos`, `ran`, `btn` and `ovr_btn` interact;
-- which values are sentinels, source anomalies or genuine racing outcomes;
-- which raw and candidate result attributes a later staging layer must preserve.
+- which source fields encode race distance and finishing margins;
+- which textual and numeric conventions occur across jurisdictions and race types;
+- how special racing-distance notation and sentinel values are represented;
+- which values can be parsed reproducibly without concealing source ambiguity;
+- which raw and candidate distance attributes a later staging layer must preserve.
 
 The study must remain observational and must not begin final target-schema design.
