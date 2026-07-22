@@ -96,16 +96,32 @@ The next bounded study is distance parsing. Final target-schema design remains d
 
 ## Working method
 
-The project follows the same evidence-led closeout discipline used in the Coral 2NL analysis project:
+The project follows an evidence-led investigation-to-implementation cycle:
 
-1. develop and verify new analytical logic visibly in a notebook;
-2. keep observation separate from interpretation and design decisions;
-3. extract only stable, reusable plumbing into `src/inside_rails/`;
-4. add a validation script or test for extracted code;
-5. produce a concise report and machine-readable closeout record;
-6. update project entry documentation before starting the next notebook.
+1. profile the raw source without altering it;
+2. state one bounded candidate rule or database-design question;
+3. test coverage, uniqueness, exceptions and failure modes;
+4. inspect material exceptions and preserve unresolved cases explicitly;
+5. separate observation, interpretation, confidence and design decision;
+6. translate the conclusion into a practical database consequence;
+7. implement the rule reversibly while retaining raw values and lineage;
+8. extract only stable, reusable plumbing into `src/inside_rails/`;
+9. add an independent validation script, test, constraint or reconciliation check;
+10. produce a concise report and machine-readable closeout record;
+11. update project entry documentation before starting the next notebook.
 
-See `docs/REUSABLE_CODE_ARCHITECTURE.md`.
+The stopping rule is:
+
+> Investigate until a defensible rule can be stated, its known exceptions identified, unresolved cases preserved without information loss, and a validation implemented that will detect failure.
+
+The project does not require every source oddity to be completely explained before implementation proceeds. Each notebook must resolve a design, transformation or validation question rather than merely describe a field. Stable bounded rules should move incrementally into staging so that the emerging architecture is tested in practice.
+
+AI may accelerate query writing, debugging and documentation, but generated work remains untrusted until checked against actual source outputs and the same validation standards as manually written code.
+
+See:
+
+- `docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md`
+- `docs/REUSABLE_CODE_ARCHITECTURE.md`
 
 ## Planned workflow
 
@@ -113,7 +129,7 @@ See `docs/REUSABLE_CODE_ARCHITECTURE.md`.
 2. Profile the supplied database and fields.
 3. Audit data quality and racing-domain meaning.
 4. Identify entities and business keys.
-5. Design the target relational schema.
+5. Design the target relational schema incrementally from supported decisions.
 6. Build staging, core and analysis layers.
 7. Apply constraints, indexes and validation tests.
 8. Publish the notebooks and supporting documentation.
