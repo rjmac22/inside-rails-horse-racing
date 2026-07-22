@@ -96,9 +96,9 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02 and 03:
+Current notebook sequence, refined by Notebooks 02, 03 and 04:
 
-1. course, jurisdiction and surface mapping;
+1. course, jurisdiction and surface mapping — complete;
 2. finishing position and non-finish outcomes;
 3. distance parsing;
 4. carried-weight parsing;
@@ -156,14 +156,14 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Create Notebook 04 as a bounded study of course, jurisdiction and surface mapping.
+Create Notebook 05 as a bounded study of finishing position and non-finish outcomes.
 
 The notebook should determine:
 
-- how course names encode jurisdiction and course variants;
-- whether jurisdiction can be parsed reliably from course text;
-- how all-weather, turf and other surface information is represented;
-- where course naming varies across time or source jurisdictions;
-- which raw and canonical course attributes a later staging layer must preserve.
+- how numeric finishing positions and non-finish codes are represented;
+- how dead heats, disqualifications and amended results appear;
+- how `pos`, `ran`, `btn` and `ovr_btn` interact;
+- which values are sentinels, source anomalies or genuine racing outcomes;
+- which raw and candidate result attributes a later staging layer must preserve.
 
 The study must remain observational and must not begin final target-schema design.

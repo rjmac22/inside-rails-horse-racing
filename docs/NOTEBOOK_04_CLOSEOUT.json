@@ -1,0 +1,40 @@
+{
+  "notebook": "notebooks/04_course_jurisdiction_and_surface_mapping.ipynb",
+  "status": "complete",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "profiling_grain": {
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "provisional_races": 189043
+  },
+  "validated_findings": {
+    "raw_course_values": 528,
+    "candidate_jurisdictions_assigned": 189043,
+    "candidate_venue_configuration_identities": 395,
+    "candidate_venues_with_multiple_raw_forms": 135,
+    "same_date_candidate_venue_collisions": 0,
+    "course_supported_all_weather_races": 33023,
+    "course_supported_surface_coverage_pct": 17.47,
+    "surface_unresolved_from_source": 156020,
+    "explicit_nh_flat_type_conflicts": 8
+  },
+  "decisions": [
+    "Preserve the exact raw course value.",
+    "Derive candidate jurisdiction using recognised terminal codes, historical suffix links, curated British configurations and bounded collision rules.",
+    "Use candidate jurisdiction plus candidate course label as the candidate venue/configuration identity.",
+    "Remove only recognised terminal jurisdiction suffixes from the candidate course label.",
+    "Retain configuration markers such as (AW), (July), (RH) and (Perth).",
+    "Assign all_weather_unspecified only where raw course explicitly contains (AW).",
+    "Do not derive canonical surface from race_name.",
+    "Leave remaining surface unresolved until a later documented external race-level enrichment stage.",
+    "Preserve raw type and externally validate the eight reproducible explicit NH Flat conflicts."
+  ],
+  "validation": {
+    "clean_kernel_run_all": true,
+    "result": "passed"
+  }
+}

@@ -57,7 +57,18 @@ Notebook 03 established that:
 - original SQLite `rowid` should be preserved as source lineage, not business identity;
 - later staging tables will require independent surrogate race and runner-record identifiers.
 
-The next bounded study is course, jurisdiction and surface mapping. Final target-schema design remains deferred.
+Notebook 04 established that:
+
+- all 189,043 provisional races can receive a candidate jurisdiction;
+- 528 raw course values reduce to 395 jurisdiction-qualified candidate venue/configuration identities;
+- recognised terminal jurisdiction suffixes can be removed while retaining meaningful markers such as `(AW)`, `(July)`, `(RH)` and `(Perth)`;
+- the 135 candidate identities represented by multiple raw forms have no same-date form collisions;
+- 33,023 races have direct all-weather evidence from an explicit `(AW)` course marker;
+- `race_name` is not reliable for surface derivation;
+- the remaining 156,020 surface values require later external race-level enrichment;
+- eight reproducible explicit NH Flat/type conflicts require separate validation.
+
+The next bounded study is finishing position and non-finish outcomes. Final target-schema design remains deferred.
 
 ## Working method
 
