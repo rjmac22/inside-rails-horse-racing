@@ -52,7 +52,7 @@ Notebook 05 — finishing position and non-finish outcomes — is complete and h
 - `notebooks/05_finishing_position_and_non_finish_outcomes.ipynb`
 - `docs/NOTEBOOK_05_CLOSEOUT.json`
 
-Notebook 06 — race distance parsing — has completed analytical reconciliation and independent validation; clean-kernel Run All remains pending:
+Notebook 06 — race distance parsing — is complete and has passed independent validation and a clean-kernel Run All:
 
 - `notebooks/06_race_distance_parsing.ipynb`
 - `docs/REPORT_06_RACE_DISTANCE_PARSING.md`
