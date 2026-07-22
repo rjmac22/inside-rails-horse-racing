@@ -96,12 +96,12 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02–06:
+Current notebook sequence, refined by Notebooks 02–07:
 
 1. course, jurisdiction and surface mapping — complete;
 2. finishing position and non-finish outcomes — complete;
 3. distance parsing — complete;
-4. carried-weight parsing;
+4. carried-weight parsing — complete;
 5. starting-price parsing;
 6. prize and currency parsing;
 7. race-time parsing;
@@ -190,6 +190,40 @@ Candidate distance attributes supported:
 - official-distance verification status;
 - separately enriched official distance and original unit when available.
 
+### Notebook 07 — Carried weight parsing
+
+**Status:** complete; independent validation and clean-kernel Run All passed
+
+Established:
+
+- complete non-blank text `wgt` coverage across all 1,851,285 runner records;
+- 79 distinct raw carried-weight values covering the complete source;
+- one canonical stones-and-pounds notation family;
+- observed stones from 6 through 12 and pounds components from 0 through 13;
+- complete parsing of all current runner records;
+- exact source-implied total pounds and deterministic source-implied kilograms for every runner record;
+- one-to-one mapping between current raw values and source-implied total pounds;
+- independent Python and SQLite agreement for every current raw value;
+- a conservative parser that rejects unsupported notation rather than trimming, normalising or guessing;
+- separation of weight parse validity from contextual anomalies in other race fields;
+- evidence that metric jurisdictions are also represented in stones-and-pounds notation;
+- source-implied kilograms suitable for consistent analysis but not necessarily exact recovered official metric declarations;
+- deferred authoritative runner-level enrichment where exact original official units and values are required.
+
+Candidate carried-weight attributes supported:
+
+- exact raw `wgt`;
+- notation family;
+- parsed stones;
+- parsed pounds;
+- source-implied total pounds;
+- source-implied kilograms;
+- parse status;
+- ambiguity flag;
+- anomaly flags;
+- official-weight verification status;
+- separately enriched official carried weight and original unit when available.
+
 ## Phase 3 — Entity and key design
 
 Notebook 03 has established candidate source-record matching rules, but permanent entity and key design remains deferred.
@@ -235,15 +269,16 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Begin Notebook 07 as a bounded study of carried-weight parsing.
+Begin Notebook 08 as a bounded study of starting-price parsing.
 
-Notebook 07 should determine:
+Notebook 08 should determine:
 
-- how the source `wgt` field represents stones, pounds and any jurisdiction-specific alternatives;
+- how the source `sp` field represents fractional, decimal and other starting-price conventions;
 - which SQLite storage classes, missing values and sentinels occur;
-- whether weight values are consistent within their runner context;
+- whether favourites, joint favourites and returned-price markers are embedded in the field or represented elsewhere;
 - which values can be parsed reproducibly without concealing source ambiguity;
-- whether candidate total pounds and kilograms can be justified;
+- whether exact fractional odds, decimal odds and implied probability can be justified;
+- which jurisdiction-specific or future values must remain unresolved;
 - which raw, parsed, source-implied and validation attributes later staging work must preserve.
 
 The study must remain observational and must not begin final target-schema design.
