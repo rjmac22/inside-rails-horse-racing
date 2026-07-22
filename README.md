@@ -52,6 +52,14 @@ Notebook 05 — finishing position and non-finish outcomes — is complete and h
 - `notebooks/05_finishing_position_and_non_finish_outcomes.ipynb`
 - `docs/NOTEBOOK_05_CLOSEOUT.json`
 
+Notebook 06 — race distance parsing — has completed analytical reconciliation and independent validation; clean-kernel Run All remains pending:
+
+- `notebooks/06_race_distance_parsing.ipynb`
+- `docs/REPORT_06_RACE_DISTANCE_PARSING.md`
+- `docs/NOTEBOOK_06_CLOSEOUT.json`
+- `src/inside_rails/race_distance.py`
+- `scripts/validate_race_distance.py`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
@@ -92,7 +100,20 @@ Notebook 05 established that:
 - one Morphettville row was externally verified as a source anomaly and is retained as an audit record rather than overwritten;
 - `btn` and `ovr_btn` are related but cannot be forced into a universally additive sequence, especially after amended results.
 
-The next bounded study is distance parsing. Final target-schema design remains deferred.
+Notebook 06 established that:
+
+- all 1,851,285 runner records contain a non-blank text `dist` value;
+- every provisional race contains one internally consistent raw distance;
+- 63 exact raw values cover all 189,043 provisional races;
+- all current values parse reproducibly into miles, furlongs and optional half-furlongs;
+- exact integer source-implied yards and deterministic source-implied metres are available for every race;
+- previously unseen values must remain unresolved rather than be interpreted automatically;
+- source-implied distances describe the source expression, not necessarily the independently verified official scheduled distance;
+- official 1,600-metre races were externally verified in the source as `1m`, demonstrating international approximation;
+- official metric-jurisdiction distances require separate race-level enrichment;
+- early analytical work will prioritise UK and Irish racing while preserving international records and their provenance limitation.
+
+The next bounded study is carried-weight parsing. Final target-schema design remains deferred.
 
 ## Working method
 
