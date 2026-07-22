@@ -1,0 +1,98 @@
+{
+  "notebook": "notebooks/06_race_distance_parsing.ipynb",
+  "status": "analysis_complete_pending_clean_kernel_validation",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "source_commit": "c66a987",
+  "bounded_question": "How is race distance represented in the source, and which values can be parsed reproducibly?",
+  "profiling_grain": {
+    "runner_record": "one physical SQLite source row",
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "data_rows": 1851285,
+    "provisional_races": 189043
+  },
+  "validated_findings": {
+    "distance_source_column": "dist",
+    "declared_sqlite_type": "TEXT",
+    "observed_sqlite_storage_class": "text",
+    "sql_null_rows": 0,
+    "blank_string_rows": 0,
+    "distinct_raw_distance_values": 63,
+    "races_with_one_consistent_raw_distance": 189043,
+    "races_with_inconsistent_raw_distance": 0,
+    "parsed_provisional_races": 189043,
+    "unresolved_provisional_races": 0,
+    "minimum_source_implied_yards": 880,
+    "maximum_source_implied_yards": 8030,
+    "independent_validation_passed": true,
+    "official_distance_verified_rows": 0
+  },
+  "observed_notation": {
+    "family": "imperial_miles_furlongs",
+    "whole_miles": true,
+    "whole_furlongs": true,
+    "miles_plus_furlongs": true,
+    "half_furlongs": true,
+    "half_furlong_symbol": "½",
+    "observed_metric_notation": false,
+    "observed_yards_only_notation": false,
+    "observed_decimal_notation": false
+  },
+  "external_validation": {
+    "finding": "Some races officially scheduled in metres are represented by approximate imperial source values.",
+    "examples": [
+      {
+        "date": "2015-01-25",
+        "course": "Sha Tin (HK)",
+        "race": "Stewards Cup",
+        "raw_dist": "1m",
+        "official_distance_metres": 1600,
+        "source_implied_metres": 1609.344
+      },
+      {
+        "date": "2015-01-04",
+        "course": "Kyoto (JPN)",
+        "race": "Sports Nippon Sho Kyoto Kimpai",
+        "raw_dist": "1m",
+        "official_distance_metres": 1600,
+        "source_implied_metres": 1609.344
+      }
+    ]
+  },
+  "decisions": [
+    "Preserve exact raw dist unchanged.",
+    "Parse only the 63 exact raw values validated in the current source extract.",
+    "Return unseen future values as unresolved rather than inferring a unit or distance.",
+    "Retain parsed miles, whole furlongs and half-furlong status separately.",
+    "Use source_implied_yards for exact conversion of the source expression.",
+    "Use source_implied_metres only as a literal SI conversion of the source expression.",
+    "Do not treat source-implied values as independently verified official race distances.",
+    "Retain official_distance_verified as false until authoritative race-level enrichment exists.",
+    "Prioritise UK and Irish racing for early analytical use.",
+    "Defer exact official metric-jurisdiction distances to a separate enrichment workstream.",
+    "Do not reopen beaten-distance analysis or design the final target schema in this notebook."
+  ],
+  "reusable_outputs": {
+    "module": "src/inside_rails/race_distance.py",
+    "validation_script": "scripts/validate_race_distance.py",
+    "report": "docs/REPORT_06_RACE_DISTANCE_PARSING.md"
+  },
+  "validation": {
+    "independent_script": "passed",
+    "provisional_races_checked": 189043,
+    "distinct_raw_values_checked": 63,
+    "parsed_races": 189043,
+    "unresolved_races": 0,
+    "official_distance_verified_rows": 0,
+    "clean_kernel_run_all": false,
+    "result": "pending"
+  },
+  "next_notebook": {
+    "number": 7,
+    "topic": "carried-weight parsing"
+  }
+}
