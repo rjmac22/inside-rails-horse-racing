@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/06_race_distance_parsing.ipynb",
-  "status": "analysis_complete_pending_clean_kernel_validation",
+  "status": "complete",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "source_table": "data",
   "source_commit": "c66a987",
@@ -88,8 +88,9 @@
     "parsed_races": 189043,
     "unresolved_races": 0,
     "official_distance_verified_rows": 0,
-    "clean_kernel_run_all": false,
-    "result": "pending"
+    "clean_kernel_run_all": true,
+    "result": "passed",
+    "validation_commit": "f1254ed"
   },
   "next_notebook": {
     "number": 7,
