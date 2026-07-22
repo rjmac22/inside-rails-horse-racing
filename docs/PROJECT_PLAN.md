@@ -96,11 +96,11 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02–05:
+Current notebook sequence, refined by Notebooks 02–06:
 
 1. course, jurisdiction and surface mapping — complete;
 2. finishing position and non-finish outcomes — complete;
-3. distance parsing — in progress;
+3. distance parsing — analytical reconciliation complete; clean-kernel Run All pending;
 4. carried-weight parsing;
 5. starting-price parsing;
 6. prize and currency parsing;
@@ -158,6 +158,38 @@ Candidate result attributes supported:
 - numeric-distance-availability flag;
 - separate runner-level and race-level validation flags.
 
+### Notebook 06 — Race distance parsing
+
+**Status:** analytical reconciliation complete; independent validation passed; clean-kernel Run All pending
+
+Established:
+
+- complete non-blank text `dist` coverage across all 1,851,285 runner records;
+- one internally consistent raw distance per provisional race;
+- 63 exact raw distance values covering all 189,043 provisional races;
+- one observed miles-and-furlongs notation family with optional half-furlongs represented by `½`;
+- complete parsing of all current source races;
+- exact integer source-implied yards and deterministic source-implied metres for every provisional race;
+- a conservative validated-domain parser that leaves unseen values unresolved;
+- independent validation across all 189,043 provisional races;
+- evidence that source-implied distances are not necessarily exact official scheduled distances for metric jurisdictions;
+- external examples of official 1,600-metre races represented by the source as `1m`;
+- separation of raw source distance, source-implied conversions and later official-distance enrichment;
+- initial analytical priority for UK and Irish racing while international official distances remain a deferred enrichment workstream.
+
+Candidate distance attributes supported:
+
+- exact raw `dist`;
+- parsed miles;
+- parsed whole furlongs;
+- half-furlong indicator;
+- total furlongs;
+- source-implied yards;
+- source-implied metres;
+- parse status;
+- official-distance verification status;
+- separately enriched official distance and original unit when available.
+
 ## Phase 3 — Entity and key design
 
 Notebook 03 has established candidate source-record matching rules, but permanent entity and key design remains deferred.
@@ -203,16 +235,17 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Begin Notebook 06 as a bounded study of race-distance parsing.
+Run Notebook 06 from a clean kernel and confirm that Restart and Run All completes without error.
 
-Notebook 06 should determine:
+After that validation is recorded, begin Notebook 07 as a bounded study of carried-weight parsing.
 
-- which source column or columns encode scheduled race distance;
+Notebook 07 should determine:
+
+- how the source `wgt` field represents stones, pounds and any jurisdiction-specific alternatives;
 - which SQLite storage classes, missing values and sentinels occur;
-- which textual and numeric conventions occur across jurisdictions and race types;
-- how miles, furlongs, yards, metric and fractional notation are represented;
-- whether provisional races contain inconsistent source distance values;
+- whether weight values are consistent within their runner context;
 - which values can be parsed reproducibly without concealing source ambiguity;
-- which exact raw, detected and candidate analytical attributes later work must preserve.
+- whether candidate total pounds and kilograms can be justified;
+- which raw, parsed, source-implied and validation attributes later staging work must preserve.
 
-The study must remain observational, must not reopen beaten-distance analysis, and must not begin final target-schema design.
+The study must remain observational and must not begin final target-schema design.
