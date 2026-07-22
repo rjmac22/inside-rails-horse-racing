@@ -100,7 +100,7 @@ Current notebook sequence, refined by Notebooks 02–06:
 
 1. course, jurisdiction and surface mapping — complete;
 2. finishing position and non-finish outcomes — complete;
-3. distance parsing — analytical reconciliation complete; clean-kernel Run All pending;
+3. distance parsing — complete;
 4. carried-weight parsing;
 5. starting-price parsing;
 6. prize and currency parsing;
@@ -160,7 +160,7 @@ Candidate result attributes supported:
 
 ### Notebook 06 — Race distance parsing
 
-**Status:** analytical reconciliation complete; independent validation passed; clean-kernel Run All pending
+**Status:** complete; independent validation and clean-kernel Run All passed
 
 Established:
 
@@ -235,9 +235,7 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Run Notebook 06 from a clean kernel and confirm that Restart and Run All completes without error.
-
-After that validation is recorded, begin Notebook 07 as a bounded study of carried-weight parsing.
+Begin Notebook 07 as a bounded study of carried-weight parsing.
 
 Notebook 07 should determine:
 
