@@ -99,8 +99,8 @@ Candidate matching rules:
 Current notebook sequence, refined by Notebooks 02–05:
 
 1. course, jurisdiction and surface mapping — complete;
-2. finishing position and non-finish outcomes — analytical reconciliation complete; clean-kernel Run All pending;
-3. distance parsing;
+2. finishing position and non-finish outcomes — complete;
+3. distance parsing — in progress;
 4. carried-weight parsing;
 5. starting-price parsing;
 6. prize and currency parsing;
@@ -128,7 +128,7 @@ Established:
 
 ### Notebook 05 — Finishing position and non-finish outcomes
 
-**Status:** analytical reconciliation complete; clean-kernel Run All pending
+**Status:** complete; clean-kernel Run All passed
 
 Established:
 
@@ -203,14 +203,16 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Complete a clean-kernel Run All of Notebook 05, then begin Notebook 06 as a bounded study of distance parsing.
+Begin Notebook 06 as a bounded study of race-distance parsing.
 
 Notebook 06 should determine:
 
-- which source fields encode race distance and finishing margins;
+- which source column or columns encode scheduled race distance;
+- which SQLite storage classes, missing values and sentinels occur;
 - which textual and numeric conventions occur across jurisdictions and race types;
-- how special racing-distance notation and sentinel values are represented;
+- how miles, furlongs, yards, metric and fractional notation are represented;
+- whether provisional races contain inconsistent source distance values;
 - which values can be parsed reproducibly without concealing source ambiguity;
-- which raw and candidate distance attributes a later staging layer must preserve.
+- which exact raw, detected and candidate analytical attributes later work must preserve.
 
-The study must remain observational and must not begin final target-schema design.
+The study must remain observational, must not reopen beaten-distance analysis, and must not begin final target-schema design.
