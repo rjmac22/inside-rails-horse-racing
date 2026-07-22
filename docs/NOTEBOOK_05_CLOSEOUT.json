@@ -1,0 +1,85 @@
+{
+  "notebook": "notebooks/05_finishing_position_and_non_finish_outcomes.ipynb",
+  "status": "analysis_complete_pending_clean_kernel_validation",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "source_commit": "8418003",
+  "profiling_grain": {
+    "runner_record": "one physical SQLite source row",
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "data_rows": 1851285,
+    "provisional_races": 189043
+  },
+  "validated_findings": {
+    "positive_numeric_position_rows": 1756666,
+    "textual_position_rows": 94611,
+    "mapped_non_dsq_textual_outcome_rows": 93992,
+    "disqualified_rows": 619,
+    "unresolved_zero_position_rows": 8,
+    "textual_position_codes": 11,
+    "candidate_dead_heat_race_position_groups": 3006,
+    "candidate_dead_heat_runner_records": 6020,
+    "position_above_ran_rows": 10,
+    "duplicate_position_distance_conflict_rows": 2,
+    "incomplete_provisional_races": 5,
+    "rows_in_incomplete_race_context": 32,
+    "externally_verified_source_anomaly_rows": 1,
+    "candidate_rows": 1851285,
+    "unclassified_candidate_rows": 0,
+    "reconciliation_checks_passed": 13,
+    "reconciliation_checks_total": 13
+  },
+  "validated_text_outcome_mapping": {
+    "BD": "brought_down",
+    "CO": "carried_out",
+    "DSQ": "disqualified",
+    "F": "fell",
+    "LFT": "left_or_failed_to_take_part",
+    "PU": "pulled_up",
+    "REF": "refused_at_obstacle",
+    "RO": "ran_out",
+    "RR": "refused_to_race",
+    "SU": "slipped_up",
+    "UR": "unseated_rider"
+  },
+  "candidate_result_representations": {
+    "numeric_finishing_position": 1756666,
+    "mapped_textual_outcome": 93992,
+    "disqualified": 619,
+    "unresolved_zero_position": 8
+  },
+  "decisions": [
+    "Preserve source rowid as physical source lineage.",
+    "Preserve raw ran independently from observed source-row count.",
+    "Preserve raw pos without replacing it with a normalised result.",
+    "Preserve raw btn and raw ovr_btn without forced recalculation.",
+    "Derive a positive numeric finishing position only where raw pos is a positive integer.",
+    "Map all 11 validated textual outcome codes while retaining the exact raw pos value.",
+    "Keep DSQ separate from ordinary non-finish outcomes because disqualified runners retain numeric distance values.",
+    "Derive a candidate dead-heat flag only where a duplicated positive position also shares the same raw ovr_btn.",
+    "Preserve numeric pos = 0 as unresolved and flag it.",
+    "Flag numeric positions above ran without automatically correcting them.",
+    "Flag the five incomplete race extracts at race level.",
+    "Preserve externally verified corrections as audit records rather than overwriting immutable source values.",
+    "Do not force btn and ovr_btn into a universally additive sequence.",
+    "Defer final staging-table and target-schema design."
+  ],
+  "verified_anomaly": {
+    "source_rowid": 55516,
+    "horse": "Cinnamon Carter (AUS)",
+    "raw_position": 10,
+    "externally_verified_position": 12,
+    "externally_verified_dead_heat": true,
+    "tied_with": "Mighty Maher (AUS)",
+    "handling": "Preserve raw values and retain the verification as a separate audit record."
+  },
+  "validation": {
+    "notebook_internal_reconciliation": "passed_13_of_13",
+    "clean_kernel_run_all": false,
+    "result": "pending"
+  }
+}
