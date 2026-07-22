@@ -47,7 +47,7 @@ Notebook 04 — course jurisdiction and surface mapping — is complete and has 
 - `notebooks/04_course_jurisdiction_and_surface_mapping.ipynb`
 - `docs/NOTEBOOK_04_CLOSEOUT.json`
 
-Notebook 05 — finishing position and non-finish outcomes — has completed analytical reconciliation; clean-kernel Run All remains pending:
+Notebook 05 — finishing position and non-finish outcomes — is complete and has passed a clean-kernel Run All:
 
 - `notebooks/05_finishing_position_and_non_finish_outcomes.ipynb`
 - `docs/NOTEBOOK_05_CLOSEOUT.json`
