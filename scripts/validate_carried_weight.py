@@ -83,7 +83,7 @@ def main() -> None:
     assert validation["parse_status"].eq("parsed").all()
     assert validation["notation_family"].eq("stones_and_pounds").all()
     assert validation["ambiguity_flag"].eq(False).all()
-    assert validation["anomaly_flags"].eq(()).all()
+    assert validation["anomaly_flags"].map(lambda flags: flags == ()).all()
 
     assert validation["parsed_stones"].eq(validation["sql_stones"]).all()
     assert validation["parsed_pounds"].eq(validation["sql_pounds"]).all()
