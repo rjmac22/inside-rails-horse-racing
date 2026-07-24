@@ -96,18 +96,19 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02–07:
+Current notebook sequence, refined by Notebooks 02–08:
 
 1. course, jurisdiction and surface mapping — complete;
 2. finishing position and non-finish outcomes — complete;
 3. distance parsing — complete;
 4. carried-weight parsing — complete;
-5. starting-price parsing;
-6. prize and currency parsing;
-7. race-time parsing;
-8. ratings semantics and availability;
-9. horse, trainer, jockey and owner identity risks;
-10. coupled-entry interpretation where justified.
+5. starting-price parsing — complete;
+6. course jurisdiction, racing authority and betting-market context;
+7. prize and currency parsing;
+8. race-time parsing;
+9. ratings semantics and availability;
+10. horse, trainer, jockey and owner identity risks;
+11. coupled-entry interpretation where justified.
 
 Each study should produce tested parsing or mapping utilities only when the evidence supports them.
 
@@ -224,6 +225,63 @@ Candidate carried-weight attributes supported:
 - official-weight verification status;
 - separately enriched official carried weight and original unit when available.
 
+### Notebook 08 — Starting price parsing
+
+**Status:** complete; notebook validation and clean-kernel Run All passed
+
+Established:
+
+- complete text storage coverage across all 1,851,285 runner records;
+- 843 distinct raw `sp` values;
+- reproducible numeric fraction parsing for 1,842,187 runner records;
+- 9,097 explicit empty strings;
+- one standalone favourite marker without a numeric source value;
+- zero unsupported current notation structures;
+- 77,468 valid fractions not stored in lowest terms;
+- textual even-money notation and terminal `F`, `J` and `C` markers;
+- separation of arithmetic representation from market and wagering semantics;
+- evidence that the field can contain fixed-odds prices, tote or pari-mutuel returns, winner-only returns and limited leading-finisher returns;
+- five distinct race-level coverage patterns;
+- geographical concentration of selective price-or-return coverage;
+- requirement to retain race-level coverage and wagering applicability context;
+- external verification of the standalone Almendares `F` record without treating the correction as parser-derived;
+- no justification for globally comparable implied probabilities from the source field alone;
+- no final target schema design.
+
+Candidate source price-or-return attributes supported:
+
+- exact raw `sp`;
+- notation family;
+- raw numerator;
+- raw denominator;
+- literal favourite marker;
+- parse status;
+- anomaly flags;
+- race-level price-coverage pattern;
+- separately evidenced market or return type;
+- separately evidenced wagering applicability;
+- externally verified correction records.
+
+### Notebook 09 — Course jurisdiction, racing authority and betting-market context
+
+**Status:** planned
+
+The study should establish, where evidence permits:
+
+- canonical course and jurisdiction identity;
+- course-name variants across source periods;
+- governing racing authority;
+- native distance convention;
+- native carried-weight convention;
+- principal betting or wagering system;
+- whether published values are fixed-odds prices, tote dividends, pari-mutuel returns or another market measure;
+- whether values normally apply to every runner, the winner only or selected finishers;
+- known source conversions or normalisations;
+- evidence source and confidence;
+- unresolved jurisdictions requiring later enrichment.
+
+This study is a prerequisite before treating international distance, carried weight or source price-or-return values as directly comparable.
+
 ## Phase 3 — Entity and key design
 
 Notebook 03 has established candidate source-record matching rules, but permanent entity and key design remains deferred.
@@ -269,16 +327,17 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Begin Notebook 08 as a bounded study of starting-price parsing.
+Begin Notebook 09 as a bounded study of course jurisdiction, racing authority and betting-market context.
 
-Notebook 08 should determine:
+Notebook 09 should determine:
 
-- how the source `sp` field represents fractional, decimal and other starting-price conventions;
-- which SQLite storage classes, missing values and sentinels occur;
-- whether favourites, joint favourites and returned-price markers are embedded in the field or represented elsewhere;
-- which values can be parsed reproducibly without concealing source ambiguity;
-- whether exact fractional odds, decimal odds and implied probability can be justified;
-- which jurisdiction-specific or future values must remain unresolved;
-- which raw, parsed, source-implied and validation attributes later staging work must preserve.
+- which course-name forms refer to the same jurisdiction-qualified venue or configuration;
+- which authority and racing rules govern each supported jurisdiction;
+- which native distance and carried-weight conventions apply;
+- which betting-market family applies to source price-or-return observations;
+- whether source values represent fixed-odds starting prices, tote dividends, pari-mutuel returns or another measure;
+- whether values normally apply to all runners, winners only or selected finishers;
+- which classifications are directly supported, inferred with stated confidence or unresolved;
+- which contextual attributes later staging work must preserve.
 
-The study must remain observational and must not begin final target-schema design.
+The study must remain bounded and evidence-led. It must not attempt complete worldwide racing-law documentation or begin final target-schema design.
