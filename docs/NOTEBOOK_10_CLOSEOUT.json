@@ -1,0 +1,151 @@
+{
+  "notebook": "notebooks/10_remaining_source_field_inventory_and_triage.ipynb",
+  "status": "complete",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "source_commit": "353df10",
+  "bounded_question": "Which source fields have already been sufficiently investigated, which can be preserved without further semantic work, and which require dedicated profiling before database reconstruction?",
+  "profiling_grain": {
+    "runner_record": "one physical SQLite source row",
+    "data_rows": 1851285,
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "provisional_races": 189043,
+    "source_columns": 37
+  },
+  "validated_findings": {
+    "source_columns_retained": 37,
+    "studied_fields": 9,
+    "supporting_context_fields": 1,
+    "fields_requiring_investigation": 27,
+    "analytical_field_families": 8,
+    "bounded_investigation_groups": 11,
+    "provisional_sequenced_studies": 11,
+    "clean_kernel_run_all": true,
+    "notebook_assertions_passed": true
+  },
+  "study_status": {
+    "studied": [
+      "date",
+      "course",
+      "race_id",
+      "type",
+      "dist",
+      "pos",
+      "draw",
+      "wgt",
+      "sp"
+    ],
+    "supporting_context": [
+      "race_name"
+    ],
+    "not_yet_classified_count": 27
+  },
+  "provisional_treatment_totals": {
+    "deterministic_parsing": 6,
+    "raw_preservation": 3,
+    "lineage_or_free_text": 3,
+    "later_jurisdictional_enrichment": 3,
+    "semantic_risk": 22
+  },
+  "bounded_investigation_groups": [
+    {
+      "sequence": 1,
+      "proposed_notebook": 11,
+      "group": "off_time_and_temporal_semantics",
+      "fields": ["off"]
+    },
+    {
+      "sequence": 2,
+      "proposed_notebook": 12,
+      "group": "runner_counts_numbers_and_entries",
+      "fields": ["ran", "num"]
+    },
+    {
+      "sequence": 3,
+      "proposed_notebook": 13,
+      "group": "beaten_distance_semantics",
+      "fields": ["ovr_btn", "btn"]
+    },
+    {
+      "sequence": 4,
+      "proposed_notebook": 14,
+      "group": "race_classification_and_eligibility",
+      "fields": ["class", "pattern", "rating_band", "age_band", "sex_rest", "going"]
+    },
+    {
+      "sequence": 5,
+      "proposed_notebook": 15,
+      "group": "runner_characteristics_and_equipment",
+      "fields": ["age", "sex", "hg"]
+    },
+    {
+      "sequence": 6,
+      "proposed_notebook": 16,
+      "group": "prize_and_currency_semantics",
+      "fields": ["prize"]
+    },
+    {
+      "sequence": 7,
+      "proposed_notebook": 17,
+      "group": "race_time_semantics",
+      "fields": ["time"]
+    },
+    {
+      "sequence": 8,
+      "proposed_notebook": 18,
+      "group": "ratings_semantics_and_availability",
+      "fields": ["or", "rpr", "ts"]
+    },
+    {
+      "sequence": 9,
+      "proposed_notebook": 19,
+      "group": "horse_and_pedigree_identity",
+      "fields": ["horse", "sire", "dam", "damsire"]
+    },
+    {
+      "sequence": 10,
+      "proposed_notebook": 20,
+      "group": "connections_and_owner_identity",
+      "fields": ["jockey", "trainer", "owner"]
+    },
+    {
+      "sequence": 11,
+      "proposed_notebook": 21,
+      "group": "comment_and_embedded_information",
+      "fields": ["comment"]
+    }
+  ],
+  "decisions": [
+    "Keep physical staging-schema design deferred.",
+    "Preserve raw source values while unresolved semantics are investigated.",
+    "Treat blank strings and SQL NULL as distinct source behaviours.",
+    "Do not infer field meaning from SQLite declared type or field name alone.",
+    "Group related unresolved fields into bounded studies rather than creating one notebook per field.",
+    "Treat proposed Notebook numbers 11 through 21 as provisional planning labels rather than fixed commitments.",
+    "Prioritise fields affecting race identity, runner structure and structured results before descriptive enrichment and entity resolution."
+  ],
+  "reusable_outputs": {
+    "module": null,
+    "validation_script": null,
+    "report": "docs/REPORT_10_REMAINING_SOURCE_FIELD_INVENTORY_AND_TRIAGE.md",
+    "closeout_record": "docs/NOTEBOOK_10_CLOSEOUT.json"
+  },
+  "validation": {
+    "source_columns_checked": 37,
+    "fields_with_family_assignment": 37,
+    "fields_with_treatment_assignment": 37,
+    "unclassified_fields_with_investigation_group": 27,
+    "bounded_investigation_groups": 11,
+    "clean_kernel_run_all": true,
+    "result": "passed"
+  },
+  "next_notebook": {
+    "number": 11,
+    "topic": "off-time and temporal semantics",
+    "bounded_question": "What does the source off field represent, how consistently is it formatted, and what temporal assumptions can safely be made during race reconstruction?"
+  }
+}
