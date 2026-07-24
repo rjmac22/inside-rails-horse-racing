@@ -14,15 +14,36 @@ The downloaded source files are intentionally excluded from Git because of size,
 
 Notebook 01 established that the supplied `raceform.db` has broader geographical and date coverage than the dataset title suggests, including substantial international racing and records through 27 May 2026.
 
+The source contains one denormalised runner-grain table with:
+
+- 1,851,285 data-like runner rows;
+- 189,043 reconstructed provisional races;
+- 37 source columns;
+- no declared primary key, foreign keys, indexes or uniqueness constraints.
+
+The established candidate provisional race key is:
+
+`date + course + off`
+
+The raw SQLite database remains read-only, and source queries use:
+
+`DATA_ROW_PREDICATE = "rowid <> 1"`
+
 ## Current status
 
-Notebook 00 — project scope and methodology — is complete:
+### Notebook 00 — Project scope and methodology
+
+**Status:** complete
 
 - `notebooks/00_project_scope_and_methodology.ipynb`
 - `docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md`
 - `docs/NOTEBOOK_00_CLOSEOUT.json`
 
-Notebook 01 — source database structure profile — is complete:
+Established raw-source immutability, notebook-led evidence, conceptual raw/staging/core/analytical layers and deferral of premature schema or platform decisions.
+
+### Notebook 01 — Source database structure profile
+
+**Status:** complete
 
 - `notebooks/01_source_database_structure_profile.ipynb`
 - `docs/REPORT_01_SOURCE_DATABASE_STRUCTURE_PROFILE.md`
@@ -30,29 +51,57 @@ Notebook 01 — source database structure profile — is complete:
 - `src/inside_rails/source_sqlite.py`
 - `scripts/validate_source_profile.py`
 
-Notebook 02 — source field quality profile — is complete:
+Established the source grain, population, broad international coverage, loose typing and structural limitations.
+
+### Notebook 02 — Source field quality profile
+
+**Status:** complete
 
 - `notebooks/02_source_field_quality_profile.ipynb`
 - `docs/REPORT_02_SOURCE_FIELD_QUALITY_PROFILE.md`
 - `docs/NOTEBOOK_02_CLOSEOUT.json`
 
-Notebook 03 — race identity and source-key reconstruction — is complete and has passed a clean-kernel Run All:
+Established field-specific missingness and sentinel conventions, mixed SQLite storage classes and the need to preserve raw values before interpretation.
+
+### Notebook 03 — Race identity and source-key reconstruction
+
+**Status:** complete; clean-kernel Run All passed
 
 - `notebooks/03_race_identity_and_source_key_reconstruction.ipynb`
 - `docs/REPORT_03_RACE_IDENTITY_AND_SOURCE_KEY_RECONSTRUCTION.md`
 - `docs/NOTEBOOK_03_CLOSEOUT.json`
 
-Notebook 04 — course jurisdiction and surface mapping — is complete and has passed a clean-kernel Run All:
+Established that:
+
+- supplied `race_id` is reused and cannot serve as a unique race key;
+- `date + race_id` still collides for eight pairs of distinct races;
+- `date + course + off` identifies all 189,043 provisional races uniquely in the current extract;
+- candidate race identity plus `horse` identifies each source runner record;
+- `num` contains sentinels and shared betting-entry numbers;
+- SQLite `rowid` is source lineage rather than business identity;
+- later staging tables require independent surrogate race and runner-record identifiers.
+
+### Notebook 04 — Course jurisdiction and surface mapping
+
+**Status:** complete; clean-kernel Run All passed
 
 - `notebooks/04_course_jurisdiction_and_surface_mapping.ipynb`
 - `docs/NOTEBOOK_04_CLOSEOUT.json`
 
-Notebook 05 — finishing position and non-finish outcomes — is complete and has passed a clean-kernel Run All:
+Established candidate jurisdiction for every provisional race, reduced 528 raw course values to 395 jurisdiction-qualified candidate venue/configuration identities, and separated direct surface evidence from unresolved enrichment.
+
+### Notebook 05 — Finishing position and non-finish outcomes
+
+**Status:** complete; clean-kernel Run All passed
 
 - `notebooks/05_finishing_position_and_non_finish_outcomes.ipynb`
 - `docs/NOTEBOOK_05_CLOSEOUT.json`
 
-Notebook 06 — race distance parsing — is complete and has passed independent validation and a clean-kernel Run All:
+Established complete result representation for all source rows, including positive placings, 11 textual outcome codes, disqualifications, supported dead heats and explicitly retained anomalies. It also showed that `btn` and `ovr_btn` cannot be forced into one universal exact-addition rule.
+
+### Notebook 06 — Race distance parsing
+
+**Status:** complete; independent validation and clean-kernel Run All passed
 
 - `notebooks/06_race_distance_parsing.ipynb`
 - `docs/REPORT_06_RACE_DISTANCE_PARSING.md`
@@ -60,7 +109,11 @@ Notebook 06 — race distance parsing — is complete and has passed independent
 - `src/inside_rails/race_distance.py`
 - `scripts/validate_race_distance.py`
 
-Notebook 07 — carried weight parsing — is complete and has passed independent validation and a clean-kernel Run All:
+Established complete deterministic parsing of all 63 observed raw distance values into source-implied component and total measures while keeping official metric-distance enrichment separate.
+
+### Notebook 07 — Carried weight parsing
+
+**Status:** complete; independent validation and clean-kernel Run All passed
 
 - `notebooks/07_carried_weight_parsing.ipynb`
 - `docs/REPORT_07_CARRIED_WEIGHT_PARSING.md`
@@ -68,13 +121,21 @@ Notebook 07 — carried weight parsing — is complete and has passed independen
 - `src/inside_rails/carried_weight.py`
 - `scripts/validate_carried_weight.py`
 
-Notebook 08 — starting price parsing — is complete and has passed notebook-level validation and a clean-kernel Run All:
+Established complete deterministic parsing of all 79 observed canonical stones-and-pounds values into total pounds and source-implied kilograms while preserving the distinction from exact official metric declarations.
+
+### Notebook 08 — Starting price parsing
+
+**Status:** complete; notebook validation and clean-kernel Run All passed
 
 - `notebooks/08_starting_price_parsing.ipynb`
 - `docs/REPORT_08_STARTING_PRICE_PARSING.md`
 - `docs/NOTEBOOK_08_CLOSEOUT.json`
 
-Notebook 09 — course jurisdiction, racing authority and betting-market context — is complete and has passed independent validation and a clean-kernel Run All:
+Established bounded arithmetic parsing of the source `sp` field while demonstrating that market meaning, blank coverage and cross-jurisdiction comparability remain contextual rather than universal.
+
+### Notebook 09 — Course jurisdiction, racing authority and betting-market context
+
+**Status:** complete; independent validation and clean-kernel Run All passed
 
 - `notebooks/09_course_jurisdiction_racing_authority_and_betting_market_context.ipynb`
 - `docs/REPORT_09_COURSE_JURISDICTION_RACING_AUTHORITY_AND_BETTING_MARKET_CONTEXT.md`
@@ -82,102 +143,64 @@ Notebook 09 — course jurisdiction, racing authority and betting-market context
 - `src/inside_rails/course_jurisdiction.py`
 - `scripts/validate_course_jurisdiction.py`
 
-The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
+Established:
 
-Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
+- reproducible candidate jurisdiction for all 189,043 provisional races;
+- 36 candidate jurisdictions and 395 candidate venue/configuration identities;
+- separate source, structural-derivation and research-interpretation layers;
+- the need for racing-code and effective-period context where justified;
+- preservation of raw `type` and `sp` without treating them as universally equivalent;
+- deferral of worldwide authority and wagering research until an analytical study requires it.
 
-Notebook 03 established that:
+### Notebook 10 — Remaining source-field inventory and triage
 
-- the supplied `race_id` is reused and cannot serve as a unique race key;
-- even `date + race_id` collides for eight pairs of genuinely different races;
-- `date + course + off` is unique across the current extract and is the leading candidate natural race identity;
-- `race_name` should remain attached as a descriptive validation field;
-- adding `horse` identifies one unique runner record within every reconstructed race;
-- `num` cannot identify an individual runner because it includes zero sentinels and shared betting-entry numbers;
-- original SQLite `rowid` should be preserved as source lineage, not business identity;
-- later staging tables will require independent surrogate race and runner-record identifiers.
+**Status:** complete; notebook assertions and clean-kernel Run All passed
 
-Notebook 04 established that:
+- `notebooks/10_remaining_source_field_inventory_and_triage.ipynb`
+- `docs/REPORT_10_REMAINING_SOURCE_FIELD_INVENTORY_AND_TRIAGE.md`
+- `docs/NOTEBOOK_10_CLOSEOUT.json`
 
-- all 189,043 provisional races can receive a candidate jurisdiction;
-- 528 raw course values reduce to 395 jurisdiction-qualified candidate venue/configuration identities;
-- recognised terminal jurisdiction suffixes can be removed while retaining meaningful markers such as `(AW)`, `(July)`, `(RH)` and `(Perth)`;
-- the 135 candidate identities represented by multiple raw forms have no same-date form collisions;
-- 33,023 races have direct all-weather evidence from an explicit `(AW)` course marker;
-- `race_name` is not reliable for surface derivation;
-- the remaining 156,020 surface values require later external race-level enrichment;
-- eight reproducible explicit NH Flat/type conflicts require separate validation.
+Established:
 
-Notebook 05 established that:
+- a complete inventory of all 37 source columns;
+- 9 fields with substantive prior study;
+- 1 field used as supporting context;
+- 27 fields still requiring some form of investigation;
+- eight broad analytical field families;
+- one provisional treatment and rationale for every source field;
+- 6 deterministic-parsing fields;
+- 3 raw-preservation fields;
+- 3 lineage or free-text fields;
+- 3 later-jurisdictional-enrichment fields;
+- 22 semantic-risk fields;
+- 11 bounded investigation groups covering all 27 unresolved fields;
+- continued deferral of physical staging-schema design.
 
-- all 1,851,285 source runner records can be represented without replacing raw `ran`, `pos`, `btn` or `ovr_btn`;
-- 1,756,666 rows contain positive numeric finishing positions;
-- 94,611 rows contain one of 11 validated textual result codes;
-- 619 `DSQ` rows retain numeric beaten-distance values and must remain separate from ordinary non-finish outcomes;
-- 3,006 duplicated race-position groups covering 6,020 runners are supported candidate dead heats;
-- eight `pos = 0` rows remain unresolved;
-- ten rows have numeric `pos > ran`;
-- five provisional races contain fewer source rows than recorded `ran`;
-- two duplicated-position rows have conflicting cumulative distances;
-- one Morphettville row was externally verified as a source anomaly and is retained as an audit record rather than overwritten;
-- `btn` and `ovr_btn` are related but cannot be forced into a universally additive sequence, especially after amended results.
+The provisional investigation sequence is:
 
-Notebook 06 established that:
+1. off-time and temporal semantics;
+2. runner counts, numbers and entries;
+3. beaten-distance semantics;
+4. race classification and eligibility;
+5. runner characteristics and equipment;
+6. prize and currency semantics;
+7. race-time semantics;
+8. ratings semantics and availability;
+9. horse and pedigree identity;
+10. connections and owner identity;
+11. comments and embedded information.
 
-- all 1,851,285 runner records contain a non-blank text `dist` value;
-- every provisional race contains one internally consistent raw distance;
-- 63 exact raw values cover all 189,043 provisional races;
-- all current values parse reproducibly into miles, furlongs and optional half-furlongs;
-- exact integer source-implied yards and deterministic source-implied metres are available for every race;
-- previously unseen values must remain unresolved rather than be interpreted automatically;
-- source-implied distances describe the source expression, not necessarily the independently verified official scheduled distance;
-- official 1,600-metre races were externally verified in the source as `1m`, demonstrating international approximation;
-- official metric-jurisdiction distances require separate race-level enrichment;
-- early analytical work will prioritise UK and Irish racing while preserving international records and their provenance limitation.
+These are planning groups, not a commitment to eleven full-length notebooks. Closely related subjects may be combined where one bounded study can resolve them cleanly.
 
-Notebook 07 established that:
+## Next bounded study
 
-- all 1,851,285 runner records contain a non-blank text `wgt` value;
-- 79 distinct raw values cover the complete source;
-- every current value uses canonical stones-and-pounds notation;
-- all current records parse reproducibly into stones, pounds, total pounds and source-implied kilograms;
-- the observed range is `6-12` to `12-11`, equivalent to 96–179 source-implied pounds;
-- independent Python and SQLite calculations agree for every current value;
-- zero current records remain unresolved;
-- unsupported future values remain unresolved rather than being trimmed, normalised or guessed;
-- source-implied kilograms are suitable for consistent analysis but are not necessarily exact recovered official metric declarations for international jurisdictions;
-- unusual race-context values remain separate from weight parse validity;
-- official metric weights require separate runner-level enrichment when exact original declarations are needed.
+Notebook 11 — off-time and temporal semantics.
 
-Notebook 08 established that:
+Bounded question:
 
-- all 1,851,285 runner records store `sp` as SQLite text;
-- 843 distinct raw values cover the complete source;
-- 1,842,187 records contain a reproducibly parsed numeric fraction;
-- 9,097 records contain an explicit empty string;
-- one record contains a standalone favourite marker without a numeric source value;
-- zero current records contain an unsupported notation structure;
-- 77,468 records contain valid fractions that are not in lowest terms;
-- the source field has mixed semantics and is not globally a conventional starting-price measure;
-- race-level coverage includes complete, all-blank, winner-only, leading-finisher and irregular partial patterns;
-- blank values can reflect wagering inapplicability, unavailable race-level returns or unresolved omission;
-- parsed arithmetic values must remain separate from market-type and jurisdictional interpretation;
-- cross-jurisdiction comparisons require dedicated contextual research.
+> What does the source `off` field represent, how consistently is it formatted, and what temporal assumptions can safely be made during race reconstruction?
 
-Notebook 09 established that:
-
-- all 189,043 provisional races receive a reproducible candidate jurisdiction;
-- the source contains 36 candidate jurisdictions and 395 candidate venue/configuration identities;
-- Great Britain requires racing-code context beneath one regulatory authority;
-- Ireland requires both racing-code and historical-period context;
-- French source-labelled `NH Flat` races expose a coherent AQPS classification issue that remains unresolved rather than overwritten;
-- source observations, structural derivations and researched interpretations must remain separate;
-- raw source `type` and `sp` must be preserved without assuming universal native-code or market meaning;
-- detailed jurisdiction research can be deferred until a country-specific study requires it;
-- worldwide regulatory research is not a prerequisite for core reconstruction;
-- final target-schema design remains deferred until the remaining source fields have been inventoried and triaged.
-
-The next bounded study is Notebook 10: remaining source-field inventory and triage.
+This is the first priority because the current candidate race identity depends on `date + course + off`.
 
 ## Working method
 
@@ -191,7 +214,7 @@ The project follows an evidence-led investigation-to-implementation cycle:
 6. translate the conclusion into a practical database consequence;
 7. implement the rule reversibly while retaining raw values and lineage;
 8. extract only stable, reusable plumbing into `src/inside_rails/`;
-9. add an independent validation script, test, constraint or reconciliation check;
+9. add an independent validation script, test, constraint or reconciliation check where justified;
 10. produce a concise report and machine-readable closeout record;
 11. update project entry documentation before starting the next notebook.
 
@@ -199,7 +222,7 @@ The stopping rule is:
 
 > Investigate until a defensible rule can be stated, its known exceptions identified, unresolved cases preserved without information loss, and a validation implemented that will detect failure.
 
-The project does not require every source oddity to be completely explained before implementation proceeds. Each notebook must resolve a design, transformation or validation question rather than merely describe a field. Stable bounded rules should move incrementally into staging so that the emerging architecture is tested in practice.
+The project does not require every source oddity to be completely explained before implementation proceeds. Each notebook must resolve a design, transformation or validation question rather than merely describe a field.
 
 AI may accelerate query writing, debugging and documentation, but generated work remains untrusted until checked against actual source outputs and the same validation standards as manually written code.
 
@@ -207,6 +230,7 @@ See:
 
 - `docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md`
 - `docs/REUSABLE_CODE_ARCHITECTURE.md`
+- `docs/PROJECT_PLAN.md`
 
 ## Planned workflow
 
@@ -217,7 +241,7 @@ See:
 5. Design the target relational schema incrementally from supported decisions.
 6. Build staging, core and analysis layers.
 7. Apply constraints, indexes and validation tests.
-8. Publish the notebooks and supporting documentation.
+8. Publish notebooks and supporting documentation.
 
 ## Validation
 
