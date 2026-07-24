@@ -55,17 +55,17 @@ Established:
 Established:
 
 - field-specific missing-value conventions across all 37 source columns;
-- blank strings and sentinel values are used instead of SQL `NULL`;
-- mixed SQLite storage classes occur in several declared numeric fields;
-- finishing positions combine numeric placings with non-finisher codes;
-- official placings can differ from the physical finishing order;
-- runner-level time values are closely linked to recorded finishing margins;
-- weights, starting prices, headgear and prize values require dedicated parsing;
-- prize values combine numeric amounts with euro-prefixed text;
-- `or`, `rpr` and `ts` use an en dash for missing values;
-- one isolated `rpr = 775` anomaly should be retained raw and flagged;
-- pedigree and ownership fields are nearly complete;
-- long comments contain legitimate steward-enquiry text and must not be truncated.
+- blank strings and sentinel values instead of SQL `NULL`;
+- mixed SQLite storage classes in several declared numeric fields;
+- finishing positions combining numeric placings and non-finisher codes;
+- official placings that can differ from physical finishing order;
+- runner-level time values closely linked to finishing margins;
+- weights, starting prices, headgear and prize values requiring dedicated study;
+- prize values combining numeric amounts and euro-prefixed text;
+- `or`, `rpr` and `ts` using an en dash for missing values;
+- one isolated `rpr = 775` anomaly retained raw and flagged;
+- nearly complete pedigree and ownership fields;
+- legitimate long steward-enquiry comments that must not be truncated.
 
 ### Notebook 03 — Race identity and source-key reconstruction
 
@@ -74,19 +74,17 @@ Established:
 Established:
 
 - 188,782 distinct supplied `race_id` values across 189,043 reconstructed races;
-- 206 `race_id` values occur on multiple dates;
-- eight `date + race_id` pairs each identify two different races;
-- `date + course + off` produces 189,043 unique race groups;
-- `race_name` adds no groups in this extract but remains a required descriptive validation field;
-- omitting `off` would merge 516 races and affect 10,410 runner rows;
-- race identity plus `horse` is unique across all 1,851,285 data-like rows;
-- 700 race-and-number groups contain multiple horses;
-- `num` has sentinel and jurisdiction-dependent betting-entry behaviour;
-- no exact duplicate source records were found;
-- original SQLite `rowid` is unique and should be retained as source lineage;
-- physical source adjacency cannot be used to reconstruct race membership;
-- later staging tables will require surrogate race and runner-record identifiers;
-- no final target schema was designed.
+- 206 `race_id` values occurring on multiple dates;
+- eight `date + race_id` pairs each identifying two different races;
+- `date + course + off` producing 189,043 unique race groups;
+- `race_name` remaining a required descriptive validation field;
+- candidate race identity plus `horse` identifying every source runner row uniquely;
+- `num` containing sentinel and jurisdiction-dependent betting-entry behaviour;
+- no exact duplicate source records;
+- original SQLite `rowid` retained as source lineage;
+- physical adjacency unsuitable for reconstructing race membership;
+- future staging race and runner-record surrogate identifiers required;
+- no final target schema designed.
 
 Candidate matching rules:
 
@@ -96,22 +94,6 @@ Candidate matching rules:
 
 ## Phase 2 — Domain interpretation and parsing
 
-Current notebook sequence, refined by Notebooks 02–08:
-
-1. course, jurisdiction and surface mapping — complete;
-2. finishing position and non-finish outcomes — complete;
-3. distance parsing — complete;
-4. carried-weight parsing — complete;
-5. starting-price parsing — complete;
-6. course jurisdiction, racing authority and betting-market context;
-7. prize and currency parsing;
-8. race-time parsing;
-9. ratings semantics and availability;
-10. horse, trainer, jockey and owner identity risks;
-11. coupled-entry interpretation where justified.
-
-Each study should produce tested parsing or mapping utilities only when the evidence supports them.
-
 ### Notebook 04 — Course, jurisdiction and surface mapping
 
 **Status:** complete
@@ -120,9 +102,9 @@ Established:
 
 - candidate jurisdiction for all 189,043 provisional races;
 - 528 raw course values and 395 jurisdiction-qualified candidate venue/configuration identities;
-- 135 candidate identities represented by multiple raw source forms;
-- no same-date collisions among those multiple raw forms;
-- direct all-weather evidence for 33,023 races from explicit `(AW)` course markers;
+- 135 candidate identities represented by multiple raw forms;
+- no same-date collisions among those forms;
+- direct all-weather evidence for 33,023 races from explicit `(AW)` markers;
 - 156,020 races whose surface remains unresolved from the source alone;
 - eight explicit NH Flat/type conflicts requiring later validation;
 - no derivation of canonical surface from race-name wording.
@@ -135,29 +117,17 @@ Established:
 
 - complete candidate result representation for all 1,851,285 source runner rows;
 - 1,756,666 positive numeric finishing-position rows;
-- 94,611 textual-position rows using 11 validated source codes;
-- one-to-one semantic mappings for `BD`, `CO`, `DSQ`, `F`, `LFT`, `PU`, `REF`, `RO`, `RR`, `SU` and `UR`;
-- 619 `DSQ` rows retaining numeric `btn` and `ovr_btn` values;
-- 3,006 supported candidate dead-heat race-position groups covering 6,020 runner records;
-- eight unresolved numeric `pos = 0` rows;
+- 94,611 textual-position rows using 11 validated codes;
+- separate treatment of `DSQ` rows retaining numeric margins;
+- 3,006 supported candidate dead-heat groups covering 6,020 runners;
+- eight unresolved `pos = 0` rows;
 - ten numeric positions above `ran`;
-- five incomplete provisional race extracts containing 32 observed runner rows;
+- five incomplete provisional race extracts;
 - two duplicated-position rows with conflicting cumulative distances;
-- one externally verified Morphettville source anomaly retained as a separate audit record;
-- evidence that amended official positions can coexist with beaten distances anchored to the original on-course order;
+- one externally verified Morphettville source anomaly retained separately;
 - no universal exact-addition rule for `btn` and `ovr_btn`;
-- raw and candidate result attributes must remain separate;
-- no final target schema was designed.
-
-Candidate result attributes supported:
-
-- positive numeric finishing position;
-- raw textual outcome code;
-- mapped candidate outcome and broad result category;
-- candidate result representation;
-- candidate dead-heat flag;
-- numeric-distance-availability flag;
-- separate runner-level and race-level validation flags.
+- raw and candidate result attributes remaining separate;
+- no final target schema designed.
 
 ### Notebook 06 — Race distance parsing
 
@@ -165,31 +135,16 @@ Candidate result attributes supported:
 
 Established:
 
-- complete non-blank text `dist` coverage across all 1,851,285 runner records;
+- complete non-blank text `dist` coverage;
 - one internally consistent raw distance per provisional race;
-- 63 exact raw distance values covering all 189,043 provisional races;
-- one observed miles-and-furlongs notation family with optional half-furlongs represented by `½`;
-- complete parsing of all current source races;
-- exact integer source-implied yards and deterministic source-implied metres for every provisional race;
-- a conservative validated-domain parser that leaves unseen values unresolved;
-- independent validation across all 189,043 provisional races;
-- evidence that source-implied distances are not necessarily exact official scheduled distances for metric jurisdictions;
-- external examples of official 1,600-metre races represented by the source as `1m`;
-- separation of raw source distance, source-implied conversions and later official-distance enrichment;
-- initial analytical priority for UK and Irish racing while international official distances remain a deferred enrichment workstream.
-
-Candidate distance attributes supported:
-
-- exact raw `dist`;
-- parsed miles;
-- parsed whole furlongs;
-- half-furlong indicator;
-- total furlongs;
-- source-implied yards;
-- source-implied metres;
-- parse status;
-- official-distance verification status;
-- separately enriched official distance and original unit when available.
+- 63 exact raw values covering all 189,043 provisional races;
+- complete parsing into miles, furlongs and optional half-furlongs;
+- source-implied yards and metres for every race;
+- unsupported future values remaining unresolved;
+- source-implied distance not necessarily equalling official scheduled distance;
+- official 1,600-metre races represented as `1m` in the source;
+- official metric distances requiring later race-level enrichment;
+- initial analytical priority for UK and Irish racing.
 
 ### Notebook 07 — Carried weight parsing
 
@@ -197,33 +152,15 @@ Candidate distance attributes supported:
 
 Established:
 
-- complete non-blank text `wgt` coverage across all 1,851,285 runner records;
-- 79 distinct raw carried-weight values covering the complete source;
+- complete non-blank text `wgt` coverage;
+- 79 distinct raw values;
 - one canonical stones-and-pounds notation family;
-- observed stones from 6 through 12 and pounds components from 0 through 13;
-- complete parsing of all current runner records;
-- exact source-implied total pounds and deterministic source-implied kilograms for every runner record;
-- one-to-one mapping between current raw values and source-implied total pounds;
-- independent Python and SQLite agreement for every current raw value;
-- a conservative parser that rejects unsupported notation rather than trimming, normalising or guessing;
-- separation of weight parse validity from contextual anomalies in other race fields;
-- evidence that metric jurisdictions are also represented in stones-and-pounds notation;
-- source-implied kilograms suitable for consistent analysis but not necessarily exact recovered official metric declarations;
-- deferred authoritative runner-level enrichment where exact original official units and values are required.
-
-Candidate carried-weight attributes supported:
-
-- exact raw `wgt`;
-- notation family;
-- parsed stones;
-- parsed pounds;
-- source-implied total pounds;
-- source-implied kilograms;
-- parse status;
-- ambiguity flag;
-- anomaly flags;
-- official-weight verification status;
-- separately enriched official carried weight and original unit when available.
+- complete parsing into stones, pounds, total pounds and source-implied kilograms;
+- observed range of 96–179 source-implied pounds;
+- independent Python and SQLite agreement;
+- unsupported future values remaining unresolved;
+- metric jurisdictions also represented in source stones-and-pounds notation;
+- exact official metric declarations requiring later runner-level enrichment.
 
 ### Notebook 08 — Starting price parsing
 
@@ -231,69 +168,104 @@ Candidate carried-weight attributes supported:
 
 Established:
 
-- complete text storage coverage across all 1,851,285 runner records;
+- complete text storage coverage across all runner records;
 - 843 distinct raw `sp` values;
-- reproducible numeric fraction parsing for 1,842,187 runner records;
+- reproducible fraction parsing for 1,842,187 runner records;
 - 9,097 explicit empty strings;
-- one standalone favourite marker without a numeric source value;
+- one standalone favourite marker without a numeric value;
 - zero unsupported current notation structures;
 - 77,468 valid fractions not stored in lowest terms;
 - textual even-money notation and terminal `F`, `J` and `C` markers;
-- separation of arithmetic representation from market and wagering semantics;
-- evidence that the field can contain fixed-odds prices, tote or pari-mutuel returns, winner-only returns and limited leading-finisher returns;
-- five distinct race-level coverage patterns;
-- geographical concentration of selective price-or-return coverage;
+- arithmetic representation separate from market semantics;
+- possible fixed-odds, tote, pari-mutuel, winner-only and selective-finisher meanings;
+- five race-level coverage patterns;
+- geographical concentration of selective coverage;
 - requirement to retain race-level coverage and wagering applicability context;
-- external verification of the standalone Almendares `F` record without treating the correction as parser-derived;
-- no justification for globally comparable implied probabilities from the source field alone;
-- no final target schema design.
-
-Candidate source price-or-return attributes supported:
-
-- exact raw `sp`;
-- notation family;
-- raw numerator;
-- raw denominator;
-- literal favourite marker;
-- parse status;
-- anomaly flags;
-- race-level price-coverage pattern;
-- separately evidenced market or return type;
-- separately evidenced wagering applicability;
-- externally verified correction records.
+- external verification of the standalone Almendares `F` record;
+- no justification for globally comparable implied probabilities;
+- no final target schema designed.
 
 ### Notebook 09 — Course jurisdiction, racing authority and betting-market context
 
-**Status:** planned
+**Status:** complete; independent validation and clean-kernel Run All passed
 
-The study should establish, where evidence permits:
+Established:
 
-- canonical course and jurisdiction identity;
-- course-name variants across source periods;
-- governing racing authority;
-- native distance convention;
-- native carried-weight convention;
-- principal betting or wagering system;
-- whether published values are fixed-odds prices, tote dividends, pari-mutuel returns or another market measure;
-- whether values normally apply to every runner, the winner only or selected finishers;
-- known source conversions or normalisations;
-- evidence source and confidence;
-- unresolved jurisdictions requiring later enrichment.
+- candidate jurisdiction for all 189,043 provisional races;
+- 36 candidate jurisdictions;
+- 395 jurisdiction-qualified candidate venue/configuration identities;
+- 135 multi-form candidate identities with no same-date collisions;
+- reusable course and jurisdiction mapping in `src/inside_rails/course_jurisdiction.py`;
+- independent validation in `scripts/validate_course_jurisdiction.py`;
+- Great Britain requiring racing-code context beneath one principal regulator;
+- Ireland requiring racing-code and historical-period context;
+- separation of the 2015–2017 and 2018-onward Irish regulatory periods;
+- France Galop as the principal authority context for the French worked example;
+- 23 French AQPS races labelled `NH Flat` by the source;
+- the French AQPS native-code interpretation remaining unresolved rather than overwritten;
+- source, structural-derivation and research-interpretation layers remaining distinct;
+- detailed jurisdiction research deferred until a country-specific or analytical study requires it;
+- worldwide regulatory research not being a prerequisite for core reconstruction;
+- no final target schema designed.
 
-This study is a prerequisite before treating international distance, carried weight or source price-or-return values as directly comparable.
+Required before reconstruction:
+
+- preserve source `type` exactly as supplied;
+- store candidate jurisdiction separately;
+- preserve raw `sp` while keeping market interpretation separate.
+
+Deferred research enrichment:
+
+- native racing-code mappings;
+- authority and rules records with effective periods;
+- jurisdiction-specific wagering context;
+- unresolved interpretation questions and later resolutions.
+
+## Remaining source-field studies
+
+The next stage is to inventory and triage every source field that has not yet received a bounded study.
+
+Likely later studies may include:
+
+- prize and currency parsing;
+- race-time and temporal semantics;
+- runner number, declared runners and field-size semantics;
+- beaten-distance semantics where further work is required;
+- ratings semantics and availability;
+- horse, trainer, jockey and owner identity risks;
+- comments and embedded source information;
+- headgear and other compact categorical fields;
+- coupled-entry interpretation where justified.
+
+The exact sequence will be set by Notebook 10 rather than assumed in advance.
+
+### Notebook 10 — Remaining source-field inventory and triage
+
+**Status:** next
+
+Bounded purpose:
+
+- list every source column;
+- mark fields already investigated;
+- identify fields that can be preserved without additional semantic study;
+- identify fields requiring a dedicated profiling notebook;
+- identify fields requiring later jurisdiction-specific research;
+- establish the remaining notebook sequence.
+
+Notebook 10 is a triage checkpoint, not a combined analysis of every remaining field.
 
 ## Phase 3 — Entity and key design
 
-Notebook 03 has established candidate source-record matching rules, but permanent entity and key design remains deferred.
+Notebook 03 established candidate source-record matching rules, but permanent entity and key design remains deferred.
 
-Questions still to resolve:
+Questions still to resolve include:
 
-- How stable are descriptive race fields across replacement source snapshots?
-- How should jurisdiction-qualified courses be represented?
-- Which names require entity-resolution rules rather than exact matching?
-- How should amended or repeated source records be versioned?
-- How should coupled entries be represented?
-- Which surrogate identifiers and reconciliation controls should the staging layer use?
+- stability of descriptive race fields across replacement snapshots;
+- permanent representation of jurisdiction-qualified courses;
+- entity-resolution requirements for horse and participant names;
+- versioning of amended or repeated source records;
+- coupled-entry representation;
+- staging surrogate identifiers and reconciliation controls.
 
 Outputs:
 
@@ -302,10 +274,14 @@ Outputs:
 - lineage and source-record strategy;
 - reconciliation rules.
 
+This phase begins only after the remaining source-field studies have been completed or explicitly deferred.
+
 ## Phase 4 — Target architecture
 
-Only after the earlier evidence is complete:
+Only after the evidence base is sufficient:
 
+- consolidate reconstruction requirements;
+- define a conceptual staging model;
 - select the physical database technology;
 - define staging, core and analytical schemas;
 - create tables, constraints and indexes;
@@ -327,17 +303,10 @@ Predictive work is downstream of reliable source interpretation and database des
 
 ## Current next action
 
-Begin Notebook 09 as a bounded study of course jurisdiction, racing authority and betting-market context.
+Create Notebook 10:
 
-Notebook 09 should determine:
+> Remaining source-field inventory and triage
 
-- which course-name forms refer to the same jurisdiction-qualified venue or configuration;
-- which authority and racing rules govern each supported jurisdiction;
-- which native distance and carried-weight conventions apply;
-- which betting-market family applies to source price-or-return observations;
-- whether source values represent fixed-odds starting prices, tote dividends, pari-mutuel returns or another measure;
-- whether values normally apply to all runners, winners only or selected finishers;
-- which classifications are directly supported, inferred with stated confidence or unresolved;
-- which contextual attributes later staging work must preserve.
+The notebook should inventory all 37 source columns, link completed fields to their existing notebook evidence, classify the remaining fields by semantic and reconstruction risk, and define the bounded sequence of later field studies.
 
-The study must remain bounded and evidence-led. It must not attempt complete worldwide racing-law documentation or begin final target-schema design.
+Do not begin conceptual or physical staging-schema design until this triage and the resulting required field studies are complete.
