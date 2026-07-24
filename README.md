@@ -74,6 +74,14 @@ Notebook 08 — starting price parsing — is complete and has passed notebook-l
 - `docs/REPORT_08_STARTING_PRICE_PARSING.md`
 - `docs/NOTEBOOK_08_CLOSEOUT.json`
 
+Notebook 09 — course jurisdiction, racing authority and betting-market context — is complete and has passed independent validation and a clean-kernel Run All:
+
+- `notebooks/09_course_jurisdiction_racing_authority_and_betting_market_context.ipynb`
+- `docs/REPORT_09_COURSE_JURISDICTION_RACING_AUTHORITY_AND_BETTING_MARKET_CONTEXT.md`
+- `docs/NOTEBOOK_09_CLOSEOUT.json`
+- `src/inside_rails/course_jurisdiction.py`
+- `scripts/validate_course_jurisdiction.py`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
@@ -154,9 +162,22 @@ Notebook 08 established that:
 - race-level coverage includes complete, all-blank, winner-only, leading-finisher and irregular partial patterns;
 - blank values can reflect wagering inapplicability, unavailable race-level returns or unresolved omission;
 - parsed arithmetic values must remain separate from market-type and jurisdictional interpretation;
-- cross-jurisdiction comparisons require a dedicated jurisdiction, racing-authority and betting-market context study.
+- cross-jurisdiction comparisons require dedicated contextual research.
 
-The next bounded study is course jurisdiction, racing authority and betting-market context. Final target-schema design remains deferred.
+Notebook 09 established that:
+
+- all 189,043 provisional races receive a reproducible candidate jurisdiction;
+- the source contains 36 candidate jurisdictions and 395 candidate venue/configuration identities;
+- Great Britain requires racing-code context beneath one regulatory authority;
+- Ireland requires both racing-code and historical-period context;
+- French source-labelled `NH Flat` races expose a coherent AQPS classification issue that remains unresolved rather than overwritten;
+- source observations, structural derivations and researched interpretations must remain separate;
+- raw source `type` and `sp` must be preserved without assuming universal native-code or market meaning;
+- detailed jurisdiction research can be deferred until a country-specific study requires it;
+- worldwide regulatory research is not a prerequisite for core reconstruction;
+- final target-schema design remains deferred until the remaining source fields have been inventoried and triaged.
+
+The next bounded study is Notebook 10: remaining source-field inventory and triage.
 
 ## Working method
 
