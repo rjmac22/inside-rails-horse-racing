@@ -1,0 +1,110 @@
+{
+  "notebook": "notebooks/08_starting_price_parsing.ipynb",
+  "status": "complete",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "source_table": "data",
+  "source_commit": "4af1263",
+  "bounded_question": "How is the source sp field represented, which values can be parsed reproducibly, and what limits prevent it from being treated globally as a conventional starting-price field?",
+  "profiling_grain": {
+    "runner_record": "one physical SQLite source row",
+    "data_rows": 1851285,
+    "provisional_race_key": [
+      "date",
+      "course",
+      "off"
+    ],
+    "provisional_races": 189043
+  },
+  "validated_findings": {
+    "source_column": "sp",
+    "observed_sqlite_storage_class": "text",
+    "sql_null_rows": 0,
+    "blank_string_rows": 9097,
+    "distinct_raw_values": 843,
+    "parsed_numeric_runner_records": 1842187,
+    "marker_only_runner_records": 1,
+    "unsupported_current_runner_records": 0,
+    "unreduced_fraction_runner_records": 77468,
+    "complete_nonblank_coverage_races": 188148,
+    "all_runners_blank_races": 701,
+    "winner_only_nonblank_races": 122,
+    "contiguous_leading_finishers_nonblank_races": 53,
+    "irregular_partial_coverage_races": 19,
+    "clean_kernel_run_all": true,
+    "notebook_assertions_passed": true
+  },
+  "observed_notation": {
+    "fractional_structure": "<numerator>/<denominator>[optional F, J or C]",
+    "textual_even_money_values": [
+      "Evs",
+      "EvensF",
+      "EvsJ"
+    ],
+    "favourite_markers": [
+      "F",
+      "J",
+      "C"
+    ],
+    "standalone_marker_values": [
+      "F"
+    ],
+    "decimal_notation_observed": false,
+    "fractions_always_in_lowest_terms": false
+  },
+  "semantic_limitation": {
+    "finding": "The source sp column contains mixed price and return semantics rather than one universal conventional starting-price measure.",
+    "observed_possible_meanings": [
+      "fixed-odds starting price",
+      "fractionalised tote or pari-mutuel dividend",
+      "winner-only return",
+      "limited leading-finisher return",
+      "favourite marker without numeric price",
+      "blank because wagering did not apply",
+      "blank because no race-level price or return was supplied",
+      "unexplained omission"
+    ],
+    "consequence": "A parsed fraction establishes arithmetic representation but does not independently establish market type or cross-jurisdiction comparability."
+  },
+  "known_external_exception": {
+    "runner": "Almendares",
+    "race": "2025 Wickerr Stakes",
+    "course": "Del Mar",
+    "raw_sp": "F",
+    "parser_derived_numeric_price": null,
+    "externally_verified_price": "5/2",
+    "externally_verified_favourite": true,
+    "preservation_rule": "Retain as separate external correction or enrichment evidence and do not infer a general mapping from F to 5/2."
+  },
+  "decisions": [
+    "Preserve exact raw sp unchanged.",
+    "Parse only supported exact structures.",
+    "Preserve raw numerator and denominator without forcing lowest terms.",
+    "Preserve the literal favourite marker separately.",
+    "Treat arithmetic parse validity separately from market semantics.",
+    "Retain race-level price-coverage context.",
+    "Do not collapse all blank sp values into one missing category.",
+    "Keep external corrections separate from parser-derived values.",
+    "Leave unsupported future values unresolved rather than trimming, normalising or guessing.",
+    "Do not derive universally comparable implied probabilities until market context is established.",
+    "Do not design the final target schema in this notebook."
+  ],
+  "reusable_outputs": {
+    "module": null,
+    "validation_script": null,
+    "report": "docs/REPORT_08_STARTING_PRICE_PARSING.md",
+    "note": "The representation parser remains in the notebook pending jurisdiction and market-context work."
+  },
+  "validation": {
+    "runner_records_checked": 1851285,
+    "parsed_numeric_runner_records": 1842187,
+    "blank_string_runner_records": 9097,
+    "marker_only_runner_records": 1,
+    "unsupported_current_runner_records": 0,
+    "clean_kernel_run_all": true,
+    "result": "passed"
+  },
+  "next_notebook": {
+    "number": 9,
+    "topic": "course jurisdiction, racing authority and betting-market context"
+  }
+}
