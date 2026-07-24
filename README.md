@@ -68,6 +68,12 @@ Notebook 07 — carried weight parsing — is complete and has passed independen
 - `src/inside_rails/carried_weight.py`
 - `scripts/validate_carried_weight.py`
 
+Notebook 08 — starting price parsing — is complete and has passed notebook-level validation and a clean-kernel Run All:
+
+- `notebooks/08_starting_price_parsing.ipynb`
+- `docs/REPORT_08_STARTING_PRICE_PARSING.md`
+- `docs/NOTEBOOK_08_CLOSEOUT.json`
+
 The source contains one denormalised runner-grain table with 1,851,285 data-like rows and 189,043 reconstructed provisional races. It has no declared primary key, foreign keys, indexes or uniqueness constraints.
 
 Notebook 02 established that missingness and special values are field-specific rather than SQL-`NULL` based. Several declared numeric fields contain mixed storage classes, official placings can differ from the physical finish, prize values mix numeric and euro-formatted text, and raw values must be preserved alongside later parsed fields.
@@ -135,7 +141,22 @@ Notebook 07 established that:
 - unusual race-context values remain separate from weight parse validity;
 - official metric weights require separate runner-level enrichment when exact original declarations are needed.
 
-The next bounded study is starting-price parsing. Final target-schema design remains deferred.
+Notebook 08 established that:
+
+- all 1,851,285 runner records store `sp` as SQLite text;
+- 843 distinct raw values cover the complete source;
+- 1,842,187 records contain a reproducibly parsed numeric fraction;
+- 9,097 records contain an explicit empty string;
+- one record contains a standalone favourite marker without a numeric source value;
+- zero current records contain an unsupported notation structure;
+- 77,468 records contain valid fractions that are not in lowest terms;
+- the source field has mixed semantics and is not globally a conventional starting-price measure;
+- race-level coverage includes complete, all-blank, winner-only, leading-finisher and irregular partial patterns;
+- blank values can reflect wagering inapplicability, unavailable race-level returns or unresolved omission;
+- parsed arithmetic values must remain separate from market-type and jurisdictional interpretation;
+- cross-jurisdiction comparisons require a dedicated jurisdiction, racing-authority and betting-market context study.
+
+The next bounded study is course jurisdiction, racing authority and betting-market context. Final target-schema design remains deferred.
 
 ## Working method
 
