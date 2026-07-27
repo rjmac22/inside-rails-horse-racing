@@ -1,0 +1,269 @@
+candidate_course_label,candidate_jurisdiction,provisional_races,decision,decision_reason,physical_venue_name,iana_timezone,requests_sent,requests_reused
+Kempton (AW),Great Britain,4787,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Lingfield (AW),Great Britain,4489,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sha Tin,Hong Kong,4160,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Dundalk (AW),Ireland,3318,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Happy Valley,Hong Kong,2687,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Saint-Cloud,France,2558,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Ayr,Great Britain,2229,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Chepstow,Great Britain,2225,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Haydock,Great Britain,2166,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Catterick,Great Britain,1909,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Curragh,Ireland,1743,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ascot,Great Britain,1734,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Fairyhouse,Ireland,1660,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Brighton,Great Britain,1477,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Market Rasen,Great Britain,1470,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Gowran Park,Ireland,1446,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Lingfield,Great Britain,1385,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Limerick,Ireland,1357,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Meydan,United Arab Emirates,1320,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Hamilton,Great Britain,1280,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Warwick,Great Britain,1201,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sedgefield,Great Britain,1199,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Newton Abbot,Great Britain,1169,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Cheltenham,Great Britain,1120,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Chester,Great Britain,1064,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Perth,Great Britain,1049,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Hexham,Great Britain,1047,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Galway,Ireland,1029,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Maisons-Laffitte,France,985,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Kelso,Great Britain,979,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Down Royal,Ireland,927,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Kempton,Great Britain,834,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Gulfstream Park,United States,745,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Fakenham,Great Britain,738,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Downpatrick,Ireland,738,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Randwick,Australia,719,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Epsom,Great Britain,711,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Kilbeggan,Ireland,692,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Cartmel,Great Britain,619,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Sligo,Ireland,593,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Caulfield,Australia,574,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Bellewstown,Ireland,554,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Aintree,Great Britain,553,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Saratoga,United States,528,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Belmont Park,United States,482,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Churchill Downs,United States,474,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Rosehill,Australia,472,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Woodbine,Canada,434,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Les Landes,Jersey,433,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Keeneland,United States,409,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Nakayama,Japan,258,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+San Siro,Italy,207,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Morphettville,Australia,205,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+San Isidro,Argentina,179,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Kyoto,Japan,179,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Will Rogers Downs,United States,178,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Cagnes-Sur-Mer,France,175,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Eagle Farm,Australia,166,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Baden-Baden,Germany,158,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Oaklawn Park,United States,157,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Abu Dhabi,United Arab Emirates,152,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Capannelle,Italy,146,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Gavea,Brazil,136,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Chukyo,Japan,129,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Turffontein Standside,South Africa,124,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Fontainebleau,France,122,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Fair Grounds,United States,112,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Tampa Bay Downs,United States,107,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pimlico,United States,100,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Cologne,Germany,97,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Dusseldorf,Germany,95,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Hipodromo Chile,Chile,93,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Toulouse,France,92,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Club Hipico de Santiago,Chile,91,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Hoppegarten,Germany,87,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Kentucky Downs,United States,86,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Parx,United States,85,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Monterrico,Peru,84,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Al Ain,United Arab Emirates,84,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Newcastle,Australia,77,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ellerslie,New Zealand,77,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Lyon Parilly,France,73,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Hanover,Germany,72,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Laurel Park,United States,71,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Arlington Park,United States,70,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,2
+Hamburg,Germany,69,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Fonner Park,United States,68,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Maronas,Uruguay,68,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,3
+Bro Park,Sweden,64,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Bahrain,Bahrain,63,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Doha,Qatar,61,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Laytown,Ireland,60,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sharjah,United Arab Emirates,57,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Golden Gate Fields,United States,54,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pau,France,51,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Trentham,New Zealand,50,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Veliefendi,Turkey,50,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Delaware Park,United States,49,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Los Alamitos,United States,48,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Munich,Germany,45,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Craon,France,44,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Nantes,France,44,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+La Teste De Buch,France,43,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Riyadh,Saudi Arabia,41,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+St Moritz,Switzerland,40,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Indiana Grand,United States,40,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Fukushima,Japan,39,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Kembla Grange,Australia,38,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ovrevoll,Norway,37,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Ohi,Japan,35,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Turffontein Inside,South Africa,34,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Hawkesbury,Australia,33,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ellis Park,United States,33,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Dortmund,Germany,32,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Sakhir,Bahrain,29,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Le Lion-D'Angers,France,29,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Hastings,New Zealand,28,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Krefeld,Germany,25,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Remington Park,United States,25,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Charles town,United States,24,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Turfway Park,United States,24,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Far Hills,United States,23,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Hobart,Australia,22,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Prairie Meadows,United States,22,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Launceston,Australia,21,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sunshine Coast,Australia,21,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+L'Ancresse,Guernsey,20,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Funabashi,Japan,20,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Riccarton Park,New Zealand,20,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Morioka,Japan,19,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Jagersro,Sweden,19,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Canberra,Australia,18,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Mountaineer Park,United States,18,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Sam Houston,United States,18,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Le Croise-Laroche,France,17,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Bendigo,Australia,16,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,1
+Seoul,South Korea,16,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Colonial Downs,United States,16,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Klampenborg,Denmark,15,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Scone,Australia,14,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Valparaiso Sporting Club,Chile,14,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Mombetsu,Japan,14,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Lone Star Park,United States,14,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Le Touquet,France,13,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Urawa,Japan,13,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Penn National,United States,13,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Percy Warner Park,United States,13,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pardubice,Czech Republic,12,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Gulfstream Park West,United States,12,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Moulins,France,11,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Dresden,Germany,11,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Sunland Park,United States,11,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Jinma Lake,China,10,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Mulheim,Germany,10,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+NAGOYA,Japan,10,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Delta downs,United States,10,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Thistledown,United States,10,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Cholet,France,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Flamingo Park,South Africa,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Turffontein,South Africa,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+San Sebastian,Spain,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Taby,Sweden,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Presque Isle Downs,United States,9,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Lyon-La Soie,France,8,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Mont-De-Marsan,France,8,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pornichet-La Baule,France,8,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Merano,Italy,7,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Saga,Japan,7,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Emerald Downs,United States,7,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Northam,Australia,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Chateaubriant,France,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Saint-Malo,France,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Naples,Italy,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Belterra Park,United States,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Hawthorne,United States,6,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Durtal,France,5,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Marseille Pont-de-Vivaux,France,5,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Senonnes-Pouance,France,5,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Tarbes,France,5,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Vaal,South Africa,5,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+La Zarzuela,Spain,5,manual_review_required,"More than one distinct provider object passed the automatic checks, so selection is ambiguous.",,,0,3
+Albury,Australia,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Echuca,Australia,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Wellington,Australia,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Northlands park,Canada,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Le Mans,France,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Les Sables-d'Olonne,France,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Saint-Brieuc,France,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Salon-de-Provence,France,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Matamata,New Zealand,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Te aroha,New Zealand,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Louisiana Downs,United States,4,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Seymour,Australia,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Corlay,France,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Granville-St Pair Sur Mer,France,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Le Pin au Haras,France,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Magdeburg,Germany,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Kincsem Park,Hungary,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pisa,Italy,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Kanazawa,Japan,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Pukekohe Park,New Zealand,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Pukekura Raceway,New Zealand,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Al Uqda,Qatar,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Avenches,Switzerland,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Camden (South Carolina),United States,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Finger Lakes,United States,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Great Meadow,United States,3,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Ballarat,Australia,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Kyneton,Australia,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Moe,Australia,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ghlin,Belgium,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Blain-Bouvron-Le-Gavre,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+La Roche-Posay,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Meslay-Du-Maine,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Nort-Sur-Erdre,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Sille-Le-Guillaume,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Tours,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Wissembourg,France,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Bremen,Germany,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Siracusa,Italy,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Ashburton,New Zealand,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Dielsdorf,Switzerland,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Ankara,Turkey,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Mahoning Valley,United States,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Zia park,United States,2,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Alice springs,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Armidale,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Gundagai,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Morphettville Parks,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Pinjara Park Course,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sale,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Toowoomba,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Wagga Wagga,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Wangaratta,Australia,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Ostend,Belgium,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Waregem,Belgium,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Fort Erie,Canada,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Velka Chuchle,Czech Republic,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Angouleme,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Auch,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Cavaillon,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Evreux,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+La Roche-Sur-Yon,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Landivisiau,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Limoges,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Lisieux,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Nimes,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Orleans,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Rochefort-Sur-Loire,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Royan La Palmyre,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Vannes,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Vire,France,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Bad Doberan,Germany,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Frankfurt,Germany,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Leipzig,Germany,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Mannheim,Germany,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Varese,Italy,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Wingatui,New Zealand,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Sluzewiec,Poland,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Busan,South Korea,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,1
+Frauenfeld,Switzerland,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Maienfeld,Switzerland,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,3
+Meadowlands,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Middleburg,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Montpelier,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Pine Mountain,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Retama Park,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2
+Turf Paradise,United States,1,manual_review_required,No returned object passed every conservative automatic acceptance check.,,,0,2

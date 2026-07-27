@@ -49,3 +49,10 @@ htmlcov/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Temporary research caches
+/data/cache/
+
+# Curated project reference data
+!/data/reference/
+!/data/reference/*.csv
