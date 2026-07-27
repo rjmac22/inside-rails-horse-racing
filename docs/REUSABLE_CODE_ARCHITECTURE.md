@@ -63,33 +63,83 @@ Responsible for source-database plumbing that is independent of a particular not
 - constructing null-safe provisional composite-key expressions;
 - reproducing the stable structural assertions established by Notebook 01.
 
-It does not:
-
-- clean source values;
-- alter the raw database;
-- decide the final relational schema;
-- convert racing-domain codes;
-- resolve real-world entity identity.
+It does not clean source values, alter the raw database, decide the final relational schema, convert racing-domain codes or resolve real-world entity identity.
 
 ### `scripts/validate_source_profile.py`
 
 Provides a command-line regression check for the specific `raceform.db` source profiled in Notebook 01.
 
+It checks row counts, apparent-race count, provisional runner-key uniqueness, date coverage, schema-object count, declared-column count and SQLite quick-check result.
+
+### `src/inside_rails/race_distance.py`
+
+Provides deterministic parsing for the bounded raw race-distance formats established by Notebook 06 while preserving raw values and separating source-implied conversions from later official enrichment.
+
+### `scripts/validate_race_distance.py`
+
+Provides independent validation of the observed distance vocabulary, parser coverage and established exception counts.
+
+### `src/inside_rails/carried_weight.py`
+
+Provides deterministic parsing of canonical stones-and-pounds values into components, total pounds and source-implied kilograms while preserving the distinction from official metric declarations.
+
+### `scripts/validate_carried_weight.py`
+
+Provides independent validation of observed carried-weight values, parser coverage and expected range behaviour.
+
+### `src/inside_rails/course_jurisdiction.py`
+
+Provides reusable course-label and jurisdiction logic established by Notebook 09. It supports reproducible candidate jurisdiction assignment without pretending that course text alone establishes permanent real-world entity identity.
+
+### `scripts/validate_course_jurisdiction.py`
+
+Provides independent validation of candidate jurisdiction coverage, course identity counts and established reference behaviour.
+
+### `src/inside_rails/course_locations.py`
+
+Loads and validates the governed course-location reference created by Notebook 12.
+
+Responsibilities:
+
+- require the expected course-reference columns;
+- enforce uniqueness of `candidate_course_label + candidate_jurisdiction`;
+- validate every assigned IANA timezone through `zoneinfo.ZoneInfo`;
+- validate nonblank latitude and longitude ranges;
+- merge course-location fields onto race data with a many-to-one guarantee.
+
+It deliberately does not:
+
+- geocode new courses automatically;
+- infer a timezone silently from raw course text;
+- overwrite raw `course`, `date` or `off` values;
+- require exact coordinates where timezone sufficiency has already been established;
+- resolve historical effective periods or renamed venues automatically.
+
+The governed reference is:
+
+`data/reference/course_locations.csv`
+
+Future unmatched course identities should be surfaced explicitly for review and appended through a governed reference update.
+
+### `scripts/validate_course_locations.py`
+
+Provides independent validation of the current permanent course-location reference.
+
 It checks:
 
-- row counts;
-- apparent-race count;
-- provisional runner-key uniqueness;
-- date coverage;
-- schema-object count;
-- declared-column count;
-- SQLite quick-check result.
+- required columns;
+- identity uniqueness;
+- 394 course identities;
+- 394 timezone assignments;
+- zero unresolved timezone assignments;
+- 51 distinct IANA timezones;
+- timezone validity;
+- coordinate bounds.
 
-Run from the project root with the package on `PYTHONPATH`:
+Run from the project root:
 
 ```bash
-PYTHONPATH=src python scripts/validate_source_profile.py \
-  data/raw/form_2015-present/form_2015-present/raceform.db
+PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py
 ```
 
 ## Layer boundaries
@@ -127,6 +177,7 @@ Code added only after the relevant meanings have been established:
 - going classification;
 - starting-price parsing;
 - jurisdiction and course mapping;
+- course-location and timezone reference validation;
 - race, horse and participant identity rules.
 
 Domain code should normally return explicit statuses or flags for exceptional and unresolved inputs rather than silently coercing them.
@@ -177,15 +228,31 @@ Validation may be:
 
 Notebook output alone is not sufficient validation for code intended to support later project stages.
 
-Validation should detect both technical failure and rule failure. For example, a parser merely running without an exception is insufficient if it silently changes the number of unresolved source values.
+Validation should detect both technical failure and rule failure. A parser merely running without an exception is insufficient if it silently changes the number of unresolved source values.
 
-## Raw-data rule
+## Raw-data and reference-data rule
 
 Reusable utilities must never silently modify files under `data/raw/`.
 
 Source access should default to read-only operation. Any later ingestion process must write to separate staging or build locations and preserve source lineage.
 
 Parsed and canonical values must normally be stored separately from their raw source values. Corrections should be represented as governed transformations or audit records rather than overwriting evidence.
+
+Curated files under `data/reference/` are versioned project assets. They must be validated before commit, retain resolution evidence where practical, and surface new unmatched identities rather than applying silent fallbacks.
+
+Temporary external-request caches under `data/cache/` remain untracked. Structured reviewed outputs required to reproduce a governed decision belong under `data/reference/`.
+
+## Archival notebook rule
+
+A completed executed research notebook and a reusable production pipeline are different artefacts.
+
+When a notebook changes its own future input state by persisting a permanent reference, the completed executed notebook may be retained as an archival construction record rather than forced to remain rerunnable forever. In that case:
+
+- the archival status must be stated explicitly;
+- original code, markdown and outputs should be preserved;
+- reusable logic must be extracted independently;
+- a separate validation route must protect the permanent output;
+- the notebook should be committed before cleanup or rerun attempts.
 
 ## Guardrail against premature abstraction
 
@@ -232,6 +299,6 @@ Each completed notebook should normally produce:
 - an explicit database consequence;
 - reusable code where justified;
 - a validation script or test where reusable code was extracted;
-- updates to the README and project plan.
-
-This mirrors the working method established in the Coral 2NL analysis project while adapting it to data engineering and horse-racing domain analysis.
+- a lessons-learned discussion with project-wide changes captured where appropriate;
+- updates to the README and project plan;
+- a committed and verified closeout.
