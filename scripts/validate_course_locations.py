@@ -9,7 +9,7 @@ from pathlib import Path
 from inside_rails.course_locations import load_course_locations
 
 
-EXPECTED_COURSE_IDENTITIES = 394
+EXPECTED_COURSE_IDENTITIES = 395
 EXPECTED_DISTINCT_TIMEZONES = 51
 
 
