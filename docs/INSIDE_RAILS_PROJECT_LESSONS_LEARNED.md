@@ -168,8 +168,8 @@ The off-time work showed that a source time is not analytically usable until we 
 
 The completed reference now contains:
 
-- 394 permanent course identities;
-- 394 valid IANA timezone assignments;
+- 395 permanent course identities;
+- 395 valid IANA timezone assignments;
 - 0 unresolved;
 - 51 distinct IANA timezones.
 
@@ -354,7 +354,7 @@ Large speculative cells hide assumptions, are harder to debug and increase the r
 
 ## 21. Do not write permanent references prematurely
 
-The timezone reference was not written until all 394 courses had valid assignments and all timezone names passed `ZoneInfo` validation.
+The timezone reference was not written until all 395 courses had valid assignments and all timezone names passed `ZoneInfo` validation.
 
 The safe persistence sequence is:
 
@@ -748,7 +748,53 @@ The lessons-learned discussion is mandatory and should identify concrete changes
 
 ---
 
-## 45. Current project position
+## 45. Lessons from off-time and temporal reconstruction
+
+Notebook 11 showed that a fully populated clock field can still be semantically incomplete.
+
+The source `off` field contained no blanks and every value looked like a valid time, but its representation changed on 15 October 2025:
+
+- before the boundary, times used a 12-hour clock without AM/PM;
+- from the boundary onward, times used explicit 24-hour `HH:MM` notation;
+- throughout both periods, the displayed time was UK-facing rather than racecourse-local.
+
+The reusable lessons are:
+
+- detect temporal format changes before normalising values;
+- never infer that a source time is local merely because it belongs to an overseas event;
+- reconstruct civil time in the source timezone before converting to UTC and then to course-local time;
+- use historical IANA timezone rules rather than fixed offsets;
+- preserve both candidate interpretations where a 12-hour source omits AM/PM;
+- classify ambiguous and nonexistent daylight-saving times explicitly rather than silently coercing them;
+- distinguish evening or night racing from an entire meeting placed in the local dead of night;
+- treat schedule-based inference as evidence with a method and confidence level, not as source fact;
+- test rules against external historical racecards across jurisdictions and edge cases;
+- keep unresolved records as a managed evidence backlog instead of forcing complete coverage.
+
+The investigation also exposed a limitation in using recent data as a historical schedule reference. The explicit 24-hour period began in October 2025, so early course profiles underrepresented British and Irish summer evening racing. A course-specific profile could support a branch when the same decision remained stable across several margins, but a profile mismatch could not safely reject both candidates because the reference period was seasonally incomplete.
+
+This led to a useful evidence hierarchy:
+
+1. source-explicit 24-hour time;
+2. high-confidence course-local dead-of-night rejection;
+3. supported branch selection from a stable course profile;
+4. unresolved, with both candidates preserved.
+
+The final temporal population resolved 169,465 of 189,043 races, or 89.64%, while leaving 19,578 unresolved. The important achievement was not nominal completeness but an auditable distinction between explicit, reconstructed and unresolved times.
+
+Workflow lessons from the notebook were equally important:
+
+- row-wise timezone conversion across large dataframes is slow; convert distinct values or use vectorised operations where possible;
+- pandas `groupby.apply` can remove grouping columns in version-dependent ways, so reusable logic should not depend on notebook-specific behaviour;
+- timezone-aware columns must be created with compatible dtypes rather than initialised as timezone-naive `NaT` columns;
+- exploratory notebook logic should be transferred into a reusable module and independently validated before closeout;
+- the notebook should preserve the reasoning and evidence, while the module should preserve the repeatable transformation.
+
+Notebook 11 produced `src/inside_rails/race_times.py` and `scripts/validate_race_times.py`. The database build should use those reusable components and store raw values, candidate branches, selected timestamps, decision method, confidence and resolution status separately.
+
+---
+
+## 46. Current project position
 
 The project has established that the source cannot be treated as analysis-ready, but it can still support valuable work when identity is reconstructed, fields are audited, jurisdiction differences are respected, raw values are preserved and conclusions remain within the evidence.
 
