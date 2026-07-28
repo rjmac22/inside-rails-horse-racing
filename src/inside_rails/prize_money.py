@@ -152,10 +152,11 @@ def parse_prize_money(raw_prize: Any, candidate_jurisdiction: str | None) -> dic
     if source_amount is None:
         source_amount = _decimal_from_euro_text(raw_prize)
 
-    status = "currency_unresolved" if source_amount is not None else "invalid"
+    source_amount_is_valid = source_amount is not None and source_amount >= 0
+    status = "currency_unresolved" if source_amount_is_valid else "invalid"
     method = (
         "source_presented_amount_currency_unresolved"
-        if source_amount is not None
+        if source_amount_is_valid
         else "unrecognised_source_value"
     )
 
