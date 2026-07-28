@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 SOURCE_FIELDS = (
     "date", "course", "race_id", "off", "race_name", "type", "class",
     "pattern", "rating_band", "age_band", "sex_rest", "dist", "going",
@@ -42,8 +41,8 @@ _GROUPS = {
     "sex_rest": ("race_classification_and_conditions", "race_classification_and_eligibility", "semantic_investigation", "future", "open"),
     "dist": ("race_classification_and_conditions", "race_distance", "deterministic_parsing", "06", "closed"),
     "going": ("race_classification_and_conditions", "race_classification_and_eligibility", "semantic_investigation", "future", "open"),
-    "ran": ("race_structure_and_result", "runner_counts_numbers_and_entries", "semantic_investigation", "future", "open"),
-    "num": ("race_structure_and_result", "runner_counts_numbers_and_entries", "raw_preservation", "03/future", "open"),
+    "ran": ("race_structure_and_result", "runner_counts_numbers_and_entries", "governed_semantic_profile", "14", "closed"),
+    "num": ("race_structure_and_result", "runner_counts_numbers_and_entries", "raw_plus_governed_derivation", "14", "closed"),
     "pos": ("race_structure_and_result", "finishing_positions_and_outcomes", "deterministic_parsing", "05", "closed"),
     "draw": ("runner_identity_and_characteristics", "runner_numbers_and_draw", "raw_preservation", "02/10", "preserve"),
     "ovr_btn": ("race_structure_and_result", "beaten_distance_semantics", "semantic_investigation", "future", "open"),
