@@ -8,8 +8,13 @@ from fractions import Fraction
 import re
 
 
-_FRACTIONAL = re.compile(r"^([1-9][0-9]*)/([1-9][0-9]*)([FJ])?$")
-_EVENS = re.compile(r"^(EVS|EVENS)([FJ])?$", re.IGNORECASE)
+_FRACTIONAL = re.compile(r"^([1-9][0-9]*)/([1-9][0-9]*)([FJC])?$")
+_EVEN = re.compile(r"^(EVS|EVENS)([FJC])?$", re.IGNORECASE)
+_MARKER_MEANINGS = {
+    "F": "favourite",
+    "J": "joint_favourite",
+    "C": "co_favourite",
+}
 
 
 class StartingPriceKind(StrEnum):
@@ -29,54 +34,58 @@ class ParsedStartingPrice:
     decimal_odds: Fraction | None
     implied_probability: Fraction | None
     favourite_marker: str | None
+    favourite_status: str | None
     market_context_status: str
 
 
-def _result(
-    raw_sp: object,
-    price_kind: StartingPriceKind,
-    numerator: int | None = None,
-    denominator: int | None = None,
-    fractional_odds: Fraction | None = None,
-    decimal_odds: Fraction | None = None,
-    implied_probability: Fraction | None = None,
-    favourite_marker: str | None = None,
-) -> ParsedStartingPrice:
+def _unresolved(raw_sp: object) -> ParsedStartingPrice:
     return ParsedStartingPrice(
         raw_sp,
-        price_kind,
-        numerator,
-        denominator,
-        fractional_odds,
-        decimal_odds,
-        implied_probability,
-        favourite_marker,
+        StartingPriceKind.UNRESOLVED,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        "unresolved",
+    )
+
+
+def _missing(raw_sp: object) -> ParsedStartingPrice:
+    return ParsedStartingPrice(
+        raw_sp,
+        StartingPriceKind.MISSING,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
         "unresolved",
     )
 
 
 def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
-    """Parse exact source arithmetic without inferring market provenance.
-
-    Terminal ``F`` and ``J`` annotations are preserved separately from the odds
-    arithmetic. They are source favourite markers, not evidence of bookmaker or
-    pool provenance.
-    """
+    """Parse exact source arithmetic without inferring market provenance."""
 
     if raw_sp is None:
-        return _result(raw_sp, StartingPriceKind.MISSING)
+        return _missing(raw_sp)
     if not isinstance(raw_sp, str):
-        return _result(raw_sp, StartingPriceKind.UNRESOLVED)
+        return _unresolved(raw_sp)
 
     text = raw_sp.strip()
     if text == "":
-        return _result(raw_sp, StartingPriceKind.MISSING)
+        return _missing(raw_sp)
 
-    evens_match = _EVENS.fullmatch(text)
-    if evens_match is not None:
+    even_match = _EVEN.fullmatch(text)
+    if even_match is not None:
+        marker = even_match.group(2)
+        marker = marker.upper() if marker else None
         fraction = Fraction(1, 1)
-        marker = evens_match.group(2)
-        return _result(
+        return ParsedStartingPrice(
             raw_sp,
             StartingPriceKind.EVENS,
             1,
@@ -84,12 +93,14 @@ def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
             fraction,
             Fraction(2, 1),
             Fraction(1, 2),
-            marker.upper() if marker else None,
+            marker,
+            _MARKER_MEANINGS.get(marker),
+            "unresolved",
         )
 
     match = _FRACTIONAL.fullmatch(text.upper())
     if match is None:
-        return _result(raw_sp, StartingPriceKind.UNRESOLVED)
+        return _unresolved(raw_sp)
 
     numerator = int(match.group(1))
     denominator = int(match.group(2))
@@ -97,7 +108,7 @@ def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
     fraction = Fraction(numerator, denominator)
     decimal = fraction + 1
     probability = Fraction(denominator, numerator + denominator)
-    return _result(
+    return ParsedStartingPrice(
         raw_sp,
         StartingPriceKind.FRACTIONAL,
         numerator,
@@ -106,4 +117,6 @@ def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
         decimal,
         probability,
         marker,
+        _MARKER_MEANINGS.get(marker),
+        "unresolved",
     )
