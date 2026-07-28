@@ -6,10 +6,13 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from pathlib import Path
-import sys
 
 from inside_rails.source_sqlite import connect_read_only
 from inside_rails.starting_price import StartingPriceKind, parse_starting_price
+
+
+EXPECTED_DATA_ROWS = 1_851_285
+EXPECTED_UNRESOLVED_VALUES = {"F": 1}
 
 
 def main() -> int:
@@ -23,7 +26,7 @@ def main() -> int:
         ).fetchall()
 
     category_rows: Counter[str] = Counter()
-    unresolved_values: list[tuple[object, int]] = []
+    unresolved_values: Counter[str] = Counter()
     total_rows = 0
 
     for raw_sp, count in rows:
@@ -31,9 +34,9 @@ def main() -> int:
         category_rows[parsed.price_kind.value] += count
         total_rows += count
         if parsed.price_kind == StartingPriceKind.UNRESOLVED:
-            unresolved_values.append((raw_sp, count))
+            unresolved_values[str(raw_sp)] += count
 
-    print(f"PASS data_rows: observed={total_rows} expected=1851285")
+    print(f"PASS data_rows: observed={total_rows} expected={EXPECTED_DATA_ROWS}")
     print(f"Distinct raw values: {len(rows)}")
     for kind in StartingPriceKind:
         print(f"{kind.value}_rows: {category_rows[kind.value]}")
@@ -41,15 +44,18 @@ def main() -> int:
     partition = sum(category_rows.values()) == total_rows
     print(f"{'PASS' if partition else 'FAIL'} complete_partition")
 
-    if unresolved_values:
-        print("FAIL unresolved current values:", file=sys.stderr)
-        for value, count in unresolved_values[:20]:
-            print(f"  {value!r}: {count}", file=sys.stderr)
-        return 1
-    if total_rows != 1_851_285 or not partition:
+    governed_anomaly_matches = dict(unresolved_values) == EXPECTED_UNRESOLVED_VALUES
+    print(
+        f"{'PASS' if governed_anomaly_matches else 'FAIL'} "
+        f"governed_unresolved_values: observed={dict(unresolved_values)!r} "
+        f"expected={EXPECTED_UNRESOLVED_VALUES!r}"
+    )
+
+    if total_rows != EXPECTED_DATA_ROWS or not partition or not governed_anomaly_matches:
         return 1
 
-    print("\nStarting-price validation passed.")
+    print("\nStarting-price validation passed with one governed source anomaly.")
+    print("The lone raw value 'F' is preserved as unresolved: favourite marker present, price missing.")
     return 0
 
 
