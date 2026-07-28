@@ -4,6 +4,10 @@
 
 This register audits completed notebook investigations against the project closeout standard. Analytical completion is not treated as implementation completion.
 
+The permanent standard for future notebooks is recorded in:
+
+`docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
+
 A notebook is fully closed only when, as applicable:
 
 1. it runs from a fresh kernel, or is explicitly archived as a non-rerunnable construction record with durable replacement validation;
@@ -11,7 +15,8 @@ A notebook is fully closed only when, as applicable:
 3. reusable transformation logic or governed reference data is extracted;
 4. tests cover governed rules and edge cases;
 5. an independent validator exists where appropriate;
-6. the database consequence and update path are documented.
+6. the database consequence and update path are documented;
+7. local test and validator results are recorded in the audit register.
 
 This audit covers committed repository artifacts. Local uncommitted files are outside its evidence base.
 
@@ -31,7 +36,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Fully closed on this audit branch** | 11 tests passed and source validation covered all 189,043 provisional races, with 16 governed context rows, zero missing worked-example assignments and zero asserted wagering-context assignments. |
 | 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Fully closed on this audit branch** | 8 tests passed and the immutable-source validator confirmed exactly 37 governed fields across 1,851,285 rows. |
 | 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Fully closed on this audit branch** | 9 tests passed; the immutable-source validator covered 1,851,285 rows, 1,380 distinct raw values and 189,043 provisional races with zero unresolved clock representations. |
-| 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Implemented on this audit branch, subject to local validation** | Existing loader and validator are supplemented by synthetic failure tests and explicit reference integration/update documentation. The current durable baseline is 395 identities and 51 IANA timezones. |
+| 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Fully closed on this audit branch** | 13 tests passed; permanent-reference validation confirmed 395 unique course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct valid IANA timezones. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 
 ## Gap register and repair order
@@ -51,15 +56,23 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 9 | 09 | Verify governed reference and integration completeness | **Completed: 11 tests passed and source-wide bounded-context validation passed.** |
 | 10 | 10 | Reconcile the field-treatment register | **Completed: 8 tests passed and immutable-source schema validation passed.** |
 | 11 | 11 | Verify/add temporal tests, validator and integration | **Completed: 9 tests passed and immutable-source clock validation passed.** |
-| 12 | 12 | Verify/add reference-loader tests and migration path | **Implemented.** Run `tests/test_course_locations.py` and `scripts/validate_course_locations.py`. |
+| 12 | 12 | Verify/add reference-loader tests and migration path | **Completed: 13 tests passed and permanent-reference validation passed.** |
 | 13 | 13 | No implementation gap identified | Keep as the reference closeout pattern. |
 
 ## Immediate stopping rule
 
-No new source-field investigation should begin until every row above has either reached **fully closed** or been formally classified **no reusable artifact required**.
+No new source-field investigation should begin until every row above has either reached **fully closed**, been formally classified **no reusable artifact required**, or has an explicitly documented governed failure such as Notebook 08.
 
 A notebook marked complete in the README is not sufficient evidence of closure.
 
-## Next notebook to repair
+## Current position
 
-After Notebook 12 passes its local tests and permanent-reference validator, the retrospective implementation audit has no remaining notebook repair target in the current 00–13 sequence.
+The retrospective implementation repair work for Notebooks 00–13 is complete.
+
+The remaining branch-level housekeeping is to:
+
+1. run the complete test suite;
+2. run the applicable independent validators;
+3. confirm Notebook 08 still fails for the documented lone `F` anomaly only;
+4. correct any stale status or baseline documentation;
+5. merge the audit branch.
