@@ -24,8 +24,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 02 | Source field quality profile | Reusable field inventory, sentinel policy and lineage specification | **Fully closed on this audit branch** | Governed 37-field reference, loader, tests, validator and integration documentation exist; local tests and source-wide validation passed. |
 | 03 | Race identity and source-key reconstruction | Reusable race/runner identity transformation and reconciliation validator | **Fully closed on this audit branch** | Identity module, 9 tests, source-wide reconciliation validator and database integration/update documentation all passed locally. |
 | 04 | Course jurisdiction and surface mapping | Reconciled jurisdiction ownership plus bounded surface transformation | **Fully closed on this audit branch** | Reconciliation document, surface module, 6 tests and independent source validation passed locally. |
-| 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed representation categories | **Implemented on this audit branch, subject to local validation** | Added `race_results.py`, tests, independent source validator and database integration/update documentation. Textual codes are preserved rather than assigned guessed meanings. |
-| 06 | Race distance parsing | Reusable transformation module | **Implementation exists but tests/validation/integration are incomplete** | Module and validator exist; unit tests and schema/update path must be verified. |
+| 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed representation categories | **Fully closed on this audit branch** | Result parser, 8 tests, complete source partition validator and database integration/update documentation passed locally. |
+| 06 | Race distance parsing | Reusable transformation module | **Implemented on this audit branch, subject to local validation** | Existing conservative parser and independent validator supplemented by `tests/test_race_distance.py` and `docs/RACE_DISTANCE_DATABASE_INTEGRATION.md`. |
 | 07 | Carried weight parsing | Reusable transformation module | **Implementation exists but tests/validation/integration are incomplete** | Module and validator exist; governed unit tests and integration/update documentation must be verified. |
 | 08 | Starting price parsing | Reusable transformation module plus contextual market metadata | **Reusable transformation module required** | Deterministic arithmetic parsing still needs durable code, tests, validator and integration documentation. |
 | 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Implementation exists but tests/validation/integration are incomplete** | Reference provenance, tests, merge cardinality and update path require verification. |
@@ -44,8 +44,8 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 2 | 02 | Governed source-field inventory and preservation policy | **Completed: 9 tests passed and independent source validation passed.** |
 | 3 | 03 | Race and runner identity reconstruction | **Completed: 9 tests passed and independent source reconciliation passed.** |
 | 4 | 04 | Reconcile jurisdiction ownership and implement source-supported surface | **Completed: 6 tests passed and independent source validation passed.** |
-| 5 | 05 | Implement finishing-position and outcome semantics | **Implemented.** Run `tests/test_race_results.py` and `scripts/validate_race_results.py` against the immutable source. |
-| 6 | 06 | Verify/add tests and integration document | Unit-test suite, update policy and database field mapping. |
+| 5 | 05 | Implement finishing-position and outcome semantics | **Completed: 8 tests passed and complete source partition validation passed.** |
+| 6 | 06 | Verify/add tests and integration document | **Implemented.** Run `tests/test_race_distance.py` and the existing `scripts/validate_race_distance.py`. |
 | 7 | 07 | Verify/add tests and integration document | Unit-test suite, update policy and database field mapping. |
 | 8 | 08 | Implement starting-price parsing | Parser, tests, validator and separation of arithmetic value from market context. |
 | 9 | 09 | Verify governed reference and integration completeness | Tests, provenance/update path and database merge rules. |
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 05 passes local tests and source reconciliation, Notebook 06 must be audited for unit-test coverage and database integration/update documentation.
+After Notebook 06 passes local unit tests and the existing source-wide validator, Notebook 07 must be audited for carried-weight tests and database integration/update documentation.
