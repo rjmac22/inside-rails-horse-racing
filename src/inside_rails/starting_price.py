@@ -53,10 +53,7 @@ def _unresolved(raw_sp: object) -> ParsedStartingPrice:
     )
 
 
-def _missing(
-    raw_sp: object,
-    marker: str | None = None,
-) -> ParsedStartingPrice:
+def _missing(raw_sp: object) -> ParsedStartingPrice:
     return ParsedStartingPrice(
         raw_sp,
         StartingPriceKind.MISSING,
@@ -65,8 +62,8 @@ def _missing(
         None,
         None,
         None,
-        marker,
-        _MARKER_MEANINGS.get(marker),
+        None,
+        None,
         "unresolved",
     )
 
@@ -74,10 +71,9 @@ def _missing(
 def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
     """Parse exact source arithmetic without inferring market provenance.
 
-    A marker-only ``F`` is the one source-observed case where favourite status
-    is present but the starting price itself is absent. It is therefore
-    classified as a missing price while preserving the marker. No odds are
-    inferred from that marker.
+    Marker suffixes are accepted only when attached to a valid price. A lone
+    ``F`` contains favourite status but no arithmetic price and therefore stays
+    unresolved as the governed source anomaly documented for Notebook 08.
     """
 
     if raw_sp is None:
@@ -88,10 +84,6 @@ def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
     text = raw_sp.strip()
     if text == "":
         return _missing(raw_sp)
-
-    upper = text.upper()
-    if upper == "F":
-        return _missing(raw_sp, marker="F")
 
     even_match = _EVEN.fullmatch(text)
     if even_match is not None:
@@ -111,7 +103,7 @@ def parse_starting_price(raw_sp: object) -> ParsedStartingPrice:
             "unresolved",
         )
 
-    match = _FRACTIONAL.fullmatch(upper)
+    match = _FRACTIONAL.fullmatch(text.upper())
     if match is None:
         return _unresolved(raw_sp)
 
