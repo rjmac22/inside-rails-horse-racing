@@ -26,8 +26,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 04 | Course jurisdiction and surface mapping | Reconciled jurisdiction ownership plus bounded surface transformation | **Fully closed on this audit branch** | Reconciliation document, surface module, 6 tests and independent source validation passed locally. |
 | 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed representation categories | **Fully closed on this audit branch** | Result parser, 8 tests, complete source partition validator and database integration/update documentation passed locally. |
 | 06 | Race distance parsing | Reusable transformation module | **Fully closed on this audit branch** | Existing parser and validator supplemented by 13 unit tests and database integration/update documentation; local tests and source validation passed. |
-| 07 | Carried weight parsing | Reusable transformation module | **Implemented on this audit branch, subject to local validation** | Existing conservative parser and independent validator supplemented by `tests/test_carried_weight.py` and `docs/CARRIED_WEIGHT_DATABASE_INTEGRATION.md`. |
-| 08 | Starting price parsing | Reusable transformation module plus contextual market metadata | **Reusable transformation module required** | Deterministic arithmetic parsing still needs durable code, tests, validator and integration documentation. |
+| 07 | Carried weight parsing | Reusable transformation module | **Fully closed on this audit branch** | Existing parser and validator supplemented by 20 unit tests and database integration/update documentation; local tests and source validation passed. |
+| 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented on this audit branch, subject to local validation** | Added `starting_price.py`, exact-arithmetic tests, source-wide validator and database integration/update documentation. Market provenance remains explicitly unresolved. |
 | 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Implementation exists but tests/validation/integration are incomplete** | Reference provenance, tests, merge cardinality and update path require verification. |
 | 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Implementation partly supplied by Notebook 02 closeout** | Notebook 10 investigation groups and sequencing decisions still require reconciliation with the governed field reference. |
 | 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Implementation exists but tests/validation/integration are incomplete** | Verify temporal tests, independent validation, rollover rules, timezone joins and database integration. |
@@ -46,8 +46,8 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 4 | 04 | Reconcile jurisdiction ownership and implement source-supported surface | **Completed: 6 tests passed and independent source validation passed.** |
 | 5 | 05 | Implement finishing-position and outcome semantics | **Completed: 8 tests passed and complete source partition validation passed.** |
 | 6 | 06 | Verify/add tests and integration document | **Completed: 13 tests passed and independent source validation passed.** |
-| 7 | 07 | Verify/add tests and integration document | **Implemented.** Run `tests/test_carried_weight.py` and the existing `scripts/validate_carried_weight.py`. |
-| 8 | 08 | Implement starting-price parsing | Parser, tests, validator and separation of arithmetic value from market context. |
+| 7 | 07 | Verify/add tests and integration document | **Completed: 20 tests passed and independent source validation passed.** |
+| 8 | 08 | Implement starting-price parsing | **Implemented.** Run `tests/test_starting_price.py` and `scripts/validate_starting_price.py` against the immutable source. |
 | 9 | 09 | Verify governed reference and integration completeness | Tests, provenance/update path and database merge rules. |
 | 10 | 10 | Reconcile the field-treatment register | Confirm every investigation group and dependency is represented by a governed artifact. |
 | 11 | 11 | Verify/add temporal tests, validator and integration | Clock grammar, interpretation, rollover, timezone and unresolved-case coverage. |
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 07 passes local unit tests and the existing source-wide validator, Notebook 08 is next: starting-price parsing requires a durable parser, tests, validator and database integration document while keeping arithmetic representation separate from market-context interpretation.
+After Notebook 08 passes local unit tests and source-wide validation, Notebook 09 is next: jurisdiction, authority and betting-market context require tests, provenance, merge-cardinality rules and an explicit update path.
