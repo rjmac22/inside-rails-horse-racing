@@ -22,8 +22,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 00 | Project scope and methodology | No reusable field transformation required | **No reusable artifact required** | Methodology and closeout rules belong in durable documentation rather than a parser. |
 | 01 | Source database structure profile | Reusable source-access/profile module | **Fully closed on this audit branch** | Existing module and validator supplemented by governed tests and integration documentation; local tests passed. |
 | 02 | Source field quality profile | Reusable field inventory, sentinel policy and lineage specification | **Fully closed on this audit branch** | Governed 37-field reference, loader, tests, validator and integration documentation exist; local tests and source-wide validation passed. |
-| 03 | Race identity and source-key reconstruction | Reusable race/runner identity transformation and reconciliation validator | **Implemented on this audit branch, subject to local validation** | Added `race_identity.py`, synthetic tests, source-wide validator and database integration/update documentation. |
-| 04 | Course jurisdiction and surface mapping | Governed course mapping reference | **Implementation exists but tests/validation/integration are incomplete** | Later jurisdiction and location artifacts supersede part of the notebook; surface/configuration ownership still requires explicit reconciliation. |
+| 03 | Race identity and source-key reconstruction | Reusable race/runner identity transformation and reconciliation validator | **Fully closed on this audit branch** | Identity module, 9 tests, source-wide reconciliation validator and database integration/update documentation all passed locally. |
+| 04 | Course jurisdiction and surface mapping | Reconciled jurisdiction ownership plus bounded surface transformation | **Implemented on this audit branch, subject to local validation** | Jurisdiction and course identity are explicitly reconciled with Notebooks 09 and 12. Added `race_surface.py`, tests, independent validator and implementation reconciliation document for the remaining explicit `(AW)` rule. |
 | 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed outcome-code reference | **Reusable transformation module required** | Numeric positions, dead heats, disqualifications and non-finish codes still need durable implementation. |
 | 06 | Race distance parsing | Reusable transformation module | **Implementation exists but tests/validation/integration are incomplete** | Module and validator exist; unit tests and schema/update path must be verified. |
 | 07 | Carried weight parsing | Reusable transformation module | **Implementation exists but tests/validation/integration are incomplete** | Module and validator exist; governed unit tests and integration/update documentation must be verified. |
@@ -42,8 +42,8 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 |---:|---:|---|---|
 | 1 | 01 | Tests and database/update documentation | **Completed and locally tested: 9 passed.** |
 | 2 | 02 | Governed source-field inventory and preservation policy | **Completed: 9 tests passed and independent source validation passed.** |
-| 3 | 03 | Race and runner identity reconstruction | **Implemented.** Run `tests/test_race_identity.py` and `scripts/validate_race_identity.py` against the immutable source. |
-| 4 | 04 | Reconcile Notebook 04 with Notebooks 09 and 12 | Explicit supersession map and durable ownership of surface/configuration rules. |
+| 3 | 03 | Race and runner identity reconstruction | **Completed: 9 tests passed and independent source reconciliation passed.** |
+| 4 | 04 | Reconcile jurisdiction ownership and implement source-supported surface | **Implemented.** Run `tests/test_race_surface.py` and `scripts/validate_race_surface.py` against the immutable source. |
 | 5 | 05 | Implement finishing-position and outcome semantics | Parser/reference, edge-case tests, validator and schema integration. |
 | 6 | 06 | Verify/add tests and integration document | Unit-test suite, update policy and database field mapping. |
 | 7 | 07 | Verify/add tests and integration document | Unit-test suite, update policy and database field mapping. |
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 03 passes local tests and source reconciliation, Notebook 04 must be reconciled with the later jurisdiction and course-location implementations before Notebook 05 is built.
+After Notebook 04 passes local tests and source reconciliation, Notebook 05 is next: finishing positions, disqualifications and non-finish outcome codes require a durable parser/reference, tests, validator and database integration document.
