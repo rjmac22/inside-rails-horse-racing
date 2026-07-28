@@ -1,0 +1,72 @@
+{
+  "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
+  "status": "analytical_complete_pending_implementation_and_validation",
+  "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+  "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
+  "candidate_race_identity": [
+    "date",
+    "course",
+    "off"
+  ],
+  "candidate_runner_identity": [
+    "date",
+    "course",
+    "off",
+    "horse"
+  ],
+  "validated_findings": {
+    "source_runner_rows": 1851285,
+    "provisional_races": 189043,
+    "ran_distinct_values": 37,
+    "ran_minimum": 1,
+    "ran_maximum": 40,
+    "ran_consistent_races": 189043,
+    "source_rows_equal_ran_races": 189038,
+    "source_rows_below_ran_races": 5,
+    "source_rows_above_ran_races": 0,
+    "blank_num_rows": 7032,
+    "integer_zero_num_rows": 1179,
+    "duplicate_positive_num_groups": 523,
+    "duplicate_positive_num_races": 362,
+    "duplicate_positive_num_rows": 1084,
+    "maximum_horses_sharing_positive_num": 4,
+    "all_rows_blank_races": 863,
+    "all_rows_zero_races": 174,
+    "mixed_num_state_races": 18,
+    "repeated_race_and_horse_groups": 0
+  },
+  "governed_decisions": [
+    "Preserve ran as source_reported_ran rather than an unqualified starter count.",
+    "Keep internal row-count comparison separate from external completeness and external ran validation.",
+    "Preserve num raw value and storage state.",
+    "Derive a canonical runner number only from positive integers.",
+    "Preserve blank text and integer zero as distinct source states.",
+    "Allow shared positive num values within a race.",
+    "Do not infer confirmed coupling or duplicate runners from shared num alone.",
+    "Retain candidate race identity plus horse as the leading natural runner identity.",
+    "Do not reconstruct lost coupled-entry suffixes."
+  ],
+  "limitations": [
+    "The source alone does not establish a universal sporting definition for ran.",
+    "External checks covered selected exceptions rather than all races.",
+    "The source does not preserve coupled-entry suffixes such as 1A or 1B.",
+    "Several affected course labels require separate course-reference reconciliation.",
+    "The notebook does not repair missing runners or externally contradicted counts."
+  ],
+  "workflow_lessons": [
+    "Use SQLite for heavy source reduction before loading results into pandas.",
+    "A kernel restart erases analytical state even when visible notebook output remains.",
+    "Restore the saved dependency sequence and rerun from the top after kernel failure.",
+    "Record rejected screens as findings so they are not repeated.",
+    "Separate reference-data maintenance from field parser logic."
+  ],
+  "notebook_commit": "5f1cb3a",
+  "fresh_kernel_status": {
+    "status": "pending_formal_closeout_validation",
+    "note": "The executed notebook was committed after recovery from a kernel restart, but a final independent top-to-bottom validation remains part of implementation closeout."
+  },
+  "next_action": {
+    "stage": "implementation",
+    "instruction": "Extract governed ran and num logic into a reusable module, add observed-edge-case tests, add an independent source validator, document database integration, update audit and field-governance records, then update README and project plan before full closure."
+  }
+}
