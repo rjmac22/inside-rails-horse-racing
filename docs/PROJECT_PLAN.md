@@ -15,12 +15,15 @@ For each substantive notebook:
 3. separate profiling evidence from interpretation;
 4. avoid irreversible cleaning decisions inside exploratory work;
 5. extract stable reusable plumbing only after it works;
-6. validate extracted code independently where justified;
-7. produce a concise Minto-style report;
-8. record decisions, uncertainty, database consequences and next actions;
-9. discuss lessons learned and capture reusable changes;
-10. update this plan and the project README;
-11. commit and verify the complete closeout.
+6. add focused unit tests including failure behaviour;
+7. validate extracted code and governed references independently where justified;
+8. document the database and update consequence;
+9. produce a concise Minto-style report;
+10. record decisions, uncertainty, lessons learned and next actions;
+11. update the audit register, field governance, this plan and the project README;
+12. commit and verify the complete closeout.
+
+The full procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
 
 The raw SQLite database remains read-only.
 
@@ -37,137 +40,100 @@ The established source population is:
 
 ## Phase 1 — Source understanding
 
-### Notebook 00 — Project scope and methodology
+### Notebooks 00–03
 
-**Status:** complete
+**Status:** complete and retrospectively implemented.
 
-Established raw-source immutability, notebook-led evidence, conceptual raw/staging/core/analytical layers and deferral of premature schema or platform decisions.
-
-### Notebook 01 — Source database structure profile
-
-**Status:** complete
-
-Established one denormalised runner-grain table, the source population, broad international and 2015–2026 coverage, loose typing and structural limitations.
-
-### Notebook 02 — Field and domain-value profile
-
-**Status:** complete
-
-Established field-specific missingness, blank and sentinel conventions, mixed SQLite storage classes, unusual result values, prize and rating anomalies, and preservation requirements for long text and raw values.
-
-### Notebook 03 — Race identity and source-key reconstruction
-
-**Status:** complete
-
-Established that supplied `race_id` is not unique, `date + race_id` still collides, `date + course + off` produces 189,043 unique provisional race groups, candidate race identity plus `horse` identifies each source runner row, and later staging race and runner-record surrogate identifiers are required.
+Established raw-source immutability, source grain and quality, physical lineage requirements, and candidate race and runner-record reconstruction.
 
 ## Phase 2 — Domain interpretation and parsing
 
-### Notebook 04 — Course, jurisdiction and surface mapping
+### Notebooks 04–10
 
-**Status:** complete
+**Status:** complete and retrospectively implemented.
 
-Established candidate jurisdiction for all provisional races, jurisdiction-qualified candidate venue/configuration identities, direct all-weather evidence and explicit unresolved surface cases.
+Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, and governance of all 37 source fields.
 
-### Notebook 05 — Finishing position and non-finish outcomes
-
-**Status:** complete; clean-kernel Run All passed
-
-Established complete result representation, textual non-finish outcomes, disqualification handling, supported dead heats and explicitly retained anomalies. Demonstrated that `btn` and `ovr_btn` are related but cannot be forced into one universal exact-addition rule.
-
-### Notebook 06 — Race distance parsing
-
-**Status:** complete; independent validation and clean-kernel Run All passed
-
-Established complete deterministic parsing of all observed raw distance values into source-implied measures while keeping official metric-distance enrichment separate.
-
-### Notebook 07 — Carried weight parsing
-
-**Status:** complete; independent validation and clean-kernel Run All passed
-
-Established complete deterministic parsing of all observed canonical stones-and-pounds values into total pounds and source-implied kilograms while preserving the distinction from exact official metric declarations.
-
-### Notebook 08 — Starting price parsing
-
-**Status:** complete; notebook validation and clean-kernel Run All passed
-
-Established bounded arithmetic parsing of `sp`, five race-level coverage patterns and the requirement to separate arithmetic price representation from jurisdictional market interpretation.
-
-### Notebook 09 — Course jurisdiction, racing authority and betting-market context
-
-**Status:** complete; independent validation and clean-kernel Run All passed
-
-Established reproducible candidate jurisdiction, reusable course and jurisdiction logic, separate source/structural/research layers, racing-code and effective-period escalation where required, and preservation of raw `type` and `sp` without universal reinterpretation.
-
-### Notebook 10 — Remaining source-field inventory and triage
-
-**Status:** complete; notebook assertions and clean-kernel Run All passed
-
-Established the complete 37-field inventory, provisional treatment for every field and the bounded sequence for remaining source-field studies.
+Notebook 08 retains one deliberate governed validator failure for the malformed standalone source value `F`.
 
 ### Notebook 11 — Off-time and temporal semantics
 
-**Status:** in progress; timezone dependency resolved
+**Status:** fully closed; 9 tests and immutable-source validation passed.
 
-Field:
+Established deterministic parsing of all observed source `off` values, explicit preservation of 12-hour ambiguity and timezone-aware timestamp construction only after an evidence-backed branch and governed course timezone are supplied.
 
-- `off`
-
-Bounded question:
-
-> What does the source `off` field represent, how consistently is it formatted, and what temporal assumptions can safely be made during race reconstruction?
-
-The study profiles exact raw formats, leading-zero and spacing behaviour, race-level consistency, jurisdiction and date-period coverage, apparent 12-hour or 24-hour conventions, midnight and date-rollover risks, and the separation of deterministic parsing from timezone enrichment.
-
-Notebook 11 identified a dependency on governed course-timezone data. That dependency was resolved in Notebook 12.
+Validation covered 1,851,285 source rows, 1,380 distinct raw values and 189,043 provisional races with zero unresolved clock representations.
 
 ### Notebook 12 — Course location and timezone mapping
 
-**Status:** complete; archived executed research record; independent validation passed
+**Status:** fully closed; archived executed construction record, 13 tests and permanent-reference validation passed.
 
-Outputs:
+The current permanent reference contains:
 
-- `notebooks/12_course_timezone_resolution_completed_archive.ipynb`
-- `docs/REPORT_12_COURSE_LOCATION_AND_TIMEZONE_MAPPING.md`
-- `docs/NOTEBOOK_12_CLOSEOUT.json`
-- `data/reference/course_locations.csv`
-- `data/reference/course_location_manual_review.csv`
-- `data/reference/course_location_manual_timezone_resolution.csv`
-- `data/reference/course_location_geocoding_run_summary.csv`
-- `src/inside_rails/course_locations.py`
-- `scripts/validate_course_locations.py`
-
-Established:
-
-- 394 permanent jurisdiction-qualified course identities;
-- 394 valid IANA timezone assignments;
+- 395 jurisdiction-qualified course identities;
+- 395 valid IANA timezone assignments;
 - 0 unresolved timezone assignments;
-- 51 distinct IANA timezones;
-- identity based on `candidate_course_label + candidate_jurisdiction`;
-- safe jurisdiction defaults only where one timezone applies;
-- course-level manual resolution for multi-timezone jurisdictions;
-- separation of exact venue enrichment from timezone sufficiency;
-- reusable loading, reference validation and many-to-one merge logic.
+- 51 distinct IANA timezones.
 
-The notebook is retained as an executed historical construction record. It is not treated as a permanent rerunnable pipeline because persisting the completed reference changed the notebook's future input state. Independent reusable validation now protects the permanent reference.
+The notebook remains an archived historical construction record because persisting the completed reference changed its own future input state. Reusable loading, tests and independent validation now protect the permanent reference.
+
+### Notebook 13 — Prize-money semantics and availability
+
+**Status:** fully closed.
+
+Established runner-level recorded prize-money semantics, direct governed GBP and EUR parsing for Great Britain and Ireland, integer minor-unit storage, null preservation, precise aggregation labels and explicit unresolved treatment for foreign source-presented values.
+
+## Retrospective implementation closeout
+
+The implementation audit for Notebooks 00–13 is complete on branch `audit/retrospective-implementation-closeout`.
+
+No notebook in the 00–13 sequence has an outstanding repair target. Notebook 08's deliberate source anomaly remains documented and unresolved by design.
+
+The branch remains open while the remaining source-field and database work continues. The complete test suite and all applicable validators will be run before final merge.
 
 ## Remaining source-field studies
 
-The provisional sequence remains:
+The provisional sequence is now:
 
-1. complete Notebook 11 — off-time and temporal semantics;
-2. runner counts, numbers and entries (`ran`, `num`);
-3. beaten-distance semantics (`ovr_btn`, `btn`);
-4. race classification and eligibility;
-5. runner characteristics and equipment;
-6. prize and currency semantics;
-7. race-time semantics;
-8. ratings semantics and availability;
-9. horse and pedigree identity;
-10. connections and owner identity;
-11. comments and embedded information.
+1. Notebook 14 — runner counts, numbers and entries (`ran`, `num`);
+2. beaten-distance semantics (`ovr_btn`, `btn`);
+3. race classification and eligibility;
+4. runner characteristics and equipment;
+5. ratings semantics and availability;
+6. horse and pedigree identity;
+7. connections and owner identity;
+8. comments and embedded information.
+
+Prize-money and race-time semantics have already been completed in Notebooks 13 and 11 respectively and are no longer future studies.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
+
+## Current next action
+
+### Notebook 14 — Runner counts, numbers and entries
+
+Fields:
+
+- `ran`
+- `num`
+
+Bounded question:
+
+> What do `ran` and `num` represent across jurisdictions, how reliably do they describe runners and entries, and what can safely be stored in the future database?
+
+Required investigation:
+
+- profile `ran` and `num` values, storage, blanks, zeroes and ranges;
+- compare source runner rows with `ran` for every provisional race;
+- inspect the known races where source rows fall below `ran`;
+- distinguish starters, entries, finishers and source rows;
+- inspect duplicate runner numbers and coupled-entry conventions by jurisdiction;
+- determine whether `num` can serve any identity role;
+- define raw, canonical, interpreted and unresolved staging fields;
+- establish constraints and source-wide validation rules;
+- complete the permanent notebook wrap-up procedure.
+
+Do not redesign the final race key or physical staging schema inside Notebook 14 unless the evidence creates a direct and unavoidable requirement.
 
 ## Phase 3 — Entity and key design
 
@@ -210,24 +176,3 @@ Potential outputs after the database is validated:
 - later modelling studies where justified.
 
 Predictive work is downstream of reliable source interpretation and database design.
-
-## Current next action
-
-Resume Notebook 11 using:
-
-`data/reference/course_locations.csv`
-
-as the governed timezone reference.
-
-Complete:
-
-- deterministic parsing of source `off` values;
-- local civil-time interpretation;
-- timezone-aware timestamp construction where defensible;
-- midnight and date-rollover assessment;
-- exception preservation;
-- database consequence;
-- reusable code and validation where justified;
-- full notebook closeout procedure.
-
-Do not redesign the final race key or physical staging schema inside Notebook 11 unless the evidence creates a direct and unavoidable requirement.
