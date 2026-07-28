@@ -8,7 +8,7 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-from inside_rails.course_jurisdiction import derive_course_jurisdiction
+from inside_rails.course_jurisdiction import derive_candidate_race_jurisdiction
 from inside_rails.jurisdiction_context import (
     CONTEXTS,
     OBSERVED_SOURCE_TYPES,
@@ -28,7 +28,7 @@ def main() -> int:
     with connect_read_only(args.database) as connection:
         races = connection.execute(
             """
-            SELECT date, course, off, type
+            SELECT date, course, off, race_name, type
             FROM data
             WHERE rowid <> 1
             GROUP BY date, course, off
@@ -42,9 +42,16 @@ def main() -> int:
     missing_context: Counter[tuple[str, str]] = Counter()
     france_nh_flat = 0
 
-    for raw_date, raw_course, _off, source_type in races:
-        course = derive_course_jurisdiction(raw_course)
-        jurisdiction = course["candidate_jurisdiction"]
+    for raw_date, raw_course, _off, race_name, source_type in races:
+        jurisdiction_result = derive_candidate_race_jurisdiction(
+            {
+                "date": raw_date,
+                "course": raw_course,
+                "type": source_type,
+                "race_name": race_name,
+            }
+        )
+        jurisdiction = jurisdiction_result.iloc[0]
         if jurisdiction not in {"Great Britain", "Ireland", "France"}:
             continue
         worked_rows[jurisdiction] += 1
