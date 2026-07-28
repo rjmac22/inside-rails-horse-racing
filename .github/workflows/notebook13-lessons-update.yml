@@ -2,8 +2,6 @@ name: One-time Notebook 13 lessons update
 
 on:
   push:
-    paths:
-      - '.github/workflows/notebook13-lessons-update.yml'
 
 permissions:
   contents: write
@@ -15,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Update lessons learned document
-        shell: python
+        shell: python {0}
         run: |
           from pathlib import Path
 
@@ -85,7 +83,3 @@ Notebook 13 established a governed treatment for `prize`: direct GBP and EUR par
           git add docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md .github/workflows/notebook13-lessons-update.yml
           git commit -m "Record Notebook 13 prize money lessons"
           git push
-
-# Local trigger
-
-# Local trigger
