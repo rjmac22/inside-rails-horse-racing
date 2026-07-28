@@ -11,6 +11,7 @@ def test_fractional_price_parses_exactly() -> None:
     assert parsed.fractional_odds == Fraction(7, 2)
     assert parsed.decimal_odds == Fraction(9, 2)
     assert parsed.implied_probability == Fraction(2, 9)
+    assert parsed.favourite_marker is None
 
 
 def test_evens_aliases_parse() -> None:
@@ -21,8 +22,22 @@ def test_evens_aliases_parse() -> None:
         assert parsed.implied_probability == Fraction(1, 2)
 
 
+def test_favourite_suffixes_are_separated_from_odds() -> None:
+    favourite = parse_starting_price("1/2F")
+    joint = parse_starting_price("1/2J")
+    evens_favourite = parse_starting_price("EVSF")
+
+    assert favourite.fractional_odds == Fraction(1, 2)
+    assert favourite.favourite_marker == "F"
+    assert joint.fractional_odds == Fraction(1, 2)
+    assert joint.favourite_marker == "J"
+    assert evens_favourite.price_kind == StartingPriceKind.EVENS
+    assert evens_favourite.favourite_marker == "F"
+
+
 def test_market_context_remains_unresolved() -> None:
     assert parse_starting_price("5/1").market_context_status == "unresolved"
+    assert parse_starting_price("5/1F").market_context_status == "unresolved"
 
 
 def test_missing_values_remain_missing() -> None:
@@ -32,7 +47,7 @@ def test_missing_values_remain_missing() -> None:
 
 
 def test_unfamiliar_text_is_preserved_as_unresolved() -> None:
-    for raw in ("SP", "FAV", "2.50", "7-2", "7 / 2", "0/1", "1/0"):
+    for raw in ("SP", "FAV", "2.50", "7-2", "7 / 2", "0/1", "1/0", "7/2X"):
         parsed = parse_starting_price(raw)
         assert parsed.price_kind == StartingPriceKind.UNRESOLVED
         assert parsed.raw_sp == raw
