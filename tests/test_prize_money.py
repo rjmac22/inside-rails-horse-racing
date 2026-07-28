@@ -62,6 +62,14 @@ def test_negative_value_is_rejected() -> None:
     assert result["prize_canonical_minor_units"] is None
 
 
+def test_negative_foreign_value_is_invalid_not_currency_unresolved() -> None:
+    result = parse_prize_money(-1, "United States")
+
+    assert result["prize_source_presented_amount"] == Decimal("-1")
+    assert result["prize_interpretation_status"] == "invalid"
+    assert result["prize_canonical_minor_units"] is None
+
+
 def test_boolean_is_not_treated_as_integer_money() -> None:
     result = parse_prize_money(True, "Great Britain")
 
