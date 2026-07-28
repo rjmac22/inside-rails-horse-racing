@@ -29,8 +29,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 07 | Carried weight parsing | Reusable transformation module | **Fully closed on this audit branch** | Existing parser and validator supplemented by 20 unit tests and database integration/update documentation; local tests and source validation passed. |
 | 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented on this audit branch, with deliberate governed validator failure** | Parser and 8 tests pass. Source validator deliberately fails on the exact known unresolved source anomaly `{'F': 1}`; this is retained as evidence rather than normalised away. |
 | 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Fully closed on this audit branch** | 11 tests passed and source validation covered all 189,043 provisional races, with 16 governed context rows, zero missing worked-example assignments and zero asserted wagering-context assignments. |
-| 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Implemented on this audit branch, subject to local validation** | Added a current 37-field governance register, 8 tests, source-schema validator and database integration/update documentation. Later notebooks are reconciled without erasing Notebook 10's bounded investigation groups. |
-| 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Implementation exists but tests/validation/integration are incomplete** | Verify temporal tests, independent validation, rollover rules, timezone joins and database integration. |
+| 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Fully closed on this audit branch** | 8 tests passed and the immutable-source validator confirmed exactly 37 governed fields across 1,851,285 rows. |
+| 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Implemented on this audit branch, subject to local validation** | Added strict clock parsing, explicit two-branch handling, timezone-aware reconstruction, rollover tests, source validator and database integration/update documentation. Branch selection remains governed evidence rather than parser inference. |
 | 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Implementation exists but tests/validation/integration are incomplete** | Strong artifacts exist; unit failure tests and explicit reference migration/update handling require verification. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 
@@ -49,8 +49,8 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 7 | 07 | Verify/add tests and integration document | **Completed: 20 tests passed and independent source validation passed.** |
 | 8 | 08 | Implement starting-price parsing | **Implemented with a deliberate governed failure on the one known bad source value `F`.** |
 | 9 | 09 | Verify governed reference and integration completeness | **Completed: 11 tests passed and source-wide bounded-context validation passed.** |
-| 10 | 10 | Reconcile the field-treatment register | **Implemented.** Run `tests/test_field_governance.py` and `scripts/validate_field_governance.py` against the immutable source. |
-| 11 | 11 | Verify/add temporal tests, validator and integration | Clock grammar, interpretation, rollover, timezone and unresolved-case coverage. |
+| 10 | 10 | Reconcile the field-treatment register | **Completed: 8 tests passed and immutable-source schema validation passed.** |
+| 11 | 11 | Verify/add temporal tests, validator and integration | **Implemented.** Run `tests/test_off_time.py` and `scripts/validate_off_time.py` against the immutable source. |
 | 12 | 12 | Verify/add reference-loader tests and migration path | Synthetic failure tests and explicit reference version/update procedure. |
 | 13 | 13 | No implementation gap identified | Keep as the reference closeout pattern. |
 
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 10 passes its local tests and immutable-source schema validator, Notebook 11 is next: off-time and temporal semantics require verification of clock grammar, interpretation, rollover, timezone joins and unresolved cases.
+After Notebook 11 passes its local unit tests and immutable-source clock validator, Notebook 12 is next: course location and timezone mapping require synthetic failure tests and an explicit reference migration/update procedure.
