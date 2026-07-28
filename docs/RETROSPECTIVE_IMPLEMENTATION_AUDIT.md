@@ -27,8 +27,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed representation categories | **Fully closed on this audit branch** | Result parser, 8 tests, complete source partition validator and database integration/update documentation passed locally. |
 | 06 | Race distance parsing | Reusable transformation module | **Fully closed on this audit branch** | Existing parser and validator supplemented by 13 unit tests and database integration/update documentation; local tests and source validation passed. |
 | 07 | Carried weight parsing | Reusable transformation module | **Fully closed on this audit branch** | Existing parser and validator supplemented by 20 unit tests and database integration/update documentation; local tests and source validation passed. |
-| 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented on this audit branch, subject to final local validation** | Parser, 8 tests, source-wide validator and database integration documentation exist. Validator now requires the exact governed unresolved anomaly `{'F': 1}` rather than incorrectly demanding zero unresolved rows. |
-| 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Implementation exists but tests/validation/integration are incomplete** | Reference provenance, tests, merge cardinality and update path require verification. |
+| 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented on this audit branch, subject to final local validation** | Parser, 8 tests, source-wide validator and database integration documentation exist. Validator requires the exact governed unresolved anomaly `{'F': 1}`. |
+| 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Implemented on this audit branch, subject to local validation** | Added bounded GB/Ireland/France context reference, effective-period and overlap tests, source validator, merge-cardinality rules, provenance and database update documentation. |
 | 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Implementation partly supplied by Notebook 02 closeout** | Notebook 10 investigation groups and sequencing decisions still require reconciliation with the governed field reference. |
 | 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Implementation exists but tests/validation/integration are incomplete** | Verify temporal tests, independent validation, rollover rules, timezone joins and database integration. |
 | 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Implementation exists but tests/validation/integration are incomplete** | Strong artifacts exist; unit failure tests and explicit reference migration/update handling require verification. |
@@ -48,7 +48,7 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 6 | 06 | Verify/add tests and integration document | **Completed: 13 tests passed and independent source validation passed.** |
 | 7 | 07 | Verify/add tests and integration document | **Completed: 20 tests passed and independent source validation passed.** |
 | 8 | 08 | Implement starting-price parsing | **Implemented.** Run `tests/test_starting_price.py` and `scripts/validate_starting_price.py`; validation must pass with exactly one governed unresolved raw value, `F`. |
-| 9 | 09 | Verify governed reference and integration completeness | Tests, provenance/update path and database merge rules. |
+| 9 | 09 | Verify governed reference and integration completeness | **Implemented.** Run `tests/test_jurisdiction_context.py` and `scripts/validate_jurisdiction_context.py` against the immutable source. |
 | 10 | 10 | Reconcile the field-treatment register | Confirm every investigation group and dependency is represented by a governed artifact. |
 | 11 | 11 | Verify/add temporal tests, validator and integration | Clock grammar, interpretation, rollover, timezone and unresolved-case coverage. |
 | 12 | 12 | Verify/add reference-loader tests and migration path | Synthetic failure tests and explicit reference version/update procedure. |
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 08 passes local unit tests and governed-anomaly source validation, Notebook 09 is next: jurisdiction, authority and betting-market context require tests, provenance, merge-cardinality rules and an explicit update path.
+After Notebook 09 passes local unit tests and source validation, Notebook 10 must reconcile its remaining-field investigation groups with the governed source-field reference and the durable artifacts produced by Notebooks 01–09.
