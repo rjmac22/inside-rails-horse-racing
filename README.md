@@ -92,9 +92,26 @@ Established that `prize` is runner-level recorded prize money rather than the ad
 
 Reusable implementation, tests, source validation and database-integration documentation establish the current notebook closeout pattern.
 
+### Notebook 14 — Runner counts, numbers and entries
+
+**Status:** fully closed; 20 governed tests, 9 independent validator cases and source-wide validation passed.
+
+Established that `ran` is a source-presented race count rather than a guaranteed externally complete starter count. Internal row-count agreement is stored separately from external completeness and validation status.
+
+The source `num` field preserves positive integers, integer zero and blank text as distinct states. Only positive integers produce a canonical runner number, shared positive values are permitted, and `num` is not used as a runner key or treated automatically as a confirmed coupled entry.
+
+Reusable outputs include:
+
+- `src/inside_rails/runner_entries.py`
+- `tests/test_runner_entries.py`
+- `scripts/validate_runner_entries.py`
+- `scripts/validate_runner_entries_source.py`
+- `docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md`
+- `docs/NOTEBOOK_14_CLOSEOUT.json`
+
 ## Retrospective implementation audit
 
-The retrospective closeout of Notebooks 00–13 is complete on branch `audit/retrospective-implementation-closeout`.
+The retrospective closeout of Notebooks 00–14 is complete on branch `audit/retrospective-implementation-closeout`.
 
 See:
 
@@ -105,25 +122,21 @@ The branch should remain open while the remaining source-field and database work
 
 ## Next bounded action
 
-### Notebook 14 — Runner counts, numbers and entries
+### Repair Notebook 12 course-reference join coverage
 
-Fields:
+Notebook 14 exposed seven raw source course labels that did not resolve through the governed course-reference join used for jurisdiction analysis.
 
-- `ran`
-- `num`
+The next task is to:
 
-Bounded question:
+- enumerate every distinct raw source `course` value;
+- join through the intended production lookup key;
+- require exactly one governed course identity and jurisdiction per raw label;
+- fail on zero or multiple matches;
+- repair aliases or missing reference rows in the Notebook 12 course reference;
+- rerun the permanent-reference tests and source validator;
+- record the repair without adding course-specific exceptions to runner-entry logic.
 
-> What do `ran` and `num` represent across jurisdictions, how reliably do they describe runners and entries, and what can safely be stored in the future database?
-
-The study should establish:
-
-- whether `ran` represents declared starters, source rows, finishers or another count;
-- the known races where source rows fall below `ran`;
-- blank, zero, duplicate and unusual `num` values;
-- jurisdiction-dependent numbering and coupled entries;
-- why `num` must not be used as a universal runner key;
-- safe staging fields, statuses, constraints and validation rules.
+After that upstream repair, the next planned source-field study is beaten-distance semantics for `ovr_btn` and `btn`.
 
 Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
