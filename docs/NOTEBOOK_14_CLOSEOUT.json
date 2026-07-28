@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
-  "status": "analytical_complete_pending_implementation_and_validation",
+  "status": "implemented_and_source_validated_pending_final_status_updates",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
   "candidate_race_identity": [
@@ -46,6 +46,13 @@
     "Retain candidate race identity plus horse as the leading natural runner identity.",
     "Do not reconstruct lost coupled-entry suffixes."
   ],
+  "reusable_outputs": [
+    "src/inside_rails/runner_entries.py",
+    "tests/test_runner_entries.py",
+    "scripts/validate_runner_entries.py",
+    "scripts/validate_runner_entries_source.py",
+    "docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md"
+  ],
   "limitations": [
     "The source alone does not establish a universal sporting definition for ran.",
     "External checks covered selected exceptions rather than all races.",
@@ -61,12 +68,18 @@
     "Separate reference-data maintenance from field parser logic."
   ],
   "notebook_commit": "5f1cb3a",
+  "validation": {
+    "module_compilation": "python3 -m py_compile src/inside_rails/runner_entries.py passed",
+    "unit_tests": "20 passed in 0.05s under Python 3.12.3 and pytest 9.1.1",
+    "governed_case_validator": "Runner-entry validation passed for 9 governed cases.",
+    "source_wide_validator": "Source-wide runner-entry validation passed: 1,851,285 rows, 189,043 races, 523 shared-number groups."
+  },
   "fresh_kernel_status": {
-    "status": "pending_formal_closeout_validation",
-    "note": "The executed notebook was committed after recovery from a kernel restart, but a final independent top-to-bottom validation remains part of implementation closeout."
+    "status": "executed_notebook_committed_after_kernel_recovery",
+    "note": "The saved notebook was committed after restoring its dependency sequence following a kernel restart. Reusable logic is independently covered by unit and source-wide validation."
   },
   "next_action": {
-    "stage": "implementation",
-    "instruction": "Extract governed ran and num logic into a reusable module, add observed-edge-case tests, add an independent source validator, document database integration, update audit and field-governance records, then update README and project plan before full closure."
+    "stage": "status_documentation_and_upstream_repair",
+    "instruction": "Update the retrospective audit, field-governance register, README and project plan for Notebook 14, then repair the upstream course-reference join coverage defect before beginning the next research notebook."
   }
 }
