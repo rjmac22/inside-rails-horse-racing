@@ -98,6 +98,23 @@ def test_profile_reconciles_candidate_identity_and_known_bad_keys() -> None:
     assert profile["null_identity_rows"] == 0
 
 
+def test_profile_excludes_blank_runner_numbers_from_duplicate_groups() -> None:
+    connection = create_source()
+    try:
+        connection.executemany(
+            "INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [
+                ("2026-01-01", "Ascot", "14:30", "Race D", "12", None, "Horse Six"),
+                ("2026-01-01", "Ascot", "14:30", "Race D", "12", None, "Horse Seven"),
+            ],
+        )
+        profile = profile_race_identity(connection)
+    finally:
+        connection.close()
+
+    assert profile["duplicate_runner_number_groups"] == 1
+
+
 def test_profile_detects_race_name_collision_inside_candidate_slot() -> None:
     connection = create_source()
     try:
