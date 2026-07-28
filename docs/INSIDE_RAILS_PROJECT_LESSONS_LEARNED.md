@@ -838,7 +838,80 @@ Notebook 13 established a governed treatment for `prize`: direct GBP and EUR par
 
 ---
 
-## 47. Current project position
+## 47. Lessons from runner counts, numbers and entries
+
+Notebook 14 showed that a structurally clean field can still have an unsafe real-world interpretation.
+
+The source `ran` field is unusually consistent:
+
+- all 1,851,285 values are integers between 1 and 40;
+- every provisional race carries one consistent `ran` value;
+- 189,038 of 189,043 races have stored runner rows equal to `ran`;
+- five races have fewer stored rows than `ran`;
+- no race has more stored rows than `ran`.
+
+That internal cleanliness does not establish that `ran` is a complete or externally correct starter count. External checks found both:
+
+- races where `ran` remained correct despite missing stored runner rows; and
+- races where stored rows equalled `ran`, but the published field was larger.
+
+The reusable lesson is:
+
+> Internal consistency describes source behaviour; it does not prove external completeness or sporting meaning.
+
+`ran` should therefore be preserved as `source_reported_ran`, with separate statuses for:
+
+- within-race consistency;
+- stored row count compared with `ran`;
+- stored runner coverage; and
+- external validation of `ran`.
+
+The source `num` field also looked simpler than it was. It contains three observable raw states:
+
+- positive integer;
+- integer zero;
+- blank text.
+
+Only positive integers can safely produce a canonical runner number. Blank text and integer zero have different jurisdictional distributions, can coexist within the same race, and must remain distinct source states even though both produce a null canonical runner number.
+
+Positive `num` is not universally unique within a race:
+
+- 523 duplicated positive-number groups occur;
+- 362 races are affected;
+- 1,084 runner rows are involved;
+- up to four horses can share one positive number.
+
+Many duplicated numbers occur in jurisdictions with coupled or bracketed betting entries. However, rare cases outside those jurisdictions did not consistently resemble genuine coupling. A duplicated positive number can therefore indicate:
+
+- a legitimate shared betting interest;
+- an ambiguous source-number collision; or
+- another source convention.
+
+The field must not be used as a runner key, and duplicated values must not automatically be classified as duplicate runners or confirmed coupled entries.
+
+The candidate natural runner identity remains:
+
+`date + course + off + horse`
+
+No race contains the same horse label more than once, and no horse is assigned multiple positive numbers within the same race.
+
+The investigation produced several broader workflow lessons:
+
+- test apparent identifiers for scope and uniqueness before using them as keys;
+- preserve similar-looking empty states separately when the source distinguishes them;
+- inspect rare exceptions rather than extending the dominant explanation automatically;
+- record rejected analytical screens so plausible but invalid tests are not repeated;
+- perform heavy filtering inside SQLite rather than loading the full source into pandas;
+- after a kernel restart, rebuild notebook state from the saved cell sequence rather than relying on surviving visible output;
+- treat course-reference gaps as reference-maintenance work, not parser logic;
+- separate internal source validation from external evidence;
+- do not reconstruct information, such as coupled-entry suffixes, that the source no longer preserves.
+
+Notebook 14 established a governed treatment for `ran` and `num`: preserve the source-presented race count, derive explicit consistency and coverage statuses, retain raw runner-number states, canonicalise only positive integers, allow shared positive numbers, and keep runner identity independent of `num`.
+
+---
+
+## 48. Current project position
 
 The project has established that the source cannot be treated as analysis-ready, but it can still support valuable work when identity is reconstructed, fields are audited, jurisdiction differences are respected, raw values are preserved and conclusions remain within the evidence.
 
