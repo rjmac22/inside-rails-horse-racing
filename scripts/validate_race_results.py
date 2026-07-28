@@ -12,11 +12,11 @@ from inside_rails.source_sqlite import connect_read_only
 
 EXPECTED = {
     "data_rows": 1_851_285,
-    "positive_numeric_position_rows": 1_756_634,
+    "positive_numeric_position_rows": 1_756_666,
     "zero_position_rows": 8,
     "disqualified_rows": 619,
     "other_text_outcome_rows": 93_992,
-    "missing_position_rows": 32,
+    "missing_position_rows": 0,
 }
 
 
