@@ -46,16 +46,20 @@ def test_notebook_10_groups_are_retained() -> None:
 def test_later_closed_fields_are_reconciled() -> None:
     assert FIELD_GOVERNANCE_BY_NAME["prize"].status == "closed"
     assert FIELD_GOVERNANCE_BY_NAME["prize"].governing_notebook == "13"
+    assert FIELD_GOVERNANCE_BY_NAME["ran"].status == "closed"
+    assert FIELD_GOVERNANCE_BY_NAME["ran"].governing_notebook == "14"
+    assert FIELD_GOVERNANCE_BY_NAME["num"].status == "closed"
+    assert FIELD_GOVERNANCE_BY_NAME["num"].governing_notebook == "14"
     assert FIELD_GOVERNANCE_BY_NAME["off"].governing_notebook == "11"
 
 
 def test_source_fields_remain_raw_even_when_derived() -> None:
-    for field in ("dist", "wgt", "pos", "sp", "prize"):
+    for field in ("dist", "wgt", "pos", "sp", "prize", "ran", "num"):
         assert FIELD_GOVERNANCE_BY_NAME[field].treatment == "deterministic_parsing"
 
 
 def test_open_semantic_fields_are_not_falsely_closed() -> None:
-    for field in ("class", "going", "ran", "btn", "or", "horse", "jockey", "comment"):
+    for field in ("class", "going", "btn", "or", "horse", "jockey", "comment"):
         assert FIELD_GOVERNANCE_BY_NAME[field].status == "open"
 
 
