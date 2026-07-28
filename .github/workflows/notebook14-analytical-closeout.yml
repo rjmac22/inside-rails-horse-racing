@@ -1,0 +1,173 @@
+name: One-time Notebook 14 analytical closeout
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  update-closeout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/retrospective-implementation-closeout
+
+      - name: Update lessons and analytical closeout
+        shell: python {0}
+        run: |
+          import json
+          from pathlib import Path
+
+          lessons_path = Path("docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md")
+          text = lessons_path.read_text(encoding="utf-8")
+          marker = "## 47. Current project position"
+          if marker not in text:
+              raise SystemExit(f"Expected marker not found: {marker}")
+
+          section = '''## 47. Lessons from runner counts, numbers and entries
+
+Notebook 14 showed that a structurally clean field can still have an unsafe real-world interpretation.
+
+The source `ran` field is unusually consistent:
+
+- all 1,851,285 values are integers between 1 and 40;
+- every provisional race carries one consistent `ran` value;
+- 189,038 of 189,043 races have stored runner rows equal to `ran`;
+- five races have fewer stored rows than `ran`;
+- no race has more stored rows than `ran`.
+
+That internal cleanliness does not establish that `ran` is a complete or externally correct starter count. External checks found both races where `ran` remained correct despite missing stored runner rows and races where stored rows equalled `ran` but the published field was larger.
+
+The reusable lesson is:
+
+> Internal consistency describes source behaviour; it does not prove external completeness or sporting meaning.
+
+`ran` should therefore be preserved as `source_reported_ran`, with separate statuses for within-race consistency, stored row count compared with `ran`, stored runner coverage and external validation of `ran`.
+
+The source `num` field also looked simpler than it was. It contains three observable raw states:
+
+- positive integer;
+- integer zero;
+- blank text.
+
+Only positive integers can safely produce a canonical runner number. Blank text and integer zero have different jurisdictional distributions, can coexist within the same race, and must remain distinct source states even though both produce a null canonical runner number.
+
+Positive `num` is not universally unique within a race:
+
+- 523 duplicated positive-number groups occur;
+- 362 races are affected;
+- 1,084 runner rows are involved;
+- up to four horses can share one positive number.
+
+Many duplicated numbers occur in jurisdictions with coupled or bracketed betting entries. Rare cases outside those jurisdictions did not consistently resemble genuine coupling. A duplicated positive number can therefore indicate a legitimate shared betting interest, an ambiguous source-number collision or another source convention.
+
+The field must not be used as a runner key, and duplicated values must not automatically be classified as duplicate runners or confirmed coupled entries.
+
+The candidate natural runner identity remains:
+
+`date + course + off + horse`
+
+No race contains the same horse label more than once, and no horse is assigned multiple positive numbers within the same race.
+
+The investigation produced several broader workflow lessons:
+
+- test apparent identifiers for scope and uniqueness before using them as keys;
+- preserve similar-looking empty states separately when the source distinguishes them;
+- inspect rare exceptions rather than extending the dominant explanation automatically;
+- record rejected analytical screens so plausible but invalid tests are not repeated;
+- perform heavy filtering inside SQLite rather than loading the full source into pandas;
+- after a kernel restart, rebuild notebook state from the saved cell sequence rather than relying on surviving visible output;
+- treat course-reference gaps as reference-maintenance work, not parser logic;
+- separate internal source validation from external evidence;
+- do not reconstruct information, such as coupled-entry suffixes, that the source no longer preserves.
+
+Notebook 14 established a governed treatment for `ran` and `num`: preserve the source-presented race count, derive explicit consistency and coverage statuses, retain raw runner-number states, canonicalise only positive integers, allow shared positive numbers, and keep runner identity independent of `num`.
+
+---
+
+## 48. Current project position'''
+
+          text = text.replace(marker, section, 1)
+          lessons_path.write_text(text, encoding="utf-8")
+
+          closeout = {
+              "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
+              "status": "analytical_complete_pending_implementation_and_validation",
+              "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
+              "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
+              "candidate_race_identity": ["date", "course", "off"],
+              "candidate_runner_identity": ["date", "course", "off", "horse"],
+              "validated_findings": {
+                  "source_runner_rows": 1851285,
+                  "provisional_races": 189043,
+                  "ran_distinct_values": 37,
+                  "ran_minimum": 1,
+                  "ran_maximum": 40,
+                  "ran_consistent_races": 189043,
+                  "source_rows_equal_ran_races": 189038,
+                  "source_rows_below_ran_races": 5,
+                  "source_rows_above_ran_races": 0,
+                  "blank_num_rows": 7032,
+                  "integer_zero_num_rows": 1179,
+                  "duplicate_positive_num_groups": 523,
+                  "duplicate_positive_num_races": 362,
+                  "duplicate_positive_num_rows": 1084,
+                  "maximum_horses_sharing_positive_num": 4,
+                  "all_rows_blank_races": 863,
+                  "all_rows_zero_races": 174,
+                  "mixed_num_state_races": 18,
+                  "repeated_race_and_horse_groups": 0
+              },
+              "governed_decisions": [
+                  "Preserve ran as source_reported_ran rather than an unqualified starter count.",
+                  "Keep internal row-count comparison separate from external completeness and external ran validation.",
+                  "Preserve num raw value and storage state.",
+                  "Derive a canonical runner number only from positive integers.",
+                  "Preserve blank text and integer zero as distinct source states.",
+                  "Allow shared positive num values within a race.",
+                  "Do not infer confirmed coupling or duplicate runners from shared num alone.",
+                  "Retain candidate race identity plus horse as the leading natural runner identity.",
+                  "Do not reconstruct lost coupled-entry suffixes."
+              ],
+              "limitations": [
+                  "The source alone does not establish a universal sporting definition for ran.",
+                  "External checks covered selected exceptions rather than all races.",
+                  "The source does not preserve coupled-entry suffixes such as 1A or 1B.",
+                  "Several affected course labels require separate course-reference reconciliation.",
+                  "The notebook does not repair missing runners or externally contradicted counts."
+              ],
+              "workflow_lessons": [
+                  "Use SQLite for heavy source reduction before loading results into pandas.",
+                  "A kernel restart erases analytical state even when visible notebook output remains.",
+                  "Restore the saved dependency sequence and rerun from the top after kernel failure.",
+                  "Record rejected screens as findings so they are not repeated.",
+                  "Separate reference-data maintenance from field parser logic."
+              ],
+              "notebook_commit": "5f1cb3a",
+              "fresh_kernel_status": {
+                  "status": "pending_formal_closeout_validation",
+                  "note": "The executed notebook was committed after recovery from a kernel restart, but a final independent top-to-bottom validation remains part of implementation closeout."
+              },
+              "next_action": {
+                  "stage": "implementation",
+                  "instruction": "Extract governed ran and num logic into a reusable module, add observed-edge-case tests, add an independent source validator, document database integration, update audit and field-governance records, then update README and project plan before full closure."
+              }
+          }
+
+          closeout_path = Path("docs/NOTEBOOK_14_CLOSEOUT.json")
+          closeout_path.write_text(
+              json.dumps(closeout, indent=2) + "\n",
+              encoding="utf-8",
+          )
+
+          Path(".github/workflows/notebook14-analytical-closeout.yml").unlink()
+
+      - name: Commit analytical closeout
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md docs/NOTEBOOK_14_CLOSEOUT.json .github/workflows/notebook14-analytical-closeout.yml
+          git commit -m "Record Notebook 14 analytical closeout"
+          git push origin audit/retrospective-implementation-closeout
