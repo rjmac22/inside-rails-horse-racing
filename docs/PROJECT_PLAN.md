@@ -66,7 +66,7 @@ Validation covered 1,851,285 source rows, 1,380 distinct raw values and 189,043 
 
 ### Notebook 12 — Course location and timezone mapping
 
-**Status:** fully closed; archived executed construction record, 13 tests and permanent-reference validation passed.
+**Status:** fully closed as an archived construction record, but its production join coverage now has a documented upstream repair target.
 
 The current permanent reference contains:
 
@@ -75,7 +75,9 @@ The current permanent reference contains:
 - 0 unresolved timezone assignments;
 - 51 distinct IANA timezones.
 
-The notebook remains an archived historical construction record because persisting the completed reference changed its own future input state. Reusable loading, tests and independent validation now protect the permanent reference.
+The notebook remains an archived historical construction record because persisting the completed reference changed its own future input state. Reusable loading, tests and independent validation protect the permanent reference.
+
+Notebook 14 later exposed seven raw source course labels that do not resolve through the intended jurisdiction join path. This is a course-reference coverage defect, not a runner-entry parser defect, and must be repaired in the Notebook 12 governed reference.
 
 ### Notebook 13 — Prize-money semantics and availability
 
@@ -83,19 +85,36 @@ The notebook remains an archived historical construction record because persisti
 
 Established runner-level recorded prize-money semantics, direct governed GBP and EUR parsing for Great Britain and Ireland, integer minor-unit storage, null preservation, precise aggregation labels and explicit unresolved treatment for foreign source-presented values.
 
+### Notebook 14 — Runner counts, numbers and entries
+
+**Status:** fully closed; 20 tests, 9 governed validator cases and source-wide validation passed.
+
+Established that `ran` is a source-presented race count rather than a guaranteed externally complete starter count. Within-race consistency, stored row comparison, runner coverage and external count validation remain separate statuses.
+
+Established that `num` has distinct positive-integer, integer-zero and blank-text source states. Only positive integers produce a canonical runner number, shared values are permitted, lost coupled-entry suffixes are not reconstructed, and `num` does not participate in runner identity.
+
+Durable outputs are:
+
+- `src/inside_rails/runner_entries.py`;
+- `tests/test_runner_entries.py`;
+- `scripts/validate_runner_entries.py`;
+- `scripts/validate_runner_entries_source.py`;
+- `docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_14_CLOSEOUT.json`.
+
 ## Retrospective implementation closeout
 
-The implementation audit for Notebooks 00–13 is complete on branch `audit/retrospective-implementation-closeout`.
+The implementation audit for Notebooks 00–14 is complete on branch `audit/retrospective-implementation-closeout`.
 
-No notebook in the 00–13 sequence has an outstanding repair target. Notebook 08's deliberate source anomaly remains documented and unresolved by design.
+No notebook in the 00–14 sequence has an outstanding Notebook 14 implementation target. Notebook 08's deliberate source anomaly remains documented and unresolved by design.
 
-The branch remains open while the remaining source-field and database work continues. The complete test suite and all applicable validators will be run before final merge.
+The branch remains open while the course-reference join repair and remaining source-field work continue. The complete test suite and all applicable validators will be run before final merge.
 
 ## Remaining source-field studies
 
 The provisional sequence is now:
 
-1. Notebook 14 — runner counts, numbers and entries (`ran`, `num`);
+1. repair Notebook 12 raw-course join coverage;
 2. beaten-distance semantics (`ovr_btn`, `btn`);
 3. race classification and eligibility;
 4. runner characteristics and equipment;
@@ -104,36 +123,38 @@ The provisional sequence is now:
 7. connections and owner identity;
 8. comments and embedded information.
 
-Prize-money and race-time semantics have already been completed in Notebooks 13 and 11 respectively and are no longer future studies.
+Prize-money, race-time and runner-entry semantics have already been completed in Notebooks 13, 11 and 14 respectively and are no longer future studies.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Notebook 14 — Runner counts, numbers and entries
+### Repair Notebook 12 course-reference join coverage
 
-Fields:
+Notebook 14 identified seven raw source course labels that failed to resolve through the governed course-reference join used for jurisdiction analysis:
 
-- `ran`
-- `num`
+- Bordeaux Le Bouscat;
+- Chukyo;
+- Cidade Jardim;
+- Hipodromo Chile;
+- Les Landes;
+- Monterrico;
+- Nakayama.
 
-Bounded question:
+Required repair:
 
-> What do `ran` and `num` represent across jurisdictions, how reliably do they describe runners and entries, and what can safely be stored in the future database?
+- enumerate every distinct raw source `course` value;
+- join through the intended production key;
+- require exactly one governed course identity and jurisdiction for each raw label;
+- fail on zero matches;
+- fail on multiple matches;
+- determine whether each unresolved label requires an alias, corrected identity or missing reference row;
+- update the Notebook 12 governed reference rather than adding downstream hard-coded jurisdictions;
+- rerun course-reference tests and source validation;
+- confirm zero unresolved raw course labels through the production join path;
+- update the Notebook 12 closeout and audit records if the repair changes its closure evidence.
 
-Required investigation:
-
-- profile `ran` and `num` values, storage, blanks, zeroes and ranges;
-- compare source runner rows with `ran` for every provisional race;
-- inspect the known races where source rows fall below `ran`;
-- distinguish starters, entries, finishers and source rows;
-- inspect duplicate runner numbers and coupled-entry conventions by jurisdiction;
-- determine whether `num` can serve any identity role;
-- define raw, canonical, interpreted and unresolved staging fields;
-- establish constraints and source-wide validation rules;
-- complete the permanent notebook wrap-up procedure.
-
-Do not redesign the final race key or physical staging schema inside Notebook 14 unless the evidence creates a direct and unavoidable requirement.
+After this bounded repair, proceed to beaten-distance semantics for `ovr_btn` and `btn`.
 
 ## Phase 3 — Entity and key design
 
