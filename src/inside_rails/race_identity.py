@@ -91,6 +91,8 @@ def profile_race_identity(
         number_groups AS (
             SELECT date, course, off, num, COUNT(DISTINCT horse) AS horses
             FROM source
+            WHERE num IS NOT NULL
+              AND TRIM(CAST(num AS TEXT)) <> ''
             GROUP BY date, course, off, num
         )
         SELECT
