@@ -27,6 +27,20 @@ A notebook is fully closed only when every applicable item below has been comple
 - Preserve anomalies as evidence; do not silently normalise them away.
 - Where a known anomaly is intentionally allowed to fail validation, document the exact expected failure and why it remains unresolved.
 
+### Manual and external verification
+
+Whenever a conclusion, exception decision, correction candidate or reference enrichment depends on manual research or external evidence:
+
+- add one row per bounded claim to `data/reference/manual_verifications.csv` while the evidence is open;
+- record the exact source locators and raw value under review;
+- record the verification question, result, status, confidence and permitted database action;
+- preserve the evidence type, stable locator and access date;
+- cite the permanent `verification_id` in the notebook or closeout record;
+- never use the register to overwrite immutable source data directly;
+- run `tests/test_manual_verifications.py` and `scripts/validate_manual_verifications.py` before closure.
+
+A more specific governed reference table may replace a manual-verification row only when it preserves equivalent evidence, method, confidence and provenance. See `docs/MANUAL_VERIFICATION_REGISTER.md`.
+
 ## 3. Reproducible notebook
 
 - Restart the kernel and run the notebook from top to bottom.
@@ -184,11 +198,12 @@ A future notebook may be marked **fully closed** only when it has, where applica
 5. unit tests including failure cases;
 6. an independent source-wide validator;
 7. database integration and update documentation;
-8. a reader-facing report;
-9. lessons learned;
-10. updated audit and field-governance records;
-11. an updated `README.md`;
-12. an updated `docs/PROJECT_PLAN.md`;
-13. successful local validation evidence.
+8. captured manual/external verification with reusable provenance;
+9. a reader-facing report;
+10. lessons learned;
+11. updated audit and field-governance records;
+12. an updated `README.md`;
+13. an updated `docs/PROJECT_PLAN.md`;
+14. successful local validation evidence.
 
 If any applicable item is missing, mark the notebook **implemented pending validation**, **implementation incomplete**, **status documentation incomplete**, or another precise status. Do not call it complete.
