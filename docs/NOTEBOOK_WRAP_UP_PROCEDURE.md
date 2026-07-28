@@ -4,7 +4,7 @@
 
 This procedure applies to every future Inside Rails research notebook. A notebook is not complete merely because the analysis has reached a conclusion or the saved notebook runs successfully.
 
-The wrap-up must preserve the reasoning, extract reusable implementation, validate the source-wide consequence, and leave the project ready for the next investigation.
+The wrap-up must preserve the reasoning, extract reusable implementation, validate the source-wide consequence, update the project's public status documents, and leave the project ready for the next investigation.
 
 ## Closure standard
 
@@ -152,10 +152,15 @@ Before declaring closure:
 - update `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md` or its successor register;
 - update the field-governance register where a field has moved from open to implemented or closed;
 - record exact local test and validator results;
-- update project plans, README status, and closeout records where applicable;
+- update `README.md` so its notebook statuses, counts, reusable outputs and next bounded action match the repository;
+- update `docs/PROJECT_PLAN.md` so completed studies are removed from the future-work list and the next investigation is stated correctly;
+- update closeout records and lessons documents where applicable;
+- search the README and project plan for stale counts, stale “in progress” labels and references to already-completed future work;
 - identify the next notebook or state explicitly that no further notebook action is required.
 
-Analytical completion, implementation completion, and local validation are separate statuses and must not be conflated.
+The README and project plan are mandatory closeout artifacts, not optional housekeeping. A notebook may not be marked fully closed while either document still describes an earlier project state.
+
+Analytical completion, implementation completion, local validation and status-document completion are separate states and must not be conflated.
 
 ## 12. Final project-level check
 
@@ -165,7 +170,7 @@ At the end of a notebook series or repair branch:
 - run every applicable independent source validator;
 - confirm that any deliberate validator failure is documented and still fails for the intended reason only;
 - inspect the final audit register for stale “pending validation” entries;
-- verify that reference baselines and documentation agree with the current files;
+- verify that reference baselines, README, project plan and integration documentation agree with the current files;
 - commit the final documentation updates before merge.
 
 ## Mandatory closeout checklist
@@ -181,7 +186,9 @@ A future notebook may be marked **fully closed** only when it has, where applica
 7. database integration and update documentation;
 8. a reader-facing report;
 9. lessons learned;
-10. updated audit and project-status records;
-11. successful local validation evidence.
+10. updated audit and field-governance records;
+11. an updated `README.md`;
+12. an updated `docs/PROJECT_PLAN.md`;
+13. successful local validation evidence.
 
-If any applicable item is missing, mark the notebook **implemented pending validation**, **implementation incomplete**, or another precise status. Do not call it complete.
+If any applicable item is missing, mark the notebook **implemented pending validation**, **implementation incomplete**, **status documentation incomplete**, or another precise status. Do not call it complete.
