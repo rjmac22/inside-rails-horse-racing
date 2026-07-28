@@ -1,0 +1,87 @@
+name: One-time Notebook 13 lessons update
+
+on:
+  push:
+    paths:
+      - '.github/workflows/notebook13-lessons-update.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-lessons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update lessons learned document
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md')
+          text = path.read_text(encoding='utf-8')
+
+          marker = '## 46. Current project position'
+          if marker not in text:
+              raise SystemExit(f'Expected marker not found: {marker}')
+
+          section = '''## 46. Lessons from prize-money semantics and availability
+
+Notebook 13 showed that a monetary field cannot be understood from its declared SQLite type or apparent numeric value alone.
+
+The source `prize` field contains runner-level recorded prize money, not total race prize money. Its physical representation varies:
+
+- Great Britain uses numeric values that can be parsed directly as GBP;
+- Ireland uses euro-prefixed text values that can be parsed directly as EUR;
+- other jurisdictions contain source-presented numeric values whose original currency is not safely identifiable from the stored value alone.
+
+External checks showed that at least some foreign prize amounts had been converted before storage. Selected United States and French race schedules could be reconstructed using fixed source multipliers, but those multipliers did not necessarily represent the correct historical market exchange rate.
+
+The reusable data lessons are:
+
+- declared database types do not guarantee consistent physical storage;
+- preserve the raw monetary value before parsing or interpreting it;
+- store confirmed monetary amounts as integer minor units rather than floating-point numbers;
+- assign a currency only where the evidence supports it;
+- distinguish direct source amounts from converted or reconstructed amounts;
+- retain the conversion method, multiplier, evidence and confidence separately;
+- do not convert blank runner values to zero;
+- do not label summed runner prizes as the advertised purse or total race value;
+- do not assume a fixed number of runners receive recorded prize money;
+- defer foreign-currency reconstruction until the relevant jurisdiction and period can be validated.
+
+The investigation also demonstrated the value of anomalies. Nearly all populated United States prize rows from 2018 reconstructed under one source multiplier, while a small Santa Anita batch reconstructed under another. That pattern may indicate a source rate change, processing batch or alternative data route, but explaining it belongs in a separate jurisdiction-level study.
+
+Scope discipline was important. Historical changes in the number of runners with recorded prize money and full foreign-currency reconstruction were both interesting, but neither was required to establish the field's meaning and safe storage. The notebook recorded those questions and stopped rather than allowing them to take over the field audit.
+
+A fresh-kernel rerun exposed a hidden-state dependency: `numeric_prize_rows` existed during exploration but was not created correctly by the saved top-to-bottom notebook sequence. The repair initially recreated the dataframe without `candidate_jurisdiction`, causing a second failure in a later grouping cell.
+
+The reusable workflow lessons are:
+
+- a notebook that works only because variables survive in memory is not reproducible;
+- every dataframe must be created in a saved cell before its first use;
+- creation cells must include every column required by later merges, groups and summaries;
+- repair the original dependency rather than relying on temporary recovery cells;
+- restart the kernel and run every cell from top to bottom before declaring completion;
+- treat a fresh-kernel failure as a notebook-design fault, not merely an execution inconvenience.
+
+Notebook 13 established a governed treatment for `prize`: direct GBP and EUR parsing where confirmed, exact integer minor-unit storage, null preservation, precise race-level aggregation labels, and explicit unresolved status for foreign source-presented values.
+
+---
+
+## 47. Current project position'''
+
+          text = text.replace(marker, section, 1)
+          path.write_text(text, encoding='utf-8')
+
+          workflow = Path('.github/workflows/notebook13-lessons-update.yml')
+          workflow.unlink()
+
+      - name: Commit lessons update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md .github/workflows/notebook13-lessons-update.yml
+          git commit -m "Record Notebook 13 prize money lessons"
+          git push
