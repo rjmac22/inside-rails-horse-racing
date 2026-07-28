@@ -30,8 +30,8 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented on this audit branch, with deliberate governed validator failure** | Parser and 8 tests pass. Source validator deliberately fails on the exact known unresolved source anomaly `{'F': 1}`; this is retained as evidence rather than normalised away. |
 | 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Fully closed on this audit branch** | 11 tests passed and source validation covered all 189,043 provisional races, with 16 governed context rows, zero missing worked-example assignments and zero asserted wagering-context assignments. |
 | 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Fully closed on this audit branch** | 8 tests passed and the immutable-source validator confirmed exactly 37 governed fields across 1,851,285 rows. |
-| 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Implemented on this audit branch, subject to local validation** | Added strict clock parsing, explicit two-branch handling, timezone-aware reconstruction, rollover tests, source validator and database integration/update documentation. Branch selection remains governed evidence rather than parser inference. |
-| 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Implementation exists but tests/validation/integration are incomplete** | Strong artifacts exist; unit failure tests and explicit reference migration/update handling require verification. |
+| 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Fully closed on this audit branch** | 9 tests passed; the immutable-source validator covered 1,851,285 rows, 1,380 distinct raw values and 189,043 provisional races with zero unresolved clock representations. |
+| 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Implemented on this audit branch, subject to local validation** | Existing loader and validator are supplemented by synthetic failure tests and explicit reference integration/update documentation. The current durable baseline is 395 identities and 51 IANA timezones. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 
 ## Gap register and repair order
@@ -50,8 +50,8 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 8 | 08 | Implement starting-price parsing | **Implemented with a deliberate governed failure on the one known bad source value `F`.** |
 | 9 | 09 | Verify governed reference and integration completeness | **Completed: 11 tests passed and source-wide bounded-context validation passed.** |
 | 10 | 10 | Reconcile the field-treatment register | **Completed: 8 tests passed and immutable-source schema validation passed.** |
-| 11 | 11 | Verify/add temporal tests, validator and integration | **Implemented.** Run `tests/test_off_time.py` and `scripts/validate_off_time.py` against the immutable source. |
-| 12 | 12 | Verify/add reference-loader tests and migration path | Synthetic failure tests and explicit reference version/update procedure. |
+| 11 | 11 | Verify/add temporal tests, validator and integration | **Completed: 9 tests passed and immutable-source clock validation passed.** |
+| 12 | 12 | Verify/add reference-loader tests and migration path | **Implemented.** Run `tests/test_course_locations.py` and `scripts/validate_course_locations.py`. |
 | 13 | 13 | No implementation gap identified | Keep as the reference closeout pattern. |
 
 ## Immediate stopping rule
@@ -62,4 +62,4 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Next notebook to repair
 
-After Notebook 11 passes its local unit tests and immutable-source clock validator, Notebook 12 is next: course location and timezone mapping require synthetic failure tests and an explicit reference migration/update procedure.
+After Notebook 12 passes its local tests and permanent-reference validator, the retrospective implementation audit has no remaining notebook repair target in the current 00–13 sequence.
