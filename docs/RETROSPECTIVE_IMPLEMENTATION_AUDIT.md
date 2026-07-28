@@ -38,6 +38,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Fully closed on this audit branch** | 9 tests passed; the immutable-source validator covered 1,851,285 rows, 1,380 distinct raw values and 189,043 provisional races with zero unresolved clock representations. |
 | 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Fully closed on this audit branch** | 13 tests passed; permanent-reference validation confirmed 395 unique course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct valid IANA timezones. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
+| 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | `runner_entries.py`, 20 tests, 9-case independent validator, source-wide validation across 1,851,285 rows and 189,043 races, and database integration documentation all passed locally. The separate course-reference join coverage defect is recorded as upstream repair work rather than hidden in this parser. |
 
 ## Gap register and repair order
 
@@ -58,6 +59,7 @@ The repair order is chronological unless a later artifact explicitly supersedes 
 | 11 | 11 | Verify/add temporal tests, validator and integration | **Completed: 9 tests passed and immutable-source clock validation passed.** |
 | 12 | 12 | Verify/add reference-loader tests and migration path | **Completed: 13 tests passed and permanent-reference validation passed.** |
 | 13 | 13 | No implementation gap identified | Keep as the reference closeout pattern. |
+| 14 | 14 | Implement governed `ran` and `num` treatment | **Completed: 20 tests passed, 9 governed validator cases passed and source-wide validation passed.** |
 
 ## Immediate stopping rule
 
@@ -67,12 +69,16 @@ A notebook marked complete in the README is not sufficient evidence of closure.
 
 ## Current position
 
-The retrospective implementation repair work for Notebooks 00–13 is complete.
+The retrospective implementation repair work for Notebooks 00–14 is complete.
+
+The next upstream repair is the course-reference join coverage defect exposed by Notebook 14: every distinct raw source `course` value must resolve deterministically through the governed course reference before the next research notebook begins.
 
 The remaining branch-level housekeeping is to:
 
-1. run the complete test suite;
-2. run the applicable independent validators;
-3. confirm Notebook 08 still fails for the documented lone `F` anomaly only;
-4. correct any stale status or baseline documentation;
-5. merge the audit branch.
+1. update the README and project plan for Notebook 14;
+2. run the complete test suite;
+3. run the applicable independent validators;
+4. confirm Notebook 08 still fails for the documented lone `F` anomaly only;
+5. repair and validate the course-reference join coverage defect;
+6. correct any stale status or baseline documentation;
+7. merge the audit branch.
