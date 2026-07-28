@@ -12,6 +12,7 @@ def test_fractional_price_parses_exactly() -> None:
     assert parsed.decimal_odds == Fraction(9, 2)
     assert parsed.implied_probability == Fraction(2, 9)
     assert parsed.favourite_marker is None
+    assert parsed.favourite_status is None
 
 
 def test_evens_aliases_parse() -> None:
@@ -22,22 +23,26 @@ def test_evens_aliases_parse() -> None:
         assert parsed.implied_probability == Fraction(1, 2)
 
 
-def test_favourite_suffixes_are_separated_from_odds() -> None:
-    favourite = parse_starting_price("1/2F")
-    joint = parse_starting_price("1/2J")
-    evens_favourite = parse_starting_price("EVSF")
-
-    assert favourite.fractional_odds == Fraction(1, 2)
-    assert favourite.favourite_marker == "F"
-    assert joint.fractional_odds == Fraction(1, 2)
-    assert joint.favourite_marker == "J"
-    assert evens_favourite.price_kind == StartingPriceKind.EVENS
-    assert evens_favourite.favourite_marker == "F"
+def test_known_favourite_markers_are_preserved_separately() -> None:
+    expected = {
+        "7/2F": ("F", "favourite"),
+        "4/1J": ("J", "joint_favourite"),
+        "5/1C": ("C", "co_favourite"),
+        "EVSF": ("F", "favourite"),
+    }
+    for raw, (marker, status) in expected.items():
+        parsed = parse_starting_price(raw)
+        assert parsed.price_kind in {
+            StartingPriceKind.FRACTIONAL,
+            StartingPriceKind.EVENS,
+        }
+        assert parsed.favourite_marker == marker
+        assert parsed.favourite_status == status
 
 
 def test_market_context_remains_unresolved() -> None:
     assert parse_starting_price("5/1").market_context_status == "unresolved"
-    assert parse_starting_price("5/1F").market_context_status == "unresolved"
+    assert parse_starting_price("5/1C").market_context_status == "unresolved"
 
 
 def test_missing_values_remain_missing() -> None:
