@@ -54,8 +54,11 @@ def test_later_closed_fields_are_reconciled() -> None:
 
 
 def test_source_fields_remain_raw_even_when_derived() -> None:
-    for field in ("dist", "wgt", "pos", "sp", "prize", "ran", "num"):
+    for field in ("dist", "wgt", "pos", "sp", "prize"):
         assert FIELD_GOVERNANCE_BY_NAME[field].treatment == "deterministic_parsing"
+
+    assert FIELD_GOVERNANCE_BY_NAME["ran"].treatment == "governed_semantic_profile"
+    assert FIELD_GOVERNANCE_BY_NAME["num"].treatment == "raw_plus_governed_derivation"
 
 
 def test_open_semantic_fields_are_not_falsely_closed() -> None:
