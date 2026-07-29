@@ -29,6 +29,12 @@ A notebook is fully closed only when every applicable item below has been comple
 
 ### Manual and external verification
 
+Every notebook closeout must make an explicit manual-verification decision. It must state either:
+
+- `captured`: one or more bounded claims depended on manual or external evidence and have been recorded with reusable provenance;
+- `specialist_reference`: equivalent evidence is preserved in a more specific governed reference table; or
+- `not_applicable`: all conclusions were derived from source-internal analysis and no manual or external claim was used.
+
 Whenever a conclusion, exception decision, correction candidate or reference enrichment depends on manual research or external evidence:
 
 - add one row per bounded claim to `data/reference/manual_verifications.csv` while the evidence is open;
@@ -40,6 +46,8 @@ Whenever a conclusion, exception decision, correction candidate or reference enr
 - run `tests/test_manual_verifications.py` and `scripts/validate_manual_verifications.py` before closure.
 
 A more specific governed reference table may replace a manual-verification row only when it preserves equivalent evidence, method, confidence and provenance. See `docs/MANUAL_VERIFICATION_REGISTER.md`.
+
+Manual-verification capture may not be deferred until the final database build. A notebook that used external evidence but did not preserve it remains incomplete until the evidence is recovered or repeated and governed.
 
 ## 3. Reproducible notebook
 
@@ -198,7 +206,7 @@ A future notebook may be marked **fully closed** only when it has, where applica
 5. unit tests including failure cases;
 6. an independent source-wide validator;
 7. database integration and update documentation;
-8. captured manual/external verification with reusable provenance;
+8. an explicit manual-verification decision and captured reusable provenance where applicable;
 9. a reader-facing report;
 10. lessons learned;
 11. updated audit and field-governance records;
