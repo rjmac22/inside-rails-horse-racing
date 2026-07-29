@@ -36,8 +36,18 @@ def make_row(**overrides: str) -> ManualVerification:
     return ManualVerification(**values)
 
 
-def test_empty_governed_register_loads() -> None:
-    assert load_manual_verifications(REGISTER) == ()
+def test_governed_register_loads_expected_backfill() -> None:
+    rows = load_manual_verifications(REGISTER)
+    assert len(rows) == 7
+    assert {row.verification_id for row in rows} == {
+        "NB12-COURSE-0001",
+        "NB12-COURSE-0002",
+        "NB14-RAN-0001",
+        "NB14-RAN-0002",
+        "NB14-RAN-0003",
+        "NB14-RAN-0004",
+        "NB14-RAN-0005",
+    }
 
 
 def test_valid_row_passes() -> None:
