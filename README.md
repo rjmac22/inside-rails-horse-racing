@@ -35,7 +35,7 @@ Notebook 08 retains one deliberate governed source failure: the malformed standa
 
 ### Notebook 16 — Race classification and eligibility
 
-**Status:** implemented pending final fresh-kernel notebook validation.
+**Status:** fully closed.
 
 Notebook 16 established that:
 
@@ -47,13 +47,16 @@ Notebook 16 established that:
 - the value `F` is overloaded and cannot be treated globally as fillies-only;
 - authoritative sex-condition reconstruction is deferred to a future jurisdiction-specific study using official race-condition evidence.
 
-Focused validation passed with:
+Closeout validation passed with:
 
-- 15 unit tests in 0.05s;
+- fresh-kernel notebook execution and committed executed notebook (`ffd4344`);
+- persisted decision-table reload across 7 governed fields;
+- 25 focused classification and manual-verification tests in 0.03s;
 - 1,851,285 source runner rows checked;
 - 189,043 provisional races checked;
 - complete partitioning of the observed parser vocabularies;
-- exact unresolved rating-band vocabulary of `--` and `(75-100)`.
+- exact unresolved rating-band vocabulary of `--` and `(75-100)`;
+- manual-verification validation across 28 governed rows.
 
 Manual evidence is captured under `NB16-AGE-0001` through `NB16-AGE-0004`.
 
@@ -68,7 +71,7 @@ Durable outputs:
 - `reports/notebook_16_race_classification_and_eligibility.md`
 - `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`
 
-The remaining closure evidence is a fresh-kernel execution of the committed notebook, reload validation of its persisted decision output, and the manual-verification focused checks. The complete repository test suite remains deferred until the end of the source-field series or repair branch.
+The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
 ## Retrospective implementation audit
 
@@ -81,7 +84,7 @@ The branch `audit/retrospective-implementation-closeout` remains open while the 
 
 ## Next bounded action
 
-Finish Notebook 16's local fresh-kernel closeout validation, then begin runner characteristics and equipment. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+Begin runner characteristics and equipment, bounded around runner `age`, `sex`, `hg` and related characteristic or equipment fields. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
