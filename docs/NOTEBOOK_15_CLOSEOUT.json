@@ -1,7 +1,7 @@
 {
   "notebook": "notebooks/15_beaten_distance_semantics.ipynb",
   "study": "beaten-distance semantics",
-  "status": "implementation_complete_validation_pending",
+  "status": "fully_closed",
   "fresh_kernel_run": {
     "status": "passed",
     "recorded_commit": "5b0a0ea"
@@ -22,13 +22,24 @@
   "implementation": "src/inside_rails/beaten_distance.py",
   "focused_tests": {
     "path": "tests/test_beaten_distance.py",
-    "status": "pending_local_run",
+    "status": "passed",
+    "result": "15 passed in 0.03s",
     "command": "pytest -q tests/test_beaten_distance.py"
   },
   "source_validator": {
     "path": "scripts/validate_beaten_distances.py",
-    "status": "pending_local_run",
-    "command": "python scripts/validate_beaten_distances.py data/raw/form_2015-present/form_2015-present/raceform.db"
+    "status": "passed",
+    "command": "python scripts/validate_beaten_distances.py data/raw/form_2015-present/form_2015-present/raceform.db",
+    "validated_runner_rows": 1851285,
+    "observed_counts": {
+      "ovr_text_rows": 93992,
+      "btn_text_rows": 93992,
+      "unexpected_ovr_text_rows": 0,
+      "unexpected_btn_text_rows": 0,
+      "positive_official_winner_distance_rows": 500,
+      "later_position_zero_overall_rows": 371,
+      "positive_overall_zero_increment_rows": 2750
+    }
   },
   "database_integration": "docs/BEATEN_DISTANCE_INTEGRATION.md",
   "field_governance": "docs/NOTEBOOK_15_FIELD_GOVERNANCE.md",
