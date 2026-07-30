@@ -1,6 +1,18 @@
 """Reusable code for the Inside Rails horse-racing database project."""
 
 from .prize_money import PrizeMoneyResult, parse_prize_money
+from .race_classification import (
+    AgeBandResult,
+    ClassResult,
+    PatternResult,
+    RatingBandResult,
+    SexRestrictionResult,
+    classify_sex_restriction,
+    parse_age_band,
+    parse_class,
+    parse_pattern,
+    parse_rating_band,
+)
 from .source_sqlite import (
     HEADER_ROWID,
     PROVISIONAL_RACE_COLUMNS,
@@ -11,12 +23,22 @@ from .source_sqlite import (
 )
 
 __all__ = [
+    "AgeBandResult",
+    "ClassResult",
     "HEADER_ROWID",
     "PROVISIONAL_RACE_COLUMNS",
     "PROVISIONAL_RUNNER_COLUMNS",
+    "PatternResult",
     "PrizeMoneyResult",
+    "RatingBandResult",
+    "SexRestrictionResult",
+    "classify_sex_restriction",
     "connect_read_only",
+    "parse_age_band",
+    "parse_class",
+    "parse_pattern",
     "parse_prize_money",
+    "parse_rating_band",
     "profile_source_database",
     "quote_identifier",
 ]
