@@ -44,102 +44,64 @@ Established raw-source immutability, source grain and quality, physical lineage 
 
 ## Phase 2 — Domain interpretation and parsing
 
-### Notebooks 04–10
+### Notebooks 04–15
 
-**Status:** complete and retrospectively implemented.
+**Status:** complete and retrospectively implemented or fully closed.
 
-Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, and governance of all 37 source fields.
+Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, and governance of all 37 source fields.
 
 Notebook 08 retains one deliberate governed validator failure for the malformed standalone source value `F`.
-
-### Notebook 11 — Off-time and temporal semantics
-
-**Status:** fully closed.
-
-Established deterministic parsing of observed source `off` values, explicit preservation of 12-hour ambiguity and timezone-aware timestamp construction only after an evidence-backed branch and governed course timezone are supplied.
-
-### Notebook 12 — Course location and timezone mapping
-
-**Status:** fully closed as an archived construction record with durable reference validation and source-facing join repair.
-
-The permanent reference contains 395 jurisdiction-qualified course identities, complete valid IANA timezone coverage and zero unresolved assignments.
-
-### Notebook 13 — Prize-money semantics and availability
-
-**Status:** fully closed.
-
-Established runner-level recorded prize-money semantics, governed GBP and EUR parsing for Great Britain and Ireland, integer minor-unit storage, null preservation and unresolved treatment for unsupported foreign values.
-
-### Notebook 14 — Runner counts, numbers and entries
-
-**Status:** fully closed.
-
-Established that `ran` is a source-presented race count rather than guaranteed external starter completeness, and that `num` must preserve positive integer, zero and blank states separately. Shared positive numbers are permitted and `num` does not participate in runner identity.
-
-### Notebook 15 — Beaten-distance semantics
-
-**Status:** fully closed; 15 focused tests and source-wide validation passed.
-
-Established conservative physical-finish distance semantics, explicit unavailable sentinels, review flags rather than silent correction, manual-verification provenance and reusable implementation.
 
 ### Notebook 16 — Race classification and eligibility
 
 **Status:** fully closed.
 
-Established that `class`, `pattern` and `rating_band` are complementary, jurisdiction-sensitive source fields. Canonical source syntax can be parsed while raw and unresolved states remain preserved.
+Established complementary, jurisdiction-sensitive interpretation of `class`, `pattern`, `rating_band`, `age_band` and `sex_rest`, with raw and unresolved states preserved.
+
+### Notebook 17 — Runner characteristics and equipment
+
+**Status:** implemented pending local validation; notebook archived as a non-rerunnable construction record.
 
 Governed rules:
 
-- preserve `race_name`, `type`, `class`, `pattern`, `rating_band`, `age_band` and `sex_rest` at provisional-race grain;
-- parse only canonical `Class N`, Listed/Group/Grade, exact `N-N`, and observed age-band syntax;
-- preserve `--` and `(75-100)` as unresolved rating-band source forms;
-- interpret age outputs as source-stated bounds rather than universal eligibility enforcement;
-- treat `sex_rest` as source shorthand, with `F` explicitly overloaded;
-- do not reconstruct official global sex eligibility from `sex_rest` alone;
-- preserve external corrections and unresolved evidence through governed verification IDs.
+- preserve integer `age` as the source-recorded runner age;
+- do not overwrite age from race-level `age_band` or clip unusual values automatically;
+- normalise the six standard sex codes;
+- apply the two sex contamination corrections only through exact verification-backed lineage;
+- preserve blank `hg` as field not supplied;
+- decompose all populated headgear values into ordered governed components;
+- normalise source-specific `c` to eyecover while preserving the raw token;
+- retain trailing `1` only as a source-declared first-time flag from 15 October 2025 onward;
+- do not reconstruct historical lifetime first use from suffix absence or local source history.
 
 Durable outputs:
 
-- `notebooks/16_race_classification_and_eligibility.ipynb`;
-- `src/inside_rails/race_classification.py`;
-- `tests/test_race_classification.py`;
-- `scripts/validate_race_classification.py`;
-- `docs/RACE_CLASSIFICATION_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_16_FIELD_GOVERNANCE.md`;
-- `docs/NOTEBOOK_16_LESSONS_LEARNED.md`;
-- `reports/notebook_16_race_classification_and_eligibility.md`;
-- `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`.
+- `src/inside_rails/runner_characteristics.py`;
+- `tests/test_runner_characteristics.py`;
+- `scripts/validate_runner_characteristics.py`;
+- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
+- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
+- three persisted governed CSV outputs under `data/processed/notebook_17_runner_characteristics/`.
 
-Closeout validation recorded:
-
-- fresh-kernel notebook execution passed and the executed notebook was committed at `ffd4344`;
-- persisted decision-table reload passed for 7 governed fields;
-- `25 passed in 0.03s` across classification and manual-verification tests;
-- 1,851,285 source runner rows checked;
-- 189,043 provisional races checked;
-- all observed parser vocabularies governed;
-- unresolved rating-band forms exactly `--` and `(75-100)`;
-- manual-verification validator passed across 28 governed rows.
-
-The complete repository suite remains deferred until the end of the source-field series or repair branch.
+Local focused tests, the independent validator and manual-verification validation remain required before full closure. The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
 The provisional sequence is now:
 
-1. runner characteristics and equipment;
-2. ratings semantics and availability;
-3. horse and pedigree identity;
-4. connections and owner identity;
-5. comments and embedded information.
+1. ratings semantics and availability;
+2. horse and pedigree identity;
+3. connections and owner identity;
+4. comments and embedded information.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Begin runner characteristics and equipment
+### Begin ratings semantics and availability
 
-Bound the next study around runner `age`, `sex`, `hg` and related equipment or characteristic fields. Profile storage, coverage, jurisdiction dependence, contradictions, field interactions and safe preservation rules before extracting reusable logic.
+Bound the next study around runner `or`, `rpr` and `ts`. Profile storage, blank and dash behaviour, temporal and jurisdiction coverage, cross-rating relationships, impossible or sentinel values, and which ratings can be compared safely without inventing official scale equivalence.
 
 Do not run the complete repository suite yet.
 
