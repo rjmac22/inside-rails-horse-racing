@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/12_course_timezone_resolution_completed_archive.ipynb",
-  "status": "complete_archived_executed_record",
+  "status": "complete_archived_executed_record_with_durable_source_join_repair",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What governed course-location and timezone reference is required to interpret source off-times safely across all course identities in the current source extract?",
   "identity_key": [
@@ -8,10 +8,11 @@
     "candidate_jurisdiction"
   ],
   "validated_findings": {
-    "course_identities": 394,
-    "timezone_assignments": 394,
-    "unresolved_timezones": 0,
-    "distinct_iana_timezones": 51,
+    "course_identities_at_notebook_closeout": 394,
+    "current_durable_course_identities": 395,
+    "current_timezone_assignments": 395,
+    "current_unresolved_timezones": 0,
+    "current_distinct_iana_timezones": 51,
     "duplicate_identity_pairs": 0,
     "iana_timezone_validation": "passed",
     "persisted_reference_reload": "passed"
@@ -24,20 +25,38 @@
   },
   "reusable_outputs": {
     "module": "src/inside_rails/course_locations.py",
-    "validation_script": "scripts/validate_course_locations.py",
+    "reference_validation_script": "scripts/validate_course_locations.py",
+    "source_join_validation_script": "scripts/validate_course_locations_source.py",
+    "unit_tests": "tests/test_course_locations.py",
+    "integration_documentation": "docs/COURSE_LOCATIONS_DATABASE_INTEGRATION.md",
     "report": "docs/REPORT_12_COURSE_LOCATION_AND_TIMEZONE_MAPPING.md",
     "closeout_record": "docs/NOTEBOOK_12_CLOSEOUT.json"
   },
   "database_consequences": [
     "Preserve raw date, course and off values unchanged.",
-    "Join course reference data using candidate_course_label plus candidate_jurisdiction.",
+    "Derive candidate_course_label and candidate_jurisdiction before joining raw source rows to the governed reference.",
+    "Join canonical identities using candidate_course_label plus candidate_jurisdiction.",
+    "Treat raw_course_labels as construction provenance rather than a production join key.",
     "Store iana_timezone separately from raw off-time text.",
     "Preserve timezone resolution method and evidence.",
     "Allow exact venue coordinates to remain nullable enrichment.",
-    "Reject duplicate course-reference identities.",
-    "Validate all assigned timezone names.",
-    "Flag future source courses that do not match the governed reference."
+    "Reject duplicate course-reference identities and multiple matches.",
+    "Expose unmatched future source identities as a clear review residue and fail in strict validation contexts."
   ],
+  "durable_source_join_repair": {
+    "reason": "Notebook 14 exposed a direct raw course to raw_course_labels join that bypassed the governed canonical derivation and produced seven false unmatched labels.",
+    "false_unmatched_labels": [
+      "Bordeaux Le Bouscat",
+      "Chukyo",
+      "Cidade Jardim",
+      "Hipodromo Chile",
+      "Les Landes",
+      "Monterrico",
+      "Nakayama"
+    ],
+    "replacement_contract": "Use merge_source_course_locations to preserve raw course text, derive the canonical identity, validate a many-to-one reference match and expose unmatched residue.",
+    "notebook_rerun_claim": "No fresh-kernel rerun is claimed. Durable implementation and independent validation supersede the incorrect direct-join conclusion."
+  },
   "limitations": [
     "Exact physical venue details remain incomplete for some course identities.",
     "Historical venue changes may later require effective-period treatment.",
@@ -45,16 +64,18 @@
     "The archived executed notebook is not intended to be rerun against the already-completed permanent reference."
   ],
   "validation": {
-    "command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py",
-    "result": "passed",
-    "course_identities": 394,
-    "timezone_assignments": 394,
-    "unresolved_timezones": 0,
-    "distinct_iana_timezones": 51
+    "reference_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py",
+    "reference_result": "previously passed at 395 identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones",
+    "source_join_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations_source.py",
+    "source_join_result": "pending local execution after durable repair",
+    "focused_test_command": "PYTHONPATH=src .venv/bin/python -m pytest tests/test_course_locations.py",
+    "focused_test_result": "pending local execution after durable repair"
   },
   "lessons_learned": [
     "Define the minimum downstream requirement before pursuing optional enrichment.",
     "Exact location completeness and timezone sufficiency are separate problems.",
+    "Canonical venue identity and raw source labels must remain separate.",
+    "A provenance label column is not automatically a production join key.",
     "Use automation to generate candidates and manual review to resolve ambiguity.",
     "Do not overengineer a finite unresolved residue.",
     "Treat completed research notebooks and reusable production pipelines as different artefacts.",
@@ -65,8 +86,7 @@
     "reason": "The notebook changed its own future input state by persisting the completed course-location reference. The executed archive is retained as the historical construction record, while reusable validation is provided independently."
   },
   "next_action": {
-    "notebook": 11,
-    "topic": "off-time and temporal semantics",
-    "instruction": "Resume Notebook 11 using data/reference/course_locations.csv as the governed timezone reference."
+    "stage": "local_validation",
+    "instruction": "Run the focused course-location tests, permanent-reference validator and source-wide join validator; update pending validation results only from captured local evidence."
   }
 }
