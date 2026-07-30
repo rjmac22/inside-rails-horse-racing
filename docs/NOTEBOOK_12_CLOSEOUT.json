@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/12_course_timezone_resolution_completed_archive.ipynb",
-  "status": "complete_archived_executed_record_with_durable_source_join_repair",
+  "status": "complete_archived_executed_record_with_validated_durable_source_join_repair",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What governed course-location and timezone reference is required to interpret source off-times safely across all course identities in the current source extract?",
   "identity_key": [
@@ -13,6 +13,13 @@
     "current_timezone_assignments": 395,
     "current_unresolved_timezones": 0,
     "current_distinct_iana_timezones": 51,
+    "current_source_race_contexts": 189043,
+    "current_distinct_raw_course_labels": 528,
+    "current_unmatched_source_race_contexts": 0,
+    "contextual_raw_course_labels": [
+      "Ascot",
+      "Newcastle"
+    ],
     "duplicate_identity_pairs": 0,
     "iana_timezone_validation": "passed",
     "persisted_reference_reload": "passed"
@@ -41,7 +48,8 @@
     "Preserve timezone resolution method and evidence.",
     "Allow exact venue coordinates to remain nullable enrichment.",
     "Reject duplicate course-reference identities and multiple matches.",
-    "Expose unmatched future source identities as a clear review residue and fail in strict validation contexts."
+    "Expose unmatched future source identities as a clear review residue and fail in strict validation contexts.",
+    "Allow one raw label to resolve to different governed identities only where explicit race context makes each source row deterministic."
   ],
   "durable_source_join_repair": {
     "reason": "Notebook 14 exposed a direct raw course to raw_course_labels join that bypassed the governed canonical derivation and produced seven false unmatched labels.",
@@ -54,7 +62,8 @@
       "Monterrico",
       "Nakayama"
     ],
-    "replacement_contract": "Use merge_source_course_locations to preserve raw course text, derive the canonical identity, validate a many-to-one reference match and expose unmatched residue.",
+    "replacement_contract": "Use merge_source_course_locations to preserve raw course text, derive the canonical identity from race context, validate a many-to-one reference match and expose unmatched residue.",
+    "contextual_collisions": "Ascot and Newcastle legitimately resolve to Great Britain or Australia from governed date, race-type and race-name context; raw-label uniqueness is not required.",
     "notebook_rerun_claim": "No fresh-kernel rerun is claimed. Durable implementation and independent validation supersede the incorrect direct-join conclusion."
   },
   "limitations": [
@@ -64,18 +73,19 @@
     "The archived executed notebook is not intended to be rerun against the already-completed permanent reference."
   ],
   "validation": {
-    "reference_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py",
-    "reference_result": "previously passed at 395 identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones",
-    "source_join_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations_source.py",
-    "source_join_result": "pending local execution after durable repair",
     "focused_test_command": "PYTHONPATH=src .venv/bin/python -m pytest tests/test_course_locations.py",
-    "focused_test_result": "pending local execution after durable repair"
+    "focused_test_result": "24 passed in 0.57s under Python 3.12.3 and pytest 9.1.1.",
+    "reference_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py",
+    "reference_result": "passed: 395 course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones.",
+    "source_join_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations_source.py",
+    "source_join_result": "passed: 189,043 provisional race contexts, 528 distinct raw course labels, 395 matched governed identities, zero unmatched source race contexts, with Ascot and Newcastle recorded as contextual raw labels."
   },
   "lessons_learned": [
     "Define the minimum downstream requirement before pursuing optional enrichment.",
     "Exact location completeness and timezone sufficiency are separate problems.",
     "Canonical venue identity and raw source labels must remain separate.",
     "A provenance label column is not automatically a production join key.",
+    "A raw label may be context-dependent even when every source row resolves deterministically.",
     "Use automation to generate candidates and manual review to resolve ambiguity.",
     "Do not overengineer a finite unresolved residue.",
     "Treat completed research notebooks and reusable production pipelines as different artefacts.",
@@ -86,7 +96,7 @@
     "reason": "The notebook changed its own future input state by persisting the completed course-location reference. The executed archive is retained as the historical construction record, while reusable validation is provided independently."
   },
   "next_action": {
-    "stage": "local_validation",
-    "instruction": "Run the focused course-location tests, permanent-reference validator and source-wide join validator; update pending validation results only from captured local evidence."
+    "stage": "repair_closed",
+    "instruction": "Course-reference join repair is complete and locally validated. Continue the notebook series without further expansion of this repair unless a new unmatched source residue appears."
   }
 }
