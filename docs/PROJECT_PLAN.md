@@ -80,56 +80,62 @@ Established that `ran` is a source-presented race count rather than guaranteed e
 
 **Status:** fully closed; 15 focused tests and source-wide validation passed.
 
-Established that `ovr_btn` describes cumulative distance from the source physical-finish first-place reference and `btn` describes incremental separation from the preceding physical finisher or stored distance group.
+Established conservative physical-finish distance semantics, explicit unavailable sentinels, review flags rather than silent correction, manual-verification provenance and reusable implementation.
+
+### Notebook 16 — Race classification and eligibility
+
+**Status:** implemented pending final fresh-kernel notebook validation.
+
+Established that `class`, `pattern` and `rating_band` are complementary, jurisdiction-sensitive source fields. Canonical source syntax can be parsed while raw and unresolved states remain preserved.
 
 Governed rules:
 
-- preserve raw values;
-- derive numeric values only from numeric storage;
-- treat `-` as unavailable rather than zero;
-- flag positive official-winner distance and later-position zero overall distance for review;
-- treat zero incremental distance with positive overall distance as same-distance-group evidence, not automatic proof of an official dead heat;
-- permit downstream correction only through governed reconciliation with verification provenance.
+- preserve `race_name`, `type`, `class`, `pattern`, `rating_band`, `age_band` and `sex_rest` at provisional-race grain;
+- parse only canonical `Class N`, Listed/Group/Grade, exact `N-N`, and observed age-band syntax;
+- preserve `--` and `(75-100)` as unresolved rating-band source forms;
+- interpret age outputs as source-stated bounds rather than universal eligibility enforcement;
+- treat `sex_rest` as source shorthand, with `F` explicitly overloaded;
+- do not reconstruct official global sex eligibility from `sex_rest` alone;
+- preserve external corrections and unresolved evidence through governed verification IDs.
 
 Durable outputs:
 
-- `src/inside_rails/beaten_distance.py`;
-- `tests/test_beaten_distance.py`;
-- `scripts/validate_beaten_distances.py`;
-- `docs/BEATEN_DISTANCE_INTEGRATION.md`;
-- `docs/NOTEBOOK_15_FIELD_GOVERNANCE.md`;
-- `docs/NOTEBOOK_15_LESSONS_LEARNED.md`;
-- `reports/notebook_15_beaten_distance_semantics.md`.
+- `src/inside_rails/race_classification.py`;
+- `tests/test_race_classification.py`;
+- `scripts/validate_race_classification.py`;
+- `docs/RACE_CLASSIFICATION_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_16_FIELD_GOVERNANCE.md`;
+- `docs/NOTEBOOK_16_LESSONS_LEARNED.md`;
+- `reports/notebook_16_race_classification_and_eligibility.md`;
+- `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`.
 
 Focused validation recorded:
 
-- `15 passed in 0.03s`;
+- `15 passed in 0.05s`;
 - 1,851,285 source runner rows checked;
-- 0 unexpected text values in either distance field;
-- 500 positive official-winner distance rows;
-- 371 later-position zero-overall-distance rows;
-- 2,750 positive-overall, zero-increment rows.
+- 189,043 provisional races checked;
+- all observed parser vocabularies governed;
+- unresolved rating-band forms exactly `--` and `(75-100)`.
 
-The complete repository suite remains deferred until the end of the source-field series or repair branch.
+The remaining closure requirement is the local fresh-kernel notebook execution, persisted-output reload check, and focused manual-verification validation. Do not run the complete repository suite yet.
 
 ## Remaining source-field studies
 
-The provisional sequence is now:
+After Notebook 16 closure, the provisional sequence is:
 
-1. race classification and eligibility;
-2. runner characteristics and equipment;
-3. ratings semantics and availability;
-4. horse and pedigree identity;
-5. connections and owner identity;
-6. comments and embedded information.
+1. runner characteristics and equipment;
+2. ratings semantics and availability;
+3. horse and pedigree identity;
+4. connections and owner identity;
+5. comments and embedded information.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Begin race classification and eligibility
+### Complete Notebook 16 validation, then begin runner characteristics and equipment
 
-Bound the next study around `class`, `pattern`, `rating_band`, `age_band`, `sex_rest` and related eligibility fields. Profile storage, coverage, jurisdiction dependence, internal contradictions and safe preservation rules before extracting reusable logic.
+Run Notebook 16 from a fresh kernel, confirm its governed decision output reloads successfully, and execute the focused Notebook 16 and manual-verification checks. Once recorded, mark Notebook 16 fully closed and begin the next bounded study around runner `age`, `sex`, `hg` and related equipment or characteristic fields.
 
 Do not run the complete repository suite yet.
 
