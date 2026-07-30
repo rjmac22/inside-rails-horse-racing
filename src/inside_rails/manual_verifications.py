@@ -41,6 +41,7 @@ ALLOWED_CONFIDENCE = {"high", "medium", "low"}
 ALLOWED_DATABASE_ACTIONS = {
     "evidence_only",
     "reference_enrichment",
+    "source_supplementation",
     "source_correction_candidate",
     "preserve_raw_unresolved",
 }
