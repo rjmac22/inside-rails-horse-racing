@@ -25,15 +25,11 @@ For each substantive notebook:
 
 The full procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
 
-The raw SQLite database remains read-only.
+The raw SQLite database remains read-only. All source-data queries use `DATA_ROW_PREDICATE = "rowid <> 1"`.
 
-All source-data queries use:
+Established source population:
 
-`DATA_ROW_PREDICATE = "rowid <> 1"`
-
-The established source population is:
-
-- 1,851,285 data-like runner rows;
+- 1,851,285 governed runner rows;
 - 189,043 provisional races;
 - 37 source columns;
 - candidate provisional race key: `date + course + off`.
@@ -58,111 +54,91 @@ Notebook 08 retains one deliberate governed validator failure for the malformed 
 
 ### Notebook 11 — Off-time and temporal semantics
 
-**Status:** fully closed; 9 tests and immutable-source validation passed.
+**Status:** fully closed.
 
-Established deterministic parsing of all observed source `off` values, explicit preservation of 12-hour ambiguity and timezone-aware timestamp construction only after an evidence-backed branch and governed course timezone are supplied.
-
-Validation covered 1,851,285 source rows, 1,380 distinct raw values and 189,043 provisional races with zero unresolved clock representations.
+Established deterministic parsing of observed source `off` values, explicit preservation of 12-hour ambiguity and timezone-aware timestamp construction only after an evidence-backed branch and governed course timezone are supplied.
 
 ### Notebook 12 — Course location and timezone mapping
 
-**Status:** fully closed as an archived construction record with a durable source-facing join repair.
+**Status:** fully closed as an archived construction record with durable reference validation and source-facing join repair.
 
-The current permanent reference contains:
-
-- 395 jurisdiction-qualified course identities;
-- 395 valid IANA timezone assignments;
-- 0 unresolved timezone assignments;
-- 51 distinct IANA timezones.
-
-The notebook remains an archived historical construction record because persisting the completed reference changed its own future input state. Reusable loading, tests and independent validation protect the permanent reference.
-
-Notebook 14 exposed an incorrect direct join from raw `course` to the `raw_course_labels` provenance column. The durable repair now preserves raw course text, derives `candidate_course_label` and `candidate_jurisdiction`, and joins on the governed canonical identity pair.
-
-Focused validation passed with 24 tests. Source-wide validation covered 189,043 race contexts, 528 distinct raw course labels and all 395 governed course identities with zero unmatched contexts. `Ascot` and `Newcastle` are documented contextual raw labels whose jurisdictions are resolved from race context.
+The permanent reference contains 395 jurisdiction-qualified course identities, complete valid IANA timezone coverage and zero unresolved assignments.
 
 ### Notebook 13 — Prize-money semantics and availability
 
 **Status:** fully closed.
 
-Established runner-level recorded prize-money semantics, direct governed GBP and EUR parsing for Great Britain and Ireland, integer minor-unit storage, null preservation, precise aggregation labels and explicit unresolved treatment for foreign source-presented values.
+Established runner-level recorded prize-money semantics, governed GBP and EUR parsing for Great Britain and Ireland, integer minor-unit storage, null preservation and unresolved treatment for unsupported foreign values.
 
 ### Notebook 14 — Runner counts, numbers and entries
 
-**Status:** fully closed; 20 tests, 9 governed validator cases and source-wide validation passed.
+**Status:** fully closed.
 
-Established that `ran` is a source-presented race count rather than a guaranteed externally complete starter count. Within-race consistency, stored row comparison, runner coverage and external count validation remain separate statuses.
+Established that `ran` is a source-presented race count rather than guaranteed external starter completeness, and that `num` must preserve positive integer, zero and blank states separately. Shared positive numbers are permitted and `num` does not participate in runner identity.
 
-Established that `num` has distinct positive-integer, integer-zero and blank-text source states. Only positive integers produce a canonical runner number, shared values are permitted, lost coupled-entry suffixes are not reconstructed, and `num` does not participate in runner identity.
+### Notebook 15 — Beaten-distance semantics
 
-Durable outputs are:
+**Status:** durable implementation complete; focused local validation pending.
 
-- `src/inside_rails/runner_entries.py`;
-- `tests/test_runner_entries.py`;
-- `scripts/validate_runner_entries.py`;
-- `scripts/validate_runner_entries_source.py`;
-- `docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_14_CLOSEOUT.json`.
+Established that `ovr_btn` describes cumulative distance from the source physical-finish first-place reference and `btn` describes incremental separation from the preceding physical finisher or stored distance group.
 
-## Retrospective implementation closeout
+Governed rules:
 
-The implementation audit for Notebooks 00–14 is complete on branch `audit/retrospective-implementation-closeout`.
+- preserve raw values;
+- derive numeric values only from numeric storage;
+- treat `-` as unavailable rather than zero;
+- flag positive official-winner distance and later-position zero overall distance for review;
+- treat zero incremental distance with positive overall distance as same-distance-group evidence, not automatic proof of an official dead heat;
+- permit downstream correction only through governed reconciliation with verification provenance.
 
-No notebook in the 00–14 sequence has an outstanding Notebook 14 implementation target. Notebook 08's deliberate source anomaly remains documented and unresolved by design.
+Durable outputs:
 
-The Notebook 12 source-facing course join repair is complete and independently validated. The branch remains open while the remaining source-field studies continue. The complete test suite and all applicable validators will be run before final merge.
+- `src/inside_rails/beaten_distance.py`;
+- `tests/test_beaten_distance.py`;
+- `scripts/validate_beaten_distances.py`;
+- `docs/BEATEN_DISTANCE_INTEGRATION.md`;
+- `docs/NOTEBOOK_15_FIELD_GOVERNANCE.md`;
+- `docs/NOTEBOOK_15_LESSONS_LEARNED.md`;
+- `reports/notebook_15_beaten_distance_semantics.md`.
+
+Notebook 15 becomes fully closed after focused local tests and the independent source-wide validator pass and are recorded. The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
 The provisional sequence is now:
 
-1. beaten-distance semantics (`ovr_btn`, `btn`);
-2. race classification and eligibility;
-3. runner characteristics and equipment;
-4. ratings semantics and availability;
-5. horse and pedigree identity;
-6. connections and owner identity;
-7. comments and embedded information.
-
-Prize-money, race-time, course-location and runner-entry semantics have already been completed in Notebooks 13, 11, 12 and 14 respectively and are no longer future studies.
+1. race classification and eligibility;
+2. runner characteristics and equipment;
+3. ratings semantics and availability;
+4. horse and pedigree identity;
+5. connections and owner identity;
+6. comments and embedded information.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Beaten-distance semantics (`ovr_btn`, `btn`)
+### Validate and close Notebook 15 implementation
 
-Begin the next evidence-led notebook with the bounded question:
+Run only the focused Notebook 15 checks:
 
-> What do `ovr_btn` and `btn` represent, how are they related, and which observed values can be safely parsed, preserved or derived?
+```bash
+pytest -q tests/test_beaten_distance.py
+python scripts/validate_beaten_distances.py \
+  data/raw/form_2015-present/form_2015-present/raceform.db
+```
 
-The initial notebook stage should profile the raw fields before any reusable implementation is written:
+Record the results in the audit register and closeout record. Do not run the complete repository suite yet.
 
-- storage classes, blank states and distinct raw formats;
-- values associated with winners, dead heats, placed finishers and non-finishers;
-- whether `btn` represents distance from the preceding finisher;
-- whether `ovr_btn` represents cumulative distance from the winner;
-- within-race consistency between ordered `btn` values and `ovr_btn`;
-- negative, decreasing, impossible or otherwise anomalous values;
-- differences by jurisdiction, race type and result state;
-- cases requiring manual or published-result verification.
+### Then begin race classification and eligibility
 
-Do not extract parser or derivation code until the notebook evidence establishes a stable contract. Preserve raw values throughout the investigation.
+Bound the next study around `class`, `pattern`, `rating_band`, `age_band`, `sex_rest` and related eligibility fields. Profile storage, coverage, jurisdiction dependence, internal contradictions and safe preservation rules before extracting reusable logic.
 
 ## Phase 3 — Entity and key design
 
-Notebook 03 established candidate source-record matching rules, but permanent entity and key design remains deferred.
+Permanent entity and key design remains deferred until the source-field studies required for structural reconstruction are completed or explicitly deferred.
 
-Questions still to resolve include:
-
-- stability of descriptive race fields across replacement snapshots;
-- permanent representation of jurisdiction-qualified courses;
-- entity-resolution requirements for horse and participant names;
-- versioning of amended or repeated source records;
-- coupled-entry representation;
-- staging surrogate identifiers and reconciliation controls.
-
-This phase begins only after the source-field studies required for structural reconstruction have been completed or explicitly deferred.
+Questions still to resolve include descriptive-field stability across replacement snapshots, entity resolution for horses and participants, amended-record versioning, coupled-entry representation, staging surrogate identifiers and reconciliation controls.
 
 ## Phase 4 — Target architecture
 
@@ -179,14 +155,6 @@ Only after the evidence base is sufficient:
 
 ## Phase 5 — Analytical products and writing
 
-Potential outputs after the database is validated:
+Potential outputs after the database is validated include research views, form-history datasets, trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
 
-- race and runner research views;
-- form-history datasets;
-- trainer, jockey, course and horse summaries;
-- reproducible feature datasets;
-- claim-testing investigations;
-- reader-facing stories about hidden data assumptions;
-- later modelling studies where justified.
-
-Predictive work is downstream of reliable source interpretation and database design.
+Predictive work remains downstream of reliable source interpretation and database design.
