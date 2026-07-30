@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
-  "status": "implemented_and_source_validated_pending_final_status_updates",
+  "status": "implemented_and_source_validated_archived_construction_record",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
   "candidate_race_identity": [
@@ -53,11 +53,32 @@
     "scripts/validate_runner_entries_source.py",
     "docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md"
   ],
+  "course_reference_correction": {
+    "archived_notebook_defect": "Two notebook cells joined raw course directly to the Notebook 12 raw_course_labels provenance column.",
+    "false_unmatched_labels": [
+      "Bordeaux Le Bouscat",
+      "Chukyo",
+      "Cidade Jardim",
+      "Hipodromo Chile",
+      "Les Landes",
+      "Monterrico",
+      "Nakayama"
+    ],
+    "correct_contract": "Preserve raw course, derive candidate_course_label and candidate_jurisdiction from governed rules, then join the canonical identity pair to course_locations.csv.",
+    "durable_replacement": [
+      "src/inside_rails/course_locations.py",
+      "tests/test_course_locations.py",
+      "scripts/validate_course_locations_source.py",
+      "docs/COURSE_LOCATIONS_DATABASE_INTEGRATION.md"
+    ],
+    "interpretation": "The seven labels were false misses caused by the notebook join path; they are not missing governed course identities.",
+    "fresh_kernel_claim": "No fresh-kernel Notebook 14 rerun is claimed. The archived construction record remains unchanged and its direct-join conclusion is superseded by durable validation."
+  },
   "limitations": [
     "The source alone does not establish a universal sporting definition for ran.",
     "External checks covered selected exceptions rather than all races.",
     "The source does not preserve coupled-entry suffixes such as 1A or 1B.",
-    "Several affected course labels require separate course-reference reconciliation.",
+    "The archived notebook contains a superseded direct course-reference join and must not be treated as the durable integration contract.",
     "The notebook does not repair missing runners or externally contradicted counts."
   ],
   "workflow_lessons": [
@@ -65,21 +86,23 @@
     "A kernel restart erases analytical state even when visible notebook output remains.",
     "Restore the saved dependency sequence and rerun from the top after kernel failure.",
     "Record rejected screens as findings so they are not repeated.",
-    "Separate reference-data maintenance from field parser logic."
+    "Separate reference-data maintenance from field parser logic.",
+    "Do not join raw source text to a provenance column when a governed canonical derivation already exists."
   ],
   "notebook_commit": "5f1cb3a",
   "validation": {
     "module_compilation": "python3 -m py_compile src/inside_rails/runner_entries.py passed",
     "unit_tests": "20 passed in 0.05s under Python 3.12.3 and pytest 9.1.1",
     "governed_case_validator": "Runner-entry validation passed for 9 governed cases.",
-    "source_wide_validator": "Source-wide runner-entry validation passed: 1,851,285 rows, 189,043 races, 523 shared-number groups."
+    "source_wide_validator": "Source-wide runner-entry validation passed: 1,851,285 rows, 189,043 races, 523 shared-number groups.",
+    "course_join_repair_validation": "Focused tests and source-wide course-location validator pending captured local execution."
   },
   "fresh_kernel_status": {
-    "status": "executed_notebook_committed_after_kernel_recovery",
-    "note": "The saved notebook was committed after restoring its dependency sequence following a kernel restart. Reusable logic is independently covered by unit and source-wide validation."
+    "status": "archived_construction_record_with_durable_replacement_validation",
+    "note": "A genuine fresh-kernel top-to-bottom rerun has not been completed. Reusable runner-entry logic is independently validated, and the superseded course join is repaired outside the notebook through governed implementation and validation."
   },
   "next_action": {
-    "stage": "status_documentation_and_upstream_repair",
-    "instruction": "Update the retrospective audit, field-governance register, README and project plan for Notebook 14, then repair the upstream course-reference join coverage defect before beginning the next research notebook."
+    "stage": "validate_course_join_repair",
+    "instruction": "Run only the focused course-location tests and the two course-location validators, then capture their exact results before continuing the notebook series."
   }
 }
