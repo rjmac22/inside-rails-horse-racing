@@ -25,50 +25,50 @@ The candidate provisional race key is `date + course + off`. The raw SQLite data
 
 ## Current status
 
-### Notebooks 00–14
+### Notebooks 00–15
 
-**Status:** complete and retrospectively implemented.
+**Status:** complete and retrospectively implemented or fully closed as recorded in the audit register.
 
-These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, and complete governance of all 37 source fields.
+These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, and complete governance of all 37 source fields.
 
 Notebook 08 retains one deliberate governed source failure: the malformed standalone starting-price value `F` remains unresolved rather than being silently normalised.
 
-### Notebook 15 — Beaten-distance semantics
+### Notebook 16 — Race classification and eligibility
 
-**Status:** fully closed; 15 focused tests and source-wide validation passed.
+**Status:** implemented pending final fresh-kernel notebook validation.
 
-Notebook 15 established that:
+Notebook 16 established that:
 
-- `ovr_btn` is cumulative distance from the source physical-finish first-place reference;
-- `btn` is the incremental margin from the preceding physical finisher or stored distance group;
-- the text sentinel `-` means distance unavailable and must not become zero;
-- official positions can reflect amendments while distance fields preserve the physical finish;
-- positive winner distance and later-position zero overall distance are review flags, not automatic corrections;
-- `btn = 0` with positive `ovr_btn` identifies a same-stored-distance group but does not prove an official dead heat.
-
-The notebook passed a fresh-kernel run, persisted and reloaded its governed decision table, and captured bounded external verification under IDs `NB15-BTN-0001` through `NB15-BTN-0017`.
+- `class`, `pattern` and `rating_band` are complementary source fields rather than one interchangeable hierarchy;
+- canonical `Class N`, Listed/Group/Grade and exact `N-N` rating syntax can be parsed safely while preserving raw values;
+- `--` and `(75-100)` remain explicit unresolved rating-band forms;
+- `age_band` syntax can be parsed into source-stated bounds, but those bounds cannot be enforced universally against source runner ages;
+- `sex_rest` is source shorthand rather than a complete official eligibility condition;
+- the value `F` is overloaded and cannot be treated globally as fillies-only;
+- authoritative sex-condition reconstruction is deferred to a future jurisdiction-specific study using official race-condition evidence.
 
 Focused validation passed with:
 
-- 15 unit tests;
+- 15 unit tests in 0.05s;
 - 1,851,285 source runner rows checked;
-- 93,992 `ovr_btn` text rows and 93,992 `btn` text rows, all using the governed `-` sentinel;
-- 500 positive official-winner distance rows;
-- 371 later-position zero-overall-distance rows;
-- 2,750 positive-overall, zero-increment rows.
+- 189,043 provisional races checked;
+- complete partitioning of the observed parser vocabularies;
+- exact unresolved rating-band vocabulary of `--` and `(75-100)`.
+
+Manual evidence is captured under `NB16-AGE-0001` through `NB16-AGE-0004`.
 
 Durable outputs:
 
-- `src/inside_rails/beaten_distance.py`
-- `tests/test_beaten_distance.py`
-- `scripts/validate_beaten_distances.py`
-- `docs/BEATEN_DISTANCE_INTEGRATION.md`
-- `docs/NOTEBOOK_15_FIELD_GOVERNANCE.md`
-- `docs/NOTEBOOK_15_LESSONS_LEARNED.md`
-- `reports/notebook_15_beaten_distance_semantics.md`
-- `data/derived/notebook_15_beaten_distance_semantics/beaten_distance_field_decisions.csv`
+- `src/inside_rails/race_classification.py`
+- `tests/test_race_classification.py`
+- `scripts/validate_race_classification.py`
+- `docs/RACE_CLASSIFICATION_DATABASE_INTEGRATION.md`
+- `docs/NOTEBOOK_16_FIELD_GOVERNANCE.md`
+- `docs/NOTEBOOK_16_LESSONS_LEARNED.md`
+- `reports/notebook_16_race_classification_and_eligibility.md`
+- `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`
 
-The complete repository test suite remains deferred until the end of the source-field series or repair branch.
+The remaining closure evidence is a fresh-kernel execution of the committed notebook, reload validation of its persisted decision output, and the manual-verification focused checks. The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
 ## Retrospective implementation audit
 
@@ -81,7 +81,7 @@ The branch `audit/retrospective-implementation-closeout` remains open while the 
 
 ## Next bounded action
 
-Continue the remaining source-field sequence with race classification and eligibility. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+Finish Notebook 16's local fresh-kernel closeout validation, then begin runner characteristics and equipment. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
