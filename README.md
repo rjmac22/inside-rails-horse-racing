@@ -12,133 +12,67 @@ The wider purpose is not database construction for its own sake. The project is 
 
 Kaggle: *Horse Racing Results UK/Ireland 2015–2025* by deltaromeo.
 
-The downloaded raw source files are intentionally excluded from Git because of size, licensing and reproducibility considerations.
+The raw files are excluded from Git because of size, licensing and reproducibility considerations. The supplied `raceform.db` has broader geographical and date coverage than the title suggests, including substantial international racing and records through 27 May 2026.
 
-Notebook 01 established that the supplied `raceform.db` has broader geographical and date coverage than the dataset title suggests, including substantial international racing and records through 27 May 2026.
+The source contains:
 
-The source contains one denormalised runner-grain table with:
-
-- 1,851,285 data-like runner rows;
+- 1,851,285 governed runner rows;
 - 189,043 reconstructed provisional races;
 - 37 source columns;
 - no declared primary key, foreign keys, indexes or uniqueness constraints.
 
-The established candidate provisional race key is:
-
-`date + course + off`
-
-The raw SQLite database remains read-only, and source queries use:
-
-`DATA_ROW_PREDICATE = "rowid <> 1"`
+The candidate provisional race key is `date + course + off`. The raw SQLite database remains read-only, and source queries use `DATA_ROW_PREDICATE = "rowid <> 1"`.
 
 ## Current status
 
-### Notebooks 00–10 — Source understanding and core parsing
+### Notebooks 00–14
 
 **Status:** complete and retrospectively implemented.
 
-These notebooks established source immutability, source grain and quality, race and runner reconstruction, jurisdiction and surface context, result semantics, distance and carried-weight parsing, bounded starting-price parsing, and complete governance of all 37 source fields.
-
-Reusable implementations, tests, validators and database-integration documents now exist for the governed rules established in these notebooks.
+These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, and complete governance of all 37 source fields.
 
 Notebook 08 retains one deliberate governed source failure: the malformed standalone starting-price value `F` remains unresolved rather than being silently normalised.
 
-### Notebook 11 — Off-time and temporal semantics
+### Notebook 15 — Beaten-distance semantics
 
-**Status:** fully closed; 9 tests and immutable-source validation passed.
+**Status:** durable implementation complete; focused local validation pending.
 
-Established strict parsing of all observed source `off` values, explicit treatment of 12-hour ambiguity, and timezone-aware reconstruction only where an evidence-backed branch and course timezone are supplied.
+Notebook 15 established that:
 
-Validation covered:
+- `ovr_btn` is cumulative distance from the source physical-finish first-place reference;
+- `btn` is the incremental margin from the preceding physical finisher or stored distance group;
+- the text sentinel `-` means distance unavailable and must not become zero;
+- official positions can reflect amendments while distance fields preserve the physical finish;
+- positive winner distance and later-position zero overall distance are review flags, not automatic corrections;
+- `btn = 0` with positive `ovr_btn` identifies a same-stored-distance group but does not prove an official dead heat.
 
-- 1,851,285 source rows;
-- 1,380 distinct raw `off` values;
-- 189,043 provisional races;
-- 0 unresolved clock representations.
+The notebook passed a fresh-kernel run, persisted and reloaded its governed decision table, and captured bounded external verification under IDs `NB15-BTN-0001` through `NB15-BTN-0017`.
 
-Reusable outputs:
+Durable outputs:
 
-- `src/inside_rails/off_time.py`
-- `tests/test_off_time.py`
-- `scripts/validate_off_time.py`
-- `docs/OFF_TIME_DATABASE_INTEGRATION.md`
+- `src/inside_rails/beaten_distance.py`
+- `tests/test_beaten_distance.py`
+- `scripts/validate_beaten_distances.py`
+- `docs/BEATEN_DISTANCE_INTEGRATION.md`
+- `docs/NOTEBOOK_15_FIELD_GOVERNANCE.md`
+- `docs/NOTEBOOK_15_LESSONS_LEARNED.md`
+- `reports/notebook_15_beaten_distance_semantics.md`
+- `data/derived/notebook_15_beaten_distance_semantics/beaten_distance_field_decisions.csv`
 
-### Notebook 12 — Course location and timezone mapping
-
-**Status:** fully closed; archived executed construction record, 13 tests and permanent-reference validation passed.
-
-The governed reference now contains:
-
-- 395 permanent jurisdiction-qualified course identities;
-- 395 valid IANA timezone assignments;
-- 0 unresolved timezone assignments;
-- 51 distinct IANA timezones.
-
-It preserves the distinction between course identity, exact venue enrichment and timezone sufficiency, using safe jurisdiction defaults only where defensible and course-level review in multi-timezone jurisdictions.
-
-Reusable outputs include:
-
-- `data/reference/course_locations.csv`
-- `src/inside_rails/course_locations.py`
-- `tests/test_course_locations.py`
-- `scripts/validate_course_locations.py`
-- `docs/COURSE_LOCATIONS_DATABASE_INTEGRATION.md`
-
-### Notebook 13 — Prize-money semantics and availability
-
-**Status:** fully closed.
-
-Established that `prize` is runner-level recorded prize money rather than the advertised race purse. Great Britain and Ireland support direct governed GBP and EUR parsing, blank values remain null, and foreign source-presented values remain unresolved unless a jurisdiction-specific reconstruction is separately validated.
-
-Reusable implementation, tests, source validation and database-integration documentation establish the current notebook closeout pattern.
-
-### Notebook 14 — Runner counts, numbers and entries
-
-**Status:** fully closed; 20 governed tests, 9 independent validator cases and source-wide validation passed.
-
-Established that `ran` is a source-presented race count rather than a guaranteed externally complete starter count. Internal row-count agreement is stored separately from external completeness and validation status.
-
-The source `num` field preserves positive integers, integer zero and blank text as distinct states. Only positive integers produce a canonical runner number, shared positive values are permitted, and `num` is not used as a runner key or treated automatically as a confirmed coupled entry.
-
-Reusable outputs include:
-
-- `src/inside_rails/runner_entries.py`
-- `tests/test_runner_entries.py`
-- `scripts/validate_runner_entries.py`
-- `scripts/validate_runner_entries_source.py`
-- `docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md`
-- `docs/NOTEBOOK_14_CLOSEOUT.json`
+Notebook 15 becomes fully closed when its focused tests and independent source-wide validator pass locally and the results are recorded. The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
 ## Retrospective implementation audit
-
-The retrospective closeout of Notebooks 00–14 is complete on branch `audit/retrospective-implementation-closeout`.
 
 See:
 
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
 
-The branch should remain open while the remaining source-field and database work continues. The complete test suite and all applicable validators will be run again before final merge.
+The branch `audit/retrospective-implementation-closeout` remains open while the remaining source-field studies continue. The complete test suite and all applicable validators will run again before final merge.
 
 ## Next bounded action
 
-### Repair Notebook 12 course-reference join coverage
-
-Notebook 14 exposed seven raw source course labels that did not resolve through the governed course-reference join used for jurisdiction analysis.
-
-The next task is to:
-
-- enumerate every distinct raw source `course` value;
-- join through the intended production lookup key;
-- require exactly one governed course identity and jurisdiction per raw label;
-- fail on zero or multiple matches;
-- repair aliases or missing reference rows in the Notebook 12 course reference;
-- rerun the permanent-reference tests and source validator;
-- record the repair without adding course-specific exceptions to runner-entry logic.
-
-After that upstream repair, the next planned source-field study is beaten-distance semantics for `ovr_btn` and `btn`.
-
-Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+After Notebook 15 focused validation, continue the remaining source-field sequence with race classification and eligibility. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
