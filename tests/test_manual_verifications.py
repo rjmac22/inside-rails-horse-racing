@@ -36,22 +36,29 @@ def make_row(**overrides: str) -> ManualVerification:
     return ManualVerification(**values)
 
 
-def test_governed_register_loads_expected_backfill() -> None:
+def test_governed_register_loads_current_backfill() -> None:
     rows = load_manual_verifications(REGISTER)
-    assert len(rows) == 7
-    assert {row.verification_id for row in rows} == {
+    ids = {row.verification_id for row in rows}
+
+    assert len(rows) == 28
+    assert len(ids) == len(rows)
+    assert {row.governing_notebook for row in rows} == {"12", "14", "15", "16"}
+    assert {
         "NB12-COURSE-0001",
-        "NB12-COURSE-0002",
         "NB14-RAN-0001",
-        "NB14-RAN-0002",
-        "NB14-RAN-0003",
-        "NB14-RAN-0004",
-        "NB14-RAN-0005",
-    }
+        "NB15-BTN-0001",
+        "NB16-AGE-0001",
+        "NB16-AGE-0004",
+    } <= ids
 
 
 def test_valid_row_passes() -> None:
     assert validate_manual_verifications([make_row()])[0].verification_id == "MV-0001"
+
+
+def test_source_supplementation_is_governed() -> None:
+    row = make_row(database_action="source_supplementation")
+    assert validate_manual_verifications([row])[0].database_action == "source_supplementation"
 
 
 def test_duplicate_ids_fail() -> None:
