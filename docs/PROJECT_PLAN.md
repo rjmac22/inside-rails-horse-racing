@@ -60,7 +60,7 @@ Established complementary, jurisdiction-sensitive interpretation of `class`, `pa
 
 ### Notebook 17 — Runner characteristics and equipment
 
-**Status:** implemented pending local validation; notebook archived as a non-rerunnable construction record.
+**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
 
 Governed rules:
 
@@ -76,15 +76,27 @@ Governed rules:
 
 Durable outputs:
 
+- `notebooks/17_runner_characteristics_and_equipment.ipynb`;
 - `src/inside_rails/runner_characteristics.py`;
 - `tests/test_runner_characteristics.py`;
 - `scripts/validate_runner_characteristics.py`;
 - `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
 - `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
 - `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
-- three persisted governed CSV outputs under `data/processed/notebook_17_runner_characteristics/`.
+- three persisted governed CSV outputs under `data/processed/notebook_17_runner_characteristics/`;
+- five permanent Notebook 17 records in `data/reference/manual_verifications.csv`.
 
-Local focused tests, the independent validator and manual-verification validation remain required before full closure. The complete repository suite remains deferred until the end of the source-field series or repair branch.
+Recorded closeout validation:
+
+- `20 passed in 0.04s` across focused runner-characteristics and manual-verification tests;
+- independent source validation passed across 1,851,285 runner rows;
+- 8 sex values governed, including 2 exact corrections;
+- 1,122,490 blank and 728,795 populated headgear rows reconciled;
+- 5,932 trailing-`1` rows confirmed, first observed on 15 October 2025;
+- manual-verification validation passed across 33 governed rows;
+- notebook and verification evidence committed at `699375d`.
+
+The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
