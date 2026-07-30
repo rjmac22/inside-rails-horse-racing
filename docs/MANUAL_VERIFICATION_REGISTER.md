@@ -10,7 +10,9 @@ The permanent register is:
 
 It records the exact source subject checked, the question asked, the external evidence used, the conclusion reached, confidence and the permitted future database action.
 
-The raw racing source is never overwritten by this register. A contradiction is stored as separate evidence and, where justified, may later support an amendment or reconciliation layer.
+The raw racing source is never overwritten by this register. Verified missing, incorrect or incomplete source facts are stored separately as governed evidence and, where justified, must support a downstream supplementation, correction, enrichment or reconciliation layer.
+
+Manual verification is not merely an anomaly log. When reliable evidence establishes a usable fact, the authorised database action must preserve and apply that fact during processing rather than knowingly carrying the defective source state forward as the only database representation.
 
 ## Durable implementation
 
@@ -53,12 +55,44 @@ At least one source locator or raw source value must be present. Confirmed rows 
 
 ## Governed database actions
 
-- `evidence_only` — retain as support for an analytical conclusion; do not add or alter a database fact;
-- `reference_enrichment` — suitable for a governed reference table after its own validation and uniqueness checks;
-- `source_correction_candidate` — retain the raw source unchanged and make the contradiction available to a future amendment/reconciliation layer;
-- `preserve_raw_unresolved` — retain evidence of the attempted check but make no correction or enrichment.
+- `evidence_only` — retain as support for an analytical conclusion only where the verified claim does not establish a database fact that should be applied;
+- `reference_enrichment` — add the verified fact to a governed reference table after its own validation and uniqueness checks;
+- `source_supplementation` — add a verified record or field that is absent from the immutable source during downstream processing, with explicit external provenance;
+- `source_correction_candidate` — retain the raw source unchanged and apply the verified correction through a governed amendment or reconciliation layer once the required implementation and validation exist;
+- `preserve_raw_unresolved` — retain evidence of the attempted check but make no correction, supplementation or enrichment because the result remains unresolved.
 
 No row may authorise direct overwriting of immutable source data.
+
+Where reliable external evidence establishes a missing or incorrect database fact, `evidence_only` is not sufficient. The register must authorise the narrowest applicable downstream action, and the future database build must consume that governed action.
+
+## Downstream processing rule
+
+Every verified intervention must preserve the distinction between:
+
+- immutable source-present values;
+- externally supplemented values;
+- externally corrected values;
+- derived values; and
+- unresolved values.
+
+Where the evidence supports it, downstream processing must:
+
+1. retain the immutable raw source record unchanged;
+2. load the governed manual-verification or specialist-reference record;
+3. add or correct the verified fact in the processed database;
+4. record the verification identifier, evidence method, confidence and action used;
+5. prevent the supplemented or corrected value from being presented as source-original; and
+6. leave every unsupported field null or unresolved rather than inventing it.
+
+Examples include:
+
+- adding a verified missing runner or race record;
+- correcting a verified finishing position or result attribute;
+- supplying a verified course, jurisdiction or identity mapping;
+- overriding an unsafe source interpretation during processing; and
+- preserving an unresolved contradiction without fabricating a replacement value.
+
+A manually verified missing record is not complete merely because the omission has been documented. If the evidence establishes enough information to process the record safely, the governed supplementary record must be included in the future database build.
 
 ## Notebook procedure
 
@@ -69,10 +103,14 @@ Whenever manual verification is used:
 3. record the access date and evidence locator;
 4. state the bounded conclusion and confidence;
 5. select the database action explicitly;
-6. cite the `verification_id` in notebook conclusions, exception tables or closeout records;
-7. run the focused tests and register validator before notebook closure.
+6. capture every verified value needed for the authorised action and leave unsupported values unresolved;
+7. cite the `verification_id` in notebook conclusions, exception tables or closeout records;
+8. document how the future database build will consume the verification where the action is not `evidence_only` or `preserve_raw_unresolved`;
+9. run the focused tests and register validator before notebook closure.
 
 A notebook that depends materially on manual verification is not fully closed until those checks are represented in this register or in a more specific governed reference table that preserves equivalent provenance.
+
+A notebook is also not fully closed where a confirmed supplementation or correction has been captured but its required downstream implementation, validation or integration consequence has been left unspecified.
 
 ## Retrospective backfill
 
@@ -89,6 +127,8 @@ The backfill must cover, where evidence was actually consulted:
 - selected shared runner-number and coupled-entry checks.
 
 Backfill rows must not invent missing URLs, dates or conclusions. Where the committed record lacks sufficient provenance, record the verification as unresolved or repeat the external check.
+
+Where a repeated or recovered check confirms a missing or incorrect database fact, the backfill must assign the applicable downstream supplementation, correction or enrichment action rather than defaulting to evidence-only documentation.
 
 ## Validation
 
