@@ -66,7 +66,7 @@ Validation covered 1,851,285 source rows, 1,380 distinct raw values and 189,043 
 
 ### Notebook 12 — Course location and timezone mapping
 
-**Status:** fully closed as an archived construction record, but its production join coverage now has a documented upstream repair target.
+**Status:** fully closed as an archived construction record with a durable source-facing join repair.
 
 The current permanent reference contains:
 
@@ -77,7 +77,9 @@ The current permanent reference contains:
 
 The notebook remains an archived historical construction record because persisting the completed reference changed its own future input state. Reusable loading, tests and independent validation protect the permanent reference.
 
-Notebook 14 later exposed seven raw source course labels that do not resolve through the intended jurisdiction join path. This is a course-reference coverage defect, not a runner-entry parser defect, and must be repaired in the Notebook 12 governed reference.
+Notebook 14 exposed an incorrect direct join from raw `course` to the `raw_course_labels` provenance column. The durable repair now preserves raw course text, derives `candidate_course_label` and `candidate_jurisdiction`, and joins on the governed canonical identity pair.
+
+Focused validation passed with 24 tests. Source-wide validation covered 189,043 race contexts, 528 distinct raw course labels and all 395 governed course identities with zero unmatched contexts. `Ascot` and `Newcastle` are documented contextual raw labels whose jurisdictions are resolved from race context.
 
 ### Notebook 13 — Prize-money semantics and availability
 
@@ -108,53 +110,44 @@ The implementation audit for Notebooks 00–14 is complete on branch `audit/retr
 
 No notebook in the 00–14 sequence has an outstanding Notebook 14 implementation target. Notebook 08's deliberate source anomaly remains documented and unresolved by design.
 
-The branch remains open while the course-reference join repair and remaining source-field work continue. The complete test suite and all applicable validators will be run before final merge.
+The Notebook 12 source-facing course join repair is complete and independently validated. The branch remains open while the remaining source-field studies continue. The complete test suite and all applicable validators will be run before final merge.
 
 ## Remaining source-field studies
 
 The provisional sequence is now:
 
-1. repair Notebook 12 raw-course join coverage;
-2. beaten-distance semantics (`ovr_btn`, `btn`);
-3. race classification and eligibility;
-4. runner characteristics and equipment;
-5. ratings semantics and availability;
-6. horse and pedigree identity;
-7. connections and owner identity;
-8. comments and embedded information.
+1. beaten-distance semantics (`ovr_btn`, `btn`);
+2. race classification and eligibility;
+3. runner characteristics and equipment;
+4. ratings semantics and availability;
+5. horse and pedigree identity;
+6. connections and owner identity;
+7. comments and embedded information.
 
-Prize-money, race-time and runner-entry semantics have already been completed in Notebooks 13, 11 and 14 respectively and are no longer future studies.
+Prize-money, race-time, course-location and runner-entry semantics have already been completed in Notebooks 13, 11, 12 and 14 respectively and are no longer future studies.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Repair Notebook 12 course-reference join coverage
+### Beaten-distance semantics (`ovr_btn`, `btn`)
 
-Notebook 14 identified seven raw source course labels that failed to resolve through the governed course-reference join used for jurisdiction analysis:
+Begin the next evidence-led notebook with the bounded question:
 
-- Bordeaux Le Bouscat;
-- Chukyo;
-- Cidade Jardim;
-- Hipodromo Chile;
-- Les Landes;
-- Monterrico;
-- Nakayama.
+> What do `ovr_btn` and `btn` represent, how are they related, and which observed values can be safely parsed, preserved or derived?
 
-Required repair:
+The initial notebook stage should profile the raw fields before any reusable implementation is written:
 
-- enumerate every distinct raw source `course` value;
-- join through the intended production key;
-- require exactly one governed course identity and jurisdiction for each raw label;
-- fail on zero matches;
-- fail on multiple matches;
-- determine whether each unresolved label requires an alias, corrected identity or missing reference row;
-- update the Notebook 12 governed reference rather than adding downstream hard-coded jurisdictions;
-- rerun course-reference tests and source validation;
-- confirm zero unresolved raw course labels through the production join path;
-- update the Notebook 12 closeout and audit records if the repair changes its closure evidence.
+- storage classes, blank states and distinct raw formats;
+- values associated with winners, dead heats, placed finishers and non-finishers;
+- whether `btn` represents distance from the preceding finisher;
+- whether `ovr_btn` represents cumulative distance from the winner;
+- within-race consistency between ordered `btn` values and `ovr_btn`;
+- negative, decreasing, impossible or otherwise anomalous values;
+- differences by jurisdiction, race type and result state;
+- cases requiring manual or published-result verification.
 
-After this bounded repair, proceed to beaten-distance semantics for `ovr_btn` and `btn`.
+Do not extract parser or derivation code until the notebook evidence establishes a stable contract. Preserve raw values throughout the investigation.
 
 ## Phase 3 — Entity and key design
 
