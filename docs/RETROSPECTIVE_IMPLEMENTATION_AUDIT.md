@@ -37,7 +37,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Fully closed on this audit branch** | Permanent-reference validation confirmed complete governed timezone coverage. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 | 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
-| 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Implementation complete; focused local validation pending** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. Module, focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Local focused tests and validator must now be run and recorded. |
+| 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, 15 focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Source-wide validation passed across 1,851,285 runner rows. |
 
 ## Notebook 15 closure evidence
 
@@ -56,8 +56,20 @@ Durable artifacts:
 
 The implementation preserves raw values, parses only numeric storage, treats `-` as unavailable rather than zero, and generates review flags without silently correcting amended results or source defects.
 
+Recorded focused validation:
+
+- `pytest -q tests/test_beaten_distance.py`: **15 passed in 0.03s**;
+- source validator: **passed**;
+- runner rows checked: **1,851,285**;
+- `ovr_btn` text rows: **93,992**;
+- `btn` text rows: **93,992**;
+- unexpected text rows: **0** in both fields;
+- positive official-winner distance rows: **500**;
+- later-position zero-overall-distance rows: **371**;
+- positive-overall, zero-increment rows: **2,750**.
+
 ## Current position
 
-Notebook 15 analysis and durable implementation are complete. Its status becomes fully closed after the focused unit tests and independent source-wide validator pass locally and the results are recorded.
+Notebook 15 is fully closed. The next source-field study is race classification and eligibility.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
