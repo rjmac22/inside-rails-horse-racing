@@ -51,7 +51,7 @@ The complete repository test suite remains deferred until the end of the source-
 
 ### Notebook 17 — Runner characteristics and equipment
 
-**Status:** implemented pending local validation.
+**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
 
 Notebook 17 established that:
 
@@ -63,10 +63,9 @@ Notebook 17 established that:
 - source-specific `c` is interpreted as eyecover with preserved provenance;
 - 5,932 trailing-`1` rows begin on 15 October 2025 and represent a source declaration rather than a complete lifetime equipment history.
 
-Notebook 17 is classified as a non-rerunnable archival construction record. Durable replacement validation is provided outside the notebook.
-
 Durable outputs:
 
+- `notebooks/17_runner_characteristics_and_equipment.ipynb`;
 - `src/inside_rails/runner_characteristics.py`;
 - `tests/test_runner_characteristics.py`;
 - `scripts/validate_runner_characteristics.py`;
@@ -75,9 +74,19 @@ Durable outputs:
 - `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
 - `data/processed/notebook_17_runner_characteristics/runner_sex_governance.csv`;
 - `data/processed/notebook_17_runner_characteristics/runner_headgear_governance.csv`;
-- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`.
+- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`;
+- `data/reference/manual_verifications.csv` with five Notebook 17 verification records.
 
-Focused tests, the runner-characteristics validator and manual-verification validation must still be run locally against the source database before the status changes to fully closed.
+Closeout validation passed with:
+
+- `20 passed in 0.04s` across runner-characteristics and manual-verification tests;
+- 1,851,285 runner rows checked by the independent validator;
+- 8 sex values governed, including 2 exact corrections;
+- 1,122,490 blank and 728,795 populated headgear rows reconciled;
+- 5,932 trailing-`1` rows confirmed, first observed on 15 October 2025;
+- manual-verification validation passed across 33 governed rows.
+
+The analytical notebook and evidence register were committed at `699375d`.
 
 ## Retrospective implementation audit
 
