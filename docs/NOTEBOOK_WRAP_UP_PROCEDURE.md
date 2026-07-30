@@ -49,14 +49,40 @@ A more specific governed reference table may replace a manual-verification row o
 
 Manual-verification capture may not be deferred until the final database build. A notebook that used external evidence but did not preserve it remains incomplete until the evidence is recovered or repeated and governed.
 
-## 3. Reproducible notebook
+## 3. Notebook reproducibility or archival classification
+
+Choose the closure route that matches the notebook's future purpose.
+
+### Executable notebook route
+
+Use this route only when the notebook is intended to remain a repeatable analytical workflow or when future users need to regenerate its outputs directly.
 
 - Restart the kernel and run the notebook from top to bottom.
 - Define every path, constant, dataframe, helper, and dependency before first use.
 - Remove temporary recovery cells or repair the original failing cell.
 - Ensure external requests use persisted caches where applicable.
 - Reload and validate every file written by the notebook.
-- If the notebook is an archived construction record whose persisted output changes its own future inputs, classify it explicitly as non-rerunnable and provide durable replacement validation outside the notebook.
+
+### Archival construction-record route
+
+Use this route when the notebook's purpose is to preserve the completed investigation and reasoning rather than to serve as the durable production workflow.
+
+A notebook does not need to be made fresh-kernel restart-safe merely for neatness when:
+
+- the analysis has already been completed and can be read from the saved notebook;
+- governed outputs have been persisted and reloaded;
+- reusable logic, tests and independent validation will live outside the notebook;
+- rerunning the notebook would duplicate permanent writes, depend on changed external inputs, or require disproportionate repair work without improving reliability.
+
+For this route:
+
+- classify the notebook explicitly as a non-rerunnable archival construction record;
+- preserve the executed outputs, reasoning, anomalies and lineage needed to understand the conclusion;
+- do not spend time removing harmless exploratory or recovery history solely to manufacture a clean rerun;
+- provide durable replacement validation through persisted outputs, reusable implementation, focused tests and an independent source-wide validator;
+- record any material cell that is known to be unsafe or misleading to rerun.
+
+Restart safety is therefore required only when future rerun capability is genuinely needed. Archival classification must not be used to avoid creating the durable implementation and validation required by the remaining closeout steps.
 
 ## 4. Reusable implementation
 
@@ -200,7 +226,7 @@ At the end of a notebook series or repair branch:
 A future notebook may be marked **fully closed** only when it has, where applicable:
 
 1. a final conclusion and limitations;
-2. a fresh-kernel rerun or explicit archival classification;
+2. either a fresh-kernel rerun when future executable reruns are needed, or an explicit archival classification with durable replacement validation;
 3. persisted and reloaded outputs;
 4. reusable code or governed reference data;
 5. unit tests including failure cases;
