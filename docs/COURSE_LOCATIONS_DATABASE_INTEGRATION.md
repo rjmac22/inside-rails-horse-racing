@@ -39,6 +39,8 @@ Source-facing derivation requires:
 
 The context is required because some unsuffixed labels are resolved through historical or race-context rules rather than terminal jurisdiction suffixes.
 
+A raw label is not itself guaranteed to be a unique venue identity. In the current source, `Ascot` and `Newcastle` are governed contextual collisions: each raw label can resolve to either Great Britain or Australia according to date, race type and race-name context. Each source race context must still resolve deterministically to exactly one canonical identity.
+
 ## Required preservation
 
 Retain separately:
@@ -73,8 +75,9 @@ The permanent reference validator expects:
 The source-wide join baseline expects:
 
 - 528 distinct raw course labels in the current extract;
-- zero unmatched raw labels;
-- zero raw labels mapping to multiple governed identities.
+- zero unmatched source race contexts;
+- exactly two contextual raw labels: `Ascot` and `Newcastle`;
+- deterministic resolution of every race context to one governed identity.
 
 The earlier Notebook 12 closeout record reported 394 identities. The durable validator reflects the later permanent reference and is the current baseline. Any count change must be explained by a reviewed reference or source update rather than silently accepted.
 
@@ -85,13 +88,14 @@ For a replacement source extract or newly observed course identity:
 1. derive the candidate course label and jurisdiction using the governed course-jurisdiction logic;
 2. compare the resulting identity set with `course_locations.csv`;
 3. retain all unmatched identities in an explicit review list;
-4. research the minimum defensible timezone assignment;
-5. record the evidence, resolution method and validation status;
-6. append or amend the permanent reference without altering raw source values;
-7. run `tests/test_course_locations.py`;
-8. run `scripts/validate_course_locations.py`;
-9. run `scripts/validate_course_locations_source.py`;
-10. review any identity-count, raw-label-count or timezone-count change before rebuilding downstream timestamps.
+4. review any new contextual raw-label collisions separately;
+5. research the minimum defensible timezone assignment;
+6. record the evidence, resolution method and validation status;
+7. append or amend the permanent reference without altering raw source values;
+8. run `tests/test_course_locations.py`;
+9. run `scripts/validate_course_locations.py`;
+10. run `scripts/validate_course_locations_source.py`;
+11. review any identity-count, raw-label-count, contextual-label-set or timezone-count change before rebuilding downstream timestamps.
 
 Do not rerun the historical global geocoding exercise merely because one new identity appears. Resolve the finite unmatched residue and preserve the evidence.
 
@@ -107,7 +111,8 @@ The load or validation step must fail for:
 - unexpected current identity, raw-label or timezone counts;
 - unresolved timezone assignments in the governed permanent reference;
 - zero source matches in strict mode;
-- one raw source label mapping to multiple governed identities.
+- an unexpected contextual raw-label set;
+- any race context that does not resolve deterministically to one governed identity.
 
 A future historical venue change may require effective-period rows. It must not be represented by duplicate undated identity rows.
 
