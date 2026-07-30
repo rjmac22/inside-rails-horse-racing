@@ -25,6 +25,8 @@ Source-wide profiling and parsing were appropriate for the 728,795 populated hea
 - Do not impose a fresh-kernel rerun when a completed notebook is better treated as an archival construction record.
 - Move directly to durable external implementation and validation once the analytical notebook has served its purpose.
 - Do not ask the user to perform repository closeout work that can be completed through the repository tools.
+- When new manual-verification rows are added, update count-sensitive focused tests before asking for local validation.
+- Do not claim validation is complete until the exact local test and validator outputs have been recorded.
 
 ## Reusable assets created
 
@@ -35,6 +37,16 @@ Source-wide profiling and parsing were appropriate for the 728,795 populated hea
 - database-integration documentation;
 - reader-facing Notebook 17 report;
 - permanent manual-verification records.
+
+## Validation outcome
+
+Durable replacement validation passed after the archival notebook and evidence register were committed at `699375d`:
+
+- `20 passed in 0.04s` across the focused tests;
+- source-wide runner-characteristics validation passed across 1,851,285 rows;
+- manual-verification validation passed across 33 governed rows.
+
+The initial focused test run exposed one stale hard-coded manual-verification count of 28. Updating that expected baseline to the governed 33-row register was the correct fix because the validator independently confirmed the new records and classifications.
 
 ## Procedure change
 
