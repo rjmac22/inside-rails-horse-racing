@@ -84,7 +84,7 @@ Established conservative physical-finish distance semantics, explicit unavailabl
 
 ### Notebook 16 — Race classification and eligibility
 
-**Status:** implemented pending final fresh-kernel notebook validation.
+**Status:** fully closed.
 
 Established that `class`, `pattern` and `rating_band` are complementary, jurisdiction-sensitive source fields. Canonical source syntax can be parsed while raw and unresolved states remain preserved.
 
@@ -100,6 +100,7 @@ Governed rules:
 
 Durable outputs:
 
+- `notebooks/16_race_classification_and_eligibility.ipynb`;
 - `src/inside_rails/race_classification.py`;
 - `tests/test_race_classification.py`;
 - `scripts/validate_race_classification.py`;
@@ -109,19 +110,22 @@ Durable outputs:
 - `reports/notebook_16_race_classification_and_eligibility.md`;
 - `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`.
 
-Focused validation recorded:
+Closeout validation recorded:
 
-- `15 passed in 0.05s`;
+- fresh-kernel notebook execution passed and the executed notebook was committed at `ffd4344`;
+- persisted decision-table reload passed for 7 governed fields;
+- `25 passed in 0.03s` across classification and manual-verification tests;
 - 1,851,285 source runner rows checked;
 - 189,043 provisional races checked;
 - all observed parser vocabularies governed;
-- unresolved rating-band forms exactly `--` and `(75-100)`.
+- unresolved rating-band forms exactly `--` and `(75-100)`;
+- manual-verification validator passed across 28 governed rows.
 
-The remaining closure requirement is the local fresh-kernel notebook execution, persisted-output reload check, and focused manual-verification validation. Do not run the complete repository suite yet.
+The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
-After Notebook 16 closure, the provisional sequence is:
+The provisional sequence is now:
 
 1. runner characteristics and equipment;
 2. ratings semantics and availability;
@@ -133,9 +137,9 @@ These are planning units rather than a commitment to one full-length notebook pe
 
 ## Current next action
 
-### Complete Notebook 16 validation, then begin runner characteristics and equipment
+### Begin runner characteristics and equipment
 
-Run Notebook 16 from a fresh kernel, confirm its governed decision output reloads successfully, and execute the focused Notebook 16 and manual-verification checks. Once recorded, mark Notebook 16 fully closed and begin the next bounded study around runner `age`, `sex`, `hg` and related equipment or characteristic fields.
+Bound the next study around runner `age`, `sex`, `hg` and related equipment or characteristic fields. Profile storage, coverage, jurisdiction dependence, contradictions, field interactions and safe preservation rules before extracting reusable logic.
 
 Do not run the complete repository suite yet.
 
