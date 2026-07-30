@@ -1,0 +1,8 @@
+field,source_meaning,safe_derived_treatment,unresolved_or_unsafe_treatment,status
+race_name,Source-presented race title and descriptive wording,Preserve unchanged and use only for bounded supporting phrase review,Do not treat every detected phrase as an official condition,confirmed_raw_source_field
+type,Source race-type category,Preserve observed categories Flat Hurdle Chase and NH Flat,Do not infer deeper regulatory equivalence without jurisdiction context,confirmed_source_category
+class,Source-presented broad race class,Preserve raw and parse integer only from canonical Class N forms,Do not derive from rating_band or assume cross-jurisdiction equivalence,confirmed_structure_contextual_meaning
+pattern,Source-presented Listed Group or Grade status,Preserve Listed Group and Grade as distinct families,Do not collapse them into one universal hierarchy,confirmed_structure_jurisdiction_dependent
+rating_band,Source-presented rating restriction where populated,Parse only exact closed integer N-N ranges,Do not coerce -- or parenthesised forms or infer race quality,confirmed_parser_with_unresolved_forms
+age_band,Structured source-presented age-condition shorthand,Parse exact open-ended and closed-range syntax as stated bounds only,Do not enforce universally against runner age or silently repair anomalies,confirmed_syntax_contextual_semantics
+sex_rest,Source shorthand for a race-level sex-related condition,Preserve explicit raw categories and overloaded status,Do not treat F universally as fillies-only or reconstruct official eligibility,confirmed_source_shorthand_overloaded
