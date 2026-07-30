@@ -47,31 +47,37 @@ Notebook 16 established that:
 - the value `F` is overloaded and cannot be treated globally as fillies-only;
 - authoritative sex-condition reconstruction is deferred to a future jurisdiction-specific study using official race-condition evidence.
 
-Closeout validation passed with:
+The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
-- fresh-kernel notebook execution and committed executed notebook (`ffd4344`);
-- persisted decision-table reload across 7 governed fields;
-- 25 focused classification and manual-verification tests in 0.03s;
-- 1,851,285 source runner rows checked;
-- 189,043 provisional races checked;
-- complete partitioning of the observed parser vocabularies;
-- exact unresolved rating-band vocabulary of `--` and `(75-100)`;
-- manual-verification validation across 28 governed rows.
+### Notebook 17 — Runner characteristics and equipment
 
-Manual evidence is captured under `NB16-AGE-0001` through `NB16-AGE-0004`.
+**Status:** implemented pending local validation.
+
+Notebook 17 established that:
+
+- `age` is complete and usable as the source-recorded runner age without automatic clipping or correction from `age_band`;
+- the standard sex codes `C`, `F`, `G`, `H`, `M` and `R` are governed;
+- two isolated sex-field contamination rows require exact verification-backed corrections;
+- `hg` is blank on 1,122,490 rows and populated on 728,795 rows;
+- all 60 populated headgear values can be decomposed into ordered governed components;
+- source-specific `c` is interpreted as eyecover with preserved provenance;
+- 5,932 trailing-`1` rows begin on 15 October 2025 and represent a source declaration rather than a complete lifetime equipment history.
+
+Notebook 17 is classified as a non-rerunnable archival construction record. Durable replacement validation is provided outside the notebook.
 
 Durable outputs:
 
-- `src/inside_rails/race_classification.py`
-- `tests/test_race_classification.py`
-- `scripts/validate_race_classification.py`
-- `docs/RACE_CLASSIFICATION_DATABASE_INTEGRATION.md`
-- `docs/NOTEBOOK_16_FIELD_GOVERNANCE.md`
-- `docs/NOTEBOOK_16_LESSONS_LEARNED.md`
-- `reports/notebook_16_race_classification_and_eligibility.md`
-- `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`
+- `src/inside_rails/runner_characteristics.py`;
+- `tests/test_runner_characteristics.py`;
+- `scripts/validate_runner_characteristics.py`;
+- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
+- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
+- `data/processed/notebook_17_runner_characteristics/runner_sex_governance.csv`;
+- `data/processed/notebook_17_runner_characteristics/runner_headgear_governance.csv`;
+- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`.
 
-The complete repository test suite remains deferred until the end of the source-field series or repair branch.
+Focused tests, the runner-characteristics validator and manual-verification validation must still be run locally against the source database before the status changes to fully closed.
 
 ## Retrospective implementation audit
 
@@ -84,7 +90,7 @@ The branch `audit/retrospective-implementation-closeout` remains open while the 
 
 ## Next bounded action
 
-Begin runner characteristics and equipment, bounded around runner `age`, `sex`, `hg` and related characteristic or equipment fields. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+Begin ratings semantics and availability, bounded around `or`, `rpr` and `ts`. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
