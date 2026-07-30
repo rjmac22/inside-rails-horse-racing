@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
-  "status": "implemented_and_source_validated_archived_construction_record",
+  "status": "implemented_source_validated_and_archived_with_course_join_repair_closed",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
   "candidate_race_identity": [
@@ -64,7 +64,12 @@
       "Monterrico",
       "Nakayama"
     ],
-    "correct_contract": "Preserve raw course, derive candidate_course_label and candidate_jurisdiction from governed rules, then join the canonical identity pair to course_locations.csv.",
+    "correct_contract": "Preserve raw course, derive candidate_course_label and candidate_jurisdiction from governed race-context rules, then join the canonical identity pair to course_locations.csv.",
+    "contextual_raw_labels": [
+      "Ascot",
+      "Newcastle"
+    ],
+    "contextual_rule": "Ascot and Newcastle may each resolve to Great Britain or Australia, but every source race context resolves deterministically from date, race type and race name.",
     "durable_replacement": [
       "src/inside_rails/course_locations.py",
       "tests/test_course_locations.py",
@@ -87,7 +92,8 @@
     "Restore the saved dependency sequence and rerun from the top after kernel failure.",
     "Record rejected screens as findings so they are not repeated.",
     "Separate reference-data maintenance from field parser logic.",
-    "Do not join raw source text to a provenance column when a governed canonical derivation already exists."
+    "Do not join raw source text to a provenance column when a governed canonical derivation already exists.",
+    "Do not require raw-label uniqueness where explicit source context resolves a legitimate venue collision."
   ],
   "notebook_commit": "5f1cb3a",
   "validation": {
@@ -95,14 +101,16 @@
     "unit_tests": "20 passed in 0.05s under Python 3.12.3 and pytest 9.1.1",
     "governed_case_validator": "Runner-entry validation passed for 9 governed cases.",
     "source_wide_validator": "Source-wide runner-entry validation passed: 1,851,285 rows, 189,043 races, 523 shared-number groups.",
-    "course_join_repair_validation": "Focused tests and source-wide course-location validator pending captured local execution."
+    "course_join_focused_tests": "24 passed in 0.57s under Python 3.12.3 and pytest 9.1.1.",
+    "course_reference_validator": "Passed: 395 course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones.",
+    "course_join_source_validator": "Passed: 189,043 provisional race contexts, 528 distinct raw course labels, 395 matched governed identities, zero unmatched source race contexts, with Ascot and Newcastle recorded as contextual raw labels."
   },
   "fresh_kernel_status": {
     "status": "archived_construction_record_with_durable_replacement_validation",
-    "note": "A genuine fresh-kernel top-to-bottom rerun has not been completed. Reusable runner-entry logic is independently validated, and the superseded course join is repaired outside the notebook through governed implementation and validation."
+    "note": "A genuine fresh-kernel top-to-bottom rerun has not been completed. Reusable runner-entry logic is independently validated, and the superseded course join is repaired outside the notebook through governed implementation and source-wide validation."
   },
   "next_action": {
-    "stage": "validate_course_join_repair",
-    "instruction": "Run only the focused course-location tests and the two course-location validators, then capture their exact results before continuing the notebook series."
+    "stage": "repair_closed",
+    "instruction": "Notebook 14 and its upstream course-reference join repair are closed. Continue the notebook series; do not expand this repair unless a new unmatched source residue appears."
   }
 }
