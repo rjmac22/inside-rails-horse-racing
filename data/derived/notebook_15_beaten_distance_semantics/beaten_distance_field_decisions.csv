@@ -1,0 +1,8 @@
+decision_id,raw_field,interpreted_meaning,status,implementation_action,limitation
+NB15-DIST-001,ovr_btn,cumulative distance from the source physical-finish first-place reference,confirmed,parse numeric values and preserve raw value,official pos can reflect an amended result while distance continues to reflect the physical finish
+NB15-DIST-002,btn,incremental margin from the preceding physical finisher or stored distance group,confirmed,parse numeric values and preserve raw value,"rounding, grouped margins and amendments can prevent simple official-position reconstruction"
+NB15-DIST-003,ovr_btn|btn,text sentinel '-' means distance unavailable,confirmed,retain raw sentinel and derive null numeric value,do not convert the sentinel to zero
+NB15-DIST-004,ovr_btn,positive value on official position 1 is an amended-result indicator or source anomaly,governed_exception,flag for review; do not silently correct,structure alone does not identify the permitted correction
+NB15-DIST-005,ovr_btn,"zero value on a later numeric position can indicate a demoted physical winner, physical dead heat or source defect",governed_exception,flag for review; use governed verification,diagnostic but not infallible
+NB15-DIST-006,btn,zero with positive overall distance indicates membership of a same-distance group,confirmed_with_limitation,derive same-distance-group flag,does not by itself prove an official dead heat
+NB15-DIST-007,ovr_btn|btn,verified contradictions remain raw-source evidence,required,apply corrections only through governed downstream reconciliation with verification provenance,immutable source values must never be overwritten
