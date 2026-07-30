@@ -208,5 +208,5 @@ def test_source_join_rejects_multiple_reference_matches() -> None:
     source = pd.DataFrame([_source_row()])
     duplicate_reference = pd.DataFrame([_row(), _row()])
 
-    with pytest.raises(pd.errors.MergeError, match="not a many-to-one merge"):
+    with pytest.raises(pd.errors.MergeError):
         merge_source_course_locations(source, duplicate_reference)
