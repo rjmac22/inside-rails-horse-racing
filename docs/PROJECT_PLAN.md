@@ -78,7 +78,7 @@ Established that `ran` is a source-presented race count rather than guaranteed e
 
 ### Notebook 15 — Beaten-distance semantics
 
-**Status:** durable implementation complete; focused local validation pending.
+**Status:** fully closed; 15 focused tests and source-wide validation passed.
 
 Established that `ovr_btn` describes cumulative distance from the source physical-finish first-place reference and `btn` describes incremental separation from the preceding physical finisher or stored distance group.
 
@@ -101,7 +101,16 @@ Durable outputs:
 - `docs/NOTEBOOK_15_LESSONS_LEARNED.md`;
 - `reports/notebook_15_beaten_distance_semantics.md`.
 
-Notebook 15 becomes fully closed after focused local tests and the independent source-wide validator pass and are recorded. The complete repository suite remains deferred until the end of the source-field series or repair branch.
+Focused validation recorded:
+
+- `15 passed in 0.03s`;
+- 1,851,285 source runner rows checked;
+- 0 unexpected text values in either distance field;
+- 500 positive official-winner distance rows;
+- 371 later-position zero-overall-distance rows;
+- 2,750 positive-overall, zero-increment rows.
+
+The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
@@ -118,21 +127,11 @@ These are planning units rather than a commitment to one full-length notebook pe
 
 ## Current next action
 
-### Validate and close Notebook 15 implementation
-
-Run only the focused Notebook 15 checks:
-
-```bash
-pytest -q tests/test_beaten_distance.py
-python scripts/validate_beaten_distances.py \
-  data/raw/form_2015-present/form_2015-present/raceform.db
-```
-
-Record the results in the audit register and closeout record. Do not run the complete repository suite yet.
-
-### Then begin race classification and eligibility
+### Begin race classification and eligibility
 
 Bound the next study around `class`, `pattern`, `rating_band`, `age_band`, `sex_rest` and related eligibility fields. Profile storage, coverage, jurisdiction dependence, internal contradictions and safe preservation rules before extracting reusable logic.
+
+Do not run the complete repository suite yet.
 
 ## Phase 3 — Entity and key design
 
