@@ -1,0 +1,43 @@
+{
+  "notebook": "notebooks/15_beaten_distance_semantics.ipynb",
+  "study": "beaten-distance semantics",
+  "status": "implementation_complete_validation_pending",
+  "fresh_kernel_run": {
+    "status": "passed",
+    "recorded_commit": "5b0a0ea"
+  },
+  "manual_verification": {
+    "decision": "captured",
+    "reference_file": "data/reference/manual_verifications.csv",
+    "verification_ids": {
+      "first": "NB15-BTN-0001",
+      "last": "NB15-BTN-0017"
+    }
+  },
+  "persisted_output": {
+    "path": "data/derived/notebook_15_beaten_distance_semantics/beaten_distance_field_decisions.csv",
+    "reloaded_and_validated_in_notebook": true,
+    "decision_rows": 7
+  },
+  "implementation": "src/inside_rails/beaten_distance.py",
+  "focused_tests": {
+    "path": "tests/test_beaten_distance.py",
+    "status": "pending_local_run",
+    "command": "pytest -q tests/test_beaten_distance.py"
+  },
+  "source_validator": {
+    "path": "scripts/validate_beaten_distances.py",
+    "status": "pending_local_run",
+    "command": "python scripts/validate_beaten_distances.py data/raw/form_2015-present/form_2015-present/raceform.db"
+  },
+  "database_integration": "docs/BEATEN_DISTANCE_INTEGRATION.md",
+  "field_governance": "docs/NOTEBOOK_15_FIELD_GOVERNANCE.md",
+  "reader_report": "reports/notebook_15_beaten_distance_semantics.md",
+  "lessons_learned": "docs/NOTEBOOK_15_LESSONS_LEARNED.md",
+  "status_documents_updated": [
+    "README.md",
+    "docs/PROJECT_PLAN.md",
+    "docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md"
+  ],
+  "branch_validation_policy": "Full repository tests and all-validator sweep deferred until the end of the source-field series or repair branch."
+}
