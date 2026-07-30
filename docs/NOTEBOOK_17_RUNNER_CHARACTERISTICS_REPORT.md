@@ -64,6 +64,19 @@ The derived runner model should preserve raw fields and add interpreted fields r
 
 Headgear remains analytically useful for studying equipment use and combinations. The database cannot safely support historical first-time-equipment analysis before 15 October 2025, and it should not advertise a complete lifetime equipment record.
 
+## Closeout validation
+
+Notebook 17 is classified as a non-rerunnable archival construction record. Durable replacement validation passed with:
+
+- `20 passed in 0.04s` across focused runner-characteristics and manual-verification tests;
+- independent source validation across all 1,851,285 governed runner rows;
+- 8 sex values governed, including 2 exact verification-backed corrections;
+- 1,122,490 blank and 728,795 populated headgear rows reconciled;
+- 5,932 trailing-`1` rows confirmed, first observed on 15 October 2025;
+- manual-verification validation across 33 governed rows.
+
+The analytical notebook and verification register were committed at `699375d`.
+
 ## Next action
 
-Use the reusable parser and full-source validator during database construction. Revisit only unmatched future values or bounded anomalies rather than repeating the complete investigation.
+Use the reusable parser and full-source validator during database construction. Revisit only unmatched future values or bounded anomalies rather than repeating the complete investigation. The next bounded source-field study is ratings semantics and availability for `or`, `rpr` and `ts`.
