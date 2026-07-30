@@ -39,40 +39,43 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
 | 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, 15 focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Source-wide validation passed across 1,851,285 runner rows. |
 | 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed and the executed notebook is committed at `ffd4344`. Persisted decisions reloaded successfully; 25 focused tests passed; classification and manual-verification validators passed. |
+| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Implemented pending local validation** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent validator, integration document, report, lessons and manual-verification provenance exist. Local focused tests and validators have not yet been recorded. |
 
-## Notebook 16 closure evidence
+## Notebook 17 closure evidence
 
 Durable artifacts:
 
-- `notebooks/16_race_classification_and_eligibility.ipynb`
-- `data/derived/notebook_16_race_classification_and_eligibility/race_classification_field_decisions.csv`
-- `data/reference/manual_verifications.csv` (`NB16-AGE-0001` through `NB16-AGE-0004`)
-- `src/inside_rails/race_classification.py`
-- `tests/test_race_classification.py`
-- `scripts/validate_race_classification.py`
-- `docs/RACE_CLASSIFICATION_DATABASE_INTEGRATION.md`
-- `docs/NOTEBOOK_16_FIELD_GOVERNANCE.md`
-- `docs/NOTEBOOK_16_LESSONS_LEARNED.md`
-- `reports/notebook_16_race_classification_and_eligibility.md`
+- `notebooks/17_runner_characteristics_and_equipment.ipynb` (archival construction record);
+- `data/processed/notebook_17_runner_characteristics/runner_sex_governance.csv`;
+- `data/processed/notebook_17_runner_characteristics/runner_headgear_governance.csv`;
+- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`;
+- `data/reference/manual_verifications.csv` (`NB17-SEX-0001` through `NB17-SEX-0003`, `NB17-HG-0001` and `NB17-HG-0002`);
+- `src/inside_rails/runner_characteristics.py`;
+- `tests/test_runner_characteristics.py`;
+- `scripts/validate_runner_characteristics.py`;
+- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
+- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`.
 
-Recorded focused validation:
+Analytical evidence recorded:
 
-- fresh-kernel notebook execution: **passed**;
-- executed notebook commit: `ffd4344`;
-- persisted decision table reload: **7 governed fields passed**;
-- `pytest -q tests/test_race_classification.py tests/test_manual_verifications.py`: **25 passed in 0.03s**;
-- race-classification source validator: **passed**;
-- runner rows checked: **1,851,285**;
-- provisional races checked: **189,043**;
-- unresolved rating-band vocabulary: exactly `--` and `(75-100)`;
-- manual-verification validator: **28 governed rows passed**;
-- verification statuses: 19 confirmed, 8 contradicted, 1 partially confirmed;
-- database actions: 13 evidence-only, 1 preserve-raw-unresolved, 2 reference-enrichment, 9 source-correction-candidate, 3 source-supplementation.
+- runner rows: **1,851,285**;
+- age: **19 complete integer values**;
+- sex: **8 raw values**, including two exact verified contamination rows;
+- headgear: **1,122,490 blank rows**, **728,795 populated rows**, **60 populated values**;
+- trailing-`1`: **5,932 rows**, first observed **15 October 2025**;
+- manual-verification decision: **captured**.
 
-Manual-verification decision: **captured**.
+Validation still required before full closure:
+
+- `pytest -q tests/test_runner_characteristics.py tests/test_manual_verifications.py`;
+- `python scripts/validate_runner_characteristics.py`;
+- `python scripts/validate_manual_verifications.py`.
 
 ## Current position
 
-Notebook 16 is fully closed. The next source-field study is runner characteristics and equipment, bounded around runner `age`, `sex`, `hg` and related characteristic or equipment fields.
+Notebook 17 implementation and documentation are committed, but its status remains **implemented pending local validation** until the focused tests and two validators are run against the local source and persisted notebook outputs.
+
+The next source-field study is ratings semantics and availability, bounded around runner `or`, `rpr` and `ts`.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
