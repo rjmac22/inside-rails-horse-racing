@@ -38,7 +38,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 | 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
 | 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, 15 focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Source-wide validation passed across 1,851,285 runner rows. |
-| 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Implemented pending final notebook rerun validation** | Parser, public exports, 15 focused tests, full-source validator, integration contract, persisted decisions, manual provenance, governance, report and lessons are committed. Focused tests and source-wide validation passed; fresh-kernel notebook execution and persisted-output reload remain to be recorded locally. |
+| 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed and the executed notebook is committed at `ffd4344`. Persisted decisions reloaded successfully; 25 focused tests passed; classification and manual-verification validators passed. |
 
 ## Notebook 16 closure evidence
 
@@ -57,16 +57,22 @@ Durable artifacts:
 
 Recorded focused validation:
 
-- `pytest -q tests/test_race_classification.py`: **15 passed in 0.05s**;
-- source validator: **passed**;
+- fresh-kernel notebook execution: **passed**;
+- executed notebook commit: `ffd4344`;
+- persisted decision table reload: **7 governed fields passed**;
+- `pytest -q tests/test_race_classification.py tests/test_manual_verifications.py`: **25 passed in 0.03s**;
+- race-classification source validator: **passed**;
 - runner rows checked: **1,851,285**;
 - provisional races checked: **189,043**;
-- unresolved rating-band vocabulary: exactly `--` and `(75-100)`.
+- unresolved rating-band vocabulary: exactly `--` and `(75-100)`;
+- manual-verification validator: **28 governed rows passed**;
+- verification statuses: 19 confirmed, 8 contradicted, 1 partially confirmed;
+- database actions: 13 evidence-only, 1 preserve-raw-unresolved, 2 reference-enrichment, 9 source-correction-candidate, 3 source-supplementation.
 
-Manual-verification decision: **captured**. The final closeout run must also execute `tests/test_manual_verifications.py` and `scripts/validate_manual_verifications.py`.
+Manual-verification decision: **captured**.
 
 ## Current position
 
-Notebook 16 is implemented with documentation and focused source validation complete. It must not be labelled fully closed until a fresh-kernel run and persisted-output reload are recorded. The next source-field study after closure is runner characteristics and equipment.
+Notebook 16 is fully closed. The next source-field study is runner characteristics and equipment, bounded around runner `age`, `sex`, `hg` and related characteristic or equipment fields.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
