@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Run the complete local validation required to close Notebook 16.
+"""Run the focused local validation required to close Notebook 16.
 
-This script performs only the Notebook 16 focused closeout work. It deliberately
-avoids the complete repository suite and all-validator sweep, which remain
-deferred until the end of the source-field series or repair branch.
+The script deliberately avoids the complete repository suite and all-validator
+sweep, which remain deferred until the end of the source-field series or repair
+branch. Use ``--skip-notebook`` when the notebook has already completed a fresh-
+kernel execution and only the downstream checks need to be retried.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 from pathlib import Path
 import subprocess
@@ -86,31 +88,45 @@ def validate_persisted_decisions() -> None:
     )
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--skip-notebook",
+        action="store_true",
+        help="Do not execute or rewrite the notebook; run only persisted-output, test and validator checks.",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
+    args = parse_args()
+
     if not NOTEBOOK.is_file():
         raise FileNotFoundError(f"Notebook not found: {NOTEBOOK}")
 
-    # A real top-to-bottom execution replaces the saved outputs in the local
-    # notebook and proves that no hidden kernel state is required.
-    run(
-        [
-            sys.executable,
-            "-m",
-            "jupyter",
-            "nbconvert",
-            "--to",
-            "notebook",
-            "--execute",
-            "--inplace",
-            "--ExecutePreprocessor.timeout=900",
-            str(NOTEBOOK.relative_to(PROJECT_ROOT)),
-        ]
-    )
+    if args.skip_notebook:
+        print(
+            "Notebook execution skipped; preserving the already executed local notebook.",
+            flush=True,
+        )
+    else:
+        run(
+            [
+                sys.executable,
+                "-m",
+                "jupyter",
+                "nbconvert",
+                "--to",
+                "notebook",
+                "--execute",
+                "--inplace",
+                "--ExecutePreprocessor.timeout=900",
+                str(NOTEBOOK.relative_to(PROJECT_ROOT)),
+            ]
+        )
 
-    # The procedure requires reload validation for every persisted output.
     validate_persisted_decisions()
 
-    # Focused parser tests and external-evidence register tests.
     run(
         [
             sys.executable,
@@ -122,7 +138,6 @@ def main() -> None:
         ]
     )
 
-    # Independent source-wide and provenance validators.
     run([sys.executable, "scripts/validate_race_classification.py"])
     run([sys.executable, "scripts/validate_manual_verifications.py"])
 
