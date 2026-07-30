@@ -35,7 +35,7 @@ Notebook 08 retains one deliberate governed source failure: the malformed standa
 
 ### Notebook 15 — Beaten-distance semantics
 
-**Status:** durable implementation complete; focused local validation pending.
+**Status:** fully closed; 15 focused tests and source-wide validation passed.
 
 Notebook 15 established that:
 
@@ -48,6 +48,15 @@ Notebook 15 established that:
 
 The notebook passed a fresh-kernel run, persisted and reloaded its governed decision table, and captured bounded external verification under IDs `NB15-BTN-0001` through `NB15-BTN-0017`.
 
+Focused validation passed with:
+
+- 15 unit tests;
+- 1,851,285 source runner rows checked;
+- 93,992 `ovr_btn` text rows and 93,992 `btn` text rows, all using the governed `-` sentinel;
+- 500 positive official-winner distance rows;
+- 371 later-position zero-overall-distance rows;
+- 2,750 positive-overall, zero-increment rows.
+
 Durable outputs:
 
 - `src/inside_rails/beaten_distance.py`
@@ -59,7 +68,7 @@ Durable outputs:
 - `reports/notebook_15_beaten_distance_semantics.md`
 - `data/derived/notebook_15_beaten_distance_semantics/beaten_distance_field_decisions.csv`
 
-Notebook 15 becomes fully closed when its focused tests and independent source-wide validator pass locally and the results are recorded. The complete repository test suite remains deferred until the end of the source-field series or repair branch.
+The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
 ## Retrospective implementation audit
 
@@ -72,7 +81,7 @@ The branch `audit/retrospective-implementation-closeout` remains open while the 
 
 ## Next bounded action
 
-After Notebook 15 focused validation, continue the remaining source-field sequence with race classification and eligibility. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+Continue the remaining source-field sequence with race classification and eligibility. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
