@@ -8,8 +8,11 @@ import pytest
 from inside_rails.course_locations import (
     IDENTITY_COLUMNS,
     REQUIRED_COLUMNS,
+    derive_source_course_identities,
     load_course_locations,
     merge_course_locations,
+    merge_source_course_locations,
+    unmatched_source_course_locations,
 )
 
 
@@ -26,6 +29,18 @@ def _row(**overrides: object) -> dict[str, object]:
         "iana_timezone": "Europe/London",
         "location_evidence": "manual_reference",
         "location_validation_status": "validated",
+    }
+    row.update(overrides)
+    return row
+
+
+def _source_row(**overrides: object) -> dict[str, object]:
+    row: dict[str, object] = {
+        "course": "Ascot",
+        "date": "2024-06-20",
+        "type": "Flat",
+        "race_name": "Example Stakes",
+        "race_id": 1,
     }
     row.update(overrides)
     return row
@@ -112,3 +127,86 @@ def test_merge_is_many_to_one_and_preserves_unmatched_rows() -> None:
     assert len(merged) == 2
     assert merged.loc[0, "iana_timezone"] == "Europe/London"
     assert pd.isna(merged.loc[1, "iana_timezone"])
+
+
+@pytest.mark.parametrize(
+    ("course", "jurisdiction", "timezone"),
+    [
+        ("Bordeaux Le Bouscat", "France", "Europe/Paris"),
+        ("Chukyo", "Japan", "Asia/Tokyo"),
+        ("Cidade Jardim", "Brazil", "America/Sao_Paulo"),
+        ("Hipodromo Chile", "Chile", "America/Santiago"),
+        ("Les Landes", "Jersey", "Europe/Jersey"),
+        ("Monterrico", "Peru", "America/Lima"),
+        ("Nakayama", "Japan", "Asia/Tokyo"),
+    ],
+)
+def test_unsuffixed_historical_labels_resolve_through_canonical_identity(
+    course: str,
+    jurisdiction: str,
+    timezone: str,
+) -> None:
+    source = pd.DataFrame([_source_row(course=course)])
+    reference = pd.DataFrame(
+        [
+            _row(
+                candidate_course_label=course,
+                candidate_jurisdiction=jurisdiction,
+                iana_timezone=timezone,
+            )
+        ]
+    )
+
+    merged = merge_source_course_locations(
+        source,
+        reference,
+        require_all_matches=True,
+    )
+
+    assert merged.loc[0, "course"] == course
+    assert merged.loc[0, "candidate_course_label"] == course
+    assert merged.loc[0, "candidate_jurisdiction"] == jurisdiction
+    assert merged.loc[0, "iana_timezone"] == timezone
+    assert merged.loc[0, "course_location_match_status"] == "both"
+
+
+def test_source_identity_derivation_preserves_raw_course_text() -> None:
+    source = pd.DataFrame([_source_row(course="Chukyo (JPN)")])
+    derived = derive_source_course_identities(source)
+
+    assert derived.loc[0, "course"] == "Chukyo (JPN)"
+    assert derived.loc[0, "candidate_course_label"] == "Chukyo"
+    assert derived.loc[0, "candidate_jurisdiction"] == "Japan"
+
+
+def test_unmatched_source_residue_is_explicit() -> None:
+    source = pd.DataFrame([_source_row(course="Unknown Course")])
+    merged = merge_source_course_locations(source, pd.DataFrame([_row()]))
+    unmatched = unmatched_source_course_locations(merged)
+
+    assert unmatched.to_dict("records") == [
+        {
+            "course": "Unknown Course",
+            "candidate_course_label": "Unknown Course",
+            "candidate_jurisdiction": "unresolved",
+        }
+    ]
+
+
+def test_strict_source_join_rejects_zero_matches() -> None:
+    source = pd.DataFrame([_source_row(course="Unknown Course")])
+
+    with pytest.raises(ValueError, match="Unmatched governed course identities"):
+        merge_source_course_locations(
+            source,
+            pd.DataFrame([_row()]),
+            require_all_matches=True,
+        )
+
+
+def test_source_join_rejects_multiple_reference_matches() -> None:
+    source = pd.DataFrame([_source_row()])
+    duplicate_reference = pd.DataFrame([_row(), _row()])
+
+    with pytest.raises(pd.errors.MergeError, match="not a many-to-one merge"):
+        merge_source_course_locations(source, duplicate_reference)
