@@ -18,11 +18,12 @@ from inside_rails.course_locations import (
 )
 
 EXPECTED_DISTINCT_RAW_COURSE_LABELS = 528
+EXPECTED_CONTEXTUAL_RAW_LABELS = {"Ascot", "Newcastle"}
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Validate every source course label against the governed reference."
+        description="Validate every source race context against the governed reference."
     )
     parser.add_argument(
         "database_path",
@@ -69,18 +70,23 @@ def main() -> None:
     reference = load_course_locations(args.reference_path)
 
     derived = derive_source_course_identities(source)
+
+    # A raw label is not universally an identity. Ascot and Newcastle are known
+    # cross-jurisdiction collisions resolved deterministically from race context.
     raw_identity_counts = (
         derived[["course", *IDENTITY_COLUMNS]]
         .drop_duplicates()
         .groupby("course", dropna=False)
         .size()
     )
-    multiple_identity_labels = raw_identity_counts.loc[raw_identity_counts.gt(1)]
+    contextual_raw_labels = set(
+        raw_identity_counts.loc[raw_identity_counts.gt(1)].index.astype(str)
+    )
 
-    if not multiple_identity_labels.empty:
+    if contextual_raw_labels != EXPECTED_CONTEXTUAL_RAW_LABELS:
         details = (
             derived.loc[
-                derived["course"].isin(multiple_identity_labels.index),
+                derived["course"].astype(str).isin(contextual_raw_labels),
                 ["course", *IDENTITY_COLUMNS],
             ]
             .drop_duplicates()
@@ -88,8 +94,9 @@ def main() -> None:
             .to_dict("records")
         )
         raise AssertionError(
-            "Raw course labels mapped to multiple governed identities: "
-            f"{details}"
+            "Unexpected contextual raw course-label set: "
+            f"expected {sorted(EXPECTED_CONTEXTUAL_RAW_LABELS)}, "
+            f"found {sorted(contextual_raw_labels)}. Mappings: {details}"
         )
 
     merged = merge_source_course_locations(source, reference)
@@ -120,8 +127,11 @@ def main() -> None:
     print(f"Provisional race contexts: {len(source):,}")
     print(f"Distinct raw course labels: {distinct_raw_labels:,}")
     print(f"Matched governed identities: {matched_identities:,}")
-    print("Unmatched raw course labels: 0")
-    print("Raw labels mapping to multiple identities: 0")
+    print("Unmatched source race contexts: 0")
+    print(
+        "Contextual raw labels: "
+        + ", ".join(sorted(contextual_raw_labels))
+    )
 
 
 if __name__ == "__main__":
