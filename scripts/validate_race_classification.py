@@ -3,7 +3,7 @@
 
 This validator reads the immutable SQLite source in read-only mode and checks
 that the reusable parsers still cover the complete observed vocabularies under
-the required ``rowid <> 1`` predicate.  It intentionally validates syntax and
+the required ``rowid <> 1`` predicate. It intentionally validates syntax and
 source categories only; it does not reconstruct official race eligibility or a
 global race-quality hierarchy.
 """
@@ -14,16 +14,25 @@ import argparse
 from collections.abc import Callable
 from pathlib import Path
 import sqlite3
+import sys
 from typing import Any
 
-from inside_rails.race_classification import (
+# Allow this validator to be run directly from the repository root with
+# ``python scripts/validate_race_classification.py`` without requiring an
+# editable package installation or a manually supplied PYTHONPATH.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+SOURCE_ROOT = REPOSITORY_ROOT / "src"
+if str(SOURCE_ROOT) not in sys.path:
+    sys.path.insert(0, str(SOURCE_ROOT))
+
+from inside_rails.race_classification import (  # noqa: E402
     classify_sex_restriction,
     parse_age_band,
     parse_class,
     parse_pattern,
     parse_rating_band,
 )
-from inside_rails.source_sqlite import connect_read_only, quote_identifier
+from inside_rails.source_sqlite import connect_read_only, quote_identifier  # noqa: E402
 
 
 DEFAULT_DATABASE = Path(
@@ -109,7 +118,17 @@ def _validate_race_level_consistency(connection: sqlite3.Connection) -> None:
 
     quoted_table = quote_identifier(SOURCE_TABLE)
     race_key = ", ".join(quote_identifier(column) for column in RACE_KEY_COLUMNS)
-    for column in ("race_name", "type", "class", "pattern", "rating_band", "age_band", "sex_rest"):
+    governed_columns = (
+        "race_name",
+        "type",
+        "class",
+        "pattern",
+        "rating_band",
+        "age_band",
+        "sex_rest",
+    )
+
+    for column in governed_columns:
         quoted_column = quote_identifier(column)
         inconsistent_races = connection.execute(
             f"""
@@ -119,7 +138,9 @@ def _validate_race_level_consistency(connection: sqlite3.Connection) -> None:
                 FROM {quoted_table}
                 WHERE {DATA_ROW_PREDICATE}
                 GROUP BY {race_key}
-                HAVING COUNT(DISTINCT COALESCE(CAST({quoted_column} AS TEXT), '<NULL>')) > 1
+                HAVING COUNT(
+                    DISTINCT COALESCE(CAST({quoted_column} AS TEXT), '<NULL>')
+                ) > 1
             )
             """
         ).fetchone()[0]
