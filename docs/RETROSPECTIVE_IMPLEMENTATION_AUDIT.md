@@ -39,7 +39,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
 | 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, 15 focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Source-wide validation passed across 1,851,285 runner rows. |
 | 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed and the executed notebook is committed at `ffd4344`. Persisted decisions reloaded successfully; 25 focused tests passed; classification and manual-verification validators passed. |
-| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Implemented pending local validation** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent validator, integration document, report, lessons and manual-verification provenance exist. Local focused tests and validators have not yet been recorded. |
+| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, 20 focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
 
 ## Notebook 17 closure evidence
 
@@ -57,25 +57,23 @@ Durable artifacts:
 - `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
 - `docs/NOTEBOOK_17_LESSONS_LEARNED.md`.
 
-Analytical evidence recorded:
+Recorded analytical and validation evidence:
 
-- runner rows: **1,851,285**;
+- archival notebook and manual-verification evidence committed at `699375d`;
+- runner rows checked: **1,851,285**;
 - age: **19 complete integer values**;
 - sex: **8 raw values**, including two exact verified contamination rows;
 - headgear: **1,122,490 blank rows**, **728,795 populated rows**, **60 populated values**;
 - trailing-`1`: **5,932 rows**, first observed **15 October 2025**;
+- focused tests: **20 passed in 0.04s**;
+- runner-characteristics source validator: **passed**;
+- manual-verification validator: **33 governed rows passed**;
+- verification statuses: **22 confirmed, 10 contradicted, 1 partially confirmed**;
+- database actions: **13 evidence-only, 1 preserve-raw-unresolved, 5 reference-enrichment, 11 source-correction-candidate, 3 source-supplementation**;
 - manual-verification decision: **captured**.
-
-Validation still required before full closure:
-
-- `pytest -q tests/test_runner_characteristics.py tests/test_manual_verifications.py`;
-- `python scripts/validate_runner_characteristics.py`;
-- `python scripts/validate_manual_verifications.py`.
 
 ## Current position
 
-Notebook 17 implementation and documentation are committed, but its status remains **implemented pending local validation** until the focused tests and two validators are run against the local source and persisted notebook outputs.
-
-The next source-field study is ratings semantics and availability, bounded around runner `or`, `rpr` and `ts`.
+Notebook 17 is fully closed. The next source-field study is ratings semantics and availability, bounded around runner `or`, `rpr` and `ts`.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
