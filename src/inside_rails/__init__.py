@@ -13,6 +13,11 @@ from .race_classification import (
     parse_pattern,
     parse_rating_band,
 )
+from .ratings import (
+    RatingResult,
+    parse_rating,
+    parse_rating_triplet,
+)
 from .source_sqlite import (
     HEADER_ROWID,
     PROVISIONAL_RACE_COLUMNS,
@@ -31,6 +36,7 @@ __all__ = [
     "PatternResult",
     "PrizeMoneyResult",
     "RatingBandResult",
+    "RatingResult",
     "SexRestrictionResult",
     "classify_sex_restriction",
     "connect_read_only",
@@ -38,7 +44,9 @@ __all__ = [
     "parse_class",
     "parse_pattern",
     "parse_prize_money",
+    "parse_rating",
     "parse_rating_band",
+    "parse_rating_triplet",
     "profile_source_database",
     "quote_identifier",
 ]
