@@ -37,43 +37,40 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Fully closed on this audit branch** | Permanent-reference validation confirmed complete governed timezone coverage. |
 | 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
 | 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
-| 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, 15 focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. Source-wide validation passed across 1,851,285 runner rows. |
-| 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed and the executed notebook is committed at `ffd4344`. Persisted decisions reloaded successfully; 25 focused tests passed; classification and manual-verification validators passed. |
-| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, 20 focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
+| 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. |
+| 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed; persisted decisions, focused tests, classification validator and manual-verification validator passed. |
+| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
+| 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, 12 ratings tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. Combined focused validation passed with 22 tests. |
 
-## Notebook 17 closure evidence
+## Notebook 18 closure evidence
 
 Durable artifacts:
 
-- `notebooks/17_runner_characteristics_and_equipment.ipynb` (archival construction record);
-- `data/processed/notebook_17_runner_characteristics/runner_sex_governance.csv`;
-- `data/processed/notebook_17_runner_characteristics/runner_headgear_governance.csv`;
-- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`;
-- `data/reference/manual_verifications.csv` (`NB17-SEX-0001` through `NB17-SEX-0003`, `NB17-HG-0001` and `NB17-HG-0002`);
-- `src/inside_rails/runner_characteristics.py`;
-- `tests/test_runner_characteristics.py`;
-- `scripts/validate_runner_characteristics.py`;
-- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
-- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`.
+- `notebooks/18_ratings_semantics_and_availability.ipynb`;
+- `data/reference/manual_verifications.csv` (`NB18-OR-0001`, `NB18-RPR-0001`, `NB18-TS-0001`);
+- `src/inside_rails/ratings.py`;
+- `tests/test_ratings.py`;
+- `scripts/validate_ratings.py`;
+- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
+- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`.
 
 Recorded analytical and validation evidence:
 
-- archival notebook and manual-verification evidence committed at `699375d`;
-- runner rows checked: **1,851,285**;
-- age: **19 complete integer values**;
-- sex: **8 raw values**, including two exact verified contamination rows;
-- headgear: **1,122,490 blank rows**, **728,795 populated rows**, **60 populated values**;
-- trailing-`1`: **5,932 rows**, first observed **15 October 2025**;
-- focused tests: **20 passed in 0.04s**;
-- runner-characteristics source validator: **passed**;
-- manual-verification validator: **33 governed rows passed**;
-- verification statuses: **22 confirmed, 10 contradicted, 1 partially confirmed**;
-- database actions: **13 evidence-only, 1 preserve-raw-unresolved, 5 reference-enrichment, 11 source-correction-candidate, 3 source-supplementation**;
-- manual-verification decision: **captured**.
+- fresh-kernel top-to-bottom notebook execution passed;
+- manual-verification decision captured in the notebook;
+- focused tests: **22 passed in 0.06s** across ratings and manual-verification tests;
+- ratings validator: **passed across 1,851,285 governed runner rows**;
+- `or`: **1,116,633 available**, **734,652 unavailable**, **0 invalid**, candidate range **1–181**;
+- `rpr`: **1,644,175 available**, **207,109 unavailable**, **1 invalid**, candidate range **1–184**;
+- `ts`: **1,227,384 available**, **623,901 unavailable**, **0 invalid**, candidate range **1–178**;
+- exact invalid rating: source `rowid = 1619851`, raw `rpr = 775`, parsed value null, replacement unresolved;
+- manual-verification validator: **36 governed rows passed**;
+- verification statuses: **25 confirmed, 10 contradicted, 1 partially confirmed**;
+- database actions: **13 evidence-only, 1 preserve-raw-unresolved, 8 reference-enrichment, 11 source-correction-candidate, 3 source-supplementation**.
 
 ## Current position
 
-Notebook 17 is fully closed. The next source-field study is ratings semantics and availability, bounded around runner `or`, `rpr` and `ts`.
+Notebook 18 is fully closed. The next source-field study is horse and pedigree identity, bounded around `horse`, `sire`, `dam` and `damsire`.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
