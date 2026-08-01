@@ -25,68 +25,53 @@ The candidate provisional race key is `date + course + off`. The raw SQLite data
 
 ## Current status
 
-### Notebooks 00–15
+### Notebooks 00–16
 
 **Status:** complete and retrospectively implemented or fully closed as recorded in the audit register.
 
-These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, and complete governance of all 37 source fields.
+These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, race classification and eligibility, and complete governance of all 37 source fields.
 
 Notebook 08 retains one deliberate governed source failure: the malformed standalone starting-price value `F` remains unresolved rather than being silently normalised.
-
-### Notebook 16 — Race classification and eligibility
-
-**Status:** fully closed.
-
-Notebook 16 established that:
-
-- `class`, `pattern` and `rating_band` are complementary source fields rather than one interchangeable hierarchy;
-- canonical `Class N`, Listed/Group/Grade and exact `N-N` rating syntax can be parsed safely while preserving raw values;
-- `--` and `(75-100)` remain explicit unresolved rating-band forms;
-- `age_band` syntax can be parsed into source-stated bounds, but those bounds cannot be enforced universally against source runner ages;
-- `sex_rest` is source shorthand rather than a complete official eligibility condition;
-- the value `F` is overloaded and cannot be treated globally as fillies-only;
-- authoritative sex-condition reconstruction is deferred to a future jurisdiction-specific study using official race-condition evidence.
-
-The complete repository test suite remains deferred until the end of the source-field series or repair branch.
 
 ### Notebook 17 — Runner characteristics and equipment
 
 **Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
 
-Notebook 17 established that:
+Notebook 17 governed runner age, sex and headgear, including exact verification-backed corrections for two contaminated sex values and source-specific eyecover normalisation.
 
-- `age` is complete and usable as the source-recorded runner age without automatic clipping or correction from `age_band`;
-- the standard sex codes `C`, `F`, `G`, `H`, `M` and `R` are governed;
-- two isolated sex-field contamination rows require exact verification-backed corrections;
-- `hg` is blank on 1,122,490 rows and populated on 728,795 rows;
-- all 60 populated headgear values can be decomposed into ordered governed components;
-- source-specific `c` is interpreted as eyecover with preserved provenance;
-- 5,932 trailing-`1` rows begin on 15 October 2025 and represent a source declaration rather than a complete lifetime equipment history.
+### Notebook 18 — Ratings semantics and availability
+
+**Status:** fully closed.
+
+Notebook 18 established that:
+
+- `or` is the official pre-race handicap mark applicable to the runner;
+- `rpr` is a retrospective and potentially revisable Racing Post performance rating;
+- `ts` is a retrospective Racing Post speed figure;
+- the exact Unicode en dash `–` means unavailable and must parse to null rather than zero;
+- the three ratings require independent nullable analytical values and statuses;
+- the isolated source row `rowid = 1619851`, `rpr = 775` is an invalid source value whose raw value remains preserved and whose replacement remains unresolved;
+- observed candidate ranges are regression baselines, not universal future validity rules.
 
 Durable outputs:
 
-- `notebooks/17_runner_characteristics_and_equipment.ipynb`;
-- `src/inside_rails/runner_characteristics.py`;
-- `tests/test_runner_characteristics.py`;
-- `scripts/validate_runner_characteristics.py`;
-- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
-- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
-- `data/processed/notebook_17_runner_characteristics/runner_sex_governance.csv`;
-- `data/processed/notebook_17_runner_characteristics/runner_headgear_governance.csv`;
-- `data/processed/notebook_17_runner_characteristics/runner_characteristics_decisions.csv`;
-- `data/reference/manual_verifications.csv` with five Notebook 17 verification records.
+- `notebooks/18_ratings_semantics_and_availability.ipynb`;
+- `src/inside_rails/ratings.py`;
+- `tests/test_ratings.py`;
+- `scripts/validate_ratings.py`;
+- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
+- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`;
+- three Notebook 18 records in `data/reference/manual_verifications.csv`.
 
 Closeout validation passed with:
 
-- `20 passed in 0.04s` across runner-characteristics and manual-verification tests;
-- 1,851,285 runner rows checked by the independent validator;
-- 8 sex values governed, including 2 exact corrections;
-- 1,122,490 blank and 728,795 populated headgear rows reconciled;
-- 5,932 trailing-`1` rows confirmed, first observed on 15 October 2025;
-- manual-verification validation passed across 33 governed rows.
-
-The analytical notebook and evidence register were committed at `699375d`.
+- `22 passed in 0.06s` across ratings and manual-verification focused tests;
+- ratings validation across all 1,851,285 governed runner rows;
+- `or`: 1,116,633 available and 734,652 unavailable, range 1–181;
+- `rpr`: 1,644,175 available, 207,109 unavailable and one invalid, range 1–184;
+- `ts`: 1,227,384 available and 623,901 unavailable, range 1–178;
+- manual-verification validation across 36 governed rows.
 
 ## Retrospective implementation audit
 
@@ -99,7 +84,7 @@ The branch `audit/retrospective-implementation-closeout` remains open while the 
 
 ## Next bounded action
 
-Begin ratings semantics and availability, bounded around `or`, `rpr` and `ts`. Permanent entity design and the physical target schema remain deferred until the source-field studies required for structural reconstruction are complete or explicitly deferred.
+Begin horse and pedigree identity, bounded around `horse`, `sire`, `dam` and `damsire`. Permanent entity design and the physical target schema remain deferred until the remaining source-field studies required for structural reconstruction are complete or explicitly deferred.
 
 ## Working method
 
