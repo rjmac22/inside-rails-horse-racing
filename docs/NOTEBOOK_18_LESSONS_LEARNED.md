@@ -33,8 +33,17 @@
 - `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
 - permanent verification records `NB18-OR-0001`, `NB18-RPR-0001` and `NB18-TS-0001`.
 
-## Validation status
+## Validation outcome
 
-The manual-verification register has already passed its focused test and validator with 36 governed rows.
+Notebook 18 closeout validation passed locally on 1 August 2026:
 
-The ratings implementation and source-wide validator must be executed locally against the immutable source before Notebook 18 is marked fully closed. Exact outputs should be recorded here after that run.
+- `22 passed in 0.06s` across `tests/test_ratings.py` and `tests/test_manual_verifications.py`;
+- the independent ratings validator passed across **1,851,285** governed runner rows;
+- `or`: **1,116,633 available**, **734,652 unavailable**, **0 invalid**, observed candidate range **1–181**;
+- `rpr`: **1,644,175 available**, **207,109 unavailable**, **1 invalid**, observed candidate range **1–184**;
+- `ts`: **1,227,384 available**, **623,901 unavailable**, **0 invalid**, observed candidate range **1–178**;
+- the manual-verification validator passed across **36 governed rows**;
+- verification statuses: **25 confirmed**, **10 contradicted**, **1 partially confirmed**;
+- database actions: **13 evidence-only**, **1 preserve-raw-unresolved**, **8 reference-enrichment**, **11 source-correction-candidate**, **3 source-supplementation**.
+
+The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch.
