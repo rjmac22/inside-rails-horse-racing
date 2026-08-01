@@ -44,57 +44,55 @@ Established raw-source immutability, source grain and quality, physical lineage 
 
 ## Phase 2 — Domain interpretation and parsing
 
-### Notebooks 04–15
+### Notebooks 04–16
 
 **Status:** complete and retrospectively implemented or fully closed.
 
-Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, and governance of all 37 source fields.
+Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, complete field governance, and race classification and eligibility.
 
 Notebook 08 retains one deliberate governed validator failure for the malformed standalone source value `F`.
-
-### Notebook 16 — Race classification and eligibility
-
-**Status:** fully closed.
-
-Established complementary, jurisdiction-sensitive interpretation of `class`, `pattern`, `rating_band`, `age_band` and `sex_rest`, with raw and unresolved states preserved.
 
 ### Notebook 17 — Runner characteristics and equipment
 
 **Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
 
+Governed age, sex and headgear rules, including exact verification-backed contamination corrections and source-specific eyecover normalisation.
+
+### Notebook 18 — Ratings semantics and availability
+
+**Status:** fully closed.
+
 Governed rules:
 
-- preserve integer `age` as the source-recorded runner age;
-- do not overwrite age from race-level `age_band` or clip unusual values automatically;
-- normalise the six standard sex codes;
-- apply the two sex contamination corrections only through exact verification-backed lineage;
-- preserve blank `hg` as field not supplied;
-- decompose all populated headgear values into ordered governed components;
-- normalise source-specific `c` to eyecover while preserving the raw token;
-- retain trailing `1` only as a source-declared first-time flag from 15 October 2025 onward;
-- do not reconstruct historical lifetime first use from suffix absence or local source history.
+- preserve raw `or`, `rpr` and `ts` values separately;
+- parse the exact Unicode en dash `–` as unavailable/null, never zero;
+- interpret `or` as a pre-race official handicap mark;
+- interpret `rpr` as a retrospective and potentially revisable performance rating;
+- interpret `ts` as a retrospective speed figure;
+- keep independent nullable analytical values and statuses for all three fields;
+- exclude only source `rowid = 1619851`, `rpr = 775` as an exact lineage-backed invalid value;
+- preserve its raw value and leave its intended replacement unresolved;
+- treat observed ranges as validation baselines rather than universal business rules.
 
 Durable outputs:
 
-- `notebooks/17_runner_characteristics_and_equipment.ipynb`;
-- `src/inside_rails/runner_characteristics.py`;
-- `tests/test_runner_characteristics.py`;
-- `scripts/validate_runner_characteristics.py`;
-- `docs/NOTEBOOK_17_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_17_RUNNER_CHARACTERISTICS_REPORT.md`;
-- `docs/NOTEBOOK_17_LESSONS_LEARNED.md`;
-- three persisted governed CSV outputs under `data/processed/notebook_17_runner_characteristics/`;
-- five permanent Notebook 17 records in `data/reference/manual_verifications.csv`.
+- `notebooks/18_ratings_semantics_and_availability.ipynb`;
+- `src/inside_rails/ratings.py`;
+- `tests/test_ratings.py`;
+- `scripts/validate_ratings.py`;
+- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
+- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
+- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`;
+- three permanent Notebook 18 records in `data/reference/manual_verifications.csv`.
 
 Recorded closeout validation:
 
-- `20 passed in 0.04s` across focused runner-characteristics and manual-verification tests;
-- independent source validation passed across 1,851,285 runner rows;
-- 8 sex values governed, including 2 exact corrections;
-- 1,122,490 blank and 728,795 populated headgear rows reconciled;
-- 5,932 trailing-`1` rows confirmed, first observed on 15 October 2025;
-- manual-verification validation passed across 33 governed rows;
-- notebook and verification evidence committed at `699375d`.
+- `22 passed in 0.06s` across focused ratings and manual-verification tests;
+- independent ratings validation passed across 1,851,285 governed runner rows;
+- `or`: 1,116,633 available, 734,652 unavailable, 0 invalid, range 1–181;
+- `rpr`: 1,644,175 available, 207,109 unavailable, 1 invalid, range 1–184;
+- `ts`: 1,227,384 available, 623,901 unavailable, 0 invalid, range 1–178;
+- manual-verification validation passed across 36 governed rows.
 
 The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
@@ -102,18 +100,17 @@ The complete repository suite remains deferred until the end of the source-field
 
 The provisional sequence is now:
 
-1. ratings semantics and availability;
-2. horse and pedigree identity;
-3. connections and owner identity;
-4. comments and embedded information.
+1. horse and pedigree identity;
+2. connections and owner identity;
+3. comments and embedded information.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Begin ratings semantics and availability
+### Begin horse and pedigree identity
 
-Bound the next study around runner `or`, `rpr` and `ts`. Profile storage, blank and dash behaviour, temporal and jurisdiction coverage, cross-rating relationships, impossible or sentinel values, and which ratings can be compared safely without inventing official scale equivalence.
+Bound the next study around `horse`, `sire`, `dam` and `damsire`. Establish raw-name stability, country-suffix behaviour, missingness, collisions, lineage requirements and which identity rules can be implemented safely without premature entity resolution.
 
 Do not run the complete repository suite yet.
 
