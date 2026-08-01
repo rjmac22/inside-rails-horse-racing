@@ -40,7 +40,7 @@ def test_governed_register_loads_current_backfill() -> None:
     rows = load_manual_verifications(REGISTER)
     ids = {row.verification_id for row in rows}
 
-    assert len(rows) == 36
+    assert len(rows) == 37
     assert len(ids) == len(rows)
     assert {row.governing_notebook for row in rows} == {
         "12",
@@ -49,6 +49,7 @@ def test_governed_register_loads_current_backfill() -> None:
         "16",
         "17",
         "18",
+        "19",
     }
     assert {
         "NB12-COURSE-0001",
@@ -62,6 +63,7 @@ def test_governed_register_loads_current_backfill() -> None:
         "NB18-OR-0001",
         "NB18-RPR-0001",
         "NB18-TS-0001",
+        "NB19-HORSE-0001",
     } <= ids
 
 
