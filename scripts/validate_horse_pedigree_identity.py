@@ -33,9 +33,31 @@ GOVERNANCE_REFERENCE = (
 OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "horse_pedigree_identity"
 
 
+def _print_observed_funnel(outputs: object) -> None:
+    counts = outputs.transition_governance["analytical_outcome"].value_counts()
+    print("Observed horse and pedigree identity funnel:")
+    print(f"  raw contradiction labels: {outputs.raw_contradiction_labels}")
+    print(
+        "  structured contradiction labels: "
+        f"{outputs.structured_rows['horse'].nunique()}"
+    )
+    print(f"  structured pedigree rows: {len(outputs.structured_rows)}")
+    print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
+    print(
+        "  temporally separated horse labels: "
+        f"{outputs.separated_groups['horse'].nunique()}"
+    )
+    print(f"  separated pedigree groups: {len(outputs.separated_groups)}")
+    print(f"  governed transitions: {len(outputs.transition_governance)}")
+    for outcome in ("Corrected", "Different horse", "Unresolved"):
+        print(f"  {outcome}: {int(counts.get(outcome, 0))}")
+    print(f"  provisional occurrences: {len(outputs.provisional_occurrences)}")
+
+
 def main() -> None:
     governance = load_identity_governance(GOVERNANCE_REFERENCE)
     outputs = derive_identity_outputs(SOURCE_DB, GOVERNANCE_REFERENCE)
+    _print_observed_funnel(outputs)
     validate_expected_population(outputs)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -57,25 +79,8 @@ def main() -> None:
         "Unresolved",
     }
 
-    counts = outputs.transition_governance["analytical_outcome"].value_counts()
     print("Horse and pedigree identity validation passed.")
     print(f"  specialist governance rows: {len(governance.rows)}")
-    print(f"  raw contradiction labels: {outputs.raw_contradiction_labels}")
-    print(
-        "  structured contradiction labels: "
-        f"{outputs.structured_rows['horse'].nunique()}"
-    )
-    print(f"  structured pedigree rows: {len(outputs.structured_rows)}")
-    print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
-    print(
-        "  temporally separated horse labels: "
-        f"{outputs.separated_groups['horse'].nunique()}"
-    )
-    print(f"  separated pedigree groups: {len(outputs.separated_groups)}")
-    print(f"  governed transitions: {len(outputs.transition_governance)}")
-    for outcome in ("Corrected", "Different horse", "Unresolved"):
-        print(f"  {outcome}: {int(counts[outcome])}")
-    print(f"  provisional occurrences: {len(outputs.provisional_occurrences)}")
     print(f"  wrote and reloaded: {transition_path.relative_to(PROJECT_ROOT)}")
     print(f"  wrote and reloaded: {occurrence_path.relative_to(PROJECT_ROOT)}")
 
