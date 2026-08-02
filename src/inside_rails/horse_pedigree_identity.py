@@ -76,6 +76,7 @@ class IdentityOutputs:
     transition_governance: pd.DataFrame
     provisional_occurrences: pd.DataFrame
     raw_contradiction_labels: int
+    structured_contradiction_labels: int
 
 
 def parse_dam_label(
@@ -205,8 +206,13 @@ def load_source_rows(database_path: str | Path) -> pd.DataFrame:
 
     rows["date"] = pd.to_datetime(rows["date"], errors="raise")
     rows["age"] = pd.to_numeric(rows["age"], errors="coerce")
-    for field in ("horse", "sire", "dam", "damsire", "sex", "course", "off"):
+
+    # Preserve null pedigree values. Notebook 19 used pandas nunique with its
+    # default dropna=True behaviour, so replacing nulls with empty strings would
+    # create false contradiction labels.
+    for field in ("horse", "sex", "course", "off"):
         rows[field] = rows[field].fillna("").astype(str)
+
     rows["race_key"] = list(
         zip(rows["date"], rows["course"], rows["off"], strict=True)
     )
@@ -216,8 +222,8 @@ def load_source_rows(database_path: str | Path) -> pd.DataFrame:
 def _observed_parenthesized_suffixes(rows: pd.DataFrame) -> frozenset[str]:
     suffixes: set[str] = set(DEFAULT_COUNTRY_SUFFIXES)
     for field in ("horse", "sire", "dam"):
-        for value in rows[field].drop_duplicates():
-            match = PARENTHESIZED_SUFFIX.fullmatch(value.strip())
+        for value in rows[field].dropna().drop_duplicates():
+            match = PARENTHESIZED_SUFFIX.fullmatch(str(value).strip())
             if match:
                 suffixes.add(match.group("country"))
     return frozenset(suffixes)
@@ -234,10 +240,14 @@ def _contradiction_labels(rows: pd.DataFrame, dam_column: str) -> pd.Index:
     ]
 
 
+def _joined_unique(values: pd.Series) -> str:
+    return " | ".join(dict.fromkeys(str(value) for value in values if pd.notna(value)))
+
+
 def build_structured_population(
     source_rows: pd.DataFrame,
-) -> tuple[pd.DataFrame, pd.DataFrame, int]:
-    """Select the Notebook 19 structured-contradiction population and group it."""
+) -> tuple[pd.DataFrame, pd.DataFrame, int, int]:
+    """Reproduce Notebook 19's raw and structured contradiction stages."""
     required = {
         "source_rowid",
         "horse",
@@ -273,12 +283,12 @@ def build_structured_population(
     structured_labels = _contradiction_labels(
         raw_contradiction_rows, "dam_structured_key"
     )
-    structured_rows = raw_contradiction_rows.loc[
+    remaining_assertion_rows = raw_contradiction_rows.loc[
         raw_contradiction_rows["horse"].isin(structured_labels)
     ].copy()
 
     groups = (
-        structured_rows.groupby(
+        remaining_assertion_rows.groupby(
             ["horse", "sire", "dam_structured_key", "damsire"],
             dropna=False,
             as_index=False,
@@ -292,16 +302,10 @@ def build_structured_population(
             minimum_age=("age", "min"),
             maximum_age=("age", "max"),
             distinct_sexes=("sex", "nunique"),
-            sex_values=("sex", lambda values: " | ".join(dict.fromkeys(values))),
-            raw_dam_labels=("dam", lambda values: " | ".join(dict.fromkeys(values))),
-            dam_suffix_formats=(
-                "dam_suffix_format",
-                lambda values: " | ".join(dict.fromkeys(values)),
-            ),
-            course_examples=(
-                "course",
-                lambda values: " | ".join(dict.fromkeys(values))[:500],
-            ),
+            sex_values=("sex", _joined_unique),
+            raw_dam_labels=("dam", _joined_unique),
+            dam_suffix_formats=("dam_suffix_format", _joined_unique),
+            course_examples=("course", lambda values: _joined_unique(values)[:500]),
         )
         .sort_values(
             ["horse", "first_date", "last_date", "sire", "damsire"],
@@ -311,12 +315,21 @@ def build_structured_population(
     )
     groups["group_number"] = groups.groupby("horse").cumcount() + 1
     groups["groups_for_label"] = groups.groupby("horse")["horse"].transform("size")
-    return structured_rows, groups, len(raw_labels)
+
+    # The notebook retained the complete raw-contradiction population as
+    # structured_pedigree_rows after adding reversible dam structure. Only the
+    # 368 labels that still contradicted fed the grouped histories.
+    return (
+        raw_contradiction_rows,
+        groups,
+        len(raw_labels),
+        len(structured_labels),
+    )
 
 
 def build_structured_groups(source_rows: pd.DataFrame) -> pd.DataFrame:
     """Compatibility wrapper returning the structured pedigree groups."""
-    _, groups, _ = build_structured_population(source_rows)
+    _, groups, _, _ = build_structured_population(source_rows)
     return groups
 
 
@@ -485,10 +498,7 @@ def build_provisional_occurrences(
             last_date=("last_date", "max"),
             minimum_age=("minimum_age", "min"),
             maximum_age=("maximum_age", "max"),
-            sex_values=(
-                "sex_values",
-                lambda values: " | ".join(dict.fromkeys(values)),
-            ),
+            sex_values=("sex_values", _joined_unique),
             unresolved_boundaries=(
                 "boundary_outcome",
                 lambda values: sum(value == "Unresolved" for value in values),
@@ -507,9 +517,12 @@ def derive_identity_outputs(
     """Run the complete source-wide Notebook 19 derivation."""
     governance = load_identity_governance(governance_path)
     source_rows = load_source_rows(database_path)
-    structured_rows, structured_groups, raw_label_count = (
-        build_structured_population(source_rows)
-    )
+    (
+        structured_rows,
+        structured_groups,
+        raw_label_count,
+        structured_label_count,
+    ) = build_structured_population(source_rows)
     separated_groups = select_temporally_separated_groups(structured_groups)
     transitions = build_transition_governance(separated_groups, governance)
     occurrences = build_provisional_occurrences(separated_groups, transitions)
@@ -520,6 +533,7 @@ def derive_identity_outputs(
         transition_governance=transitions,
         provisional_occurrences=occurrences,
         raw_contradiction_labels=raw_label_count,
+        structured_contradiction_labels=structured_label_count,
     )
 
 
@@ -532,21 +546,45 @@ def validate_expected_population(outputs: IdentityOutputs) -> None:
     occurrences = outputs.provisional_occurrences
     outcome_counts = transitions["analytical_outcome"].value_counts().to_dict()
 
-    assert outputs.raw_contradiction_labels == EXPECTED_RAW_CONTRADICTION_LABELS
-    assert (
-        structured_rows["horse"].nunique()
-        == EXPECTED_STRUCTURED_CONTRADICTION_LABELS
+    assert outputs.raw_contradiction_labels == EXPECTED_RAW_CONTRADICTION_LABELS, (
+        outputs.raw_contradiction_labels,
+        EXPECTED_RAW_CONTRADICTION_LABELS,
     )
-    assert len(structured_rows) == EXPECTED_STRUCTURED_PEDIGREE_ROWS
-    assert len(structured_groups) == EXPECTED_STRUCTURED_PEDIGREE_GROUPS
-    assert separated_groups["horse"].nunique() == EXPECTED_SEPARATED_LABELS
-    assert len(separated_groups) == EXPECTED_SEPARATED_GROUPS
-    assert len(transitions) == EXPECTED_TRANSITIONS
+    assert (
+        outputs.structured_contradiction_labels
+        == EXPECTED_STRUCTURED_CONTRADICTION_LABELS
+    ), (
+        outputs.structured_contradiction_labels,
+        EXPECTED_STRUCTURED_CONTRADICTION_LABELS,
+    )
+    assert len(structured_rows) == EXPECTED_STRUCTURED_PEDIGREE_ROWS, (
+        len(structured_rows),
+        EXPECTED_STRUCTURED_PEDIGREE_ROWS,
+    )
+    assert len(structured_groups) == EXPECTED_STRUCTURED_PEDIGREE_GROUPS, (
+        len(structured_groups),
+        EXPECTED_STRUCTURED_PEDIGREE_GROUPS,
+    )
+    assert separated_groups["horse"].nunique() == EXPECTED_SEPARATED_LABELS, (
+        separated_groups["horse"].nunique(),
+        EXPECTED_SEPARATED_LABELS,
+    )
+    assert len(separated_groups) == EXPECTED_SEPARATED_GROUPS, (
+        len(separated_groups),
+        EXPECTED_SEPARATED_GROUPS,
+    )
+    assert len(transitions) == EXPECTED_TRANSITIONS, (
+        len(transitions),
+        EXPECTED_TRANSITIONS,
+    )
     assert outcome_counts == {
         "Different horse": EXPECTED_DIFFERENT_HORSE_TRANSITIONS,
         "Corrected": EXPECTED_CORRECTED_TRANSITIONS,
         "Unresolved": EXPECTED_UNRESOLVED_TRANSITIONS,
-    }
-    assert len(occurrences) == EXPECTED_PROVISIONAL_OCCURRENCES
+    }, outcome_counts
+    assert len(occurrences) == EXPECTED_PROVISIONAL_OCCURRENCES, (
+        len(occurrences),
+        EXPECTED_PROVISIONAL_OCCURRENCES,
+    )
     assert occurrences["provisional_occurrence_id"].is_unique
     assert transitions["analytical_outcome"].notna().all()
