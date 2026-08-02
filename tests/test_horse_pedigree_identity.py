@@ -29,6 +29,15 @@ def test_parse_bare_dam_suffix() -> None:
     )
 
 
+def test_terminal_numerals_are_not_country_suffixes() -> None:
+    assert parse_dam_label("Sun Song II") == ("Sun Song II", None, "unsuffixed")
+    assert structured_dam_key("Sun Song II") == (
+        "raw_unsuffixed",
+        "Sun Song II",
+        None,
+    )
+
+
 def test_parse_unsuffixed_and_blank_dam() -> None:
     assert parse_dam_label("Sun Song") == ("Sun Song", None, "unsuffixed")
     assert structured_dam_key("Sun Song") == ("raw_unsuffixed", "Sun Song", None)
