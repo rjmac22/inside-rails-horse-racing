@@ -6,6 +6,8 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 
+import pandas as pd
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
@@ -13,6 +15,7 @@ if str(SRC_ROOT) not in sys.path:
 
 from inside_rails.horse_pedigree_identity import (
     derive_identity_outputs,
+    load_identity_governance,
     validate_expected_population,
 )
 
@@ -24,11 +27,15 @@ SOURCE_DB = (
     / "form_2015-present"
     / "raceform.db"
 )
+GOVERNANCE_REFERENCE = (
+    PROJECT_ROOT / "data" / "reference" / "horse_pedigree_identity_governance.csv"
+)
 OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "horse_pedigree_identity"
 
 
 def main() -> None:
-    outputs = derive_identity_outputs(SOURCE_DB)
+    governance = load_identity_governance(GOVERNANCE_REFERENCE)
+    outputs = derive_identity_outputs(SOURCE_DB, GOVERNANCE_REFERENCE)
     validate_expected_population(outputs)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -38,16 +45,25 @@ def main() -> None:
     outputs.transition_governance.to_csv(transition_path, index=False)
     outputs.provisional_occurrences.to_csv(occurrence_path, index=False)
 
-    transition_reload = __import__("pandas").read_csv(transition_path)
-    occurrence_reload = __import__("pandas").read_csv(occurrence_path)
+    transition_reload = pd.read_csv(transition_path)
+    occurrence_reload = pd.read_csv(occurrence_path)
 
     assert len(transition_reload) == len(outputs.transition_governance)
     assert len(occurrence_reload) == len(outputs.provisional_occurrences)
     assert occurrence_reload["provisional_occurrence_id"].is_unique
+    assert set(transition_reload["analytical_outcome"]) == {
+        "Corrected",
+        "Different horse",
+        "Unresolved",
+    }
 
     counts = outputs.transition_governance["analytical_outcome"].value_counts()
     print("Horse and pedigree identity validation passed.")
-    print(f"  temporally separated horse labels: {outputs.structured_groups['horse'].nunique()}")
+    print(f"  specialist governance rows: {len(governance.rows)}")
+    print(
+        "  temporally separated horse labels: "
+        f"{outputs.structured_groups['horse'].nunique()}"
+    )
     print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
     print(f"  governed transitions: {len(outputs.transition_governance)}")
     for outcome in ("Corrected", "Different horse", "Unresolved"):
