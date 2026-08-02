@@ -60,11 +60,18 @@ def main() -> None:
     counts = outputs.transition_governance["analytical_outcome"].value_counts()
     print("Horse and pedigree identity validation passed.")
     print(f"  specialist governance rows: {len(governance.rows)}")
+    print(f"  raw contradiction labels: {outputs.raw_contradiction_labels}")
+    print(
+        "  structured contradiction labels: "
+        f"{outputs.structured_rows['horse'].nunique()}"
+    )
+    print(f"  structured pedigree rows: {len(outputs.structured_rows)}")
+    print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
     print(
         "  temporally separated horse labels: "
-        f"{outputs.structured_groups['horse'].nunique()}"
+        f"{outputs.separated_groups['horse'].nunique()}"
     )
-    print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
+    print(f"  separated pedigree groups: {len(outputs.separated_groups)}")
     print(f"  governed transitions: {len(outputs.transition_governance)}")
     for outcome in ("Corrected", "Different horse", "Unresolved"):
         print(f"  {outcome}: {int(counts[outcome])}")
