@@ -78,6 +78,11 @@ def test_source_supplementation_is_governed() -> None:
     assert validate_manual_verifications([row])[0].database_action == "source_supplementation"
 
 
+def test_label_equivalence_is_governed() -> None:
+    row = make_row(database_action="label_equivalence")
+    assert validate_manual_verifications([row])[0].database_action == "label_equivalence"
+
+
 def test_duplicate_ids_fail() -> None:
     with pytest.raises(ValueError, match="duplicate verification_id"):
         validate_manual_verifications([make_row(), make_row()])
