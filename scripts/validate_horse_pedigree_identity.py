@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""Validate Notebook 19 horse and pedigree identity governance source-wide."""
+
+from __future__ import annotations
+
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from inside_rails.horse_pedigree_identity import (
+    derive_identity_outputs,
+    validate_expected_population,
+)
+
+SOURCE_DB = (
+    PROJECT_ROOT
+    / "data"
+    / "raw"
+    / "form_2015-present"
+    / "form_2015-present"
+    / "raceform.db"
+)
+OUTPUT_DIR = PROJECT_ROOT / "data" / "processed" / "horse_pedigree_identity"
+
+
+def main() -> None:
+    outputs = derive_identity_outputs(SOURCE_DB)
+    validate_expected_population(outputs)
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    transition_path = OUTPUT_DIR / "transition_governance.csv"
+    occurrence_path = OUTPUT_DIR / "provisional_horse_occurrences.csv"
+
+    outputs.transition_governance.to_csv(transition_path, index=False)
+    outputs.provisional_occurrences.to_csv(occurrence_path, index=False)
+
+    transition_reload = __import__("pandas").read_csv(transition_path)
+    occurrence_reload = __import__("pandas").read_csv(occurrence_path)
+
+    assert len(transition_reload) == len(outputs.transition_governance)
+    assert len(occurrence_reload) == len(outputs.provisional_occurrences)
+    assert occurrence_reload["provisional_occurrence_id"].is_unique
+
+    counts = outputs.transition_governance["analytical_outcome"].value_counts()
+    print("Horse and pedigree identity validation passed.")
+    print(f"  temporally separated horse labels: {outputs.structured_groups['horse'].nunique()}")
+    print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
+    print(f"  governed transitions: {len(outputs.transition_governance)}")
+    for outcome in ("Corrected", "Different horse", "Unresolved"):
+        print(f"  {outcome}: {int(counts[outcome])}")
+    print(f"  provisional occurrences: {len(outputs.provisional_occurrences)}")
+    print(f"  wrote and reloaded: {transition_path.relative_to(PROJECT_ROOT)}")
+    print(f"  wrote and reloaded: {occurrence_path.relative_to(PROJECT_ROOT)}")
+
+
+if __name__ == "__main__":
+    main()
