@@ -40,6 +40,7 @@ ALLOWED_CONFIDENCE = {"high", "medium", "low"}
 
 ALLOWED_DATABASE_ACTIONS = {
     "evidence_only",
+    "label_equivalence",
     "reference_enrichment",
     "source_supplementation",
     "source_correction_candidate",
@@ -80,7 +81,9 @@ def _validate_date(value: str, field_name: str, verification_id: str) -> None:
         ) from exc
 
 
-def validate_manual_verifications(rows: Iterable[ManualVerification]) -> tuple[ManualVerification, ...]:
+def validate_manual_verifications(
+    rows: Iterable[ManualVerification],
+) -> tuple[ManualVerification, ...]:
     materialised = tuple(rows)
     ids: set[str] = set()
 
