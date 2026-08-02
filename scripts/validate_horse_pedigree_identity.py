@@ -39,7 +39,7 @@ def _print_observed_funnel(outputs: object) -> None:
     print(f"  raw contradiction labels: {outputs.raw_contradiction_labels}")
     print(
         "  structured contradiction labels: "
-        f"{outputs.structured_rows['horse'].nunique()}"
+        f"{outputs.structured_contradiction_labels}"
     )
     print(f"  structured pedigree rows: {len(outputs.structured_rows)}")
     print(f"  structured pedigree groups: {len(outputs.structured_groups)}")
