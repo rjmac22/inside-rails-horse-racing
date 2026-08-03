@@ -81,39 +81,62 @@ Governed rules:
 Recorded closeout validation:
 
 - focused horse-identity tests passed;
-- manual-verification register passed across 39 governed rows;
+- manual-verification register passed across 39 governed rows before Notebook 20 promotion;
 - independent validator matched all Notebook 19 population baselines;
 - 353 governed transitions partitioned into 87 `Corrected`, 261 `Different horse` and 5 `Unresolved`;
 - 611 provisional source-internal horse occurrences were written, reloaded and committed.
 
+### Notebook 20 — Connections and ownership identity
+
+**Status:** fully closed.
+
+Governed rules:
+
+- preserve raw `jockey`, `trainer` and `owner` labels as source assertions rather than canonical entities;
+- do not split partnerships, syndicates or shared surnames automatically;
+- supplement only an exact blank `(source_rowid, source_field)` target backed by confirmed external evidence;
+- preserve conflicting and insufficient-evidence blanks as unresolved;
+- fail rather than overwrite a populated source value;
+- retain verification identifiers, evidence locators, confidence and database action for every governed decision.
+
+Recorded closeout validation:
+
+- 46 raw blank field occurrences across 44 source rows;
+- 28 confirmed source supplementations;
+- 18 unresolved blanks preserved;
+- focused tests passed: 18;
+- manual-verification register passed across 85 governed rows;
+- independent source-wide connection validator passed;
+- permanent reference data and the Notebook 20 closeout record are committed.
+
 The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
-## Remaining source-field studies
+## Remaining source-field study
 
-Only two bounded studies remain:
+Only one bounded study remains:
 
-1. connections and ownership identity — `jockey`, `trainer`, `owner`;
-2. comments and embedded information — `comment`.
+1. comments and embedded information — `comment`.
 
-These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
+This is a planning unit rather than a commitment to a predetermined notebook shape. The study should remain bounded around field meaning, embedded structured information, preservation rules and any safely extractable derived features.
 
 ## Current next action
 
-### Begin connections and ownership identity
+### Begin comments and embedded information
 
-Bound the next study around `jockey`, `trainer` and `owner`.
+Bound the final source-field study around `comment`.
 
 Establish:
 
-- field coverage and blank behaviour;
-- exact-label repetition and stability;
-- punctuation, initials, titles, suffixes and partnership/syndicate formatting;
-- likely aliases and collisions;
-- whether stable source-internal occurrence keys are needed;
-- which normalisations are reversible and safe;
-- what remains unresolved without external authority evidence.
+- field coverage, blanks and exact-text repetition;
+- whether comments are runner-level, race-level or mixed assertions;
+- punctuation, abbreviations, symbols and source-specific templates;
+- embedded finishing, positional, equipment, incident, pace or performance information;
+- which elements duplicate structured fields and which add genuinely new information;
+- whether any extraction can be deterministic, reversible and independently validated;
+- what must remain preserved as free text;
+- what licensing or publication constraints apply to derived examples.
 
-Do not begin global participant entity resolution and do not run the complete repository suite yet.
+Do not run the complete repository suite until this final study is closed.
 
 ## End-of-series closeout
 
