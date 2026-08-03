@@ -10,6 +10,21 @@ The wrap-up must preserve the reasoning, extract reusable implementation, valida
 
 A notebook is fully closed only when every applicable item below has been completed. Where an item genuinely does not apply, record that explicitly rather than omitting it.
 
+## Working discipline during notebook construction
+
+Use a lightweight behavioural check before each substantive analytical cell rather than a rigid notebook template or style validator.
+
+Before proposing or running the next step, confirm that:
+
+- the cell has one clear analytical purpose;
+- repository paths, helper functions and other project details have been checked against the repository rather than reconstructed from memory;
+- non-obvious code includes enough comments to preserve its purpose, assumptions and limits for a later reader;
+- raw values, source lineage and unresolved states remain preserved;
+- the cell does not assume a conclusion, parser, reference output or reusable implementation before the evidence supports it;
+- the next analytical step follows from the inspected output rather than from a prewritten sequence.
+
+This is a judgement rule, not a demand that every trivial line receive a comment or that every notebook follow an identical cell structure. The aim is to prevent rushed, unexplained or assumption-led work without turning exploratory research into a compliance form.
+
 ## 1. Analytical conclusion
 
 - State the bounded question investigated.
