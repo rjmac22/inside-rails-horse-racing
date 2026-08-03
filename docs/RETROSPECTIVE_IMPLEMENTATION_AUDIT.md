@@ -42,6 +42,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
 | 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, focused tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. |
 | 19 | Horse and pedigree identity | Governed pedigree reconciliation and provisional horse-occurrence identity | **Fully closed on this audit branch** | Explicit archival classification, specialist governance, reusable implementation, focused tests, manual-verification validation, independent source-wide validator, database integration documentation and persisted/reloaded outputs are committed. Five authority-dependent cases remain governed as unresolved rather than blocking closure. |
+| 20 | Connections and ownership identity | Governed blank-field supplementation without unsupported entity resolution | **Fully closed on this audit branch** | Notebook conclusions, 46 permanent verification records, 28 governed repair rows, reusable implementation, focused tests, manual-register validation, independent source-wide validation, integration documentation and closeout record are committed. Eighteen blanks remain deliberately unresolved. |
 
 ## Notebook 19 closure evidence
 
@@ -77,17 +78,46 @@ Recorded validation evidence:
 
 The five unresolved cases remain subject to the mandatory pre-database authority-response gate recorded in `docs/PROJECT_PLAN.md`.
 
+## Notebook 20 closure evidence
+
+Durable artifacts:
+
+- `notebooks/20_connections_and_ownership_identity.ipynb`;
+- Notebook 20 records in `data/reference/manual_verifications.csv`;
+- `data/reference/connection_identity_repairs.csv`;
+- `src/inside_rails/connection_identity.py`;
+- `tests/test_connection_identity.py`;
+- Notebook 20 coverage in `tests/test_manual_verifications.py`;
+- `scripts/promote_connection_identity_verifications.py`;
+- `scripts/validate_connection_identity.py`;
+- `docs/CONNECTION_IDENTITY_INTEGRATION.md`;
+- `docs/NOTEBOOK_20_CLOSEOUT.md`.
+
+Recorded validation evidence:
+
+- focused tests: **18 passed**;
+- manual-verification register: **85 governed rows passed**;
+- governed runner rows: **1,851,285**;
+- raw blank field occurrences: **46** across **44** runner rows;
+- permanent Notebook 20 verification records: **46**;
+- confirmed source supplementations: **28**;
+- unresolved preserved blanks: **18**;
+- `jockey`: **2** raw blanks, **2** supplemented, **0** unresolved;
+- `trainer`: **9** raw blanks, **4** supplemented, **5** unresolved;
+- `owner`: **35** raw blanks, **22** supplemented, **13** unresolved.
+
+The raw source remains immutable. Confirmed values are applied only in the governed layer against the exact blank `(source_rowid, source_field)` target. Connection labels remain source-presented text rather than canonical person or organisation identifiers.
+
 ## Current position
 
-Notebook 19 is fully closed.
+Notebook 20 is fully closed.
 
-Two source-field studies remain before the source-field series is complete:
+One source-field study remains before the source-field series is complete:
 
-1. connections and ownership identity — `jockey`, `trainer`, `owner`;
-2. comments and embedded information — `comment`.
+1. comments and embedded information — `comment`.
 
-The next bounded action is the connections and ownership identity study.
+The next bounded action is the comments and embedded information study.
 
-After both studies close, run the complete repository test suite and all-validator sweep, repair cross-notebook integration defects, complete the studbook/authority-response gate, and then move into entity/key design and target database architecture.
+After Notebook 21 closes, run the complete repository test suite and all-validator sweep, repair cross-notebook integration defects, complete the studbook/authority-response gate, and then move into entity/key design and target database architecture.
 
 Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
