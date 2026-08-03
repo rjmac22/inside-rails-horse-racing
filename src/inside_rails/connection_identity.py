@@ -16,6 +16,11 @@ COMPLETED_DECISIONS = frozenset(
     {"verified_repair", "conflicting_evidence", "insufficient_evidence"}
 )
 ALLOWED_CONFIDENCE = frozenset({"high", "medium", "low"})
+EVIDENCE_CONFIDENCE_BY_DECISION = {
+    "verified_repair": frozenset({"high", "medium", "low"}),
+    "conflicting_evidence": frozenset({"high", "medium", "low", "conflicting"}),
+    "insufficient_evidence": frozenset({"high", "medium", "low", "insufficient"}),
+}
 EXPECTED_EVIDENCE_RECORDS = 46
 EXPECTED_VERIFIED_REPAIRS = 28
 EXPECTED_UNRESOLVED_RECORDS = 18
@@ -124,6 +129,30 @@ def verification_id_for_repair(repair_record_id: str) -> str:
     return f"NB20-CONNECTION-{int(match.group(1)):04d}"
 
 
+def governed_confidence_for_evidence(evidence: Mapping[str, str]) -> str:
+    """Map Notebook 20 decision markers onto the permanent confidence scale.
+
+    The notebook used ``conflicting`` and ``insufficient`` as categorical
+    markers for unresolved reviews. They are not confidence levels in the
+    permanent register. Preserve those markers in notes, but represent the
+    unresolved record itself as low confidence.
+    """
+    repair_id = _clean(evidence.get("repair_record_id"))
+    decision = _clean(evidence.get("verification_decision"))
+    confidence = _clean(evidence.get("verification_confidence"))
+
+    allowed = EVIDENCE_CONFIDENCE_BY_DECISION.get(decision)
+    if allowed is None:
+        raise ValueError(f"{repair_id}: invalid or incomplete decision {decision!r}")
+    if confidence not in allowed:
+        raise ValueError(
+            f"{repair_id}: invalid confidence {confidence!r} for decision {decision!r}"
+        )
+    if confidence in ALLOWED_CONFIDENCE:
+        return confidence
+    return "low"
+
+
 def load_connection_evidence(path: str | Path) -> tuple[dict[str, str], ...]:
     """Load and validate the completed 46-row Notebook 20 evidence log."""
     csv_path = Path(path)
@@ -157,14 +186,12 @@ def load_connection_evidence(path: str | Path) -> tuple[dict[str, str], ...]:
         repair_id = row["repair_record_id"]
         field = row["missing_source_field"]
         decision = row["verification_decision"]
-        confidence = row["verification_confidence"]
 
         if field not in CONNECTION_FIELDS:
             raise ValueError(f"{repair_id}: invalid connection field {field!r}")
         if decision not in COMPLETED_DECISIONS:
             raise ValueError(f"{repair_id}: invalid or incomplete decision {decision!r}")
-        if confidence not in ALLOWED_CONFIDENCE:
-            raise ValueError(f"{repair_id}: invalid confidence {confidence!r}")
+        governed_confidence_for_evidence(row)
         if not row["source_rowid"].isdigit():
             raise ValueError(f"{repair_id}: source_rowid must be a positive integer")
         if int(row["source_rowid"]) <= 0:
@@ -214,11 +241,13 @@ def build_manual_verifications(
         repair_id = evidence["repair_record_id"]
         field = evidence["missing_source_field"]
         decision = evidence["verification_decision"]
+        confidence_marker = evidence["verification_confidence"]
         confirmed = decision == "verified_repair"
         source_rowid = evidence["source_rowid"]
         race_id = evidence["race_id"]
         notes = (
-            f"{repair_id}; source_rowid={source_rowid}; evidence decision={decision}. "
+            f"{repair_id}; source_rowid={source_rowid}; evidence decision={decision}; "
+            f"evidence confidence marker={confidence_marker}. "
             f"{evidence['reviewer_notes']}"
         )
         if confirmed:
@@ -251,7 +280,7 @@ def build_manual_verifications(
                 evidence_locator=evidence["evidence_locator"],
                 evidence_accessed_date=evidence["evidence_accessed_date"],
                 governing_notebook="20",
-                confidence=evidence["verification_confidence"],
+                confidence=governed_confidence_for_evidence(evidence),
                 notes=notes,
                 database_action=(
                     "source_supplementation" if confirmed else "preserve_raw_unresolved"
@@ -286,7 +315,7 @@ def build_connection_repairs(
                 evidence_type=evidence["evidence_source_type"],
                 evidence_locator=evidence["evidence_locator"],
                 evidence_accessed_date=evidence["evidence_accessed_date"],
-                confidence=evidence["verification_confidence"],
+                confidence=governed_confidence_for_evidence(evidence),
                 notes=(
                     f"{evidence['repair_record_id']}; {evidence['reviewer_notes']} "
                     "Supplement only when the exact immutable source field is blank."
