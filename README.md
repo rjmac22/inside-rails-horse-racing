@@ -66,6 +66,28 @@ Durable implementation includes the specialist governance reference, reusable co
 
 Before physical database construction, all pending studbook and racing-authority responses must be checked and the affected Notebook 19 governance and outputs regenerated where necessary.
 
+### Notebook 20 — Connections and ownership identity
+
+**Status:** fully closed.
+
+Notebook 20 established that `jockey`, `trainer` and `owner` are source-presented runner-level labels rather than canonical identities for people, partnerships, syndicates, licences or organisations.
+
+Across the governed source population, 46 blank connection-field occurrences affect 44 runner rows:
+
+- 2 blank `jockey` values;
+- 9 blank `trainer` values;
+- 35 blank `owner` values.
+
+External review produced:
+
+- 28 confirmed source supplementations;
+- 5 conflicting-evidence trainer records preserved unresolved;
+- 13 insufficient-evidence owner records preserved unresolved.
+
+The raw database remains immutable. Confirmed values are applied only through the exact `(source_rowid, source_field)` governed repair reference, and populated source values can never be overwritten. Raw connection labels remain atomic text and are not treated as global entity identifiers.
+
+Durable implementation includes 46 permanent manual-verification records, a 28-row connection-repair reference, reusable application logic, focused tests, an independent source-wide validator, database-integration documentation and the formal Notebook 20 closeout record.
+
 ## Retrospective implementation audit
 
 See:
@@ -73,19 +95,23 @@ See:
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
 
-The branch `audit/retrospective-implementation-closeout` remains open while the final source-field studies continue. The complete test suite and all applicable validators will run again before final merge.
+The branch `audit/retrospective-implementation-closeout` remains open while the final source-field study continues. The complete test suite and all applicable validators will run again after that study closes and before final merge.
 
 ## Next bounded action
 
-Begin the connections and ownership identity study, bounded around:
+Begin the final remaining source-field study: `comment` and its embedded information.
 
-- `jockey`;
-- `trainer`;
-- `owner`.
+The study should establish:
 
-The study should establish raw-label stability, missingness, punctuation and suffix behaviour, collision and alias risks, and which source-internal identity rules can be implemented safely without premature global entity resolution.
+- physical storage and blank behaviour;
+- whether comments are runner-level source text consistently;
+- recurring vocabulary and punctuation structures;
+- which facts are explicitly present versus inferred;
+- whether embedded distances, incidents, tactics, equipment references or timing information can be extracted safely;
+- which information must remain raw free text;
+- what provenance and confidence are required for any derived features.
 
-After that, the final remaining source-field study is `comment` and its embedded information.
+No comment-derived field should be treated as authoritative merely because a phrase can be parsed. Raw text and extraction lineage must remain recoverable.
 
 ## Working method
 
