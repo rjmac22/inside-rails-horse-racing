@@ -45,10 +45,13 @@ def _evidence_rows() -> list[dict[str, str]]:
         verified = number in VERIFIED_IDS
         if verified:
             decision = "verified_repair"
+            confidence = "high"
         elif number in CONFLICT_IDS:
             decision = "conflicting_evidence"
+            confidence = "conflicting"
         else:
             decision = "insufficient_evidence"
+            confidence = "insufficient"
         rows.append(
             {
                 "repair_record_id": f"connection_blank_{number:03d}",
@@ -69,7 +72,7 @@ def _evidence_rows() -> list[dict[str, str]]:
                 ),
                 "evidence_accessed_date": "2026-08-03",
                 "verification_decision": decision,
-                "verification_confidence": "high" if verified else "low",
+                "verification_confidence": confidence,
                 "reviewer_notes": "Bounded evidence review completed.",
             }
         )
@@ -94,8 +97,28 @@ def test_evidence_promotion_builds_46_register_rows_and_28_repairs(tmp_path) -> 
     assert len(verifications) == 46
     assert sum(row.verification_status == "confirmed" for row in verifications) == 28
     assert sum(row.verification_status == "unresolved" for row in verifications) == 18
+    assert all(
+        row.confidence == "low"
+        for row in verifications
+        if row.verification_status == "unresolved"
+    )
+    assert all(
+        "evidence confidence marker=" in row.notes
+        for row in verifications
+        if row.verification_status == "unresolved"
+    )
     assert len(repairs) == 28
     assert {repair.source_field for repair in repairs} == {"jockey", "trainer", "owner"}
+
+
+def test_verified_repair_rejects_unresolved_confidence_marker(tmp_path) -> None:
+    evidence_path = tmp_path / "evidence.csv"
+    rows = _evidence_rows()
+    rows[0]["verification_confidence"] = "insufficient"
+    _write_evidence(evidence_path, rows)
+
+    with pytest.raises(ValueError, match="invalid confidence 'insufficient'"):
+        load_connection_evidence(evidence_path)
 
 
 def test_verification_ids_are_permanent_and_deterministic() -> None:
