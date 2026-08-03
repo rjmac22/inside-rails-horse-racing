@@ -1,5 +1,8 @@
 """Reusable code for the Inside Rails horse-racing database project."""
 
+# Install Notebook 19's populated-only contradiction rule before consumers
+# import the horse-pedigree implementation submodule directly.
+from . import horse_pedigree_identity_counts as _horse_pedigree_identity_counts
 from .prize_money import PrizeMoneyResult, parse_prize_money
 from .race_classification import (
     AgeBandResult,
