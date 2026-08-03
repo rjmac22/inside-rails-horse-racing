@@ -150,7 +150,8 @@ After the final `comment` study:
 4. run the all-validator sweep, preserving Notebook 08's deliberate governed failure as expected evidence;
 5. repair any cross-notebook integration defects;
 6. reconcile README, project plan, audit and lessons learned;
-7. verify a clean local tree and synchronized remote branch.
+7. verify a clean local tree and synchronized remote branch;
+8. begin the participant identity studies as the first Phase 3 work.
 
 ## Mandatory pre-database authority gate
 
@@ -168,9 +169,18 @@ Database construction must not proceed until this check has been completed and r
 
 ## Mandatory participant identity gate
 
-Before any retrospective jockey, trainer or owner performance analysis, and before final participant tables are treated as analytical entities, complete a governed participant identity-resolution study.
+This gate begins **immediately after Notebook 21 and the end-of-series repository-wide validation sweep**. It is the first Phase 3 programme and must be completed before physical participant schema design, retrospective participant performance analysis, publication or modelling.
 
-The study must:
+The planned bounded studies are:
+
+1. **Notebook 22 — Jockey and trainer identity**: resolve individual people, aliases, initials, punctuation variants, spelling changes, same-name collisions, jurisdiction and active-period boundaries, while preserving unresolved mappings;
+2. **Notebook 23 — Owner identity and ownership structures**: distinguish individuals, partnerships, syndicates, clubs, companies and other ownership entities, including compressed and changing ownership labels.
+
+The numbering is provisional only if the final `comment` study requires a different notebook number, but the sequence is mandatory: comments closeout, repository-wide validation, jockey/trainer identity, owner identity, then physical database entity design.
+
+Before any retrospective jockey, trainer or owner performance analysis, and before final participant tables are treated as analytical entities, complete the governed participant identity-resolution studies.
+
+The studies must:
 
 1. preserve every immutable raw connection label and its runner-level lineage;
 2. create separate participant and ownership-entity identifiers rather than using display text as a natural key;
@@ -192,7 +202,9 @@ Until this gate is complete:
 
 ## Phase 3 — Entity and key design
 
-After the source-field series, authority gate and participant identity gate:
+Phase 3 begins with the participant identity gate, not with physical schema design.
+
+After the source-field series, end-of-series validation, authority gate and participant identity studies:
 
 - consolidate identity and reconstruction requirements;
 - define race, runner, horse-occurrence, participant and ownership entities;
