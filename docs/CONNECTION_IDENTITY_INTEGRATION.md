@@ -24,7 +24,12 @@ Observed raw blank counts are:
 - `trainer`: 9;
 - `owner`: 35;
 - total blank field occurrences: 46;
-- affected runner rows: 43.
+- affected runner rows: 44.
+
+The 46 blank field occurrences occupy 44 rows because two runners each have both `trainer` and `owner` blank:
+
+- source row `203870`, Star White (FR), Maisons-Laffitte, 2016-05-07 3:30;
+- source row `203991`, Colombia DEmra (FR), Maisons-Laffitte, 2016-05-07 3:30.
 
 Manual review produced:
 
