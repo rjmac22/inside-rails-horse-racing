@@ -43,35 +43,28 @@ Notebook 17 governed runner age, sex and headgear, including exact verification-
 
 **Status:** fully closed.
 
-Notebook 18 established that:
+Notebook 18 established separate governed meanings for `or`, `rpr` and `ts`, preserved unavailable ratings as null rather than zero, and isolated the exact invalid `rpr = 775` source row without inventing a replacement.
 
-- `or` is the official pre-race handicap mark applicable to the runner;
-- `rpr` is a retrospective and potentially revisable Racing Post performance rating;
-- `ts` is a retrospective Racing Post speed figure;
-- the exact Unicode en dash `–` means unavailable and must parse to null rather than zero;
-- the three ratings require independent nullable analytical values and statuses;
-- the isolated source row `rowid = 1619851`, `rpr = 775` is an invalid source value whose raw value remains preserved and whose replacement remains unresolved;
-- observed candidate ranges are regression baselines, not universal future validity rules.
+### Notebook 19 — Horse and pedigree identity
 
-Durable outputs:
+**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
 
-- `notebooks/18_ratings_semantics_and_availability.ipynb`;
-- `src/inside_rails/ratings.py`;
-- `tests/test_ratings.py`;
-- `scripts/validate_ratings.py`;
-- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
-- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`;
-- three Notebook 18 records in `data/reference/manual_verifications.csv`.
+Notebook 19 established that raw `horse` is a source label rather than a permanent natural key. The same exact label can refer to different real horses, while one horse can carry inconsistent pedigree assertions.
 
-Closeout validation passed with:
+The source-wide governed result contains:
 
-- `22 passed in 0.06s` across ratings and manual-verification focused tests;
-- ratings validation across all 1,851,285 governed runner rows;
-- `or`: 1,116,633 available and 734,652 unavailable, range 1–181;
-- `rpr`: 1,644,175 available, 207,109 unavailable and one invalid, range 1–184;
-- `ts`: 1,227,384 available and 623,901 unavailable, range 1–178;
-- manual-verification validation across 36 governed rows.
+- 5,573 exact labels with at least one raw populated pedigree contradiction;
+- 368 labels retaining contradiction after reversible dam-suffix treatment;
+- 350 temporally separated contradictory labels;
+- 353 governed transitions;
+- 87 `Corrected` transitions;
+- 261 `Different horse` transitions;
+- 5 `Unresolved` transitions;
+- 611 provisional source-internal horse occurrences.
+
+Durable implementation includes the specialist governance reference, reusable code, focused tests, independent validator, database-integration documentation and committed processed outputs.
+
+Before physical database construction, all pending studbook and racing-authority responses must be checked and the affected Notebook 19 governance and outputs regenerated where necessary.
 
 ## Retrospective implementation audit
 
@@ -80,11 +73,19 @@ See:
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
 
-The branch `audit/retrospective-implementation-closeout` remains open while the remaining source-field studies continue. The complete test suite and all applicable validators will run again before final merge.
+The branch `audit/retrospective-implementation-closeout` remains open while the final source-field studies continue. The complete test suite and all applicable validators will run again before final merge.
 
 ## Next bounded action
 
-Begin horse and pedigree identity, bounded around `horse`, `sire`, `dam` and `damsire`. Permanent entity design and the physical target schema remain deferred until the remaining source-field studies required for structural reconstruction are complete or explicitly deferred.
+Begin the connections and ownership identity study, bounded around:
+
+- `jockey`;
+- `trainer`;
+- `owner`.
+
+The study should establish raw-label stability, missingness, punctuation and suffix behaviour, collision and alias risks, and which source-internal identity rules can be implemented safely without premature global entity resolution.
+
+After that, the final remaining source-field study is `comment` and its embedded information.
 
 ## Working method
 
