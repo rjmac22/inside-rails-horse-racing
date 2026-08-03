@@ -88,7 +88,7 @@ Recorded closeout validation:
 
 ### Notebook 20 — Connections and ownership identity
 
-**Status:** fully closed.
+**Status:** fully closed for source-field semantics, blank governance and bounded supplementation. Global participant entity resolution remains a separate mandatory downstream study.
 
 Governed rules:
 
@@ -108,6 +108,8 @@ Recorded closeout validation:
 - manual-verification register passed across 85 governed rows;
 - independent source-wide connection validator passed;
 - permanent reference data and the Notebook 20 closeout record are committed.
+
+Notebook 20 does **not** establish that equal labels identify the same real participant, or that different labels identify different participants. Direct career aggregation by raw or merely normalised connection label is therefore not authorised.
 
 The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
@@ -164,9 +166,33 @@ Before physical database construction begins:
 
 Database construction must not proceed until this check has been completed and recorded.
 
+## Mandatory participant identity gate
+
+Before any retrospective jockey, trainer or owner performance analysis, and before final participant tables are treated as analytical entities, complete a governed participant identity-resolution study.
+
+The study must:
+
+1. preserve every immutable raw connection label and its runner-level lineage;
+2. create separate participant and ownership-entity identifiers rather than using display text as a natural key;
+3. distinguish people, partnerships, syndicates, clubs, companies and other ownership forms;
+4. profile exact-label reuse, punctuation variants, initials, titles, suffixes, spelling changes and compressed shared-name formats;
+5. test both alias risk — one entity represented by several labels — and collision risk — several entities represented by one label;
+6. use jurisdiction, role, active dates, associated horses and external authority evidence where available;
+7. record every merge, split and unresolved relationship with provenance, confidence and effective scope;
+8. prevent automatic cross-role merging merely because jockey, trainer or owner text matches;
+9. validate that governed mappings do not overwrite source labels or conceal unresolved ambiguity;
+10. produce identity-aware analytical views that can separate confirmed entity totals from unresolved label-level totals.
+
+Until this gate is complete:
+
+- raw-label summaries may be used only when explicitly labelled as source-label analysis;
+- normalised-text summaries may be used only for exploratory candidate matching;
+- no output may describe raw-label aggregates as an individual's definitive career performance;
+- trainer, jockey and owner comparisons intended for publication or modelling remain blocked.
+
 ## Phase 3 — Entity and key design
 
-After the source-field series and authority gate:
+After the source-field series, authority gate and participant identity gate:
 
 - consolidate identity and reconstruction requirements;
 - define race, runner, horse-occurrence, participant and ownership entities;
@@ -190,4 +216,4 @@ Only after the evidence base is sufficient:
 
 Potential outputs after the database is validated include research views, form-history datasets, trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
 
-Predictive work remains downstream of reliable source interpretation and database design.
+Participant-level trainer, jockey and owner summaries require completion of the mandatory participant identity gate. Predictive work remains downstream of reliable source interpretation, governed identity resolution and database design.
