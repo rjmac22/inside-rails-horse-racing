@@ -2,9 +2,11 @@
 
 ## Status
 
-**Implemented pending local validation.**
+**Validated and analytically closed.**
 
-The analytical investigation is complete. The notebook is classified as a **non-rerunnable archival construction record**. Durable implementation, governed reference data, focused tests, an independent source-wide validator and database-integration documentation now exist outside the notebook. The notebook must not be marked fully closed until the focused local tests and source-wide validator have passed and their exact results have been recorded.
+The analytical investigation is complete. The notebook is classified as a **non-rerunnable archival construction record**. Durable implementation, governed reference data, focused tests, an independent source-wide validator and database-integration documentation exist outside the notebook. Local validation against the immutable source passed on 3 August 2026.
+
+The two validator-generated CSV outputs were written and reloaded successfully. They must be committed from the local checkout because the source database and generated files remain local.
 
 ## Bounded question
 
@@ -28,7 +30,16 @@ The governed split boundaries produce 611 provisional source-internal horse occu
 
 The source population contains 1,851,285 governed runner rows and 189,043 provisional races under `rowid <> 1`.
 
-The source pedigree fields are highly populated, but repeated exact horse labels can carry incompatible pedigrees. After reversible treatment of dam suffix formatting, 368 repeated labels retained structured pedigree contradictions. Most contradictory histories were temporally separated.
+The source pedigree fields are highly populated, but repeated exact horse labels can carry incompatible pedigrees. The validated funnel is:
+
+- 5,573 raw contradiction labels;
+- 368 structured contradiction labels after reversible dam-suffix treatment;
+- 96,404 structured pedigree rows;
+- 741 structured pedigree groups;
+- 350 temporally separated exact labels;
+- 703 separated pedigree groups;
+- 353 governed transitions;
+- 611 provisional occurrences.
 
 Complete pedigree changes combined with long chronological gaps and incompatible age progression provide strong evidence of exact-label reuse. Short-gap exceptions and partial changes were reviewed separately rather than forced through a universal rule.
 
@@ -93,7 +104,7 @@ It does not justify overwriting the source, globally stripping suffixes or numer
 
 **`specialist_reference`**
 
-Notebook 19 depends on manual and external evidence. Three claims are recorded in `data/reference/manual_verifications.csv`. Equivalent evidence, status, confidence, decision identifiers and database consequences for the remaining bounded decisions and pending enquiries are preserved in the more specific governed table:
+Notebook 19 depends on manual and external evidence. Three claims are recorded in `data/reference/manual_verifications.csv`. Equivalent evidence, status, confidence, decision identifiers and database consequences for the remaining bounded decisions and pending enquiries are preserved in:
 
 `data/reference/horse_pedigree_identity_governance.csv`
 
@@ -105,32 +116,82 @@ Notebook 19 is a **non-rerunnable archival construction record**.
 
 The saved executed notebook preserves the completed investigation, output tables, anomalies, external-review reasoning and final conclusion. It is not intended to regenerate permanent outputs directly.
 
-A fresh-kernel rerun would add little reliability and would depend on interactive research, authority enquiries and external evidence that may change. Harmless exploratory and recovery history therefore need not be removed solely to manufacture restart safety.
-
-Material caution: cells that perform exploratory classification or construct provisional decisions should not be rerun and treated as production output independently of the governed reference and source-wide validator.
+A fresh-kernel rerun would add little reliability and would depend on interactive research, authority enquiries and external evidence that may change. Material exploratory classification cells must not be rerun and treated as production output independently of the governed reference and source-wide validator.
 
 Durable replacement validation is provided by:
 
 - `data/reference/horse_pedigree_identity_governance.csv`;
 - `src/inside_rails/horse_pedigree_identity.py`;
+- `src/inside_rails/horse_pedigree_identity_counts.py`;
 - `tests/test_horse_pedigree_identity.py`;
+- `tests/test_horse_pedigree_identity_counts.py`;
 - `scripts/validate_horse_pedigree_identity.py`;
 - `docs/HORSE_PEDIGREE_IDENTITY_INTEGRATION.md`.
 
+## Validation evidence
+
+Validation was run locally on 3 August 2026 against the immutable source database.
+
+Focused tests:
+
+```bash
+pytest tests/test_horse_pedigree_identity.py tests/test_horse_pedigree_identity_counts.py
+```
+
+Result: **12 passed in 0.63s**.
+
+Earlier combined focused validation also passed:
+
+```bash
+pytest tests/test_horse_pedigree_identity.py tests/test_manual_verifications.py
+python scripts/validate_manual_verifications.py
+```
+
+Results:
+
+- **20 tests passed in 0.55s**;
+- manual-verification register passed with **39 governed rows**.
+
+Independent source-wide validation:
+
+```bash
+python scripts/validate_horse_pedigree_identity.py
+```
+
+Result: **passed** with the exact notebook baselines:
+
+- raw contradiction labels: 5,573;
+- structured contradiction labels: 368;
+- structured pedigree rows: 96,404;
+- structured pedigree groups: 741;
+- temporally separated horse labels: 350;
+- separated pedigree groups: 703;
+- governed transitions: 353;
+- `Corrected`: 87;
+- `Different horse`: 261;
+- `Unresolved`: 5;
+- provisional occurrences: 611.
+
+The validator successfully wrote and reloaded both processed outputs.
+
 ## Persisted outputs
 
-The independent validator is responsible for writing and reloading:
+The independent validator wrote and reloaded:
 
 - `data/processed/horse_pedigree_identity/transition_governance.csv`;
 - `data/processed/horse_pedigree_identity/provisional_horse_occurrences.csv`.
 
-These outputs remain pending until the validator runs successfully against the immutable local source.
+These files are generated from the immutable local source and must be committed from the local checkout.
 
 ## Lessons learned
 
 ### Identity cannot be repaired with generic string cleaning
 
-The largest conceptual risk was treating suffixes, terminal numerals, prefixes or spelling differences as a formatting problem. Some are formatting variants, some are aliases, some are metadata defects and some distinguish real entities. Future identity work must begin with contradiction structure and bounded evidence, not global replacement rules.
+Suffixes, terminal numerals, prefixes and spelling differences can be formatting variants, aliases, metadata defects or real entity distinctions. Identity work must begin with contradiction structure and bounded evidence, not global replacements.
+
+### Populated-value semantics must survive extraction
+
+The independent implementation initially counted blank pedigree strings as competing labels, adding two false contradictions. Notebook 19 counted multiple populated labels. Production extraction must preserve that semantic distinction explicitly and test it.
 
 ### Full pedigree change is powerful but not sufficient alone
 
@@ -138,19 +199,19 @@ A complete pedigree change usually identified label reuse, but short-gap cases s
 
 ### Manual review was appropriate for the finite residue
 
-Once the unresolved set fell to five consequential cases, authority enquiries were more defensible than another automated similarity layer. Future notebooks should switch to manual review earlier when the remaining residue is small, ambiguous and high consequence.
+Once the unresolved set fell to five consequential cases, authority enquiries were more defensible than another automated similarity layer.
 
 ### The main analytical model should stay simple
 
-The useful downstream outcomes are `Corrected`, `Different horse` and `Unresolved`. Detailed variant taxonomies are audit provenance, not the main analytical interface. Future reports should distinguish implementation detail from the decision the reader or database needs.
+The useful downstream outcomes are `Corrected`, `Different horse` and `Unresolved`. Detailed variant taxonomies are audit provenance, not the main analytical interface.
 
 ### External evidence must be captured while open
 
-Several external checks were initially discussed in notebook prose before permanent identifiers were assigned. Future work should create the manual-verification or specialist-reference row at the time the evidence is reviewed, not during final closeout.
+Future work should create the manual-verification or specialist-reference row at the time evidence is reviewed, not during final closeout.
 
 ### Stop exploratory analysis when the bounded question is answered
 
-The investigation began to repeat its conclusion after the three-outcome model and transition counts were established. Future notebook work should move directly from answered question to closeout implementation rather than adding further summary stages.
+Once the three-outcome model and transition counts were established, the work should move directly to durable closeout implementation.
 
 ## Database consequence
 
@@ -158,15 +219,8 @@ Raw horse and pedigree labels remain immutable. The clean layer adds governed oc
 
 Any existing derived table that groups histories by raw `horse` alone must be rebuilt. Full requirements and the update procedure are recorded in `docs/HORSE_PEDIGREE_IDENTITY_INTEGRATION.md`.
 
-## Remaining closeout actions
+## Remaining closeout action
 
-Before Notebook 19 can be marked fully closed:
-
-1. run the focused horse-identity and manual-verification tests locally;
-2. run the independent horse-identity validator against the immutable local source;
-3. confirm that both processed outputs were written and reloaded;
-4. record the exact commands and results in this closeout record and the retrospective audit;
-5. update the README and project plan to the validated final state;
-6. confirm that the source-field governance rows move from `implemented_pending_validation` only when validation evidence supports that change.
+Commit and push the two locally generated processed outputs. README, project-plan and retrospective-wide status work may then be updated as part of the branch-level closeout sequence.
 
 The complete repository test suite and all-validator sweep remain deferred until the end of the notebook series or repair branch.
