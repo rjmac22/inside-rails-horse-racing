@@ -120,9 +120,22 @@ Permanent entity and key design remains deferred until the source-field studies 
 
 Questions still to resolve include descriptive-field stability across replacement snapshots, entity resolution for horses and participants, amended-record versioning, coupled-entry representation, staging surrogate identifiers and reconciliation controls.
 
+## Mandatory pre-database gate — outstanding studbook responses
+
+Before any target database is created, schema DDL is written, or governed horse-identity outputs are treated as final production inputs:
+
+1. check for replies from Weatherbys Ireland, France Galop, the Weatherbys General Stud Book and any other studbook or racing authority contacted during Notebook 19;
+2. review the five unresolved horse cases recorded in `data/reference/horse_pedigree_identity_governance.csv`;
+3. update the specialist governance reference and manual-verification register where new evidence changes a decision;
+4. rerun the focused horse-identity tests and `scripts/validate_horse_pedigree_identity.py`;
+5. regenerate, reload, inspect and recommit the governed transition and provisional-occurrence outputs;
+6. leave any case without an authoritative response explicitly unresolved rather than guessing.
+
+This is a hard project gate, not an optional tidy-up. Database construction must stop until the check has been completed and recorded.
+
 ## Phase 4 — Target architecture
 
-Only after the evidence base is sufficient:
+Only after the evidence base is sufficient and the mandatory pre-database studbook-response gate has been completed:
 
 - consolidate reconstruction requirements;
 - define a conceptual staging model;
