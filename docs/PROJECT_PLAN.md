@@ -62,82 +62,99 @@ Governed age, sex and headgear rules, including exact verification-backed contam
 
 **Status:** fully closed.
 
+Governed separate nullable meanings for `or`, `rpr` and `ts`, exact unavailable-value treatment and the isolated invalid `rpr = 775` source row.
+
+### Notebook 19 — Horse and pedigree identity
+
+**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
+
 Governed rules:
 
-- preserve raw `or`, `rpr` and `ts` values separately;
-- parse the exact Unicode en dash `–` as unavailable/null, never zero;
-- interpret `or` as a pre-race official handicap mark;
-- interpret `rpr` as a retrospective and potentially revisable performance rating;
-- interpret `ts` as a retrospective speed figure;
-- keep independent nullable analytical values and statuses for all three fields;
-- exclude only source `rowid = 1619851`, `rpr = 775` as an exact lineage-backed invalid value;
-- preserve its raw value and leave its intended replacement unresolved;
-- treat observed ranges as validation baselines rather than universal business rules.
-
-Durable outputs:
-
-- `notebooks/18_ratings_semantics_and_availability.ipynb`;
-- `src/inside_rails/ratings.py`;
-- `tests/test_ratings.py`;
-- `scripts/validate_ratings.py`;
-- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
-- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`;
-- three permanent Notebook 18 records in `data/reference/manual_verifications.csv`.
+- preserve raw `horse`, `sire`, `dam` and `damsire` values;
+- do not use raw `horse` as a permanent natural key;
+- treat exact-label reuse and inconsistent pedigree assertions separately;
+- apply only bounded evidence-backed pedigree corrections;
+- split 261 confirmed same-label histories into provisional source-internal occurrences;
+- preserve five unresolved boundaries without guessing;
+- persist governed transitions and provisional occurrences outside the notebook.
 
 Recorded closeout validation:
 
-- `22 passed in 0.06s` across focused ratings and manual-verification tests;
-- independent ratings validation passed across 1,851,285 governed runner rows;
-- `or`: 1,116,633 available, 734,652 unavailable, 0 invalid, range 1–181;
-- `rpr`: 1,644,175 available, 207,109 unavailable, 1 invalid, range 1–184;
-- `ts`: 1,227,384 available, 623,901 unavailable, 0 invalid, range 1–178;
-- manual-verification validation passed across 36 governed rows.
+- focused horse-identity tests passed;
+- manual-verification register passed across 39 governed rows;
+- independent validator matched all Notebook 19 population baselines;
+- 353 governed transitions partitioned into 87 `Corrected`, 261 `Different horse` and 5 `Unresolved`;
+- 611 provisional source-internal horse occurrences were written, reloaded and committed.
 
 The complete repository suite remains deferred until the end of the source-field series or repair branch.
 
 ## Remaining source-field studies
 
-The provisional sequence is now:
+Only two bounded studies remain:
 
-1. horse and pedigree identity;
-2. connections and owner identity;
-3. comments and embedded information.
+1. connections and ownership identity — `jockey`, `trainer`, `owner`;
+2. comments and embedded information — `comment`.
 
 These are planning units rather than a commitment to one full-length notebook per group. Adjacent subjects may be combined where one bounded study resolves them cleanly.
 
 ## Current next action
 
-### Begin horse and pedigree identity
+### Begin connections and ownership identity
 
-Bound the next study around `horse`, `sire`, `dam` and `damsire`. Establish raw-name stability, country-suffix behaviour, missingness, collisions, lineage requirements and which identity rules can be implemented safely without premature entity resolution.
+Bound the next study around `jockey`, `trainer` and `owner`.
 
-Do not run the complete repository suite yet.
+Establish:
+
+- field coverage and blank behaviour;
+- exact-label repetition and stability;
+- punctuation, initials, titles, suffixes and partnership/syndicate formatting;
+- likely aliases and collisions;
+- whether stable source-internal occurrence keys are needed;
+- which normalisations are reversible and safe;
+- what remains unresolved without external authority evidence.
+
+Do not begin global participant entity resolution and do not run the complete repository suite yet.
+
+## End-of-series closeout
+
+After the final `comment` study:
+
+1. close that notebook under the standard procedure;
+2. update the complete field-governance register;
+3. run the complete repository test suite;
+4. run the all-validator sweep, preserving Notebook 08's deliberate governed failure as expected evidence;
+5. repair any cross-notebook integration defects;
+6. reconcile README, project plan, audit and lessons learned;
+7. verify a clean local tree and synchronized remote branch.
+
+## Mandatory pre-database authority gate
+
+Before physical database construction begins:
+
+1. check all responses from studbooks and racing authorities contacted during Notebook 19;
+2. revisit the five unresolved horse/pedigree cases;
+3. update the specialist governance and manual-verification records where new evidence changes a decision;
+4. rerun the focused horse-identity tests and independent validator;
+5. regenerate, reload and recommit the governed transition and occurrence outputs;
+6. preserve any unanswered case as unresolved rather than guessing;
+7. record completion of this gate in the project documentation.
+
+Database construction must not proceed until this check has been completed and recorded.
 
 ## Phase 3 — Entity and key design
 
-Permanent entity and key design remains deferred until the source-field studies required for structural reconstruction are completed or explicitly deferred.
+After the source-field series and authority gate:
 
-Questions still to resolve include descriptive-field stability across replacement snapshots, entity resolution for horses and participants, amended-record versioning, coupled-entry representation, staging surrogate identifiers and reconciliation controls.
-
-## Mandatory pre-database gate — outstanding studbook responses
-
-Before any target database is created, schema DDL is written, or governed horse-identity outputs are treated as final production inputs:
-
-1. check for replies from Weatherbys Ireland, France Galop, the Weatherbys General Stud Book and any other studbook or racing authority contacted during Notebook 19;
-2. review the five unresolved horse cases recorded in `data/reference/horse_pedigree_identity_governance.csv`;
-3. update the specialist governance reference and manual-verification register where new evidence changes a decision;
-4. rerun the focused horse-identity tests and `scripts/validate_horse_pedigree_identity.py`;
-5. regenerate, reload, inspect and recommit the governed transition and provisional-occurrence outputs;
-6. leave any case without an authoritative response explicitly unresolved rather than guessing.
-
-This is a hard project gate, not an optional tidy-up. Database construction must stop until the check has been completed and recorded.
+- consolidate identity and reconstruction requirements;
+- define race, runner, horse-occurrence, participant and ownership entities;
+- distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
+- define amended-record versioning and reconciliation controls;
+- decide which unresolved relationships remain nullable or quarantined.
 
 ## Phase 4 — Target architecture
 
-Only after the evidence base is sufficient and the mandatory pre-database studbook-response gate has been completed:
+Only after the evidence base is sufficient:
 
-- consolidate reconstruction requirements;
 - define a conceptual staging model;
 - select the physical database technology;
 - define staging, core and analytical schemas;
