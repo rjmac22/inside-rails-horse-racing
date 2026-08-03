@@ -18,7 +18,9 @@ COMPLETED_DECISIONS = frozenset(
 ALLOWED_CONFIDENCE = frozenset({"high", "medium", "low"})
 EVIDENCE_CONFIDENCE_BY_DECISION = {
     "verified_repair": frozenset({"high", "medium", "low"}),
-    "conflicting_evidence": frozenset({"high", "medium", "low", "conflicting"}),
+    "conflicting_evidence": frozenset(
+        {"high", "medium", "low", "conflict", "conflicting"}
+    ),
     "insufficient_evidence": frozenset({"high", "medium", "low", "insufficient"}),
 }
 EXPECTED_EVIDENCE_RECORDS = 46
@@ -132,9 +134,9 @@ def verification_id_for_repair(repair_record_id: str) -> str:
 def governed_confidence_for_evidence(evidence: Mapping[str, str]) -> str:
     """Map Notebook 20 decision markers onto the permanent confidence scale.
 
-    The notebook used ``conflicting`` and ``insufficient`` as categorical
-    markers for unresolved reviews. They are not confidence levels in the
-    permanent register. Preserve those markers in notes, but represent the
+    The notebook used categorical markers such as ``conflict`` and
+    ``insufficient`` for unresolved reviews. They are not confidence levels in
+    the permanent register. Preserve those markers in notes, but represent the
     unresolved record itself as low confidence.
     """
     repair_id = _clean(evidence.get("repair_record_id"))
