@@ -40,37 +40,54 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. |
 | 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed; persisted decisions, focused tests, classification validator and manual-verification validator passed. |
 | 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
-| 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, 12 ratings tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. Combined focused validation passed with 22 tests. |
+| 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, focused tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. |
+| 19 | Horse and pedigree identity | Governed pedigree reconciliation and provisional horse-occurrence identity | **Fully closed on this audit branch** | Explicit archival classification, specialist governance, reusable implementation, focused tests, manual-verification validation, independent source-wide validator, database integration documentation and persisted/reloaded outputs are committed. Five authority-dependent cases remain governed as unresolved rather than blocking closure. |
 
-## Notebook 18 closure evidence
+## Notebook 19 closure evidence
 
 Durable artifacts:
 
-- `notebooks/18_ratings_semantics_and_availability.ipynb`;
-- `data/reference/manual_verifications.csv` (`NB18-OR-0001`, `NB18-RPR-0001`, `NB18-TS-0001`);
-- `src/inside_rails/ratings.py`;
-- `tests/test_ratings.py`;
-- `scripts/validate_ratings.py`;
-- `docs/NOTEBOOK_18_RATINGS_DATABASE_INTEGRATION.md`;
-- `docs/NOTEBOOK_18_RATINGS_REPORT.md`;
-- `docs/NOTEBOOK_18_LESSONS_LEARNED.md`.
+- `notebooks/19_horse_and_pedigree_identity.ipynb`;
+- `data/reference/horse_pedigree_identity_governance.csv`;
+- Notebook 19 records in `data/reference/manual_verifications.csv`;
+- `src/inside_rails/horse_pedigree_identity.py`;
+- `src/inside_rails/horse_pedigree_identity_counts.py`;
+- focused tests in `tests/test_horse_pedigree_identity.py` and `tests/test_horse_pedigree_identity_counts.py`;
+- `scripts/validate_horse_pedigree_identity.py`;
+- `docs/HORSE_PEDIGREE_IDENTITY_INTEGRATION.md`;
+- `docs/NOTEBOOK_19_CLOSEOUT.md`;
+- persisted outputs under `data/processed/horse_pedigree_identity/`.
 
-Recorded analytical and validation evidence:
+Recorded validation evidence:
 
-- fresh-kernel top-to-bottom notebook execution passed;
-- manual-verification decision captured in the notebook;
-- focused tests: **22 passed in 0.06s** across ratings and manual-verification tests;
-- ratings validator: **passed across 1,851,285 governed runner rows**;
-- `or`: **1,116,633 available**, **734,652 unavailable**, **0 invalid**, candidate range **1–181**;
-- `rpr`: **1,644,175 available**, **207,109 unavailable**, **1 invalid**, candidate range **1–184**;
-- `ts`: **1,227,384 available**, **623,901 unavailable**, **0 invalid**, candidate range **1–178**;
-- exact invalid rating: source `rowid = 1619851`, raw `rpr = 775`, parsed value null, replacement unresolved;
-- manual-verification validator: **36 governed rows passed**;
-- verification statuses: **25 confirmed, 10 contradicted, 1 partially confirmed**;
-- database actions: **13 evidence-only, 1 preserve-raw-unresolved, 8 reference-enrichment, 11 source-correction-candidate, 3 source-supplementation**.
+- focused horse-identity tests passed;
+- manual-verification register passed across 39 governed rows;
+- raw contradiction labels: **5,573**;
+- structured contradiction labels: **368**;
+- structured pedigree rows: **96,404**;
+- structured pedigree groups: **741**;
+- temporally separated labels: **350**;
+- separated pedigree groups: **703**;
+- governed transitions: **353**;
+- `Corrected`: **87**;
+- `Different horse`: **261**;
+- `Unresolved`: **5**;
+- provisional source-internal horse occurrences: **611**;
+- both processed outputs were written, reloaded, committed and pushed.
+
+The five unresolved cases remain subject to the mandatory pre-database authority-response gate recorded in `docs/PROJECT_PLAN.md`.
 
 ## Current position
 
-Notebook 18 is fully closed. The next source-field study is horse and pedigree identity, bounded around `horse`, `sire`, `dam` and `damsire`.
+Notebook 19 is fully closed.
 
-The complete repository test suite and all-validator sweep remain deferred until the end of the source-field series or repair branch. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
+Two source-field studies remain before the source-field series is complete:
+
+1. connections and ownership identity — `jockey`, `trainer`, `owner`;
+2. comments and embedded information — `comment`.
+
+The next bounded action is the connections and ownership identity study.
+
+After both studies close, run the complete repository test suite and all-validator sweep, repair cross-notebook integration defects, complete the studbook/authority-response gate, and then move into entity/key design and target database architecture.
+
+Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
