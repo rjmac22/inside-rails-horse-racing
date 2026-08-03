@@ -1,0 +1,612 @@
+horse,occurrence_sequence,provisional_occurrence_id,pedigree_groups,runner_rows,first_date,last_date,minimum_age,maximum_age,sex_values,unresolved_boundaries
+A La Prochaine (FR),1,A La Prochaine (FR)::01,1,14,2015-03-14,2016-06-12,5,6,M,0
+A La Prochaine (FR),2,A La Prochaine (FR)::02,1,2,2025-10-25,2026-05-06,2,3,F,0
+Accrington Stanley (GB),1,Accrington Stanley (GB)::01,2,30,2020-08-06,2022-09-11,2,4,G,0
+Acoustic Ave (USA),1,Acoustic Ave (USA)::01,2,5,2023-07-16,2026-05-09,3,6,C | G,0
+Al Daayen (FR),1,Al Daayen (FR)::01,1,12,2019-01-29,2019-11-27,3,3,F,0
+Al Daayen (FR),2,Al Daayen (FR)::02,1,9,2023-11-05,2025-05-29,2,4,C | G,0
+Alcala (FR),1,Alcala (FR)::01,1,33,2015-10-21,2022-02-03,5,12,G,0
+Alcala (FR),2,Alcala (FR)::02,1,4,2024-04-29,2025-01-21,3,4,F,0
+Alderley Charlie (GB),1,Alderley Charlie (GB)::01,2,12,2024-11-06,2026-05-20,4,6,G,0
+All Good (GB),1,All Good (GB)::01,1,1,2018-06-09,2018-06-09,4,4,F,0
+All Good (GB),2,All Good (GB)::02,1,2,2025-09-19,2025-10-14,2,2,F,0
+Almavillalobas (GB),1,Almavillalobas (GB)::01,2,9,2023-08-16,2026-05-07,3,6,F | M | M,1
+Amoretti (FR),1,Amoretti (FR)::01,1,1,2017-08-28,2017-08-28,13,13,H,0
+Amoretti (FR),2,Amoretti (FR)::02,1,2,2023-05-25,2024-04-16,2,3,C,0
+An Bhfuil Tu Reidh (IRE),1,An Bhfuil Tu Reidh (IRE)::01,1,6,2018-05-18,2019-04-25,2,3,G,0
+An Bhfuil Tu Reidh (IRE),2,An Bhfuil Tu Reidh (IRE)::02,1,1,2026-05-11,2026-05-11,6,6,M,0
+Ancient World (USA),1,Ancient World (USA)::01,1,4,2015-09-30,2016-05-28,2,3,C | G,0
+Ancient World (USA),2,Ancient World (USA)::02,1,1,2025-08-10,2025-08-10,3,3,G,0
+Angels Share (GB),1,Angels Share (GB)::01,1,1,2018-05-21,2018-05-21,3,3,F,0
+Angels Share (GB),2,Angels Share (GB)::02,1,8,2025-06-26,2026-05-21,2,3,F,0
+Anglophile (GB),1,Anglophile (GB)::01,1,7,2015-01-16,2016-03-25,4,5,G,0
+Anglophile (GB),2,Anglophile (GB)::02,1,4,2024-10-14,2025-04-09,2,3,C,0
+Another Challenge (IRE),1,Another Challenge (IRE)::01,1,6,2015-11-15,2017-03-17,7,9,G,0
+Another Challenge (IRE),2,Another Challenge (IRE)::02,1,9,2024-11-10,2026-05-21,4,6,G,0
+Another Day Done (IRE),1,Another Day Done (IRE)::01,1,9,2017-05-26,2019-01-22,6,8,G,0
+Another Day Done (IRE),2,Another Day Done (IRE)::02,1,7,2025-11-12,2026-04-12,2,3,C,0
+Anywaythewindblows (GB),1,Anywaythewindblows (GB)::01,1,2,2017-02-15,2017-04-28,5,5,G,0
+Anywaythewindblows (GB),2,Anywaythewindblows (GB)::02,1,3,2025-08-11,2025-09-22,2,2,F,0
+April Flower (FR),1,April Flower (FR)::01,1,7,2015-09-01,2016-06-27,4,5,G,0
+April Flower (FR),2,April Flower (FR)::02,1,4,2024-12-13,2026-04-13,2,4,F,0
+Arctic Angel (IRE),1,Arctic Angel (IRE)::01,1,6,2016-10-10,2017-07-11,3,4,G,0
+Arctic Angel (IRE),2,Arctic Angel (IRE)::02,1,11,2024-05-20,2025-10-23,4,5,F | M,0
+Ascot Brass (SWE),1,Ascot Brass (SWE)::01,2,7,2020-01-23,2023-09-17,3,6,F | M | M,0
+Astaire (IRE),1,Astaire (IRE)::01,1,6,2015-03-28,2015-07-11,4,4,C,0
+Astaire (IRE),2,Astaire (IRE)::02,1,3,2023-09-22,2024-04-18,3,4,C,0
+Attack (USA),1,Attack (USA)::01,1,1,2015-04-17,2015-04-17,3,3,R,0
+Attack (USA),2,Attack (USA)::02,1,1,2025-09-14,2025-09-14,3,3,G,0
+Attwaal (IRE),1,Attwaal (IRE)::01,1,3,2015-01-10,2015-02-28,6,6,G,0
+Attwaal (IRE),2,Attwaal (IRE)::02,1,7,2024-11-16,2025-12-13,3,4,G,0
+Australasia (IRE),1,Australasia (IRE)::01,1,9,2015-03-03,2016-10-27,5,6,G,0
+Australasia (IRE),2,Australasia (IRE)::02,1,3,2025-12-02,2026-02-20,2,3,F,0
+Australia Day (IRE),1,Australia Day (IRE)::01,1,6,2015-04-09,2015-10-02,12,12,G,0
+Australia Day (IRE),2,Australia Day (IRE)::02,1,1,2026-04-08,2026-04-08,3,3,G,0
+Azan (USA),1,Azan (USA)::01,2,6,2025-01-18,2026-03-15,4,5,C | G,0
+Baby Belle (IRE),1,Baby Belle (IRE)::01,1,1,2016-05-13,2016-05-13,4,4,F,0
+Baby Belle (IRE),2,Baby Belle (IRE)::02,1,3,2024-02-03,2024-02-29,5,5,M,0
+Back In Black (IRE),1,Back In Black (IRE)::01,1,7,2016-07-10,2017-08-24,7,8,G,0
+Back In Black (IRE),2,Back In Black (IRE)::02,1,11,2024-05-22,2026-05-09,2,4,C | G,0
+Bal Kauto (FR),1,Bal Kauto (FR)::01,2,25,2022-02-23,2026-01-14,5,9,G,0
+Banishing (USA),1,Banishing (USA)::01,2,12,2025-02-23,2026-05-02,5,6,G,0
+Bardo (FR),1,Bardo (FR)::01,2,9,2020-09-12,2023-11-10,3,6,C | G | G,0
+Barrister (GB),1,Barrister (GB)::01,1,3,2018-01-13,2018-07-12,4,4,F,0
+Barrister (GB),2,Barrister (GB)::02,1,3,2025-10-13,2026-05-27,2,3,C,0
+Bartholdi (SAF),1,Bartholdi (SAF)::01,2,4,2022-06-04,2024-01-27,4,6,G,0
+Be Here Now (GB),1,Be Here Now (GB)::01,1,1,2016-02-11,2016-02-11,5,5,M,0
+Be Here Now (GB),2,Be Here Now (GB)::02,1,10,2023-05-25,2024-04-29,2,3,G,0
+Be Positive (IRE),1,Be Positive (IRE)::01,1,3,2016-04-26,2016-05-16,7,7,G,0
+Be Positive (IRE),2,Be Positive (IRE)::02,1,6,2025-01-16,2025-05-16,6,6,G,0
+Bedtime Story (IRE),1,Bedtime Story (IRE)::01,1,2,2018-06-14,2018-10-19,3,3,F,0
+Bedtime Story (IRE),2,Bedtime Story (IRE)::02,1,14,2024-06-06,2025-11-02,2,3,F,0
+Beeline (USA),1,Beeline (USA)::01,1,1,2015-03-15,2015-03-15,3,3,F,0
+Beeline (USA),2,Beeline (USA)::02,1,1,2024-05-04,2024-05-04,3,3,C,0
+Beg To Differ (IRE),1,Beg To Differ (IRE)::01,1,14,2015-01-06,2017-02-20,5,7,G,0
+Beg To Differ (IRE),2,Beg To Differ (IRE)::02,1,2,2025-03-17,2025-05-08,6,6,G,0
+Behind The Scenes (IRE),1,Behind The Scenes (IRE)::01,1,1,2015-05-14,2015-05-14,13,13,G,0
+Behind The Scenes (IRE),2,Behind The Scenes (IRE)::02,1,11,2022-08-10,2024-12-14,2,4,F,0
+Bellagio (FR),1,Bellagio (FR)::01,1,1,2019-10-20,2019-10-20,2,2,C,0
+Bellagio (FR),2,Bellagio (FR)::02,1,4,2024-06-04,2025-06-28,2,3,C,0
+Bellator (FR),1,Bellator (FR)::01,1,2,2016-03-02,2016-03-23,5,5,G,0
+Bellator (FR),2,Bellator (FR)::02,1,3,2023-03-07,2025-03-13,3,5,C | H,0
+Big City Lights (USA),1,Big City Lights (USA)::01,2,4,2024-02-10,2025-11-01,5,6,H,0
+Biographer (GB),1,Biographer (GB)::01,1,1,2015-05-17,2015-05-17,6,6,G,0
+Biographer (GB),2,Biographer (GB)::02,1,13,2023-08-23,2024-10-21,2,3,C | G,0
+Birdman (IRE),1,Birdman (IRE)::01,1,21,2015-04-18,2016-08-18,5,6,G,0
+Birdman (IRE),2,Birdman (IRE)::02,1,18,2024-04-26,2026-05-23,3,5,G,0
+Black Bart (IRE),1,Black Bart (IRE)::01,1,2,2015-10-10,2015-10-16,7,7,G,0
+Black Bart (IRE),2,Black Bart (IRE)::02,1,2,2024-02-29,2024-03-14,7,7,G,0
+Black Thunder (FR),1,Black Thunder (FR)::01,1,10,2015-01-24,2017-04-06,8,10,G,0
+Black Thunder (FR),2,Black Thunder (FR)::02,1,2,2025-10-16,2026-03-30,2,3,C,0
+Bold Optimist (IRE),1,Bold Optimist (IRE)::01,1,3,2015-01-29,2015-03-14,9,9,G,0
+Bold Optimist (IRE),2,Bold Optimist (IRE)::02,1,20,2023-07-12,2026-03-20,3,6,G,0
+Bonny Ezra (NZ),1,Bonny Ezra (NZ)::01,2,5,2022-06-25,2024-06-01,6,8,G,0
+Born At Midnight (GB),1,Born At Midnight (GB)::01,2,26,2018-12-06,2026-01-12,3,11,G,0
+Bow Street (GB),1,Bow Street (GB)::01,1,5,2017-10-04,2018-05-06,2,3,C,0
+Bow Street (GB),2,Bow Street (GB)::02,1,13,2024-05-11,2025-06-21,2,3,C | G,0
+Boxing Clever (IRE),1,Boxing Clever (IRE)::01,1,2,2016-03-12,2016-04-15,4,4,G,0
+Boxing Clever (IRE),2,Boxing Clever (IRE)::02,1,1,2025-11-27,2025-11-27,4,4,G,0
+Bradbury (IRE),1,Bradbury (IRE)::01,1,2,2015-10-31,2015-12-02,7,7,G,0
+Bradbury (IRE),2,Bradbury (IRE)::02,1,6,2025-08-15,2026-05-08,2,3,G,0
+Brave Leader (GB),1,Brave Leader (GB)::01,1,1,2015-06-04,2015-06-04,3,3,C,0
+Brave Leader (GB),2,Brave Leader (GB)::02,1,4,2025-10-12,2026-04-24,2,3,C | G,0
+Bravehearts (ARG),1,Bravehearts (ARG)::01,2,28,2023-07-03,2026-03-01,4,6,C | G | G,0
+Breaking Ground (IRE),1,Breaking Ground (IRE)::01,1,16,2017-05-30,2018-05-07,5,6,G,0
+Breaking Ground (IRE),2,Breaking Ground (IRE)::02,1,6,2025-07-13,2026-05-14,4,5,F | M,0
+Breathe Easy (IRE),1,Breathe Easy (IRE)::01,1,17,2015-06-27,2018-06-29,5,8,G,0
+Breathe Easy (IRE),2,Breathe Easy (IRE)::02,1,4,2025-11-05,2026-02-28,2,3,G,0
+Brigante (USA),1,Brigante (USA)::01,2,5,2025-08-09,2026-01-08,2,3,R,0
+Bring It On (IRE),1,Bring It On (IRE)::01,1,48,2016-04-06,2020-04-29,3,7,G,0
+Bring It On (IRE),2,Bring It On (IRE)::02,1,5,2025-04-22,2025-08-17,2,2,C | G,0
+Bulletin (IRE),1,Bulletin (IRE)::01,1,2,2018-06-02,2018-06-27,3,3,G,0
+Bulletin (IRE),2,Bulletin (IRE)::02,1,15,2024-10-05,2026-05-27,2,4,C | G,0
+Bushwacker (IRE),1,Bushwacker (IRE)::01,1,3,2015-01-26,2015-03-09,11,11,G,0
+Bushwacker (IRE),2,Bushwacker (IRE)::02,1,5,2025-07-25,2025-10-16,2,2,C,0
+By Far (FR),1,By Far (FR)::01,1,1,2015-08-04,2015-08-04,2,2,G,0
+By Far (FR),2,By Far (FR)::02,1,3,2024-08-25,2025-01-04,3,4,G,0
+Cafe Pushkin (FR),1,Cafe Pushkin (FR)::01,2,10,2020-11-19,2023-03-30,4,7,G,0
+Caldera (USA),1,Caldera (USA)::01,1,1,2015-01-17,2015-01-17,3,3,C,0
+Caldera (USA),2,Caldera (USA)::02,1,2,2025-02-16,2025-03-22,3,3,C,0
+Campione (FR),1,Campione (FR)::01,1,23,2015-03-24,2021-11-04,3,9,G,0
+Campione (FR),2,Campione (FR)::02,1,1,2023-12-15,2023-12-15,2,2,C,0
+Canon Law (IRE),1,Canon Law (IRE)::01,1,11,2015-01-09,2016-02-05,5,6,G,0
+Canon Law (IRE),2,Canon Law (IRE)::02,1,4,2025-04-26,2025-10-20,2,2,C | G,0
+Capla Berry (GB),1,Capla Berry (GB)::01,2,17,2019-08-20,2022-01-13,3,6,F | F | M,0
+Carrieriste (FR),1,Carrieriste (FR)::01,1,6,2015-09-28,2016-11-21,3,4,F,0
+Carrieriste (FR),2,Carrieriste (FR)::02,1,1,2025-06-12,2025-06-12,3,3,G,0
+Casterly Rock (IRE),1,Casterly Rock (IRE)::01,1,8,2017-02-21,2018-11-14,5,6,G,0
+Casterly Rock (IRE),2,Casterly Rock (IRE)::02,1,6,2025-01-01,2025-11-29,5,5,G,0
+Cathedral (GB),1,Cathedral (GB)::01,1,10,2015-01-08,2015-06-17,6,6,G,0
+Cathedral (GB),2,Cathedral (GB)::02,1,10,2024-09-04,2026-05-03,2,4,F,0
+Cavalryman (GB),1,Cavalryman (GB)::01,1,1,2015-02-28,2015-02-28,9,9,H,0
+Cavalryman (GB),2,Cavalryman (GB)::02,1,9,2022-11-16,2023-08-04,3,4,G,0
+Celtic Chieftain (IRE),1,Celtic Chieftain (IRE)::01,1,3,2018-09-03,2018-10-22,5,5,G,0
+Celtic Chieftain (IRE),2,Celtic Chieftain (IRE)::02,1,6,2024-06-08,2024-08-31,2,2,C,0
+Central Avenue (USA),1,Central Avenue (USA)::01,2,2,2023-11-25,2025-11-02,2,4,F,0
+Central Park West (FR),1,Central Park West (FR)::01,2,78,2020-08-06,2026-05-19,2,8,G,0
+Cervin (FR),1,Cervin (FR)::01,1,3,2017-02-11,2017-11-16,5,5,G,0
+Cervin (FR),2,Cervin (FR)::02,1,16,2024-03-10,2025-09-28,4,5,G,0
+Chamonix (IRE),1,Chamonix (IRE)::01,1,7,2015-05-11,2015-11-08,6,6,G,0
+Chamonix (IRE),2,Chamonix (IRE)::02,1,3,2026-04-03,2026-05-20,3,3,G,0
+Change Of Command (USA),1,Change Of Command (USA)::01,1,3,2015-02-21,2016-03-26,8,9,G,0
+Change Of Command (USA),2,Change Of Command (USA)::02,1,1,2024-02-10,2024-02-10,3,3,C,0
+Circuit Breaker (GB),1,Circuit Breaker (GB)::01,1,4,2016-08-17,2016-11-11,3,3,G,0
+Circuit Breaker (GB),2,Circuit Breaker (GB)::02,1,22,2023-05-08,2026-05-08,3,6,G,0
+Colwyn Bay (FR),1,Colwyn Bay (FR)::01,2,2,2026-04-02,2026-05-01,7,7,G,1
+Confucius (IRE),1,Confucius (IRE)::01,1,6,2018-07-27,2018-10-12,2,2,C,0
+Confucius (IRE),2,Confucius (IRE)::02,1,2,2026-04-03,2026-05-09,2,2,C,0
+Crack Shot (IRE),1,Crack Shot (IRE)::01,1,10,2015-04-07,2016-02-18,3,4,C,0
+Crack Shot (IRE),2,Crack Shot (IRE)::02,1,22,2023-05-19,2025-11-25,3,5,G,0
+Cracking Man (IRE),1,Cracking Man (IRE)::01,1,2,2015-07-21,2015-08-03,7,7,G,0
+Cracking Man (IRE),2,Cracking Man (IRE)::02,1,11,2024-06-15,2025-05-27,2,3,C | G,0
+Crazy Diamond (GB),1,Crazy Diamond (GB)::01,1,2,2015-04-13,2015-05-02,11,11,G,0
+Crazy Diamond (GB),2,Crazy Diamond (GB)::02,1,1,2025-09-02,2025-09-02,2,2,F,0
+Cross Cover (IRE),1,Cross Cover (IRE)::01,2,5,2017-11-08,2019-05-29,2,4,F,0
+Dance And Romance (GB),1,Dance And Romance (GB)::01,1,9,2016-01-16,2017-04-08,4,5,F | M,0
+Dance And Romance (GB),2,Dance And Romance (GB)::02,1,6,2024-04-12,2024-09-26,3,3,F,0
+Dancing Queen (FR),1,Dancing Queen (FR)::01,1,1,2018-11-16,2018-11-16,3,3,F,0
+Dancing Queen (FR),2,Dancing Queen (FR)::02,1,4,2024-04-18,2025-05-19,3,4,F,0
+Decidement (FR),1,Decidement (FR)::01,1,4,2017-08-29,2017-10-25,3,3,F,0
+Decidement (FR),2,Decidement (FR)::02,1,2,2024-04-03,2024-05-28,3,3,G,0
+Defi Bleu (FR),1,Defi Bleu (FR)::01,2,31,2017-12-09,2023-11-19,4,10,G,0
+Defiance (IRE),1,Defiance (IRE)::01,1,1,2016-12-14,2016-12-14,2,2,F,0
+Defiance (IRE),2,Defiance (IRE)::02,1,9,2023-08-10,2025-09-20,2,4,C | G,0
+Definite Dream (IRE),1,Definite Dream (IRE)::01,1,3,2015-02-21,2015-05-05,8,8,G,0
+Definite Dream (IRE),2,Definite Dream (IRE)::02,1,10,2024-07-08,2026-05-17,6,8,M,0
+Desiderata (IRE),1,Desiderata (IRE)::01,1,4,2015-05-14,2015-08-28,5,5,G,0
+Desiderata (IRE),2,Desiderata (IRE)::02,1,22,2024-03-18,2026-04-18,4,6,G,0
+Detonate (FR),1,Detonate (FR)::01,1,3,2016-08-25,2018-06-03,3,5,G,0
+Detonate (FR),2,Detonate (FR)::02,1,9,2024-05-07,2025-07-05,2,3,C | G,0
+Dewsbury (FR),1,Dewsbury (FR)::01,1,1,2015-10-24,2015-10-24,3,3,G,0
+Dewsbury (FR),2,Dewsbury (FR)::02,1,1,2024-12-23,2024-12-23,2,2,F,0
+Diamond Heart (GB),1,Diamond Heart (GB)::01,1,7,2016-01-08,2017-02-03,3,4,F,0
+Diamond Heart (GB),2,Diamond Heart (GB)::02,1,1,2023-02-25,2023-02-25,3,3,F,0
+Diamond Tipp (IRE),1,Diamond Tipp (IRE)::01,2,11,2024-07-05,2026-04-05,4,6,F | F | M,1
+Diligent (FR),1,Diligent (FR)::01,2,35,2017-06-05,2024-01-08,4,11,C | G | G,0
+Direct Approach (IRE),1,Direct Approach (IRE)::01,1,5,2015-01-29,2015-03-24,11,11,G,0
+Direct Approach (IRE),2,Direct Approach (IRE)::02,1,4,2025-08-23,2025-12-31,3,3,G,0
+Disclosure (GB),1,Disclosure (GB)::01,1,32,2015-01-19,2017-06-02,4,6,G,0
+Disclosure (GB),2,Disclosure (GB)::02,1,16,2023-11-10,2025-06-06,2,4,F,0
+Dornoch (USA),1,Dornoch (USA)::01,1,5,2015-05-02,2016-02-11,4,5,C | G,0
+Dornoch (USA),2,Dornoch (USA)::02,1,7,2023-12-02,2024-08-24,2,3,C,0
+Draco (FR),1,Draco (FR)::01,1,1,2018-09-06,2018-09-06,5,5,G,0
+Draco (FR),2,Draco (FR)::02,1,7,2025-05-15,2026-05-03,4,5,G,0
+Drifter (IRE),1,Drifter (IRE)::01,1,8,2015-04-02,2015-10-20,4,4,G,0
+Drifter (IRE),2,Drifter (IRE)::02,1,3,2024-04-20,2024-08-03,2,2,F,0
+Dubai Hills (GB),1,Dubai Hills (GB)::01,1,14,2015-03-25,2016-03-08,9,10,G,0
+Dubai Hills (GB),2,Dubai Hills (GB)::02,1,12,2023-04-11,2024-06-12,2,3,C | G,0
+Duffys All Set (IRE),1,Duffys All Set (IRE)::01,1,9,2015-04-12,2016-07-04,6,7,G,0
+Duffys All Set (IRE),2,Duffys All Set (IRE)::02,1,3,2024-08-06,2024-09-22,5,5,G,0
+Dukes County (IRE),1,Dukes County (IRE)::01,1,3,2016-05-26,2016-06-15,5,5,G,0
+Dukes County (IRE),2,Dukes County (IRE)::02,1,1,2025-03-17,2025-03-17,7,7,G,0
+Early Bird (IRE),1,Early Bird (IRE)::01,1,8,2015-06-16,2016-06-11,2,3,F,0
+Early Bird (IRE),2,Early Bird (IRE)::02,1,7,2024-12-26,2026-05-11,5,7,M,0
+Earthquake (FR),1,Earthquake (FR)::01,1,3,2017-05-12,2017-06-27,3,3,G,0
+Earthquake (FR),2,Earthquake (FR)::02,1,1,2026-03-19,2026-03-19,3,3,G,0
+Educate (GB),1,Educate (GB)::01,1,17,2015-03-14,2016-12-17,6,7,G,0
+Educate (GB),2,Educate (GB)::02,1,29,2023-12-07,2026-05-07,2,5,C | G,0
+En Chantant (FR),1,En Chantant (FR)::01,1,2,2017-12-05,2018-01-06,3,4,G,0
+En Chantant (FR),2,En Chantant (FR)::02,1,1,2026-05-01,2026-05-01,2,2,F,0
+Evade (FR),1,Evade (FR)::01,1,2,2018-10-11,2019-04-02,2,3,C,0
+Evade (FR),2,Evade (FR)::02,1,10,2023-07-09,2024-11-23,2,3,C | G,0
+Executive Decision (IRE),1,Executive Decision (IRE)::01,1,2,2016-04-14,2016-05-06,8,8,G,0
+Executive Decision (IRE),2,Executive Decision (IRE)::02,1,19,2022-07-22,2024-11-13,2,4,F,0
+Falak (IRE),1,Falak (IRE)::01,2,46,2016-06-13,2024-11-12,3,11,C | G | G,0
+Falcon (FR),1,Falcon (FR)::01,1,2,2016-04-06,2017-04-18,4,5,G,0
+Falcon (FR),2,Falcon (FR)::02,1,3,2024-04-25,2024-12-26,4,4,C,0
+Fan Zone (FR),1,Fan Zone (FR)::01,2,16,2018-11-22,2025-01-23,2,9,F | M | M,0
+Fanfaron (FR),1,Fanfaron (FR)::01,1,8,2015-04-21,2018-07-05,2,5,G,0
+Fanfaron (FR),2,Fanfaron (FR)::02,1,7,2025-09-13,2026-05-17,3,4,G,0
+Felix Felicis (FR),1,Felix Felicis (FR)::01,2,12,2024-10-04,2026-02-25,4,6,G,0
+Fight For You (IRE),1,Fight For You (IRE)::01,1,3,2015-02-15,2015-03-24,8,8,G,0
+Fight For You (IRE),2,Fight For You (IRE)::02,1,3,2024-05-20,2024-07-04,3,3,F,0
+Fighting Poet (IRE),1,Fighting Poet (IRE)::01,2,36,2021-11-20,2026-05-07,3,8,G,0
+Fireball (AUS),1,Fireball (AUS)::01,1,1,2015-04-29,2015-04-29,6,6,G,0
+Fireball (AUS),2,Fireball (AUS)::02,1,5,2026-02-07,2026-04-18,2,2,C,0
+First Approach (IRE),1,First Approach (IRE)::01,1,14,2017-10-10,2020-02-16,4,7,G,0
+First Approach (IRE),2,First Approach (IRE)::02,1,10,2025-04-11,2025-10-11,2,2,C,0
+Flamme Rouge (FR),1,Flamme Rouge (FR)::01,1,7,2021-09-30,2022-11-30,4,5,F | M,0
+Flamme Rouge (FR),2,Flamme Rouge (FR)::02,1,3,2024-07-28,2025-09-19,2,3,F,0
+Flight Control (IRE),1,Flight Control (IRE)::01,1,3,2015-07-31,2015-10-26,10,10,G,0
+Flight Control (IRE),2,Flight Control (IRE)::02,1,2,2026-04-24,2026-05-16,3,3,G,0
+Focaccia (IRE),1,Focaccia (IRE)::01,1,12,2016-02-24,2017-12-26,5,6,G,0
+Focaccia (IRE),2,Focaccia (IRE)::02,1,3,2026-03-28,2026-05-26,3,3,F,0
+Follow Me (FR),1,Follow Me (FR)::01,1,2,2018-06-20,2018-08-12,3,3,F,0
+Follow Me (FR),2,Follow Me (FR)::02,1,15,2023-07-09,2026-05-18,2,5,C | G,0
+Forest King (AUS),1,Forest King (AUS)::01,1,1,2025-10-26,2025-10-26,3,3,G,0
+Forest King (AUS),2,Forest King (AUS)::02,1,1,2026-03-14,2026-03-14,2,2,G,0
+Fortune Hunter (IRE),1,Fortune Hunter (IRE)::01,1,2,2016-06-01,2016-06-18,5,5,G,0
+Fortune Hunter (IRE),2,Fortune Hunter (IRE)::02,1,1,2023-01-30,2023-01-30,5,5,M,0
+Found It (IRE),1,Found It (IRE)::01,1,2,2015-05-12,2015-05-29,8,8,M,0
+Found It (IRE),2,Found It (IRE)::02,1,1,2026-05-02,2026-05-02,5,5,M,0
+Francisco (GB),1,Francisco (GB)::01,1,17,2015-04-29,2018-06-14,3,6,C | G,0
+Francisco (GB),2,Francisco (GB)::02,1,20,2023-10-07,2026-05-19,2,5,C | G,0
+Free Spirit (FR),1,Free Spirit (FR)::01,1,1,2015-10-22,2015-10-22,3,3,G,0
+Free Spirit (FR),2,Free Spirit (FR)::02,1,4,2024-10-24,2026-04-28,3,5,G,0
+Full Power (IRE),1,Full Power (IRE)::01,1,23,2019-10-01,2022-03-09,3,6,G,0
+Full Power (IRE),2,Full Power (IRE)::02,1,2,2024-09-24,2024-10-22,2,2,C,0
+Full Tilt (GB),1,Full Tilt (GB)::01,1,3,2018-12-08,2019-01-18,5,6,G,0
+Full Tilt (GB),2,Full Tilt (GB)::02,1,1,2024-07-17,2024-07-17,2,2,C,0
+GDay Aussie (GB),1,GDay Aussie (GB)::01,2,53,2015-07-11,2025-10-18,2,12,C | G | G,0
+Gallant Flame (IRE),1,Gallant Flame (IRE)::01,2,5,2022-05-30,2023-01-15,6,7,G,0
+Gambino (IRE),1,Gambino (IRE)::01,1,18,2015-04-05,2017-08-31,5,7,G,0
+Gambino (IRE),2,Gambino (IRE)::02,1,5,2025-04-02,2026-04-04,4,5,G,0
+Game Master (GB),1,Game Master (GB)::01,2,9,2021-11-13,2024-01-25,2,5,G,0
+Gemini DAx (FR),1,Gemini DAx (FR)::01,2,11,2021-03-13,2025-05-29,5,9,G,0
+General Grant (IRE),1,General Grant (IRE)::01,2,6,2025-04-02,2026-01-30,3,4,G,0
+Gentle George (GB),1,Gentle George (GB)::01,1,3,2015-02-24,2015-03-20,12,12,G,0
+Gentle George (GB),2,Gentle George (GB)::02,1,5,2025-06-30,2026-05-07,2,3,C,0
+Ghostwriter (IRE),1,Ghostwriter (IRE)::01,1,3,2015-11-17,2016-01-03,2,3,C,0
+Ghostwriter (IRE),2,Ghostwriter (IRE)::02,1,11,2023-08-11,2025-06-21,2,4,C,0
+Gibraltar (FR),1,Gibraltar (FR)::01,1,10,2015-02-13,2016-10-07,4,5,F | M,0
+Gibraltar (FR),2,Gibraltar (FR)::02,1,2,2024-04-07,2024-07-13,3,3,G,0
+Golden Bullet (GB),1,Golden Bullet (GB)::01,1,2,2015-06-25,2015-07-15,3,3,C,0
+Golden Bullet (GB),2,Golden Bullet (GB)::02,1,5,2022-08-19,2022-11-01,2,2,F,0
+Grand Sonata (USA),1,Grand Sonata (USA)::01,2,24,2022-01-01,2026-04-18,3,7,C | H | H,0
+Grandioso (IRE),1,Grandioso (IRE)::01,1,12,2016-03-03,2018-03-22,9,11,G,0
+Grandioso (IRE),2,Grandioso (IRE)::02,1,2,2025-02-09,2025-10-03,5,5,G,0
+Guided By You (IRE),1,Guided By You (IRE)::01,1,15,2017-11-19,2019-11-26,4,6,G,0
+Guided By You (IRE),2,Guided By You (IRE)::02,1,4,2025-05-14,2025-08-20,4,4,F,0
+Guns Loaded (USA),1,Guns Loaded (USA)::01,1,5,2016-04-02,2017-09-30,5,6,G,0
+Guns Loaded (USA),2,Guns Loaded (USA)::02,1,2,2025-01-04,2025-02-01,3,3,C,0
+Hamilton (FR),1,Hamilton (FR)::01,2,20,2023-12-16,2026-05-19,3,6,G,0
+Hangry (IRE),1,Hangry (IRE)::01,2,25,2022-09-23,2025-10-02,2,5,C | G,0
+Hanohano (JPN),1,Hanohano (JPN)::01,1,2,2015-02-08,2015-03-01,7,7,H,0
+Hanohano (JPN),2,Hanohano (JPN)::02,1,1,2026-04-11,2026-04-11,3,3,F,0
+Hard Rock (FR),1,Hard Rock (FR)::01,1,5,2019-05-27,2021-08-03,2,4,G,0
+Hard Rock (FR),2,Hard Rock (FR)::02,1,1,2024-07-02,2024-07-02,3,3,G,0
+Heart Of Honor (GB),1,Heart Of Honor (GB)::01,2,13,2024-10-21,2026-03-28,2,4,C | G,0
+Hellavapace (GB),1,Hellavapace (GB)::01,2,57,2020-08-13,2025-07-25,2,7,F | M | M,0
+Hen Party (IRE),1,Hen Party (IRE)::01,1,3,2017-11-24,2018-01-12,2,3,F,0
+Hen Party (IRE),2,Hen Party (IRE)::02,1,8,2025-09-27,2026-05-19,2,3,F,0
+Hera (FR),1,Hera (FR)::01,1,2,2017-12-14,2018-02-01,3,4,F,0
+Hera (FR),2,Hera (FR)::02,1,1,2024-03-18,2024-03-18,3,3,F,0
+Herbert (NZ),1,Herbert (NZ)::01,2,3,2023-11-11,2025-09-27,3,5,G,0
+Hernan Cortes (FR),1,Hernan Cortes (FR)::01,2,20,2022-05-30,2025-12-12,2,5,C | G | G,0
+Heros DAinay (FR),1,Heros DAinay (FR)::01,2,12,2020-10-18,2026-05-17,3,9,G,0
+High Game Royal (FR),1,High Game Royal (FR)::01,2,21,2022-11-02,2026-05-13,5,9,G,0
+Hipop Des Ongrais (FR),1,Hipop Des Ongrais (FR)::01,2,14,2021-11-05,2026-03-05,4,9,G,0
+His Majesty (IRE),1,His Majesty (IRE)::01,1,2,2016-09-16,2017-02-13,6,7,G,0
+His Majesty (IRE),2,His Majesty (IRE)::02,1,8,2023-05-01,2024-10-25,2,3,C,0
+Hobart (IRE),1,Hobart (IRE)::01,1,3,2015-04-25,2015-07-12,3,3,C,0
+Hobart (IRE),2,Hobart (IRE)::02,1,14,2024-04-27,2026-05-03,3,5,G,0
+Hurricane (FR),1,Hurricane (FR)::01,2,3,2023-12-15,2026-04-23,4,7,G,0
+Hutton (IRE),1,Hutton (IRE)::01,1,5,2015-11-28,2016-04-11,2,3,G,0
+Hutton (IRE),2,Hutton (IRE)::02,1,12,2023-09-23,2025-07-04,3,5,C | H,0
+I Know I Can (GB),1,I Know I Can (GB)::01,2,26,2020-08-15,2023-09-12,3,6,G,0
+Iconic Moment (IRE),1,Iconic Moment (IRE)::01,1,1,2016-12-26,2016-12-26,6,6,G,0
+Iconic Moment (IRE),2,Iconic Moment (IRE)::02,1,7,2022-10-22,2023-09-21,2,3,C,0
+Imac Wood (FR),1,Imac Wood (FR)::01,2,22,2022-03-08,2025-11-11,4,7,G,0
+In The City (GB),1,In The City (GB)::01,1,4,2015-08-07,2016-09-03,2,3,C,0
+In The City (GB),2,In The City (GB)::02,1,6,2024-09-05,2026-05-12,2,4,C | G,0
+Inca (FR),1,Inca (FR)::01,2,5,2024-05-10,2026-05-02,6,8,G,0
+Incredible (FR),1,Incredible (FR)::01,1,19,2018-04-17,2022-05-25,3,7,G,0
+Incredible (FR),2,Incredible (FR)::02,1,2,2026-03-24,2026-04-14,2,2,F,0
+Inner Peace (IRE),1,Inner Peace (IRE)::01,1,1,2017-09-21,2017-09-21,4,4,G,0
+Inner Peace (IRE),2,Inner Peace (IRE)::02,1,11,2024-04-13,2025-12-20,3,4,C | G,0
+Instant Replay (USA),1,Instant Replay (USA)::01,1,2,2015-04-12,2015-06-21,3,3,C,0
+Instant Replay (USA),2,Instant Replay (USA)::02,1,2,2025-03-22,2025-07-05,3,3,C,0
+Iron Dome (USA),1,Iron Dome (USA)::01,1,1,2015-11-21,2015-11-21,2,2,C,0
+Iron Dome (USA),2,Iron Dome (USA)::02,1,1,2025-09-29,2025-09-29,3,3,C,0
+Iron Wings (FR),1,Iron Wings (FR)::01,2,5,2021-11-09,2024-02-06,3,6,G,0
+Its In The Rain (FR),1,Its In The Rain (FR)::01,1,9,2015-04-29,2016-09-30,2,3,G,0
+Its In The Rain (FR),2,Its In The Rain (FR)::02,1,7,2023-04-18,2025-10-07,4,6,G,0
+Jamal (FR),1,Jamal (FR)::01,1,2,2018-10-25,2019-04-12,2,3,C,0
+Jamal (FR),2,Jamal (FR)::02,1,2,2026-01-22,2026-05-12,4,4,C,0
+Jimmy Chou Pecos AA (FR),1,Jimmy Chou Pecos AA (FR)::01,2,9,2023-03-04,2025-03-13,7,9,G,0
+Jimmy Chou Pecos Aa (FR),1,Jimmy Chou Pecos Aa (FR)::01,2,2,2022-03-12,2022-12-26,6,6,G,0
+John Coffey (IRE),1,John Coffey (IRE)::01,1,13,2015-01-16,2016-03-07,6,7,G,0
+John Coffey (IRE),2,John Coffey (IRE)::02,1,1,2024-02-15,2024-02-15,5,5,G,0
+Jolly Boys Outing (IRE),1,Jolly Boys Outing (IRE)::01,1,10,2015-01-29,2016-05-09,12,13,G,0
+Jolly Boys Outing (IRE),2,Jolly Boys Outing (IRE)::02,1,1,2025-06-01,2025-06-01,6,6,G,0
+Jolly Roger (IRE),1,Jolly Roger (IRE)::01,1,14,2015-02-18,2017-05-09,8,10,G,0
+Jolly Roger (IRE),2,Jolly Roger (IRE)::02,1,10,2024-11-01,2026-04-20,2,4,C | G,0
+Kalhandrion (FR),1,Kalhandrion (FR)::01,2,13,2024-04-13,2026-03-17,4,6,G,0
+Kamala (FR),1,Kamala (FR)::01,1,6,2022-10-19,2023-03-11,3,4,F,0
+Kamala (FR),2,Kamala (FR)::02,1,1,2026-05-04,2026-05-04,3,3,F,0
+Kana Tape (JPN),1,Kana Tape (JPN)::01,2,6,2025-06-22,2026-05-17,6,7,M,0
+Keep It Cool (IRE),1,Keep It Cool (IRE)::01,1,2,2017-03-03,2017-03-18,13,13,G,0
+Keep It Cool (IRE),2,Keep It Cool (IRE)::02,1,18,2024-07-08,2026-04-14,4,6,F | M,0
+Kentucky Wood (FR),1,Kentucky Wood (FR)::01,2,22,2023-09-08,2026-05-17,3,6,G,0
+Kestrel (IRE),1,Kestrel (IRE)::01,1,4,2015-05-31,2017-04-17,7,9,G,0
+Kestrel (IRE),2,Kestrel (IRE)::02,1,1,2023-09-08,2023-09-08,2,2,C,0
+Keyboard (IRE),1,Keyboard (IRE)::01,1,1,2016-02-03,2016-02-03,9,9,G,0
+Keyboard (IRE),2,Keyboard (IRE)::02,1,10,2025-03-23,2026-03-20,3,4,G,0
+King Of The Throne (USA),1,King Of The Throne (USA)::01,2,13,2019-08-30,2026-04-24,2,9,C | G | G,0
+Kingdom Of Alba (IRE),1,Kingdom Of Alba (IRE)::01,1,5,2015-04-22,2015-08-27,3,3,C | G,0
+Kingdom Of Alba (IRE),2,Kingdom Of Alba (IRE)::02,1,3,2025-09-06,2025-10-13,3,3,G,0
+Kings Crown (FR),1,Kings Crown (FR)::01,1,4,2015-01-30,2015-09-21,3,3,C,0
+Kings Crown (FR),2,Kings Crown (FR)::02,1,3,2022-09-19,2024-12-12,2,4,C,0
+Kokomo (GB),1,Kokomo (GB)::01,1,7,2016-02-11,2016-08-24,5,5,M,0
+Kokomo (GB),2,Kokomo (GB)::02,1,7,2023-04-21,2023-11-18,3,3,F,0
+LAziza Des Places (FR),1,LAziza Des Places (FR)::01,2,10,2024-05-27,2026-05-26,3,5,F | F | M,1
+Lady V (IRE),1,Lady V (IRE)::01,1,5,2018-01-25,2019-03-26,4,5,F | M,0
+Lady V (IRE),2,Lady V (IRE)::02,1,2,2025-10-20,2026-05-23,2,3,F,0
+Ladys Choice (IRE),1,Ladys Choice (IRE)::01,1,4,2016-07-20,2016-10-15,3,3,F,0
+Ladys Choice (IRE),2,Ladys Choice (IRE)::02,1,6,2025-04-10,2026-05-25,4,5,F | M,0
+Lafayette (FR),1,Lafayette (FR)::01,1,3,2018-04-01,2021-10-16,4,7,G,0
+Lafayette (FR),2,Lafayette (FR)::02,1,3,2023-12-26,2024-10-13,2,3,F,0
+Landscape (FR),1,Landscape (FR)::01,1,25,2015-01-24,2019-03-11,7,11,G,0
+Landscape (FR),2,Landscape (FR)::02,1,5,2025-03-20,2025-09-25,2,2,C,0
+Le Boss (FR),1,Le Boss (FR)::01,1,1,2017-05-31,2017-05-31,3,3,G,0
+Le Boss (FR),2,Le Boss (FR)::02,1,1,2023-03-07,2023-03-07,3,3,C,0
+Lens Legacy (IRE),1,Lens Legacy (IRE)::01,1,1,2016-02-06,2016-02-06,4,4,G,0
+Lens Legacy (IRE),2,Lens Legacy (IRE)::02,1,3,2022-12-27,2023-01-19,2,3,G,0
+Libeccio (FR),1,Libeccio (FR)::01,1,9,2015-01-10,2016-05-08,4,5,G,0
+Libeccio (FR),2,Libeccio (FR)::02,1,14,2022-09-13,2024-06-25,3,5,G,0
+Life And Times (USA),1,Life And Times (USA)::01,1,5,2016-02-13,2016-12-09,8,8,G,0
+Life And Times (USA),2,Life And Times (USA)::02,1,2,2026-01-24,2026-03-21,5,5,G,0
+Little Wren (GB),1,Little Wren (GB)::01,1,3,2015-03-04,2015-05-28,6,6,M,0
+Little Wren (GB),2,Little Wren (GB)::02,1,9,2024-12-15,2026-05-17,4,6,F | M,0
+Loose Wire (CAN),1,Loose Wire (CAN)::01,2,4,2024-12-07,2026-05-09,4,6,C | H | H,0
+Lost Ark (USA),1,Lost Ark (USA)::01,2,6,2022-10-08,2025-12-06,2,5,C | H,0
+Louisiana (IRE),1,Louisiana (IRE)::01,1,4,2019-08-14,2019-10-10,2,2,C,0
+Louisiana (IRE),2,Louisiana (IRE)::02,1,1,2026-05-16,2026-05-16,3,3,F,0
+Lucid Dreams (IRE),1,Lucid Dreams (IRE)::01,2,26,2023-03-17,2024-12-27,8,9,G,0
+Lyneham (FR),1,Lyneham (FR)::01,1,1,2018-09-15,2018-09-15,3,3,G,0
+Lyneham (FR),2,Lyneham (FR)::02,1,3,2025-10-14,2026-05-14,2,3,C,0
+Machete Beach (GB),1,Machete Beach (GB)::01,2,6,2024-04-10,2026-05-05,3,5,G,0
+Macumba (FR),1,Macumba (FR)::01,1,5,2019-11-05,2020-03-15,3,4,G,0
+Macumba (FR),2,Macumba (FR)::02,1,1,2025-06-15,2025-06-15,2,2,F,0
+Magda (FR),1,Magda (FR)::01,1,1,2017-05-16,2017-05-16,4,4,F,0
+Magda (FR),2,Magda (FR)::02,1,1,2026-05-07,2026-05-07,3,3,C,0
+Magnus (IRE),1,Magnus (IRE)::01,1,9,2017-04-29,2017-09-15,2,2,C,0
+Magnus (IRE),2,Magnus (IRE)::02,1,3,2026-02-12,2026-04-17,3,3,C | G,0
+Mahjong (FR),1,Mahjong (FR)::01,1,2,2016-06-29,2016-07-22,3,3,G,0
+Mahjong (FR),2,Mahjong (FR)::02,1,8,2024-06-02,2025-02-21,2,3,C,0
+Maitre DArmes (FR),1,Maitre DArmes (FR)::01,1,3,2019-09-05,2019-11-07,2,2,C,0
+Maitre DArmes (FR),2,Maitre DArmes (FR)::02,1,12,2024-03-21,2025-09-25,3,4,G,0
+Majestic Warrior (IRE),1,Majestic Warrior (IRE)::01,1,2,2016-12-28,2017-05-02,4,5,G,0
+Majestic Warrior (IRE),2,Majestic Warrior (IRE)::02,1,6,2023-01-18,2025-09-20,3,5,C | H,0
+Majordomo (FR),1,Majordomo (FR)::01,1,3,2022-03-05,2023-04-11,3,4,G,0
+Majordomo (FR),2,Majordomo (FR)::02,1,2,2025-11-14,2026-03-08,3,4,G,0
+Marakan (IRE),1,Marakan (IRE)::01,1,2,2016-05-08,2016-05-19,5,5,G,0
+Marakan (IRE),2,Marakan (IRE)::02,1,2,2022-11-08,2022-12-05,6,6,M,0
+Mart Lane (IRE),1,Mart Lane (IRE)::01,1,10,2015-01-10,2019-05-13,10,14,G,0
+Mart Lane (IRE),2,Mart Lane (IRE)::02,1,5,2025-11-08,2026-04-06,4,5,G,0
+Masked Dance (FR),1,Masked Dance (FR)::01,2,25,2022-05-09,2026-05-15,4,8,F | M | M,0
+Maui (FR),1,Maui (FR)::01,1,35,2015-01-03,2017-09-21,3,5,F | M,0
+Maui (FR),2,Maui (FR)::02,1,3,2025-10-22,2026-02-27,2,3,G,0
+Maximus (USA),1,Maximus (USA)::01,1,1,2018-09-09,2018-09-09,5,5,H,0
+Maximus (USA),2,Maximus (USA)::02,1,1,2024-11-17,2024-11-17,2,2,C,0
+Medici (USA),1,Medici (USA)::01,1,1,2016-06-26,2016-06-26,3,3,C,0
+Medici (USA),2,Medici (USA)::02,1,1,2026-03-21,2026-03-21,3,3,C,0
+Memento (FR),1,Memento (FR)::01,1,11,2015-04-08,2016-02-26,4,5,G,0
+Memento (FR),2,Memento (FR)::02,1,2,2022-11-13,2023-02-17,4,5,G,0
+Michel (FR),1,Michel (FR)::01,1,6,2021-02-14,2021-08-17,3,3,C | G,0
+Michel (FR),2,Michel (FR)::02,1,3,2025-10-09,2026-03-24,2,3,C | G,0
+Miss Tenacity (GB),1,Miss Tenacity (GB)::01,2,2,2017-12-14,2018-03-04,4,5,F | M,0
+Mississippi River (IRE),1,Mississippi River (IRE)::01,1,8,2015-12-12,2016-11-06,10,11,G,0
+Mississippi River (IRE),2,Mississippi River (IRE)::02,1,15,2024-09-19,2026-05-16,2,4,C,0
+Misunderstood (FR),1,Misunderstood (FR)::01,1,2,2017-10-21,2021-05-26,4,8,G,0
+Misunderstood (FR),2,Misunderstood (FR)::02,1,11,2024-07-28,2026-05-21,2,4,C | G,0
+Mnementh (AUS),1,Mnementh (AUS)::01,2,6,2022-10-15,2025-05-17,6,8,G,0
+Mount Eden (IRE),1,Mount Eden (IRE)::01,1,1,2020-08-12,2020-08-12,2,2,C,0
+Mount Eden (IRE),2,Mount Eden (IRE)::02,1,4,2026-01-09,2026-05-12,3,3,G,0
+Mr Moonshine (IRE),1,Mr Moonshine (IRE)::01,1,7,2015-01-11,2016-10-12,11,12,G,0
+Mr Moonshine (IRE),2,Mr Moonshine (IRE)::02,1,5,2025-06-14,2025-09-17,2,2,C,0
+Ms Brightside (IRE),1,Ms Brightside (IRE)::01,1,1,2016-07-08,2016-07-08,7,7,M,0
+Ms Brightside (IRE),2,Ms Brightside (IRE)::02,1,2,2023-06-16,2023-12-02,2,2,F,0
+Multitask (USA),1,Multitask (USA)::01,2,2,2025-08-28,2026-04-04,4,5,G,0
+My Way (FR),1,My Way (FR)::01,1,25,2017-03-18,2023-01-09,3,9,C | G,0
+My Way (FR),2,My Way (FR)::02,1,7,2025-10-02,2026-05-22,2,3,G,0
+Mystified (IRE),1,Mystified (IRE)::01,1,1,2015-08-29,2015-08-29,12,12,G,0
+Mystified (IRE),2,Mystified (IRE)::02,1,6,2024-08-10,2024-10-25,2,2,F,0
+National Interest (FR),1,National Interest (FR)::01,1,7,2018-11-29,2021-12-20,2,5,C | G,0
+National Interest (FR),2,National Interest (FR)::02,1,8,2023-08-17,2026-03-08,2,5,C | G,0
+New President (FR),1,New President (FR)::01,3,9,2023-02-25,2025-11-15,6,8,G,0
+Noli Timere (IRE),1,Noli Timere (IRE)::01,1,3,2016-06-01,2016-08-28,7,7,M,0
+Noli Timere (IRE),2,Noli Timere (IRE)::02,1,10,2024-09-28,2026-03-15,2,4,F,0
+Nous Trois (FR),1,Nous Trois (FR)::01,1,4,2017-05-22,2018-02-01,3,4,F,0
+Nous Trois (FR),2,Nous Trois (FR)::02,1,4,2025-12-17,2026-05-07,2,3,F,0
+OGorman (GB),1,OGorman (GB)::01,1,2,2015-02-20,2015-03-06,6,6,G,0
+OGorman (GB),2,OGorman (GB)::02,1,3,2026-04-21,2026-05-15,2,2,C,0
+Ode To Joy (IRE),1,Ode To Joy (IRE)::01,1,14,2020-06-14,2022-11-27,3,5,C | G,0
+Ode To Joy (IRE),2,Ode To Joy (IRE)::02,1,10,2025-06-08,2026-05-13,5,6,M,0
+On Song (IRE),1,On Song (IRE)::01,1,2,2016-11-26,2016-12-17,3,3,G,0
+On Song (IRE),2,On Song (IRE)::02,1,12,2023-10-23,2024-10-17,2,3,C | G,0
+On The Way (USA),1,On The Way (USA)::01,2,13,2025-01-18,2026-03-15,3,4,C,0
+Onlymammycanloveme (IRE),1,Onlymammycanloveme (IRE)::01,2,14,2024-12-03,2026-04-28,5,7,G,0
+Over The Clouds (FR),1,Over The Clouds (FR)::01,1,3,2016-10-24,2017-07-27,2,3,F,0
+Over The Clouds (FR),2,Over The Clouds (FR)::02,1,10,2024-11-29,2026-05-24,2,4,C,0
+Paladin (IRE),1,Paladin (IRE)::01,1,22,2015-05-18,2017-07-31,6,8,G,0
+Paladin (IRE),2,Paladin (IRE)::02,1,20,2023-06-14,2026-05-23,2,5,C | G,0
+Penn Kalet (FR),1,Penn Kalet (FR)::01,1,7,2018-10-18,2019-04-04,2,3,C,0
+Penn Kalet (FR),2,Penn Kalet (FR)::02,1,3,2026-03-14,2026-05-04,3,3,G,0
+Perceval (FR),1,Perceval (FR)::01,1,6,2023-05-21,2023-11-30,4,4,G,0
+Perceval (FR),2,Perceval (FR)::02,1,2,2025-11-28,2025-12-17,2,2,C,0
+Perennial (GB),1,Perennial (GB)::01,1,23,2015-03-29,2016-11-14,6,7,G,0
+Perennial (GB),2,Perennial (GB)::02,1,9,2024-06-11,2025-04-19,3,4,G,0
+Perfect Gentleman (IRE),1,Perfect Gentleman (IRE)::01,1,7,2015-03-10,2015-09-27,10,10,G,0
+Perfect Gentleman (IRE),2,Perfect Gentleman (IRE)::02,1,12,2022-08-28,2023-09-28,2,3,G,0
+Petite Madame (IRE),1,Petite Madame (IRE)::01,1,4,2015-04-28,2015-06-28,4,4,F,0
+Petite Madame (IRE),2,Petite Madame (IRE)::02,1,9,2024-10-10,2025-10-02,2,3,F,0
+Pilgrim (GB),1,Pilgrim (GB)::01,1,3,2015-05-08,2015-08-19,3,3,F,0
+Pilgrim (GB),2,Pilgrim (GB)::02,1,19,2023-07-24,2026-05-23,2,5,C | G,0
+Playing The Field (IRE),1,Playing The Field (IRE)::01,1,3,2015-10-21,2015-12-02,10,10,G,0
+Playing The Field (IRE),2,Playing The Field (IRE)::02,1,2,2025-12-06,2026-03-02,4,5,G,0
+Pluto (URU),1,Pluto (URU)::01,2,4,2024-01-06,2026-01-06,5,7,H,0
+Poets Prize (GB),1,Poets Prize (GB)::01,1,4,2015-08-01,2015-10-03,2,2,C,0
+Poets Prize (GB),2,Poets Prize (GB)::02,1,2,2023-03-11,2023-04-11,3,3,F,0
+Poison Arrow (IRE),1,Poison Arrow (IRE)::01,1,3,2018-10-12,2019-02-22,4,5,G,0
+Poison Arrow (IRE),2,Poison Arrow (IRE)::02,1,1,2025-09-08,2025-09-08,2,2,C,0
+Police Gazette (USA),1,Police Gazette (USA)::01,1,1,2015-04-01,2015-04-01,6,6,G,0
+Police Gazette (USA),2,Police Gazette (USA)::02,1,2,2026-04-10,2026-05-26,3,3,C,0
+Pont Marie (FR),1,Pont Marie (FR)::01,1,1,2015-01-10,2015-01-10,5,5,H,0
+Pont Marie (FR),2,Pont Marie (FR)::02,1,1,2025-08-31,2025-08-31,3,3,F,0
+Portnablagh (IRE),1,Portnablagh (IRE)::01,1,3,2018-04-02,2018-11-28,5,5,M,0
+Portnablagh (IRE),2,Portnablagh (IRE)::02,1,5,2024-11-13,2025-06-16,4,5,G,0
+Powershift (USA),1,Powershift (USA)::01,1,2,2020-04-13,2020-04-28,5,5,G,0
+Powershift (USA),2,Powershift (USA)::02,1,1,2026-03-07,2026-03-07,3,3,C,0
+Prankster (GB),1,Prankster (GB)::01,1,1,2015-08-14,2015-08-14,9,9,G,0
+Prankster (GB),2,Prankster (GB)::02,1,1,2025-04-16,2025-04-16,3,3,G,0
+Precision (GB),1,Precision (GB)::01,1,11,2017-04-24,2018-08-30,3,4,G,0
+Precision (GB),2,Precision (GB)::02,1,2,2024-10-18,2024-11-16,2,2,G,0
+Presentandcorrect (IRE),1,Presentandcorrect (IRE)::01,1,1,2017-04-23,2017-04-23,16,16,G,0
+Presentandcorrect (IRE),2,Presentandcorrect (IRE)::02,1,4,2025-11-14,2026-05-23,5,6,G,0
+Private Joke (FR),1,Private Joke (FR)::01,1,1,2015-09-10,2015-09-10,8,8,G,0
+Private Joke (FR),2,Private Joke (FR)::02,1,1,2024-10-02,2024-10-02,3,3,F,0
+Queens Of Marshal (FR),1,Queens Of Marshal (FR)::01,2,46,2016-11-09,2023-03-21,2,9,F | M | M,0
+Quero Te Mucho (BRZ),1,Quero Te Mucho (BRZ)::01,2,2,2024-05-19,2026-05-03,4,6,C | H,0
+Quixote (URU),1,Quixote (URU)::01,2,4,2022-09-05,2026-01-06,3,6,C | H,0
+Rank (USA),1,Rank (USA)::01,1,3,2015-04-16,2015-05-15,3,3,C,0
+Rank (USA),2,Rank (USA)::02,1,2,2024-09-09,2024-12-14,2,2,C,0
+Rebel Cry (IRE),1,Rebel Cry (IRE)::01,1,23,2015-01-01,2019-09-16,8,12,G,0
+Rebel Cry (IRE),2,Rebel Cry (IRE)::02,1,2,2025-08-21,2025-09-20,4,4,G,0
+Red Snapper (GB),1,Red Snapper (GB)::01,1,20,2017-05-03,2019-09-02,2,4,F,0
+Red Snapper (GB),2,Red Snapper (GB)::02,1,9,2025-05-30,2026-05-18,2,3,C | G,0
+Reve (GB),1,Reve (GB)::01,2,28,2017-10-18,2024-02-21,3,10,C | G | G,0
+Richmond (FR),1,Richmond (FR)::01,1,15,2015-01-20,2018-05-04,10,13,G,0
+Richmond (FR),2,Richmond (FR)::02,1,1,2025-02-20,2025-02-20,6,6,G,0
+Rise And Shine (FR),1,Rise And Shine (FR)::01,1,9,2015-02-05,2016-04-10,3,4,G,0
+Rise And Shine (FR),2,Rise And Shine (FR)::02,1,16,2022-10-16,2025-03-11,2,5,F | M,0
+Roman (FR),1,Roman (FR)::01,1,3,2015-04-15,2015-05-22,3,3,G,0
+Roman (FR),2,Roman (FR)::02,1,1,2025-06-12,2025-06-12,3,3,C,0
+Roseburg (IRE),1,Roseburg (IRE)::01,1,4,2015-08-01,2016-06-04,4,5,C | G,0
+Roseburg (IRE),2,Roseburg (IRE)::02,1,3,2023-05-19,2024-06-01,5,6,M,0
+Rosette (GB),1,Rosette (GB)::01,1,1,2016-01-05,2016-01-05,4,4,F,0
+Rosette (GB),2,Rosette (GB)::02,1,12,2022-07-07,2025-07-06,2,5,F | M,0
+Rubeus (IRE),1,Rubeus (IRE)::01,2,17,2020-01-24,2024-02-09,3,7,G,0
+Ruggero (JPN),1,Ruggero (JPN)::01,3,7,2017-10-07,2022-08-28,2,7,G,0
+Runninsonofagun (IRE),1,Runninsonofagun (IRE)::01,2,18,2024-06-20,2026-05-05,2,4,G,1
+Saint Martin (FR),1,Saint Martin (FR)::01,1,5,2020-11-01,2021-10-21,3,4,G,0
+Saint Martin (FR),2,Saint Martin (FR)::02,1,2,2026-03-15,2026-04-12,3,3,C,0
+Sandrin Royal (URU),1,Sandrin Royal (URU)::01,2,2,2025-01-06,2026-01-06,3,4,F,0
+Santa Rossa (IRE),1,Santa Rossa (IRE)::01,2,11,2018-12-15,2022-07-28,4,8,F | M | M,0
+Santorini (IRE),1,Santorini (IRE)::01,1,2,2016-10-03,2016-10-18,3,3,G,0
+Santorini (IRE),2,Santorini (IRE)::02,1,17,2024-04-14,2025-12-03,3,4,G,0
+Sarabi (GB),1,Sarabi (GB)::01,1,34,2015-05-26,2018-06-14,2,5,F | M,0
+Sarabi (GB),2,Sarabi (GB)::02,1,21,2024-10-21,2026-01-29,2,4,F,0
+Save The Date (FR),1,Save The Date (FR)::01,1,17,2017-07-09,2019-03-10,2,4,F,0
+Save The Date (FR),2,Save The Date (FR)::02,1,2,2026-01-08,2026-01-29,3,3,F,0
+Scalor (FR),1,Scalor (FR)::01,2,39,2019-02-20,2023-10-18,4,8,G,0
+Secret Dreamer (GB),1,Secret Dreamer (GB)::01,1,4,2016-08-06,2016-10-28,4,4,G,0
+Secret Dreamer (GB),2,Secret Dreamer (GB)::02,1,4,2024-10-18,2025-05-30,2,3,F,0
+Seedling (GB),1,Seedling (GB)::01,1,2,2015-03-10,2015-04-11,6,6,G,0
+Seedling (GB),2,Seedling (GB)::02,1,1,2026-04-04,2026-04-04,4,4,F,0
+Senepark (FR),1,Senepark (FR)::01,3,42,2017-12-14,2025-04-03,3,11,G,0
+Serena (FR),1,Serena (FR)::01,1,6,2016-06-11,2017-08-10,5,6,M,0
+Serena (FR),2,Serena (FR)::02,1,3,2025-11-21,2026-01-16,3,4,F,0
+Sha Tin (FR),1,Sha Tin (FR)::01,1,3,2015-02-24,2015-03-18,5,5,M,0
+Sha Tin (FR),2,Sha Tin (FR)::02,1,6,2024-08-21,2025-08-12,3,4,F,0
+Shackleton (IRE),1,Shackleton (IRE)::01,1,1,2017-10-05,2017-10-05,5,5,G,0
+Shackleton (IRE),2,Shackleton (IRE)::02,1,11,2024-08-08,2025-10-19,2,3,C,0
+Shes Perfect (IRE),1,Shes Perfect (IRE)::01,1,3,2015-04-24,2015-05-31,5,5,M,0
+Shes Perfect (IRE),2,Shes Perfect (IRE)::02,1,6,2024-08-09,2026-05-02,2,4,F,0
+Silver Ghost (IRE),1,Silver Ghost (IRE)::01,1,13,2015-09-05,2017-10-04,2,4,C | G,0
+Silver Ghost (IRE),2,Silver Ghost (IRE)::02,1,14,2024-06-14,2026-05-16,2,4,F,0
+Sitcom (IRE),1,Sitcom (IRE)::01,1,2,2015-01-04,2015-01-25,7,7,M,0
+Sitcom (IRE),2,Sitcom (IRE)::02,1,4,2024-03-06,2024-10-10,3,3,F,0
+Sky Watch (IRE),1,Sky Watch (IRE)::01,1,7,2015-03-24,2016-01-18,8,9,G,0
+Sky Watch (IRE),2,Sky Watch (IRE)::02,1,4,2025-06-04,2026-05-04,2,3,F,0
+Slemish (IRE),1,Slemish (IRE)::01,1,10,2016-05-23,2019-04-26,6,9,G,0
+Slemish (IRE),2,Slemish (IRE)::02,1,7,2024-12-19,2025-10-23,3,4,G,0
+Snow Dragon (IRE),1,Snow Dragon (IRE)::01,1,3,2015-11-11,2016-05-09,2,3,G,0
+Snow Dragon (IRE),2,Snow Dragon (IRE)::02,1,10,2024-11-01,2026-03-14,3,5,G,0
+Sombrero (IRE),1,Sombrero (IRE)::01,2,3,2024-04-18,2024-08-24,7,7,H,0
+Son Of Beauty (IRE),1,Son Of Beauty (IRE)::01,1,5,2018-03-25,2019-09-26,2,3,C | G,0
+Son Of Beauty (IRE),2,Son Of Beauty (IRE)::02,1,4,2026-01-23,2026-04-27,3,3,G,0
+Space Age (IRE),1,Space Age (IRE)::01,1,5,2015-05-16,2015-07-29,3,3,G,0
+Space Age (IRE),2,Space Age (IRE)::02,1,6,2022-10-22,2023-08-24,2,3,C | G,0
+Spitzbergen (FR),1,Spitzbergen (FR)::01,1,6,2017-04-23,2018-09-23,3,4,G,0
+Spitzbergen (FR),2,Spitzbergen (FR)::02,1,7,2024-11-09,2026-02-13,2,4,C | G,0
+Spricklestown (IRE),1,Spricklestown (IRE)::01,1,1,2015-04-04,2015-04-04,5,5,M,0
+Spricklestown (IRE),2,Spricklestown (IRE)::02,1,7,2024-07-23,2025-08-15,5,6,M,0
+Square Necker (FR),1,Square Necker (FR)::01,1,2,2015-09-29,2015-10-22,3,3,G,0
+Square Necker (FR),2,Square Necker (FR)::02,1,4,2025-03-29,2026-05-03,3,4,C | G,0
+Star Galan (ARG),1,Star Galan (ARG)::01,2,2,2022-05-25,2023-06-24,2,3,C,0
+Steel (USA),1,Steel (USA)::01,1,1,2015-01-17,2015-01-17,3,3,G,0
+Steel (USA),2,Steel (USA)::02,1,1,2026-04-04,2026-04-04,3,3,C,0
+Stonegate (GB),1,Stonegate (GB)::01,1,3,2015-02-14,2015-11-02,5,5,G,0
+Stonegate (GB),2,Stonegate (GB)::02,1,16,2023-04-06,2026-05-09,4,7,G,0
+Stripe Of Honour (IRE),1,Stripe Of Honour (IRE)::01,2,37,2018-03-24,2025-10-02,5,12,G,0
+Strobe (USA),1,Strobe (USA)::01,2,10,2023-06-10,2026-03-13,4,7,C | G | G,0
+Super Saint (FR),1,Super Saint (FR)::01,1,1,2015-12-17,2015-12-17,2,2,C,0
+Super Saint (FR),2,Super Saint (FR)::02,1,7,2024-03-26,2025-04-02,5,6,G,0
+Swing Time (IRE),1,Swing Time (IRE)::01,1,4,2017-07-26,2017-10-30,3,3,G,0
+Swing Time (IRE),2,Swing Time (IRE)::02,1,9,2024-10-08,2025-11-04,5,6,G,0
+Swinging Sixties (IRE),1,Swinging Sixties (IRE)::01,1,1,2015-12-18,2015-12-18,10,10,G,0
+Swinging Sixties (IRE),2,Swinging Sixties (IRE)::02,1,4,2022-10-06,2022-11-30,2,2,F,0
+Synchronicity (IRE),1,Synchronicity (IRE)::01,1,2,2015-09-19,2015-09-30,6,6,G,0
+Synchronicity (IRE),2,Synchronicity (IRE)::02,1,2,2026-04-17,2026-05-15,3,3,F,0
+Taj Alaelyaa (KSA),1,Taj Alaelyaa (KSA)::01,2,2,2024-02-24,2025-02-22,5,6,H | G,0
+Tanis (FR),1,Tanis (FR)::01,1,1,2017-01-26,2017-01-26,3,3,F,0
+Tanis (FR),2,Tanis (FR)::02,1,15,2023-05-01,2025-08-05,2,4,F,0
+Tavarua (IRE),1,Tavarua (IRE)::01,1,1,2015-04-25,2015-04-25,4,4,F,0
+Tavarua (IRE),2,Tavarua (IRE)::02,1,2,2026-04-08,2026-04-22,3,3,F,0
+Tazara (IRE),1,Tazara (IRE)::01,1,1,2016-05-27,2016-05-27,7,7,M,0
+Tazara (IRE),2,Tazara (IRE)::02,1,9,2023-10-12,2024-10-26,2,3,F,0
+Teddys Acre (IRE),1,Teddys Acre (IRE)::01,1,7,2017-12-10,2019-06-19,4,6,G,0
+Teddys Acre (IRE),2,Teddys Acre (IRE)::02,1,1,2026-04-19,2026-04-19,4,4,G,0
+Teen Spirit (FR),1,Teen Spirit (FR)::01,1,1,2015-07-02,2015-07-02,4,4,F,0
+Teen Spirit (FR),2,Teen Spirit (FR)::02,1,3,2026-02-23,2026-05-02,4,4,G,0
+Teenage Kiss (IRE),1,Teenage Kiss (IRE)::01,1,4,2017-07-22,2017-11-03,3,3,F,0
+Teenage Kiss (IRE),2,Teenage Kiss (IRE)::02,1,11,2025-04-20,2026-05-16,4,5,F | M,0
+Telepathique (GB),1,Telepathique (GB)::01,2,14,2023-02-04,2026-03-13,5,8,M,0
+Tell The Tale (IRE),1,Tell The Tale (IRE)::01,1,15,2016-06-11,2018-09-11,6,8,G,0
+Tell The Tale (IRE),2,Tell The Tale (IRE)::02,1,6,2025-03-22,2026-05-14,5,6,G,0
+Thats Nice (IRE),1,Thats Nice (IRE)::01,1,4,2015-04-17,2015-11-05,6,6,G,0
+Thats Nice (IRE),2,Thats Nice (IRE)::02,1,8,2024-11-21,2026-05-16,4,6,F | M,0
+The Outlaw (IRE),1,The Outlaw (IRE)::01,1,10,2015-03-23,2016-09-24,5,6,G,0
+The Outlaw (IRE),2,The Outlaw (IRE)::02,1,9,2024-05-16,2025-07-06,2,3,C,0
+Theres Claude (GB),1,Theres Claude (GB)::01,2,5,2023-11-24,2026-01-22,5,8,G,0
+Thirty Bob (IRE),1,Thirty Bob (IRE)::01,1,2,2016-04-10,2016-04-21,5,5,G,0
+Thirty Bob (IRE),2,Thirty Bob (IRE)::02,1,3,2024-10-12,2024-12-30,4,4,G,0
+Thora (IRE),1,Thora (IRE)::01,1,2,2019-03-23,2019-04-06,3,3,F,0
+Thora (IRE),2,Thora (IRE)::02,1,4,2025-05-23,2026-03-08,2,3,F,0
+Tiffany (IRE),1,Tiffany (IRE)::01,1,1,2015-07-16,2015-07-16,3,3,F,0
+Tiffany (IRE),2,Tiffany (IRE)::02,1,15,2022-12-20,2025-11-08,2,5,F | M,0
+Time Quest (GB),1,Time Quest (GB)::01,2,3,2022-05-26,2025-11-04,3,6,G,0
+Track Mate (USA),1,Track Mate (USA)::01,2,3,2022-08-06,2026-04-04,2,6,C | H,0
+Trafalgar Square (FR),1,Trafalgar Square (FR)::01,1,1,2015-03-18,2015-03-18,4,4,G,0
+Trafalgar Square (FR),2,Trafalgar Square (FR)::02,1,10,2024-03-16,2025-04-05,3,4,G,0
+Tranquil Sea (IRE),1,Tranquil Sea (IRE)::01,1,2,2015-02-28,2015-04-11,13,13,G,0
+Tranquil Sea (IRE),2,Tranquil Sea (IRE)::02,1,26,2023-11-07,2026-05-25,3,6,G,0
+Treaty Of Rome (USA),1,Treaty Of Rome (USA)::01,1,23,2015-06-26,2018-04-30,3,6,C | G,0
+Treaty Of Rome (USA),2,Treaty Of Rome (USA)::02,1,2,2025-01-04,2025-02-08,3,3,C,0
+Trojan Sun (GB),1,Trojan Sun (GB)::01,1,2,2015-02-05,2015-05-20,9,9,G,0
+Trojan Sun (GB),2,Trojan Sun (GB)::02,1,31,2024-05-22,2026-05-17,4,6,G,0
+Tywin (FR),1,Tywin (FR)::01,1,3,2016-04-28,2016-07-24,2,2,G,0
+Tywin (FR),2,Tywin (FR)::02,1,9,2024-12-12,2025-09-04,2,3,C,0
+Under Siege (IRE),1,Under Siege (IRE)::01,1,18,2015-05-08,2017-04-24,3,5,G,0
+Under Siege (IRE),2,Under Siege (IRE)::02,1,6,2024-04-20,2024-09-28,3,3,C,0
+User Kindly (GB),1,User Kindly (GB)::01,2,27,2021-08-29,2025-08-16,2,6,C | C | H,0
+Vatican (AUS),1,Vatican (AUS)::01,1,2,2015-04-18,2015-05-02,6,6,G,0
+Vatican (AUS),2,Vatican (AUS)::02,1,1,2025-12-13,2025-12-13,2,2,C,0
+Venice (FR),1,Venice (FR)::01,1,4,2015-01-10,2015-03-06,3,3,F,0
+Venice (FR),2,Venice (FR)::02,1,18,2022-08-20,2025-10-11,2,5,C | H,0
+Verlan (FR),1,Verlan (FR)::01,1,1,2015-02-24,2015-02-24,6,6,G,0
+Verlan (FR),2,Verlan (FR)::02,1,6,2022-09-17,2024-07-04,5,7,G,0
+Verse Of Love (GB),1,Verse Of Love (GB)::01,1,2,2015-02-21,2015-02-28,6,6,G,0
+Verse Of Love (GB),2,Verse Of Love (GB)::02,1,5,2024-10-11,2025-10-19,2,3,F,0
+Virtuose (FR),1,Virtuose (FR)::01,1,2,2016-04-02,2016-05-04,7,7,G,0
+Virtuose (FR),2,Virtuose (FR)::02,1,5,2023-12-06,2024-04-10,3,4,C,0
+Volcano (FR),1,Volcano (FR)::01,1,47,2017-10-24,2024-02-25,3,10,G,0
+Volcano (FR),2,Volcano (FR)::02,1,6,2025-06-13,2026-04-07,3,4,C | G,0
+Voyager (FR),1,Voyager (FR)::01,1,4,2015-11-02,2019-09-25,4,8,G,0
+Voyager (FR),2,Voyager (FR)::02,1,1,2023-09-02,2023-09-02,5,5,G,0
+Walt (IRE),1,Walt (IRE)::01,1,28,2015-12-01,2020-01-11,4,9,G,0
+Walt (IRE),2,Walt (IRE)::02,1,1,2026-05-21,2026-05-21,2,2,C,0
+Waltzing Matilda (FR),1,Waltzing Matilda (FR)::01,1,1,2018-08-16,2018-08-16,4,4,F,0
+Waltzing Matilda (FR),2,Waltzing Matilda (FR)::02,1,2,2025-03-18,2025-05-20,5,5,M,0
+Washeek (IRE),1,Washeek (IRE)::01,1,1,2017-04-15,2017-04-15,2,2,C,0
+Washeek (IRE),2,Washeek (IRE)::02,1,5,2023-08-11,2024-06-28,2,3,C | G,0
+Western Ruler (IRE),1,Western Ruler (IRE)::01,1,8,2016-11-19,2018-04-26,4,6,G,0
+Western Ruler (IRE),2,Western Ruler (IRE)::02,1,2,2025-02-28,2025-03-21,3,3,G,0
+Westwood (USA),1,Westwood (USA)::01,1,3,2018-04-07,2018-06-08,4,4,G,0
+Westwood (USA),2,Westwood (USA)::02,1,4,2025-04-06,2026-03-21,3,4,G,0
+What A Whopper (IRE),1,What A Whopper (IRE)::01,1,1,2015-03-28,2015-03-28,2,2,F,0
+What A Whopper (IRE),2,What A Whopper (IRE)::02,1,6,2022-08-25,2023-08-28,2,3,C | G,0
+Wiggles (IRE),1,Wiggles (IRE)::01,2,6,2019-09-28,2021-06-15,5,7,M,0
+Wild Side (IRE),1,Wild Side (IRE)::01,1,2,2015-09-07,2015-10-03,2,2,C,0
+Wild Side (IRE),2,Wild Side (IRE)::02,1,13,2022-09-15,2024-06-01,2,4,F,0
+Wolverine (FR),1,Wolverine (FR)::01,1,25,2015-03-10,2018-10-30,8,11,G,0
+Wolverine (FR),2,Wolverine (FR)::02,1,3,2026-02-05,2026-03-30,3,3,G,0
+Yamarhaba Malayeen (IRE),1,Yamarhaba Malayeen (IRE)::01,1,5,2017-04-12,2017-11-22,3,3,C,0
+Yamarhaba Malayeen (IRE),2,Yamarhaba Malayeen (IRE)::02,1,2,2024-10-24,2025-03-16,2,3,C,0
+Yorkshire (IRE),1,Yorkshire (IRE)::01,1,5,2015-08-05,2015-11-28,3,3,G,0
+Yorkshire (IRE),2,Yorkshire (IRE)::02,1,20,2022-08-07,2026-05-09,2,6,C | G,0
+Yukon River (IRE),1,Yukon River (IRE)::01,1,1,2017-04-16,2017-04-16,5,5,M,0
+Yukon River (IRE),2,Yukon River (IRE)::02,1,1,2023-09-04,2023-09-04,3,3,C,0
+Zangar (FR),1,Zangar (FR)::01,1,3,2015-11-25,2016-05-04,5,6,G,0
+Zangar (FR),2,Zangar (FR)::02,1,5,2025-05-09,2026-03-12,3,4,G,0
