@@ -77,36 +77,34 @@ def _label_profile(
     return counts, periods
 
 
-def _jockey_comparison_groups(labels: set[str]) -> dict[str, list[str]]:
-    """Group all jockey labels after optional strict leading-title removal."""
+def _comparison_groups_with_title_variation(
+    labels: set[str],
+) -> dict[str, list[str]]:
+    """Group labels after optional strict title removal.
+
+    Candidate groups must contain at least two raw labels and at least one
+    recognised titled form. Untitled counterparts remain in the group because
+    the notebook compared labels after optional, not mandatory, title removal.
+    """
     grouped: dict[str, list[str]] = defaultdict(list)
     for raw_label in labels:
         governed = split_recognised_person_title(raw_label)
         grouped[governed.comparison_label].append(raw_label)
+
     return {
         comparison: sorted(raw_labels)
         for comparison, raw_labels in grouped.items()
         if len(raw_labels) > 1
-    }
-
-
-def _trainer_strict_title_groups(labels: set[str]) -> dict[str, list[str]]:
-    """Group only trainer labels carrying a recognised strict title."""
-    grouped: dict[str, list[str]] = defaultdict(list)
-    for raw_label in labels:
-        governed = split_recognised_person_title(raw_label)
-        if governed.title is not None:
-            grouped[governed.comparison_label].append(raw_label)
-    return {
-        comparison: sorted(raw_labels)
-        for comparison, raw_labels in grouped.items()
-        if len(raw_labels) > 1
+        and any(
+            split_recognised_person_title(raw_label).title is not None
+            for raw_label in raw_labels
+        )
     }
 
 
 def _validate_jockeys(connection: sqlite3.Connection) -> None:
     counts, _ = _label_profile(connection, "jockey")
-    groups = _jockey_comparison_groups(set(counts))
+    groups = _comparison_groups_with_title_variation(set(counts))
     relationship_count = sum(len(tuple(combinations(labels, 2))) for labels in groups.values())
     candidate_labels = sum(len(labels) for labels in groups.values())
 
@@ -161,7 +159,7 @@ def _validate_trainers(connection: sqlite3.Connection) -> None:
     blank_rows = connection.execute(
         "SELECT COUNT(*) FROM data WHERE rowid <> 1 AND trainer = ''"
     ).fetchone()[0]
-    groups = _trainer_strict_title_groups(set(counts))
+    groups = _comparison_groups_with_title_variation(set(counts))
 
     accepted: list[tuple[str, str]] = []
     for labels in groups.values():
