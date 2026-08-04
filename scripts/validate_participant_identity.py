@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date
 from itertools import combinations
 from pathlib import Path
@@ -29,6 +29,10 @@ EXPECTED_JOCKEY_LABELS = 7_917
 EXPECTED_JOCKEY_GROUPS = 212
 EXPECTED_JOCKEY_CANDIDATE_LABELS = 426
 EXPECTED_JOCKEY_RELATIONSHIPS = 216
+EXPECTED_JOCKEY_SAME_PERSON_RELATIONSHIPS = 1
+EXPECTED_JOCKEY_DIFFERENT_PEOPLE_RELATIONSHIPS = 1
+EXPECTED_JOCKEY_UNRESOLVED_RELATIONSHIPS = 214
+EXPECTED_JOCKEY_MAPPED_LABELS = 2
 EXPECTED_TRAINER_LABELS = 10_708
 EXPECTED_TRAINER_BLANK_ROWS = 9
 EXPECTED_TRAINER_CANDIDATE_GROUPS = 53
@@ -53,6 +57,17 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
         raise FileNotFoundError(f"missing governed output: {path}")
     with path.open(newline="", encoding="utf-8") as handle:
         return list(csv.DictReader(handle))
+
+
+def _assert_row_fields(
+    row: dict[str, str],
+    expected: dict[str, str],
+    *,
+    context: str,
+) -> None:
+    observed = {field: row.get(field, "") for field in expected}
+    if observed != expected:
+        raise AssertionError(f"{context} mismatch: {observed=} {expected=}")
 
 
 def _label_profile(
@@ -108,6 +123,175 @@ def _comparison_groups_with_title_variation(
     }
 
 
+def _validate_jockey_review_queue(
+    groups: dict[str, list[str]],
+    queue: list[dict[str, str]],
+) -> None:
+    if len(queue) != EXPECTED_JOCKEY_RELATIONSHIPS:
+        raise AssertionError(f"unexpected jockey review queue rows: {len(queue)}")
+
+    expected_ids = {
+        f"JOCKEY-STRICT-{index:04d}"
+        for index in range(1, EXPECTED_JOCKEY_RELATIONSHIPS + 1)
+    }
+    observed_ids = [row["candidate_pair_id"] for row in queue]
+    if len(observed_ids) != len(set(observed_ids)):
+        raise AssertionError("duplicate jockey candidate_pair_id values")
+    if set(observed_ids) != expected_ids:
+        raise AssertionError("jockey candidate_pair_id sequence is incomplete")
+
+    expected_pairs = {
+        frozenset(pair)
+        for labels in groups.values()
+        for pair in combinations(labels, 2)
+    }
+    observed_pairs = [
+        frozenset((row["left_raw_jockey_label"], row["right_raw_jockey_label"]))
+        for row in queue
+    ]
+    if len(observed_pairs) != len(set(observed_pairs)):
+        raise AssertionError("duplicate jockey candidate label pairs")
+    if set(observed_pairs) != expected_pairs:
+        missing = expected_pairs - set(observed_pairs)
+        unexpected = set(observed_pairs) - expected_pairs
+        raise AssertionError(
+            "jockey review queue does not close over the source candidate pairs: "
+            f"missing={len(missing)}, unexpected={len(unexpected)}"
+        )
+
+    relationship_counts = Counter(row["identity_relationship"] for row in queue)
+    expected_relationship_counts = Counter(
+        {
+            "same_person": EXPECTED_JOCKEY_SAME_PERSON_RELATIONSHIPS,
+            "different_people": EXPECTED_JOCKEY_DIFFERENT_PEOPLE_RELATIONSHIPS,
+            "unresolved": EXPECTED_JOCKEY_UNRESOLVED_RELATIONSHIPS,
+        }
+    )
+    if relationship_counts != expected_relationship_counts:
+        raise AssertionError(
+            "unexpected jockey relationship closure: "
+            f"{relationship_counts=} {expected_relationship_counts=}"
+        )
+
+    rows_by_id = {row["candidate_pair_id"]: row for row in queue}
+    oneill = rows_by_id["JOCKEY-STRICT-0001"]
+    _assert_row_fields(
+        oneill,
+        {
+            "left_raw_jockey_label": "Miss B ONeill",
+            "right_raw_jockey_label": "Mr B ONeill",
+            "same_race_collisions": "1",
+            "identity_relationship": "different_people",
+            "verification_status": "confirmed",
+            "verification_id": "NB22-JOCKEY-0001",
+            "evidence_type": "published_result",
+            "evidence_accessed_date": "2026-08-04",
+            "confidence": "high",
+            "database_action": "preserve_separate_participant_identities",
+            "review_scope_status": "completed",
+        },
+        context="B ONeill governed decision",
+    )
+    if not oneill["evidence_locator"] or not oneill["review_notes"]:
+        raise AssertionError("B ONeill governed decision lacks preserved evidence")
+
+    velon = rows_by_id["JOCKEY-STRICT-0002"]
+    _assert_row_fields(
+        velon,
+        {
+            "left_raw_jockey_label": "Mlle Marie Velon",
+            "right_raw_jockey_label": "Mme Marie Velon",
+            "identity_relationship": "same_person",
+            "left_verified_person_name": "Marie Vélon",
+            "right_verified_person_name": "Marie Vélon",
+            "verification_status": "confirmed",
+            "verification_id": "NB22-JOCKEY-0002",
+            "evidence_type": "governing_body_profile; published_jockey_profile",
+            "evidence_accessed_date": "2026-08-04",
+            "confidence": "high",
+            "database_action": "map_both_labels_to_same_participant_identity",
+            "review_scope_status": "completed",
+        },
+        context="Marie Velon governed decision",
+    )
+    if not velon["evidence_locator"] or not velon["review_notes"]:
+        raise AssertionError("Marie Velon governed decision lacks preserved evidence")
+
+    unresolved = [
+        row for row in queue if row["identity_relationship"] == "unresolved"
+    ]
+    unresolved_expected = {
+        "verification_status": "not_started",
+        "verification_id": "",
+        "evidence_type": "",
+        "evidence_locator": "",
+        "evidence_accessed_date": "",
+        "confidence": "",
+        "database_action": "preserve_raw_unresolved",
+        "review_scope_status": "deferred_until_material_use",
+    }
+    for row in unresolved:
+        _assert_row_fields(
+            row,
+            unresolved_expected,
+            context=f"unresolved jockey decision {row['candidate_pair_id']}",
+        )
+
+    mapping = _read_csv(
+        PROJECT_ROOT
+        / "data/processed/jockey_identity/jockey_provisional_identity_mapping.csv"
+    )
+    if len(mapping) != EXPECTED_JOCKEY_MAPPED_LABELS:
+        raise AssertionError(f"unexpected jockey mapping rows: {len(mapping)}")
+
+    expected_mapping_rows = {
+        (
+            "JOCKEY-PROVISIONAL-0001",
+            "Mlle Marie Velon",
+            "mlle_source_label",
+            "marie velon",
+            "provisional_source_label_identity",
+            "targeted_external_profile_verification",
+            "high",
+            "NB22-JOCKEY-0002",
+            "jockey_strict_candidate_review_queue.csv#JOCKEY-STRICT-0002",
+            "map_raw_label_to_provisional_jockey_identity",
+        ),
+        (
+            "JOCKEY-PROVISIONAL-0001",
+            "Mme Marie Velon",
+            "mme_source_label",
+            "marie velon",
+            "provisional_source_label_identity",
+            "targeted_external_profile_verification",
+            "high",
+            "NB22-JOCKEY-0002",
+            "jockey_strict_candidate_review_queue.csv#JOCKEY-STRICT-0002",
+            "map_raw_label_to_provisional_jockey_identity",
+        ),
+    }
+    observed_mapping_rows = {
+        (
+            row["provisional_jockey_id"],
+            row["raw_jockey_label"],
+            row["label_role"],
+            row["strict_comparison_key"],
+            row["identity_status"],
+            row["mapping_method"],
+            row["confidence"],
+            row["verification_id"],
+            row["evidence_reference"],
+            row["database_action"],
+        )
+        for row in mapping
+    }
+    if observed_mapping_rows != expected_mapping_rows:
+        raise AssertionError(
+            "unexpected governed jockey mapping rows: "
+            f"{observed_mapping_rows=} {expected_mapping_rows=}"
+        )
+
+
 def _validate_jockeys(connection: sqlite3.Connection) -> None:
     counts, _ = _label_profile(connection, "jockey")
     groups = _comparison_groups_with_title_variation(
@@ -153,13 +337,15 @@ def _validate_jockeys(connection: sqlite3.Connection) -> None:
         PROJECT_ROOT
         / "data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv"
     )
-    if len(queue) != EXPECTED_JOCKEY_RELATIONSHIPS:
-        raise AssertionError(f"unexpected jockey review queue rows: {len(queue)}")
+    _validate_jockey_review_queue(groups, queue)
 
     print(
         "jockeys: "
         f"{len(counts):,} labels; {len(groups):,} groups; "
-        f"{relationship_count:,} candidate relationships"
+        f"{relationship_count:,} candidate relationships; "
+        f"{EXPECTED_JOCKEY_SAME_PERSON_RELATIONSHIPS} accepted; "
+        f"{EXPECTED_JOCKEY_DIFFERENT_PEOPLE_RELATIONSHIPS} distinct; "
+        f"{EXPECTED_JOCKEY_UNRESOLVED_RELATIONSHIPS} unresolved"
     )
 
 
