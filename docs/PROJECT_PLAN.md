@@ -140,6 +140,24 @@ Retained controls:
 
 The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
 
+## Targeted cross-notebook implementation-completeness audit
+
+**Status: queued before physical database construction.**
+
+This is a repository-level review of the existing notebook implementations, not a reopening or rerun of every notebook.
+
+The audit must check for the specific closure defects exposed by Notebook 22:
+
+1. accepted decisions that exist only in review or decision tables without a directly usable governed mapping or output;
+2. validators that prove only file existence or row counts without checking the governed decisions, partitions, exceptions and provenance they claim to protect;
+3. external evidence mentioned in notebooks or reports but not preserved with identifiers, locators, access dates, confidence and permitted actions;
+4. documentation claiming full closure where the implementation artifacts do not support the stated database consequence;
+5. accepted, unresolved and rejected populations that are not explicitly separated or could overlap in downstream joins.
+
+The audit should begin from the existing closeout documents, integration contracts, governed outputs, tests and validators. It must not rerun archival notebooks or recreate completed implementations unless a concrete defect is found.
+
+Any defect found should be repaired through one bounded change, focused validation and documented evidence. A clean audit should be recorded without manufacturing additional work.
+
 ## Mandatory pre-database authority gate
 
 **Status: next operational gate.**
@@ -158,7 +176,7 @@ Database construction must not proceed until this check has been completed and r
 
 ## Phase 3 — Entity and key design
 
-After the Notebook 19 authority gate:
+After the Notebook 19 authority gate and targeted cross-notebook implementation-completeness audit:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
