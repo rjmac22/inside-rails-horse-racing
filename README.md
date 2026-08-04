@@ -74,7 +74,7 @@ Across the governed source population, 46 blank connection-field occurrences aff
 
 ### Notebook 21 — Comment and embedded information
 
-**Status:** implemented pending local validation and the end-of-series repository sweep.
+**Status:** implemented; focused local validation passed; pending the end-of-series repository sweep.
 
 Notebook 21 established that substantively populated `comment` values are generally runner-level English-language descriptions of race position and performance. The broad meaning is consistent across inspected jurisdictions, but availability is strongly jurisdiction- and feed-dependent.
 
@@ -91,6 +91,11 @@ Great Britain and Ireland are complete in this source, while several overseas fe
 
 Durable artifacts include conservative reusable classification, focused tests, an independent source-wide validator, persisted source-profile and semantic-decision outputs, database-integration documentation, a reader-facing report, lessons learned and a formal closeout record.
 
+Focused local validation recorded on 4 August 2026:
+
+- `tests/test_comment_information.py`: **8 passed**;
+- `scripts/validate_comment_information.py`: **PASS** across 1,851,285 runner rows and 189,043 provisional races.
+
 ## Retrospective implementation audit
 
 See:
@@ -102,7 +107,7 @@ The branch `audit/retrospective-implementation-closeout` remains open through th
 
 ## Next bounded action
 
-Complete Notebook 21 local validation, then run the complete repository test suite and all applicable independent validators. Notebook 08's deliberate lone `F` failure must remain documented expected evidence rather than being normalised away.
+Run the complete repository test suite and all applicable independent validators. Notebook 08's deliberate lone `F` failure must remain documented expected evidence rather than being normalised away.
 
 After the sweep passes, begin the mandatory participant identity programme:
 
