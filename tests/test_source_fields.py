@@ -27,7 +27,13 @@ def test_reference_assigns_every_field_to_later_governance() -> None:
     frame = load_source_field_governance(REFERENCE)
 
     assert frame["governed_by"].str.strip().ne("").all()
-    assert frame["status"].isin({"pending_semantics", "implemented_later"}).all()
+    assert frame["status"].isin(
+        {
+            "pending_semantics",
+            "implemented_later",
+            "implemented_pending_validation",
+        }
+    ).all()
 
 
 def test_loader_rejects_missing_required_column(tmp_path: Path) -> None:
@@ -76,6 +82,16 @@ def test_loader_rejects_raw_value_discard_policy(tmp_path: Path) -> None:
     frame.to_csv(path, index=False)
 
     with pytest.raises(ValueError, match="must preserve its raw value"):
+        load_source_field_governance(path)
+
+
+def test_loader_rejects_unknown_status(tmp_path: Path) -> None:
+    frame = pd.read_csv(REFERENCE)
+    frame.loc[0, "status"] = "unknown_status"
+    path = tmp_path / "unknown-status.csv"
+    frame.to_csv(path, index=False)
+
+    with pytest.raises(ValueError, match="Invalid source-field statuses"):
         load_source_field_governance(path)
 
 
