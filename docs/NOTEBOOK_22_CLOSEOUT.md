@@ -28,6 +28,8 @@ The notebook is a **non-rerunnable archival construction record**.
 
 Its executed outputs preserve the investigation, evidence and decisions. Durable reproducibility is provided through persisted governed outputs, reusable code, focused tests and an independent source-wide validator.
 
+Because the archival notebook is not the repeatable execution path, it is not required to be rerun or to demonstrate notebook-level save-and-reload reproducibility. It should not be rerun piecemeal: the reusable module and source-wide validator are the governed route for repeating the implemented behaviour without relying on historical notebook state or risking governed output replacement.
+
 ## Persisted outputs
 
 ### Jockey
@@ -92,11 +94,18 @@ participant identity validation: PASS
 
 The integration contract preserves raw labels, separates provisional identities from candidates, prohibits unsupported cross-role merging and defines cardinality and update controls.
 
-## Manual-verification decision
+## Manual and external verification
 
 **specialist_reference**
 
-Notebook 22 did not add new external claims. Blank jockey, trainer and owner fields inherit the permanent Notebook 20 evidence recorded in `data/reference/manual_verifications.csv`. The participant identity acceptance rules themselves are source-internal.
+Two decisive jockey candidate decisions were externally verified, with their provenance preserved in `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`:
+
+- `JOCKEY-STRICT-0001`: `Miss B ONeill` and `Mr B ONeill` were confirmed as different people using the source same-race collision and a published result for the collision race, accessed on 3 August 2026;
+- `JOCKEY-STRICT-0002`: `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional source-label identity using a published participant profile, accessed on 3 August 2026.
+
+The governed candidate queue records the candidate IDs, evidence types and locators, access dates, confidence, review notes and database actions. It is the specific verification register for these participant decisions, so duplicating the records in `data/reference/manual_verifications.csv` is unnecessary.
+
+These checks govern source-label equivalence within this dataset; they are not broader legal-identity claims. Trainer and owner acceptances remain source-internal structural equivalence decisions. Blank jockey, trainer and owner fields inherit the permanent Notebook 20 evidence recorded in `data/reference/manual_verifications.csv`. No raw source value was overwritten.
 
 ## Reader-facing report
 
