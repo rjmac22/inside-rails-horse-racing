@@ -18,7 +18,9 @@ Strict comparison after removing only a recognised leading personal title produc
 - 426 candidate labels;
 - 216 candidate relationships.
 
-Only `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional jockey label identity. That decision was externally checked against a published participant profile. `Miss B ONeill` and `Mr B ONeill` were confirmed different through a same-race collision and a published result for that race. Both verification records, including evidence locators, access dates, confidence and database actions, are preserved in `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`.
+Only `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional jockey label identity. That decision was externally checked against a France Galop governing-body profile and a published jockey profile. The two raw labels are persisted as direct mappings to `JOCKEY-PROVISIONAL-0001` in `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv`.
+
+`Miss B ONeill` and `Mr B ONeill` were confirmed different through a same-race collision and a published result. Both decisive verification records, including evidence locators, access dates, confidence and database actions, are preserved in `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`.
 
 The remaining 214 relationships remain unresolved.
 
@@ -77,7 +79,7 @@ Confidence is not high enough to claim comprehensive real-world identity reconst
 - Trainer title transitions outside the bounded 2023–2024 window remain unresolved.
 - Owner labels can combine several people and organisations without explicit separators.
 - Same token membership does not prove equivalence unless supported by additional evidence.
-- The source does not provide authoritative participant identifiers.
+- The source does not provide authoritative participant identifiers for every label.
 - Notebook 20 remains the governing source for blank connection-field supplementations.
 
 ## Database consequence
@@ -101,4 +103,4 @@ The accepted mappings improve comparability for a small evidence-backed populati
 
 ## Next action
 
-Use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
+Run the strengthened independent participant-identity validator once against the immutable source. After that PASS is recorded, use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
