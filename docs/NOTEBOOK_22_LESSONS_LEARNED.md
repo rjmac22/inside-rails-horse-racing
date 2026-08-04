@@ -28,7 +28,7 @@ Future rules must state an evidence-bearing time boundary instead of accepting e
 
 ## 5. Structurally mixed fields need structurally limited claims
 
-The owner field combines individuals, partnerships, syndicates, companies, clubs, studs and compressed groups. One universal owner parser would manufacture false precision.
+The owner field combines individuals, partnerships, syndicates, companies, clubs, studs, farms and compressed groups. One universal owner parser would manufacture false precision.
 
 Future ownership studies should distinguish composition identity, organisation identity and individual identity rather than treating them as one problem.
 
@@ -48,23 +48,39 @@ Future notebooks must check existing governed references before initiating new m
 
 Source-internal evidence was sufficient for the bounded trainer and owner rules, but the two decisive jockey cases benefited from targeted published evidence.
 
-The Marie Velon participant profile supported a same-person source-label decision, while the published B O'Neill collision-race result supported a distinct-person decision. Both records retained candidate IDs, evidence locators, access dates, evidence types, confidence and database actions in the governed jockey review queue.
+The Marie Velon participant profiles supported a same-person source-label decision, while the published B O'Neill collision-race result supported a distinct-person decision. Both records retained candidate IDs, evidence locators, access dates, evidence types, confidence and database actions in the governed jockey review queue.
 
 Future external research should be narrow, decision-specific and permanently attached to the governed candidate record rather than used as undocumented background knowledge.
 
-## 9. Repository paths must be checked before use
+## 9. A governed decision row is not automatically a usable mapping
+
+The Marie Velon relationship was correctly decided and preserved in the jockey review queue, but no direct label-to-identity mapping file had been created. A downstream database build would otherwise have needed to infer a mapping from a review table.
+
+The final audit therefore added `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` with exactly two raw labels mapped to `JOCKEY-PROVISIONAL-0001` and an explicit reference back to `NB22-JOCKEY-0002`.
+
+Future closeouts must distinguish decision records, unresolved queues and directly joinable accepted mappings.
+
+## 10. Row-count validation is not decision validation
+
+The first jockey validator confirmed the source candidate population and that the review queue contained 216 rows. It did not prove that the queue still contained the exact accepted, distinct and unresolved decisions or that decisive provenance remained intact.
+
+The strengthened validator now checks all 216 source pairs, the exact one same-person / one different-people / 214 unresolved partition, decisive verification fields, unresolved preservation actions and the direct mapping.
+
+Future validators must test governed meaning and closure, not merely file existence and row counts.
+
+## 11. Repository paths must be checked before use
 
 An early attempt reconstructed the manual-verification location from memory and was wrong. The documented permanent register is `data/reference/manual_verifications.csv`.
 
 Future work must read repository documentation and existing code before proposing paths, helper functions or closeout steps.
 
-## 10. Closure route must be chosen from the procedure
+## 12. Closure route must be chosen from the procedure
 
 A fresh-kernel rerun was initially proposed automatically. The wrap-up procedure allows an archival construction-record route where the notebook preserves reasoning and durable implementation lives outside it.
 
 Future closeout work must choose the executable or archival route explicitly rather than assuming rerun safety is always required. An archival notebook does not require notebook-level rerun or save-and-reload proof unless it is intentionally being converted into the repeatable execution path.
 
-## 11. One bounded step remains the strongest working method
+## 13. One bounded step remains the strongest working method
 
 The investigation improved when each output determined the next question: title candidates, chronology, bounded rule, persistence, source join and unresolved separation.
 
@@ -77,6 +93,7 @@ Notebook 22 created:
 - conservative participant-label helper functions;
 - focused unit tests for titles, chronology and owner token order;
 - an independent source-wide participant identity validator;
+- a direct governed jockey label-to-identity mapping;
 - governed trainer mapping and unresolved outputs;
 - governed owner mapping and unresolved outputs;
 - a participant identity integration contract;
@@ -89,6 +106,8 @@ Notebook 22 created:
 - Use source-internal same-race evidence where available.
 - Use targeted external verification where a material decision remains unresolved.
 - Preserve external evidence locators, access dates, confidence and actions in the governed candidate record.
+- Separate decision tables, unresolved queues and directly usable mapping files.
+- Validate exact decisions and provenance, not only row counts.
 - Preserve exact raw labels and unresolved candidates.
 - Store the scope of identity established in the identity type itself.
 - Read the repository procedure and existing references before proposing closeout actions.
