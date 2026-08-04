@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 from collections import defaultdict
+from datetime import date
 from itertools import combinations
 from pathlib import Path
 import sqlite3
@@ -76,7 +77,21 @@ def _label_profile(
     return counts, periods
 
 
-def _strict_title_groups(labels: set[str]) -> dict[str, list[str]]:
+def _jockey_comparison_groups(labels: set[str]) -> dict[str, list[str]]:
+    """Group all jockey labels after optional strict leading-title removal."""
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for raw_label in labels:
+        governed = split_recognised_person_title(raw_label)
+        grouped[governed.comparison_label].append(raw_label)
+    return {
+        comparison: sorted(raw_labels)
+        for comparison, raw_labels in grouped.items()
+        if len(raw_labels) > 1
+    }
+
+
+def _trainer_strict_title_groups(labels: set[str]) -> dict[str, list[str]]:
+    """Group only trainer labels carrying a recognised strict title."""
     grouped: dict[str, list[str]] = defaultdict(list)
     for raw_label in labels:
         governed = split_recognised_person_title(raw_label)
@@ -91,10 +106,8 @@ def _strict_title_groups(labels: set[str]) -> dict[str, list[str]]:
 
 def _validate_jockeys(connection: sqlite3.Connection) -> None:
     counts, _ = _label_profile(connection, "jockey")
-    groups = _strict_title_groups(set(counts))
-    relationship_count = sum(
-        1 for labels in groups.values() for _ in combinations(labels, 2)
-    )
+    groups = _jockey_comparison_groups(set(counts))
+    relationship_count = sum(len(tuple(combinations(labels, 2))) for labels in groups.values())
     candidate_labels = sum(len(labels) for labels in groups.values())
 
     observed = {
@@ -112,9 +125,8 @@ def _validate_jockeys(connection: sqlite3.Connection) -> None:
     if observed != expected:
         raise AssertionError(f"jockey baseline mismatch: {observed=} {expected=}")
 
-    marie_group = groups.get("marie velon", [])
-    if marie_group != ["Mlle Marie Velon", "Mme Marie Velon"]:
-        raise AssertionError(f"unexpected Marie Velon group: {marie_group}")
+    if groups.get("marie velon") != ["Mlle Marie Velon", "Mme Marie Velon"]:
+        raise AssertionError(f"unexpected Marie Velon group: {groups.get('marie velon')}")
 
     collision = connection.execute(
         """
@@ -149,19 +161,19 @@ def _validate_trainers(connection: sqlite3.Connection) -> None:
     blank_rows = connection.execute(
         "SELECT COUNT(*) FROM data WHERE rowid <> 1 AND trainer = ''"
     ).fetchone()[0]
-    groups = _strict_title_groups(set(counts))
+    groups = _trainer_strict_title_groups(set(counts))
 
     accepted: list[tuple[str, str]] = []
     for labels in groups.values():
         if len(labels) != 2:
             continue
         governed = [split_recognised_person_title(label) for label in labels]
-        earlier_candidates = [item for item in governed if item.title == "mlle"]
-        later_candidates = [item for item in governed if item.title == "mme"]
-        if len(earlier_candidates) != 1 or len(later_candidates) != 1:
+        earlier_items = [item for item in governed if item.title == "mlle"]
+        later_items = [item for item in governed if item.title == "mme"]
+        if len(earlier_items) != 1 or len(later_items) != 1:
             continue
-        earlier = earlier_candidates[0]
-        later = later_candidates[0]
+        earlier = earlier_items[0]
+        later = later_items[0]
         earlier_first, earlier_last, _ = periods[earlier.raw_label]
         later_first, later_last, _ = periods[later.raw_label]
         overlap = max(earlier_first, later_first) <= min(earlier_last, later_last)
@@ -170,8 +182,8 @@ def _validate_trainers(connection: sqlite3.Connection) -> None:
             later_title=later.title,
             earlier_post_title_label=earlier.post_title_label,
             later_post_title_label=later.post_title_label,
-            earlier_last_date=__import__("datetime").date.fromisoformat(earlier_last),
-            later_first_date=__import__("datetime").date.fromisoformat(later_first),
+            earlier_last_date=date.fromisoformat(earlier_last),
+            later_first_date=date.fromisoformat(later_first),
             active_periods_overlap=overlap,
         ):
             accepted.append((earlier.raw_label, later.raw_label))
@@ -241,7 +253,6 @@ def _validate_owners(connection: sqlite3.Connection) -> None:
     supported_keys: set[tuple[str, ...]] = set()
     current_race: tuple[str, str, str] | None = None
     sequences_by_key: dict[tuple[str, ...], set[tuple[str, ...]]] = defaultdict(set)
-
     placeholders = ",".join("?" for _ in candidate_labels)
     query = f"""
         SELECT date, course, off, owner
@@ -264,14 +275,10 @@ def _validate_owners(connection: sqlite3.Connection) -> None:
         key for key, sequences in sequences_by_key.items() if len(sequences) > 1
     )
 
-    accepted_labels = {
-        label for key in supported_keys for label in candidate_groups[key]
-    }
+    accepted_labels = {label for key in supported_keys for label in candidate_groups[key]}
     accepted_rows = sum(counts[label] for label in accepted_labels)
     unresolved_keys = set(candidate_groups) - supported_keys
-    unresolved_labels = {
-        label for key in unresolved_keys for label in candidate_groups[key]
-    }
+    unresolved_labels = {label for key in unresolved_keys for label in candidate_groups[key]}
     unresolved_rows = sum(counts[label] for label in unresolved_labels)
 
     observed = {
