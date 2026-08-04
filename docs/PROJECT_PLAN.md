@@ -16,16 +16,16 @@ For each substantive notebook:
 4. avoid irreversible cleaning decisions inside exploratory work;
 5. extract stable reusable plumbing only after it works;
 6. add focused unit tests including failure behaviour;
-7. validate extracted code and governed references independently where justified;
+7. validate extracted code and governed references independently;
 8. document the database and update consequence;
 9. produce a concise Minto-style report;
-10. record decisions, uncertainty, lessons learned and next actions;
-11. update the audit register, field governance, this plan and the project README;
+10. record decisions, uncertainty and lessons learned;
+11. update the audit register, field governance, this plan and the README;
 12. commit and verify the complete closeout.
 
 The full procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
 
-The raw SQLite database remains read-only. All source-data queries use `DATA_ROW_PREDICATE = "rowid <> 1"`.
+The raw SQLite database remains read-only. All source-data queries use `rowid <> 1`.
 
 Established source population:
 
@@ -38,95 +38,56 @@ Established source population:
 
 ### Notebooks 00–03
 
-**Status:** complete and retrospectively implemented.
+**Status: fully closed.**
 
 Established raw-source immutability, source grain and quality, physical lineage requirements, and candidate race and runner-record reconstruction.
 
-## Phase 2 — Domain interpretation and parsing
+## Phase 2 — Domain interpretation and source-field governance
 
-### Notebooks 04–16
+### Notebooks 04–21
 
-**Status:** complete and retrospectively implemented or fully closed.
+**Status: fully closed on the retrospective implementation branch.**
 
-Established course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, field governance, and race classification and eligibility.
+The completed programme governs course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree labels, connection-field blanks and comment-field states.
 
-Notebook 08 retains one deliberate governed validator failure for the malformed standalone source value `F`.
+Retained governed limits:
 
-### Notebook 17 — Runner characteristics and equipment
+- Notebook 08 preserves one unresolved raw starting-price value `F`;
+- Notebook 19 preserves five unresolved authority-dependent horse/pedigree transitions;
+- Notebook 20 preserves 18 unresolved connection blanks;
+- Notebook 21 does not authorise a general narrative parser.
 
-**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
+## End-of-series validation — completed 4 August 2026
 
-Governed age, sex and headgear rules, including exact verification-backed contamination corrections and source-specific eyecover normalisation.
+The complete repository test suite and every discovered independent validator were run after Notebook 21.
 
-### Notebook 18 — Ratings semantics and availability
+Final evidence:
 
-**Status:** fully closed.
+```text
+256 passed in 0.96s
+ALL VALIDATORS PASSED
+```
 
-Governed separate nullable meanings for `or`, `rpr` and `ts`, exact unavailable-value treatment and the isolated invalid `rpr = 775` source row.
+The validator sweep covered 26 scripts, including source-wide checks over the immutable 1,851,285-row source population.
 
-### Notebook 19 — Horse and pedigree identity
+The sweep found and repaired:
 
-**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
+1. a prize-money minor-unit fall-through defect;
+2. a source-field status-loader compatibility defect.
 
-Governed raw horse and pedigree labels, reversible contradiction treatment, 353 transition decisions and 611 provisional source-internal horse occurrences. Five authority-dependent cases remain governed as unresolved and subject to the pre-database authority gate.
+The final field-governance reconciliation passed with:
 
-### Notebook 20 — Connections and ownership identity
+```text
+closed: 34
+implemented_with_governed_anomaly: 1
+preserve: 2
+```
 
-**Status:** fully closed for source-field semantics, blank governance and bounded supplementation. Global participant entity resolution remains a separate mandatory downstream study.
-
-Governed rules preserve raw `jockey`, `trainer` and `owner` labels as source assertions, permit supplementation only for exact blank source targets backed by confirmed evidence, and preserve conflicting or insufficient-evidence blanks unresolved.
-
-Recorded closeout result: 46 raw blank field occurrences, 28 confirmed supplementations and 18 unresolved blanks.
-
-### Notebook 21 — Comment and embedded information
-
-**Status:** implemented; focused local validation passed; pending the end-of-series repository sweep.
-
-Notebook 21 established that substantive comments are generally runner-level English-language descriptions of race position and performance. The broad meaning is consistent across inspected jurisdictions, but availability is strongly jurisdiction- and feed-dependent.
-
-Governed rules:
-
-- preserve the exact raw comment and physical lineage;
-- preserve empty strings as source absence;
-- preserve rare placeholder-like values and `A`, `B`, `V` as unresolved source states;
-- permit only conservative state classification;
-- do not implement a general narrative, incident, market or parenthetical parser;
-- store any later extracted assertion separately with method, version, confidence and source linkage;
-- report or control for jurisdiction-specific coverage before comment-derived comparison.
-
-Recorded baselines:
-
-- 340,394 empty-string comments;
-- 238 probable-placeholder or unresolved-code rows;
-- 1,510,653 substantive-text rows;
-- 0 SQL nulls;
-- 36 candidate jurisdictions and 0 unresolved jurisdiction assignments.
-
-Durable implementation, focused tests, an independent source validator, persisted outputs, integration documentation, report, lessons and closeout record are committed.
-
-Focused validation recorded on 4 August 2026:
-
-- `pytest -q tests/test_comment_information.py`: **8 passed in 0.46s**;
-- `python scripts/validate_comment_information.py`: **PASS** across 1,851,285 governed runner rows and 189,043 provisional races.
-
-## Source-field series position
-
-The bounded source-field investigation series is analytically complete through Notebook 21.
-
-The immediate work is no longer another source-field notebook. It is the end-of-series validation and reconciliation sweep.
-
-## Current next action — End-of-series validation sweep
-
-1. run the complete repository test suite;
-2. run every applicable independent validator;
-3. preserve Notebook 08's lone governed `F` failure as expected evidence;
-4. repair any cross-notebook integration defects;
-5. reconcile README, project plan, audit, field governance, closeout records and lessons learned;
-6. record exact branch-level validation evidence;
-7. verify a clean local tree and synchronized remote branch;
-8. mark Notebook 21 fully closed only after the recorded sweep passes.
+All 37 source fields require raw preservation and match the SQLite schema names, order and declared types.
 
 ## Mandatory pre-database authority gate
+
+**Status: next operational gate.**
 
 Before physical database construction begins:
 
@@ -140,18 +101,27 @@ Before physical database construction begins:
 
 Database construction must not proceed until this check has been completed and recorded.
 
-## Mandatory participant identity gate
+## Mandatory participant identity programme
 
-This gate begins immediately after the end-of-series repository-wide validation sweep. It is the first Phase 3 programme and must be completed before physical participant schema design, retrospective participant performance analysis, publication or modelling.
+This is the next bounded analytical programme and must be completed before physical participant schema design, participant-level retrospective analysis, publication or modelling.
 
-Planned bounded studies:
+### Notebook 22 — Jockey and trainer identity
 
-1. **Notebook 22 — Jockey and trainer identity**: resolve people, aliases, initials, punctuation variants, spelling changes, same-name collisions, jurisdiction and active-period boundaries while preserving unresolved mappings;
-2. **Notebook 23 — Owner identity and ownership structures**: distinguish individuals, partnerships, syndicates, clubs, companies and other ownership entities, including compressed and changing ownership labels.
+Resolve people, aliases, initials, punctuation variants, spelling changes, same-name collisions, jurisdiction and active-period boundaries while preserving unresolved mappings.
 
-The studies must preserve immutable raw labels and lineage, create separate entity identifiers, test alias and collision risk, record every merge/split/unresolved relationship with provenance, and prevent automatic cross-role merging.
+### Notebook 23 — Owner identity and ownership structures
 
-Until this gate is complete:
+Distinguish individuals, partnerships, syndicates, clubs, companies and other ownership entities, including compressed and changing ownership labels.
+
+Both studies must:
+
+- preserve immutable raw labels and row lineage;
+- create separate entity identifiers;
+- test alias and collision risk;
+- record every merge, split and unresolved relationship with provenance;
+- prevent unsupported automatic cross-role merging.
+
+Until this programme is complete:
 
 - raw-label summaries may be used only when explicitly labelled as source-label analysis;
 - normalised-text summaries may be used only for exploratory candidate matching;
@@ -160,9 +130,7 @@ Until this gate is complete:
 
 ## Phase 3 — Entity and key design
 
-Phase 3 begins with participant identity, not physical schema design.
-
-After the validation sweep, authority gate and participant identity studies:
+After the authority gate and participant identity studies:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
