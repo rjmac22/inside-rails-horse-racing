@@ -1,0 +1,17 @@
+measure,value
+source_table,data
+governed_data_row_predicate,rowid <> 1
+governed_runner_rows,1851285
+provisional_races,189043
+sql_null_rows,0
+empty_string_rows,340394
+populated_rows,1510891
+distinct_populated_values,1426745
+probable_placeholder_or_unresolved_code_rows,238
+substantive_text_rows,1510653
+leading_whitespace_rows,1
+trailing_whitespace_rows,0
+minimum_populated_length,1
+maximum_populated_length,2206
+candidate_jurisdictions,36
+unresolved_candidate_jurisdiction_races,0
