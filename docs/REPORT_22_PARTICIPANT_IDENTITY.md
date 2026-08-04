@@ -101,6 +101,10 @@ Trainer, jockey and owner performance summaries should remain raw-label analyses
 
 The accepted mappings improve comparability for a small evidence-backed population while avoiding the much larger error risk created by universal normalisation.
 
+## Validation outcome
+
+The strengthened independent validator passed against the immutable source on 4 August 2026. It confirmed the exact jockey decision partition, decisive external provenance, direct jockey mapping, trainer transitions, owner compositions and unresolved populations.
+
 ## Next action
 
-Run the strengthened independent participant-identity validator once against the immutable source. After that PASS is recorded, use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
+Use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
