@@ -71,6 +71,30 @@ Before supplying or running such a cell:
 
 A source-wide validator may still process the full population, but it should do so with bounded-memory, set-based or streaming logic rather than constructing one Python `Series` per source row.
 
+## Immutable source and temporary analytics writes
+
+Source databases opened as read-only or immutable must never receive notebook-created tables, indexes, views or other transient state.
+
+When a set-based join or intermediate table is materially safer or clearer than a large Python merge, use a separate writable analytics store instead of weakening the source boundary. Appropriate options include:
+
+- an in-memory SQLite database for small or short-lived intermediate state;
+- a temporary SQLite file in the operating system temporary directory for larger bounded joins;
+- a governed project temporary directory when the intermediate must survive long enough for inspection;
+- Parquet or CSV only when the intermediate itself needs to be reviewed, persisted or handed off.
+
+The source database may be attached to a separate writable SQLite connection in read-only mode, while temporary keys and derived tables are created only in the writable analytics database.
+
+Before supplying or running a cell that needs temporary SQL state:
+
+1. confirm that the source connection is read-only or immutable;
+2. choose the smallest suitable writable temporary store;
+3. document where temporary state is created;
+4. keep raw source values unchanged;
+5. remove disposable files or tables when the stage finishes;
+6. persist an intermediate only when it has an explicit analytical or audit purpose.
+
+A failed attempt to write to an immutable source is not an acceptable discovery mechanism. The write boundary must be identified before the cell is supplied.
+
 ## Proportionate use
 
 Comments are required around meaningful blocks, assumptions, transformations and checks. They are not required on every trivial assignment or every line.
@@ -87,5 +111,6 @@ Before supplying or committing a notebook code cell, check that a reader can ans
 - What does the validation establish?
 - Is the transformation running at the smallest safe decision grain?
 - Could it create a large row-wise intermediate object unnecessarily?
+- Does any temporary write occur outside the immutable source boundary?
 
 If those answers are not clear from the Markdown and inline comments together, the cell is not ready.
