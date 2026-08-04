@@ -29,7 +29,7 @@ The candidate provisional race key is `date + course + off`. The raw SQLite data
 
 **Status:** complete and retrospectively implemented or fully closed as recorded in the audit register.
 
-These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, race classification and eligibility, and complete governance of all 37 source fields.
+These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, race classification and eligibility, and complete governance of the first 37-field inventory.
 
 Notebook 08 retains one deliberate governed source failure: the malformed standalone starting-price value `F` remains unresolved rather than being silently normalised.
 
@@ -62,8 +62,6 @@ The source-wide governed result contains:
 - 5 `Unresolved` transitions;
 - 611 provisional source-internal horse occurrences.
 
-Durable implementation includes the specialist governance reference, reusable code, focused tests, independent validator, database-integration documentation and committed processed outputs.
-
 Before physical database construction, all pending studbook and racing-authority responses must be checked and the affected Notebook 19 governance and outputs regenerated where necessary.
 
 ### Notebook 20 — Connections and ownership identity
@@ -72,21 +70,26 @@ Before physical database construction, all pending studbook and racing-authority
 
 Notebook 20 established that `jockey`, `trainer` and `owner` are source-presented runner-level labels rather than canonical identities for people, partnerships, syndicates, licences or organisations.
 
-Across the governed source population, 46 blank connection-field occurrences affect 44 runner rows:
+Across the governed source population, 46 blank connection-field occurrences affect 44 runner rows. External review produced 28 confirmed source supplementations and 18 deliberately unresolved blanks. Raw connection labels remain atomic text and populated source values can never be overwritten.
 
-- 2 blank `jockey` values;
-- 9 blank `trainer` values;
-- 35 blank `owner` values.
+### Notebook 21 — Comment and embedded information
 
-External review produced:
+**Status:** implemented pending local validation and the end-of-series repository sweep.
 
-- 28 confirmed source supplementations;
-- 5 conflicting-evidence trainer records preserved unresolved;
-- 13 insufficient-evidence owner records preserved unresolved.
+Notebook 21 established that substantively populated `comment` values are generally runner-level English-language descriptions of race position and performance. The broad meaning is consistent across inspected jurisdictions, but availability is strongly jurisdiction- and feed-dependent.
 
-The raw database remains immutable. Confirmed values are applied only through the exact `(source_rowid, source_field)` governed repair reference, and populated source values can never be overwritten. Raw connection labels remain atomic text and are not treated as global entity identifiers.
+Governed source baselines are:
 
-Durable implementation includes 46 permanent manual-verification records, a 28-row connection-repair reference, reusable application logic, focused tests, an independent source-wide validator, database-integration documentation and the formal Notebook 20 closeout record.
+- 340,394 empty-string comments;
+- 1,510,891 populated comments;
+- 1,426,745 distinct populated values;
+- 238 probable-placeholder or unresolved-code rows;
+- 1,510,653 substantive-text rows;
+- 0 SQL nulls.
+
+Great Britain and Ireland are complete in this source, while several overseas feeds are sparse or selective. The exact raw comment is preserved. Rare values such as `A`, `B` and `V` remain unresolved, and no general narrative or terminal-parenthetical parser is authorised.
+
+Durable artifacts include conservative reusable classification, focused tests, an independent source-wide validator, persisted source-profile and semantic-decision outputs, database-integration documentation, a reader-facing report, lessons learned and a formal closeout record.
 
 ## Retrospective implementation audit
 
@@ -95,23 +98,18 @@ See:
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
 
-The branch `audit/retrospective-implementation-closeout` remains open while the final source-field study continues. The complete test suite and all applicable validators will run again after that study closes and before final merge.
+The branch `audit/retrospective-implementation-closeout` remains open through the end-of-series validation sweep and any required cross-notebook repairs.
 
 ## Next bounded action
 
-Begin the final remaining source-field study: `comment` and its embedded information.
+Complete Notebook 21 local validation, then run the complete repository test suite and all applicable independent validators. Notebook 08's deliberate lone `F` failure must remain documented expected evidence rather than being normalised away.
 
-The study should establish:
+After the sweep passes, begin the mandatory participant identity programme:
 
-- physical storage and blank behaviour;
-- whether comments are runner-level source text consistently;
-- recurring vocabulary and punctuation structures;
-- which facts are explicitly present versus inferred;
-- whether embedded distances, incidents, tactics, equipment references or timing information can be extracted safely;
-- which information must remain raw free text;
-- what provenance and confidence are required for any derived features.
+1. Notebook 22 — jockey and trainer identity;
+2. Notebook 23 — owner identity and ownership structures.
 
-No comment-derived field should be treated as authoritative merely because a phrase can be parsed. Raw text and extraction lineage must remain recoverable.
+Physical participant schema design and participant-level retrospective analysis remain blocked until those identity studies are complete.
 
 ## Working method
 
