@@ -43,6 +43,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, focused tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. |
 | 19 | Horse and pedigree identity | Governed pedigree reconciliation and provisional horse-occurrence identity | **Fully closed on this audit branch** | Explicit archival classification, specialist governance, reusable implementation, focused tests, manual-verification validation, independent source-wide validator, database integration documentation and persisted/reloaded outputs are committed. Five authority-dependent cases remain governed as unresolved rather than blocking closure. |
 | 20 | Connections and ownership identity | Governed blank-field supplementation without unsupported entity resolution | **Fully closed on this audit branch** | Notebook conclusions, 46 permanent verification records, 28 governed repair rows, reusable implementation, focused tests, manual-register validation, independent source-wide validation, integration documentation and closeout record are committed. Eighteen blanks remain deliberately unresolved. |
+| 21 | Comment and embedded information | Conservative raw-text state governance without speculative parsing | **Implemented pending local validation** | Executed notebook, persisted source profile and decisions, reusable classifier, focused tests, independent validator, integration contract, report, lessons and closeout record are committed. Focused local validation and the end-of-series repository sweep remain outstanding. |
 
 ## Notebook 19 closure evidence
 
@@ -59,24 +60,7 @@ Durable artifacts:
 - `docs/NOTEBOOK_19_CLOSEOUT.md`;
 - persisted outputs under `data/processed/horse_pedigree_identity/`.
 
-Recorded validation evidence:
-
-- focused horse-identity tests passed;
-- manual-verification register passed across 39 governed rows;
-- raw contradiction labels: **5,573**;
-- structured contradiction labels: **368**;
-- structured pedigree rows: **96,404**;
-- structured pedigree groups: **741**;
-- temporally separated labels: **350**;
-- separated pedigree groups: **703**;
-- governed transitions: **353**;
-- `Corrected`: **87**;
-- `Different horse`: **261**;
-- `Unresolved`: **5**;
-- provisional source-internal horse occurrences: **611**;
-- both processed outputs were written, reloaded, committed and pushed.
-
-The five unresolved cases remain subject to the mandatory pre-database authority-response gate recorded in `docs/PROJECT_PLAN.md`.
+Recorded validation evidence includes 353 governed transitions partitioned into 87 `Corrected`, 261 `Different horse` and 5 `Unresolved`, plus 611 provisional source-internal horse occurrences. The five unresolved cases remain subject to the mandatory pre-database authority-response gate recorded in `docs/PROJECT_PLAN.md`.
 
 ## Notebook 20 closure evidence
 
@@ -87,37 +71,44 @@ Durable artifacts:
 - `data/reference/connection_identity_repairs.csv`;
 - `src/inside_rails/connection_identity.py`;
 - `tests/test_connection_identity.py`;
-- Notebook 20 coverage in `tests/test_manual_verifications.py`;
-- `scripts/promote_connection_identity_verifications.py`;
 - `scripts/validate_connection_identity.py`;
 - `docs/CONNECTION_IDENTITY_INTEGRATION.md`;
 - `docs/NOTEBOOK_20_CLOSEOUT.md`.
 
-Recorded validation evidence:
+Recorded validation evidence: 46 raw blank field occurrences across 44 source rows, 28 confirmed source supplementations and 18 unresolved preserved blanks. Raw connection labels remain source-presented text rather than canonical person or organisation identifiers.
 
-- focused tests: **18 passed**;
-- manual-verification register: **85 governed rows passed**;
+## Notebook 21 implementation evidence
+
+Durable artifacts:
+
+- `notebooks/21_comment_and_embedded_information.ipynb`;
+- `data/processed/comment_information/comment_source_profile.csv`;
+- `data/processed/comment_information/comment_semantic_decisions.csv`;
+- `src/inside_rails/comment_information.py`;
+- `tests/test_comment_information.py`;
+- `scripts/validate_comment_information.py`;
+- `docs/COMMENT_INFORMATION_INTEGRATION.md`;
+- `docs/REPORT_21_COMMENT_AND_EMBEDDED_INFORMATION.md`;
+- `docs/NOTEBOOK_21_LESSONS_LEARNED.md`;
+- `docs/NOTEBOOK_21_CLOSEOUT.md`.
+
+Established baselines:
+
 - governed runner rows: **1,851,285**;
-- raw blank field occurrences: **46** across **44** runner rows;
-- permanent Notebook 20 verification records: **46**;
-- confirmed source supplementations: **28**;
-- unresolved preserved blanks: **18**;
-- `jockey`: **2** raw blanks, **2** supplemented, **0** unresolved;
-- `trainer`: **9** raw blanks, **4** supplemented, **5** unresolved;
-- `owner`: **35** raw blanks, **22** supplemented, **13** unresolved.
+- provisional races: **189,043**;
+- SQL null comments: **0**;
+- empty-string comments: **340,394**;
+- probable-placeholder or unresolved-code rows: **238**;
+- substantive-text rows: **1,510,653**;
+- candidate jurisdictions: **36**;
+- unresolved candidate-jurisdiction races: **0**.
 
-The raw source remains immutable. Confirmed values are applied only in the governed layer against the exact blank `(source_rowid, source_field)` target. Connection labels remain source-presented text rather than canonical person or organisation identifiers.
+Manual-verification decision: `not_applicable`. Final conclusions depend on source-internal evidence; the informal equipment-code hypothesis was not accepted as validation and was not supported by source testing.
 
 ## Current position
 
-Notebook 20 is fully closed.
+The analytical source-field series is complete through Notebook 21. Notebook 21 remains **implemented pending local validation** until its focused test and validator results are recorded.
 
-One source-field study remains before the source-field series is complete:
+The next branch-level action is the end-of-series complete repository test suite and all-validator sweep, followed by repair of any cross-notebook integration defects. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
 
-1. comments and embedded information — `comment`.
-
-The next bounded action is the comments and embedded information study.
-
-After Notebook 21 closes, run the complete repository test suite and all-validator sweep, repair cross-notebook integration defects, complete the studbook/authority-response gate, and then move into entity/key design and target database architecture.
-
-Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
+After the sweep, complete the mandatory authority-response gate and begin the participant identity studies before physical participant schema design or participant-level analysis.
