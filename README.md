@@ -48,7 +48,7 @@ Notebook 21 baselines:
 
 ### Participant identity programme — consolidated Notebook 22
 
-**Status: fully closed on 4 August 2026.**
+**Status: implementation complete; final strengthened-validator run pending.**
 
 Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
 
@@ -57,6 +57,9 @@ Governed outcomes:
 - 7,917 jockey labels;
 - 212 jockey candidate groups and 216 candidate relationships;
 - one confirmed provisional jockey label identity: `Mlle Marie Velon` / `Mme Marie Velon`;
+- one confirmed distinct-person jockey relationship: `Miss B ONeill` / `Mr B ONeill`;
+- 214 jockey relationships retained unresolved;
+- two direct jockey label mappings to `JOCKEY-PROVISIONAL-0001`;
 - 26 bounded provisional trainer transitions covering 52 labels and 6,350 rows;
 - 936 owner token-multiset candidate groups;
 - 41 same-race-supported provisional ownership compositions covering 95 labels and 9,788 rows;
@@ -64,16 +67,22 @@ Governed outcomes:
 
 The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22, so no separate Notebook 23 is required.
 
-Focused validation on 4 August 2026:
+Focused test evidence on 4 August 2026:
 
 ```text
 14 passed in 0.61s
+```
 
+The earlier source-wide validator version passed on 4 August 2026:
+
+```text
 jockeys: 7,917 labels; 212 groups; 216 candidate relationships
 trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
 owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
 participant identity validation: PASS
 ```
+
+The final closeout audit added a direct jockey mapping file and strengthened the validator to enforce exact jockey candidate closure, the one accepted relationship, the one distinct-person decision, all 214 unresolved relationships, decisive external provenance and the exact two-row mapping. One fresh local PASS from that strengthened validator remains required before Notebook 22 returns to fully closed status.
 
 ## End-of-source-field-series validation
 
@@ -100,7 +109,7 @@ preserve: 2
 
 All 37 source fields require raw preservation and match the SQLite names, order and declared types.
 
-Notebook 22 was subsequently closed through focused tests and its independent source-wide validator. The next full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
+A new full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
 
 ## Durable project controls
 
@@ -115,9 +124,9 @@ See:
 
 ## Next bounded action
 
-Before physical database construction, complete the mandatory Notebook 19 authority-response gate.
+Run `python scripts/validate_participant_identity.py` once against the immutable local source and record the strengthened validator PASS.
 
-Once that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
+After that validation gate, complete the mandatory Notebook 19 authority-response gate. Once both gates are recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
 
 ## Working method
 
