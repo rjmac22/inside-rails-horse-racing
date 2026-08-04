@@ -2,9 +2,9 @@
 
 ## Status
 
-**Fully closed on 4 August 2026.**
+**Implementation complete; final strengthened-validator run pending.**
 
-The analytical investigation, governed outputs, reusable implementation, focused tests, independent source-wide validation, integration documentation and project-status reconciliation are complete.
+The analytical investigation, governed outputs, reusable implementation, focused tests, integration documentation and project-status reconciliation are complete. A closeout audit on 4 August 2026 found that the jockey review queue was persisted but the accepted same-person decision lacked a directly usable mapping file, and the validator checked only the queue row count rather than exact decision closure. Both defects have been repaired. Notebook 22 returns to fully closed status when the strengthened source-wide validator passes locally against the immutable source.
 
 ## Bounded question
 
@@ -36,6 +36,7 @@ Because the archival notebook is not the repeatable execution path, it is not re
 
 - `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`
 - `data/processed/jockey_identity/verification_batches/jockey_strict_verification_batch_01.csv`
+- `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv`
 
 ### Trainer
 
@@ -53,7 +54,7 @@ Because the archival notebook is not the repeatable execution path, it is not re
 - `data/processed/owner_identity/owner_unresolved_token_multiset_candidates.csv`
 - `data/processed/owner_identity/owner_identity_governance_summary.csv`
 
-All 12 governed outputs were committed in `d60ac32`.
+The original 12 governed outputs were committed in `d60ac32`. The direct two-row jockey mapping was added during the final closeout audit in `20296cd`.
 
 ## Reusable implementation
 
@@ -77,9 +78,9 @@ Local evidence on 4 August 2026:
 
 - `scripts/validate_participant_identity.py`
 
-The validator opens the immutable SQLite source read-only, applies `rowid <> 1`, reconstructs the source-wide jockey, trainer and owner populations, checks the exact accepted and unresolved baselines, and validates the governed CSV row counts.
+The validator opens the immutable SQLite source read-only, applies `rowid <> 1`, reconstructs the source-wide jockey, trainer and owner populations, checks the accepted and unresolved baselines, and validates the governed CSV row counts.
 
-Local evidence on 4 August 2026:
+The earlier version passed locally on 4 August 2026:
 
 ```text
 jockeys: 7,917 labels; 212 groups; 216 candidate relationships
@@ -88,11 +89,21 @@ owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved gro
 participant identity validation: PASS
 ```
 
+The closeout audit strengthened the jockey section so it now also validates:
+
+- exact closure over all 216 source candidate relationships;
+- exactly one accepted same-person relationship, one confirmed distinct-person relationship and 214 unresolved relationships;
+- the full governed fields and external provenance for `JOCKEY-STRICT-0001` and `JOCKEY-STRICT-0002`;
+- unresolved preservation actions and deferred-review status;
+- the exact two-row direct jockey mapping.
+
+A fresh local execution of the strengthened validator is the remaining closure gate.
+
 ## Database integration
 
 - `docs/PARTICIPANT_IDENTITY_INTEGRATION.md`
 
-The integration contract preserves raw labels, separates provisional identities from candidates, prohibits unsupported cross-role merging and defines cardinality and update controls.
+The integration contract preserves raw labels, separates provisional identities from candidates, prohibits unsupported cross-role merging and defines cardinality and update controls. It now identifies the direct jockey mapping as a governed input alongside the trainer and owner mappings.
 
 ## Manual and external verification
 
@@ -100,8 +111,8 @@ The integration contract preserves raw labels, separates provisional identities 
 
 Two decisive jockey candidate decisions were externally verified, with their provenance preserved in `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`:
 
-- `JOCKEY-STRICT-0001`: `Miss B ONeill` and `Mr B ONeill` were confirmed as different people using the source same-race collision and a published result for the collision race, accessed on 3 August 2026;
-- `JOCKEY-STRICT-0002`: `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional source-label identity using a published participant profile, accessed on 3 August 2026.
+- `JOCKEY-STRICT-0001`: `Miss B ONeill` and `Mr B ONeill` were confirmed as different people using the source same-race collision and a published result, accessed on 4 August 2026;
+- `JOCKEY-STRICT-0002`: `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional source-label identity using a France Galop governing-body profile and a published jockey profile, accessed on 4 August 2026.
 
 The governed candidate queue records the candidate IDs, evidence types and locators, access dates, confidence, review notes and database actions. It is the specific verification register for these participant decisions, so duplicating the records in `data/reference/manual_verifications.csv` is unnecessary.
 
@@ -123,15 +134,15 @@ No source field changes status in the source-field governance register. Jockey, 
 
 The owner-identity and ownership-structure work originally scheduled as Notebook 23 was completed inside the consolidated Notebook 22 archival investigation. A separate Notebook 23 is therefore not required for this programme.
 
-## Completion evidence
+## Remaining closure evidence
 
-Notebook 22 is fully closed because:
+Notebook 22 has:
 
-1. all listed governed CSV outputs are committed;
-2. focused unit tests passed;
-3. the independent validator passed over the immutable 1,851,285-row source population;
-4. exact results are recorded here and in the audit register;
-5. README and project plan status are reconciled;
-6. raw labels, lineage and unresolved candidates remain preserved.
+1. all 13 governed CSV outputs committed;
+2. focused unit-test evidence;
+3. reusable implementation and integration documentation;
+4. exact analytical results recorded here and in the audit register;
+5. README and project plan reconciliation;
+6. raw labels, lineage and unresolved candidates preserved.
 
-The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate, in accordance with the project procedure.
+The only remaining item is a fresh local PASS from the strengthened `scripts/validate_participant_identity.py`. The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate, in accordance with the project procedure.
