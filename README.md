@@ -46,17 +46,46 @@ Notebook 21 baselines:
 - 1,510,653 substantive-text rows;
 - 0 SQL nulls.
 
-## End-of-series validation
+### Participant identity programme — consolidated Notebook 22
 
-Final local validation on 4 August 2026:
+**Status: fully closed on 4 August 2026.**
+
+Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
+
+Governed outcomes:
+
+- 7,917 jockey labels;
+- 212 jockey candidate groups and 216 candidate relationships;
+- one confirmed provisional jockey label identity: `Mlle Marie Velon` / `Mme Marie Velon`;
+- 26 bounded provisional trainer transitions covering 52 labels and 6,350 rows;
+- 936 owner token-multiset candidate groups;
+- 41 same-race-supported provisional ownership compositions covering 95 labels and 9,788 rows;
+- 895 owner groups retained unresolved.
+
+The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22, so no separate Notebook 23 is required.
+
+Focused validation on 4 August 2026:
+
+```text
+14 passed in 0.61s
+
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships
+trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
+owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
+participant identity validation: PASS
+```
+
+## End-of-source-field-series validation
+
+Final local validation after Notebook 21 on 4 August 2026:
 
 ```text
 256 passed in 0.96s
 ```
 
-All 26 discovered `scripts/validate_*.py` validators passed, including complete source-wide checks over the immutable 1,851,285-row population.
+All 26 then-discovered `scripts/validate_*.py` validators passed, including complete source-wide checks over the immutable 1,851,285-row population.
 
-The final sweep found and repaired two integration defects:
+The sweep found and repaired two integration defects:
 
 - a sub-minor-unit Great Britain prize value fell through to `currency_unresolved` instead of `invalid`;
 - the source-field loader did not yet allow the explicit later-notebook pending-validation status.
@@ -71,6 +100,8 @@ preserve: 2
 
 All 37 source fields require raw preservation and match the SQLite names, order and declared types.
 
+Notebook 22 was subsequently closed through focused tests and its independent source-wide validator. The next full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
+
 ## Durable project controls
 
 See:
@@ -78,18 +109,15 @@ See:
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
 - `docs/PROJECT_PLAN.md`;
-- `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`.
+- `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
+- `docs/NOTEBOOK_22_CLOSEOUT.md`;
+- `docs/PARTICIPANT_IDENTITY_INTEGRATION.md`.
 
 ## Next bounded action
 
 Before physical database construction, complete the mandatory Notebook 19 authority-response gate.
 
-The next analytical programme is participant identity:
-
-1. Notebook 22 — jockey and trainer identity;
-2. Notebook 23 — owner identity and ownership structures.
-
-Physical participant schema design and participant-level retrospective analysis remain blocked until those identity studies are complete.
+Once that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
 
 ## Working method
 
