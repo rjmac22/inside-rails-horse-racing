@@ -44,19 +44,27 @@ All jockey, trainer and owner blanks had already been governed by Notebook 20. R
 
 Future notebooks must check existing governed references before initiating new manual research.
 
-## 8. Repository paths must be checked before use
+## 8. Targeted external verification should resolve material decisions
+
+Source-internal evidence was sufficient for the bounded trainer and owner rules, but the two decisive jockey cases benefited from targeted published evidence.
+
+The Marie Velon participant profile supported a same-person source-label decision, while the published B O'Neill collision-race result supported a distinct-person decision. Both records retained candidate IDs, evidence locators, access dates, evidence types, confidence and database actions in the governed jockey review queue.
+
+Future external research should be narrow, decision-specific and permanently attached to the governed candidate record rather than used as undocumented background knowledge.
+
+## 9. Repository paths must be checked before use
 
 An early attempt reconstructed the manual-verification location from memory and was wrong. The documented permanent register is `data/reference/manual_verifications.csv`.
 
 Future work must read repository documentation and existing code before proposing paths, helper functions or closeout steps.
 
-## 9. Closure route must be chosen from the procedure
+## 10. Closure route must be chosen from the procedure
 
 A fresh-kernel rerun was initially proposed automatically. The wrap-up procedure allows an archival construction-record route where the notebook preserves reasoning and durable implementation lives outside it.
 
-Future closeout work must choose the executable or archival route explicitly rather than assuming rerun safety is always required.
+Future closeout work must choose the executable or archival route explicitly rather than assuming rerun safety is always required. An archival notebook does not require notebook-level rerun or save-and-reload proof unless it is intentionally being converted into the repeatable execution path.
 
-## 10. One bounded step remains the strongest working method
+## 11. One bounded step remains the strongest working method
 
 The investigation improved when each output determined the next question: title candidates, chronology, bounded rule, persistence, source join and unresolved separation.
 
@@ -64,7 +72,7 @@ Future notebooks should continue to use one conceptual stage at a time and avoid
 
 ## Reusable assets created
 
-Notebook 22 created or requires:
+Notebook 22 created:
 
 - conservative participant-label helper functions;
 - focused unit tests for titles, chronology and owner token order;
@@ -79,6 +87,8 @@ Notebook 22 created or requires:
 - Never treat title removal as a general merge rule.
 - Never treat token sorting as proof.
 - Use source-internal same-race evidence where available.
+- Use targeted external verification where a material decision remains unresolved.
+- Preserve external evidence locators, access dates, confidence and actions in the governed candidate record.
 - Preserve exact raw labels and unresolved candidates.
 - Store the scope of identity established in the identity type itself.
 - Read the repository procedure and existing references before proposing closeout actions.
