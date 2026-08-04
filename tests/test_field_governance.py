@@ -43,14 +43,38 @@ def test_notebook_10_groups_are_retained() -> None:
     }.issubset(groups)
 
 
-def test_later_closed_fields_are_reconciled() -> None:
-    assert FIELD_GOVERNANCE_BY_NAME["prize"].status == "closed"
-    assert FIELD_GOVERNANCE_BY_NAME["prize"].governing_notebook == "13"
-    assert FIELD_GOVERNANCE_BY_NAME["ran"].status == "closed"
-    assert FIELD_GOVERNANCE_BY_NAME["ran"].governing_notebook == "14"
-    assert FIELD_GOVERNANCE_BY_NAME["num"].status == "closed"
-    assert FIELD_GOVERNANCE_BY_NAME["num"].governing_notebook == "14"
-    assert FIELD_GOVERNANCE_BY_NAME["off"].governing_notebook == "11"
+def test_completed_source_field_series_is_reconciled() -> None:
+    assert {row.status for row in FIELD_GOVERNANCE} == {
+        "closed",
+        "preserve",
+        "implemented_with_governed_anomaly",
+    }
+    assert sum(row.status == "closed" for row in FIELD_GOVERNANCE) == 34
+    assert sum(row.status == "preserve" for row in FIELD_GOVERNANCE) == 2
+    assert sum(
+        row.status == "implemented_with_governed_anomaly"
+        for row in FIELD_GOVERNANCE
+    ) == 1
+
+
+def test_later_notebooks_are_recorded_as_governing_artifacts() -> None:
+    expected = {
+        "off": "11",
+        "prize": "13",
+        "ran": "14",
+        "num": "14",
+        "btn": "15",
+        "class": "16",
+        "age": "17",
+        "or": "18",
+        "horse": "19",
+        "jockey": "20",
+        "comment": "21",
+    }
+    for field, notebook in expected.items():
+        row = FIELD_GOVERNANCE_BY_NAME[field]
+        assert row.governing_notebook == notebook
+        assert row.status == "closed"
 
 
 def test_source_fields_remain_raw_even_when_derived() -> None:
@@ -59,14 +83,25 @@ def test_source_fields_remain_raw_even_when_derived() -> None:
 
     assert FIELD_GOVERNANCE_BY_NAME["ran"].treatment == "governed_semantic_profile"
     assert FIELD_GOVERNANCE_BY_NAME["num"].treatment == "raw_plus_governed_derivation"
+    assert FIELD_GOVERNANCE_BY_NAME["comment"].treatment == "raw_free_text"
 
 
-def test_open_semantic_fields_are_not_falsely_closed() -> None:
-    for field in ("class", "going", "btn", "or", "horse", "jockey", "comment"):
-        assert FIELD_GOVERNANCE_BY_NAME[field].status == "open"
+def test_preserved_fields_are_explicit() -> None:
+    preserved = {
+        row.field for row in FIELD_GOVERNANCE if row.status == "preserve"
+    }
+    assert preserved == {"race_name", "draw"}
+
+
+def test_starting_price_anomaly_remains_explicit() -> None:
+    row = FIELD_GOVERNANCE_BY_NAME["sp"]
+    assert row.status == "implemented_with_governed_anomaly"
+    assert row.governing_notebook == "08/09"
 
 
 def test_comment_is_governed_as_raw_free_text() -> None:
     row = FIELD_GOVERNANCE_BY_NAME["comment"]
     assert row.family == "free_text"
     assert row.treatment == "raw_free_text"
+    assert row.governing_notebook == "21"
+    assert row.status == "closed"
