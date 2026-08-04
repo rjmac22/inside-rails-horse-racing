@@ -1,9 +1,14 @@
+import csv
+from pathlib import Path
+
 from inside_rails.comment_information import (
     PROBABLE_PLACEHOLDERS,
     UNRESOLVED_SOURCE_CODES,
     classify_comment,
     is_comment_analytically_available,
 )
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_empty_string_is_preserved_source_absence() -> None:
@@ -56,3 +61,33 @@ def test_unlisted_short_text_remains_substantive() -> None:
     governed = classify_comment("Led")
     assert governed.comment_state == "substantive_text"
     assert governed.substantive_text == "Led"
+
+
+def test_persisted_notebook_21_outputs_reload_with_expected_baselines() -> None:
+    profile_path = (
+        PROJECT_ROOT
+        / "data"
+        / "processed"
+        / "comment_information"
+        / "comment_source_profile.csv"
+    )
+    decisions_path = (
+        PROJECT_ROOT
+        / "data"
+        / "processed"
+        / "comment_information"
+        / "comment_semantic_decisions.csv"
+    )
+
+    with profile_path.open(newline="", encoding="utf-8") as handle:
+        profile = {row["measure"]: row["value"] for row in csv.DictReader(handle)}
+    with decisions_path.open(newline="", encoding="utf-8") as handle:
+        decisions = tuple(csv.DictReader(handle))
+
+    assert profile["governed_runner_rows"] == "1851285"
+    assert profile["provisional_races"] == "189043"
+    assert profile["empty_string_rows"] == "340394"
+    assert profile["probable_placeholder_or_unresolved_code_rows"] == "238"
+    assert profile["substantive_text_rows"] == "1510653"
+    assert len(decisions) == 11
+    assert {row["status"] for row in decisions} == {"Confirmed", "Required", "Deferred"}
