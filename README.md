@@ -6,7 +6,7 @@ A notebook-led data-engineering, database-design and racing-research project usi
 
 Build a documented, reproducible and professionally structured analytical database from third-party racing data. Source data is preserved unchanged, transformations are tested, and important design decisions are explained in publishable Jupyter notebooks.
 
-The wider purpose is not database construction for its own sake. The project is intended to establish what racing data means, test claims responsibly, preserve uncertainty, create reusable analytical infrastructure and produce readable work.
+The wider purpose is to establish what racing data means, test claims responsibly, preserve uncertainty, create reusable analytical infrastructure and produce readable work.
 
 ## Data source
 
@@ -14,71 +14,30 @@ Kaggle: *Horse Racing Results UK/Ireland 2015–2025* by deltaromeo.
 
 The raw files are excluded from Git because of size, licensing and reproducibility considerations. The supplied `raceform.db` has broader geographical and date coverage than the title suggests, including substantial international racing and records through 27 May 2026.
 
-The source contains:
+The governed source contains:
 
-- 1,851,285 governed runner rows;
+- 1,851,285 runner rows;
 - 189,043 reconstructed provisional races;
 - 37 source columns;
 - no declared primary key, foreign keys, indexes or uniqueness constraints.
 
-The candidate provisional race key is `date + course + off`. The raw SQLite database remains read-only, and source queries use `DATA_ROW_PREDICATE = "rowid <> 1"`.
+The candidate provisional race key is `date + course + off`. The raw SQLite database remains read-only, and source queries use `rowid <> 1`.
 
 ## Current status
 
-### Notebooks 00–16
+### Source-field investigation series — Notebooks 00–21
 
-**Status:** complete and retrospectively implemented or fully closed as recorded in the audit register.
+**Status: fully closed on the retrospective implementation branch.**
 
-These notebooks established source immutability, grain and lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price parsing, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and runner-number governance, beaten-distance semantics, race classification and eligibility, and complete governance of the first 37-field inventory.
+The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
-Notebook 08 retains one deliberate governed source failure: the malformed standalone starting-price value `F` remains unresolved rather than being silently normalised.
+Notebook 08 retains one governed source anomaly: the standalone starting-price value `F` remains unresolved rather than being silently normalised. The source validator passes only when the exact unresolved population remains `{'F': 1}`.
 
-### Notebook 17 — Runner characteristics and equipment
+Notebook 19 retains five deliberately unresolved horse/pedigree transitions pending the mandatory authority-response gate. Notebook 20 retains 18 unresolved connection blanks after 28 confirmed supplementations.
 
-**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
+Notebook 21 established that substantive `comment` values are generally runner-level English-language descriptions of race position and performance, with strong jurisdiction- and feed-dependent coverage differences. Exact raw text remains preserved; `A`, `B` and `V` remain unresolved; no general narrative parser is authorised.
 
-Notebook 17 governed runner age, sex and headgear, including exact verification-backed corrections for two contaminated sex values and source-specific eyecover normalisation.
-
-### Notebook 18 — Ratings semantics and availability
-
-**Status:** fully closed.
-
-Notebook 18 established separate governed meanings for `or`, `rpr` and `ts`, preserved unavailable ratings as null rather than zero, and isolated the exact invalid `rpr = 775` source row without inventing a replacement.
-
-### Notebook 19 — Horse and pedigree identity
-
-**Status:** fully closed as a non-rerunnable archival construction record with durable replacement validation.
-
-Notebook 19 established that raw `horse` is a source label rather than a permanent natural key. The same exact label can refer to different real horses, while one horse can carry inconsistent pedigree assertions.
-
-The source-wide governed result contains:
-
-- 5,573 exact labels with at least one raw populated pedigree contradiction;
-- 368 labels retaining contradiction after reversible dam-suffix treatment;
-- 350 temporally separated contradictory labels;
-- 353 governed transitions;
-- 87 `Corrected` transitions;
-- 261 `Different horse` transitions;
-- 5 `Unresolved` transitions;
-- 611 provisional source-internal horse occurrences.
-
-Before physical database construction, all pending studbook and racing-authority responses must be checked and the affected Notebook 19 governance and outputs regenerated where necessary.
-
-### Notebook 20 — Connections and ownership identity
-
-**Status:** fully closed.
-
-Notebook 20 established that `jockey`, `trainer` and `owner` are source-presented runner-level labels rather than canonical identities for people, partnerships, syndicates, licences or organisations.
-
-Across the governed source population, 46 blank connection-field occurrences affect 44 runner rows. External review produced 28 confirmed source supplementations and 18 deliberately unresolved blanks. Raw connection labels remain atomic text and populated source values can never be overwritten.
-
-### Notebook 21 — Comment and embedded information
-
-**Status:** implemented; focused local validation passed; pending the end-of-series repository sweep.
-
-Notebook 21 established that substantively populated `comment` values are generally runner-level English-language descriptions of race position and performance. The broad meaning is consistent across inspected jurisdictions, but availability is strongly jurisdiction- and feed-dependent.
-
-Governed source baselines are:
+Notebook 21 baselines:
 
 - 340,394 empty-string comments;
 - 1,510,891 populated comments;
@@ -87,29 +46,45 @@ Governed source baselines are:
 - 1,510,653 substantive-text rows;
 - 0 SQL nulls.
 
-Great Britain and Ireland are complete in this source, while several overseas feeds are sparse or selective. The exact raw comment is preserved. Rare values such as `A`, `B` and `V` remain unresolved, and no general narrative or terminal-parenthetical parser is authorised.
+## End-of-series validation
 
-Durable artifacts include conservative reusable classification, focused tests, an independent source-wide validator, persisted source-profile and semantic-decision outputs, database-integration documentation, a reader-facing report, lessons learned and a formal closeout record.
+Final local validation on 4 August 2026:
 
-Focused local validation recorded on 4 August 2026:
+```text
+256 passed in 0.96s
+```
 
-- `tests/test_comment_information.py`: **8 passed**;
-- `scripts/validate_comment_information.py`: **PASS** across 1,851,285 runner rows and 189,043 provisional races.
+All 26 discovered `scripts/validate_*.py` validators passed, including complete source-wide checks over the immutable 1,851,285-row population.
 
-## Retrospective implementation audit
+The final sweep found and repaired two integration defects:
+
+- a sub-minor-unit Great Britain prize value fell through to `currency_unresolved` instead of `invalid`;
+- the source-field loader did not yet allow the explicit later-notebook pending-validation status.
+
+The field-governance registers were then reconciled. Final status totals are:
+
+```text
+closed: 34
+implemented_with_governed_anomaly: 1
+preserve: 2
+```
+
+All 37 source fields require raw preservation and match the SQLite names, order and declared types.
+
+## Durable project controls
 
 See:
 
-- `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`
-- `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
-
-The branch `audit/retrospective-implementation-closeout` remains open through the end-of-series validation sweep and any required cross-notebook repairs.
+- `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
+- `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
+- `docs/PROJECT_PLAN.md`;
+- `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`.
 
 ## Next bounded action
 
-Run the complete repository test suite and all applicable independent validators. Notebook 08's deliberate lone `F` failure must remain documented expected evidence rather than being normalised away.
+Before physical database construction, complete the mandatory Notebook 19 authority-response gate.
 
-After the sweep passes, begin the mandatory participant identity programme:
+The next analytical programme is participant identity:
 
 1. Notebook 22 — jockey and trainer identity;
 2. Notebook 23 — owner identity and ownership structures.
@@ -128,7 +103,7 @@ The project follows an evidence-led investigation-to-implementation cycle:
 6. translate the conclusion into a practical database consequence;
 7. implement the rule reversibly while retaining raw values and lineage;
 8. extract stable reusable logic into `src/inside_rails/`;
-9. add focused tests and independent validation where justified;
+9. add focused tests and independent validation;
 10. produce the report and lessons learned;
 11. update the audit register, field governance, README and project plan;
 12. commit and verify the complete closeout.
@@ -136,11 +111,3 @@ The project follows an evidence-led investigation-to-implementation cycle:
 The stopping rule is:
 
 > Investigate until a defensible rule can be stated, its known exceptions identified, unresolved cases preserved without information loss, and a validation implemented that will detect failure.
-
-See:
-
-- `docs/REPORT_00_PROJECT_SCOPE_AND_METHODOLOGY.md`
-- `docs/REUSABLE_CODE_ARCHITECTURE.md`
-- `docs/PROJECT_PLAN.md`
-- `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`
-- `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`
