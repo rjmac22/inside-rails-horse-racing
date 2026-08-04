@@ -2,9 +2,9 @@
 
 ## Status
 
-**Implementation pending local validation and governed-output commit.**
+**Fully closed on 4 August 2026.**
 
-The analytical investigation is complete. Durable implementation, tests, validator and documentation have been added to the branch. The notebook-generated governed CSV outputs must be committed and the focused checks must pass before the notebook can be marked fully closed.
+The analytical investigation, governed outputs, reusable implementation, focused tests, independent source-wide validation, integration documentation and project-status reconciliation are complete.
 
 ## Bounded question
 
@@ -51,6 +51,8 @@ Its executed outputs preserve the investigation, evidence and decisions. Durable
 - `data/processed/owner_identity/owner_unresolved_token_multiset_candidates.csv`
 - `data/processed/owner_identity/owner_identity_governance_summary.csv`
 
+All 12 governed outputs were committed in `d60ac32`.
+
 ## Reusable implementation
 
 - `src/inside_rails/participant_identity.py`
@@ -63,11 +65,26 @@ The module contains strict title separation, bounded trainer transition logic, e
 
 The tests cover recognised and unknown titles, blanks, duplicate owner tokens, missing members, genuine token reordering, trainer date boundaries, overlap rejection and same-race evidence scope.
 
+Local evidence on 4 August 2026:
+
+```text
+14 passed in 0.61s
+```
+
 ## Independent validation
 
 - `scripts/validate_participant_identity.py`
 
 The validator opens the immutable SQLite source read-only, applies `rowid <> 1`, reconstructs the source-wide jockey, trainer and owner populations, checks the exact accepted and unresolved baselines, and validates the governed CSV row counts.
+
+Local evidence on 4 August 2026:
+
+```text
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships
+trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
+owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
+participant identity validation: PASS
+```
 
 ## Database integration
 
@@ -93,24 +110,19 @@ Notebook 22 did not add new external claims. Blank jockey, trainer and owner fie
 
 No source field changes status in the source-field governance register. Jockey, trainer and owner raw-field semantics and blank governance were already closed through Notebook 20. Notebook 22 adds a separate participant identity layer rather than changing raw-field interpretation.
 
-## Required local validation
+## Programme reconciliation
 
-Run only the focused checks at this stage:
+The owner-identity and ownership-structure work originally scheduled as Notebook 23 was completed inside the consolidated Notebook 22 archival investigation. A separate Notebook 23 is therefore not required for this programme.
 
-```text
-pytest -q tests/test_participant_identity.py
-python scripts/validate_participant_identity.py
-```
+## Completion evidence
 
-The complete repository test suite and all-validator sweep remain deferred until the end of the participant identity series or repair branch, in accordance with the project procedure.
-
-## Completion gate
-
-Notebook 22 may be marked fully closed only after:
+Notebook 22 is fully closed because:
 
 1. all listed governed CSV outputs are committed;
-2. focused unit tests pass;
-3. the independent validator passes;
+2. focused unit tests passed;
+3. the independent validator passed over the immutable 1,851,285-row source population;
 4. exact results are recorded here and in the audit register;
-5. README and project plan status updates are reconciled;
-6. the branch is synchronized and clean.
+5. README and project plan status are reconciled;
+6. raw labels, lineage and unresolved candidates remain preserved.
+
+The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate, in accordance with the project procedure.
