@@ -48,7 +48,7 @@ Notebook 21 baselines:
 
 ### Participant identity programme — consolidated Notebook 22
 
-**Status: implementation complete; final strengthened-validator run pending.**
+**Status: fully closed on 4 August 2026.**
 
 Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
 
@@ -73,16 +73,16 @@ Focused test evidence on 4 August 2026:
 14 passed in 0.61s
 ```
 
-The earlier source-wide validator version passed on 4 August 2026:
+Final strengthened source-wide validator evidence on 4 August 2026:
 
 ```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
 trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
 owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
 participant identity validation: PASS
 ```
 
-The final closeout audit added a direct jockey mapping file and strengthened the validator to enforce exact jockey candidate closure, the one accepted relationship, the one distinct-person decision, all 214 unresolved relationships, decisive external provenance and the exact two-row mapping. One fresh local PASS from that strengthened validator remains required before Notebook 22 returns to fully closed status.
+The final closeout audit added the direct jockey mapping and strengthened the validator to enforce exact candidate closure, decisive external provenance, unresolved preservation and the exact two-row accepted mapping.
 
 ## End-of-source-field-series validation
 
@@ -124,9 +124,9 @@ See:
 
 ## Next bounded action
 
-Run `python scripts/validate_participant_identity.py` once against the immutable local source and record the strengthened validator PASS.
+Complete the mandatory Notebook 19 authority-response gate.
 
-After that validation gate, complete the mandatory Notebook 19 authority-response gate. Once both gates are recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
+Once that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
 
 ## Working method
 
