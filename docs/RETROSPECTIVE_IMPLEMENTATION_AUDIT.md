@@ -2,82 +2,51 @@
 
 ## Purpose
 
-This register audits completed notebook investigations against the project closeout standard. Analytical completion is not treated as implementation completion.
+This register audits completed notebook investigations against `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`. Analytical completion is not treated as implementation completion.
 
-The permanent standard is recorded in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
-
-A notebook is fully closed only when, as applicable:
-
-1. it runs from a fresh kernel, or is explicitly archived with durable replacement validation;
-2. conclusions and limitations are recorded;
-3. reusable transformation logic or governed reference data is extracted;
-4. tests cover governed rules and edge cases;
-5. an independent validator exists where appropriate;
-6. the database consequence and update path are documented;
-7. local test and validator results are recorded.
-
-This audit covers committed repository artifacts. Local uncommitted files are outside its evidence base.
+A notebook is fully closed only when its conclusion, reproducibility or archival classification, persisted outputs, reusable implementation, focused tests, independent validation, database consequence, manual-verification decision, report, lessons and project-status updates are complete.
 
 ## Classification register
 
-| Notebook | Investigation | Required durable artifact | Audit classification | Evidence and principal gap |
-|---|---|---|---|---|
-| 00 | Project scope and methodology | No reusable field transformation required | **No reusable artifact required** | Methodology and closeout rules belong in durable documentation rather than a parser. |
-| 01 | Source database structure profile | Reusable source-access/profile module | **Fully closed on this audit branch** | Existing module and validator supplemented by governed tests and integration documentation; local tests passed. |
-| 02 | Source field quality profile | Reusable field inventory, sentinel policy and lineage specification | **Fully closed on this audit branch** | Governed 37-field reference, loader, tests, validator and integration documentation exist; local tests and source-wide validation passed. |
-| 03 | Race identity and source-key reconstruction | Reusable race/runner identity transformation and reconciliation validator | **Fully closed on this audit branch** | Identity module, tests, source-wide reconciliation validator and database integration documentation passed locally. |
-| 04 | Course jurisdiction and surface mapping | Reconciled jurisdiction ownership plus bounded surface transformation | **Fully closed on this audit branch** | Reconciliation document, surface module, tests and independent source validation passed locally. |
-| 05 | Finishing positions and non-finish outcomes | Reusable result/outcome parser and governed representation categories | **Fully closed on this audit branch** | Result parser, tests, complete source partition validator and database integration documentation passed locally. |
-| 06 | Race distance parsing | Reusable transformation module | **Fully closed on this audit branch** | Parser, tests, validator and database integration documentation passed locally. |
-| 07 | Carried weight parsing | Reusable transformation module | **Fully closed on this audit branch** | Parser, tests, validator and database integration documentation passed locally. |
-| 08 | Starting price parsing | Reusable arithmetic parser plus separate contextual market metadata | **Implemented with deliberate governed validator failure** | Parser and tests pass. Source validator deliberately fails on the exact known unresolved source anomaly `{'F': 1}`. |
-| 09 | Jurisdiction, authority and betting-market context | Governed jurisdiction/context reference and loader | **Fully closed on this audit branch** | Tests and bounded-context source validation passed. |
-| 10 | Remaining source-field inventory and triage | Reusable field-governance register | **Fully closed on this audit branch** | Tests and immutable-source schema validation passed. |
-| 11 | Off-time and temporal semantics | Reusable clock parser/time reconstruction module | **Fully closed on this audit branch** | Tests and immutable-source clock validation passed. |
-| 12 | Course location and timezone mapping | Governed reference data, loader and validator | **Fully closed on this audit branch** | Permanent-reference validation confirmed complete governed timezone coverage. |
-| 13 | Prize-money semantics and availability | Reusable transformation module | **Fully closed** | Module, tests, independent validator and database integration document establish the model closeout pattern. |
-| 14 | Runner counts, numbers and entries | Reusable `ran` profile and `num` interpretation module | **Fully closed on this audit branch** | Module, tests, independent validators, source-wide validation and integration documentation passed locally. |
-| 15 | Beaten-distance semantics | Reusable conservative parser and structural review flags | **Fully closed on this audit branch** | Fresh-kernel notebook run passed; persisted decisions and manual-verification provenance exist. The reusable module, focused tests, independent source validator, integration contract, field governance, Minto report and lessons learned are committed. |
-| 16 | Race classification and eligibility | Reusable structural parsers with unresolved-state preservation | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed; persisted decisions, focused tests, classification validator and manual-verification validator passed. |
-| 17 | Runner characteristics and equipment | Governed age/sex/headgear interpretation with exact anomaly lineage | **Fully closed on this audit branch** | Notebook is explicitly archived as non-rerunnable. Persisted outputs, reusable module, focused tests, independent source validation, integration document, report, lessons and committed manual-verification provenance passed closure. |
-| 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, focused tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. |
-| 19 | Horse and pedigree identity | Governed pedigree reconciliation and provisional horse-occurrence identity | **Fully closed on this audit branch** | Explicit archival classification, specialist governance, reusable implementation, focused tests, manual-verification validation, independent source-wide validator, database integration documentation and persisted/reloaded outputs are committed. Five authority-dependent cases remain governed as unresolved rather than blocking closure. |
-| 20 | Connections and ownership identity | Governed blank-field supplementation without unsupported entity resolution | **Fully closed on this audit branch** | Notebook conclusions, 46 permanent verification records, 28 governed repair rows, reusable implementation, focused tests, manual-register validation, independent source-wide validation, integration documentation and closeout record are committed. Eighteen blanks remain deliberately unresolved. |
-| 21 | Comment and embedded information | Conservative raw-text state governance without speculative parsing | **Implemented; focused validation passed; pending end-of-series sweep** | Executed notebook, persisted source profile and decisions, reusable classifier, focused tests, independent validator, integration contract, report, lessons and closeout record are committed. Focused tests passed 8/8 and the source-wide validator passed. Only the branch-level repository sweep remains. |
+| Notebook | Investigation | Audit classification | Principal evidence or retained limit |
+|---|---|---|---|
+| 00 | Project scope and methodology | **No reusable artifact required** | Durable methodology and closure rules are documented. |
+| 01 | Source database structure profile | **Fully closed** | Reusable profile module, tests, validator and integration documentation. |
+| 02 | Source field quality profile | **Fully closed** | Governed 37-field reference, loader, tests, validator and lineage policy. |
+| 03 | Race identity and source-key reconstruction | **Fully closed** | Reusable identity profiling, tests and source-wide reconciliation. |
+| 04 | Course jurisdiction and surface mapping | **Fully closed** | Reconciled jurisdiction and bounded surface governance. |
+| 05 | Finishing positions and non-finish outcomes | **Fully closed** | Complete governed result partition. |
+| 06 | Race distance parsing | **Fully closed** | Parser, tests, validator and integration contract. |
+| 07 | Carried weight parsing | **Fully closed** | Parser, tests, validator and integration contract. |
+| 08 | Starting price parsing | **Fully closed with governed anomaly** | The lone raw `F` remains preserved as unresolved; the validator passes only when the exact anomaly remains `{'F': 1}`. |
+| 09 | Jurisdiction, authority and betting-market context | **Fully closed** | Governed bounded context and source validation. |
+| 10 | Remaining source-field inventory and triage | **Fully closed** | Field-governance register and immutable-source schema validation. |
+| 11 | Off-time and temporal semantics | **Fully closed** | Clock parsing and temporal helper validation. |
+| 12 | Course location and timezone mapping | **Fully closed** | Complete 395-identity timezone reference and source join. |
+| 13 | Prize-money semantics and availability | **Fully closed** | Reusable governed parser, tests and validator; minor-unit fall-through defect repaired during final sweep. |
+| 14 | Runner counts, numbers and entries | **Fully closed** | Reusable interpretation and source-wide validation. |
+| 15 | Beaten-distance semantics | **Fully closed** | Conservative parsing, structural flags and independent validation. |
+| 16 | Race classification and eligibility | **Fully closed** | Structural parsers, unresolved preservation and source-wide validation. |
+| 17 | Runner characteristics and equipment | **Fully closed — archival route** | Persisted outputs, reusable implementation, manual evidence and source validation. |
+| 18 | Ratings semantics and availability | **Fully closed** | Exact unavailable and invalid-value governance across `or`, `rpr` and `ts`. |
+| 19 | Horse and pedigree identity | **Fully closed — archival route** | 353 governed transitions and 611 provisional occurrences; five cases remain deliberately unresolved pending authority responses. |
+| 20 | Connections and ownership identity | **Fully closed** | 46 permanent verifications, 28 supplementations and 18 preserved unresolved blanks. |
+| 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, focused tests, independent validator, integration contract, report, lessons and successful branch-wide sweep. |
 
-## Notebook 19 closure evidence
+## Notebook 21 evidence
 
-Durable artifacts:
+Established baselines:
 
-- `notebooks/19_horse_and_pedigree_identity.ipynb`;
-- `data/reference/horse_pedigree_identity_governance.csv`;
-- Notebook 19 records in `data/reference/manual_verifications.csv`;
-- `src/inside_rails/horse_pedigree_identity.py`;
-- `src/inside_rails/horse_pedigree_identity_counts.py`;
-- focused tests in `tests/test_horse_pedigree_identity.py` and `tests/test_horse_pedigree_identity_counts.py`;
-- `scripts/validate_horse_pedigree_identity.py`;
-- `docs/HORSE_PEDIGREE_IDENTITY_INTEGRATION.md`;
-- `docs/NOTEBOOK_19_CLOSEOUT.md`;
-- persisted outputs under `data/processed/horse_pedigree_identity/`.
+- governed runner rows: **1,851,285**;
+- provisional races: **189,043**;
+- SQL null comments: **0**;
+- empty-string comments: **340,394**;
+- probable-placeholder or unresolved-code rows: **238**;
+- substantive-text rows: **1,510,653**;
+- candidate jurisdictions: **36**;
+- unresolved candidate-jurisdiction races: **0**.
 
-Recorded validation evidence includes 353 governed transitions partitioned into 87 `Corrected`, 261 `Different horse` and 5 `Unresolved`, plus 611 provisional source-internal horse occurrences. The five unresolved cases remain subject to the mandatory pre-database authority-response gate recorded in `docs/PROJECT_PLAN.md`.
-
-## Notebook 20 closure evidence
-
-Durable artifacts:
-
-- `notebooks/20_connections_and_ownership_identity.ipynb`;
-- Notebook 20 records in `data/reference/manual_verifications.csv`;
-- `data/reference/connection_identity_repairs.csv`;
-- `src/inside_rails/connection_identity.py`;
-- `tests/test_connection_identity.py`;
-- `scripts/validate_connection_identity.py`;
-- `docs/CONNECTION_IDENTITY_INTEGRATION.md`;
-- `docs/NOTEBOOK_20_CLOSEOUT.md`.
-
-Recorded validation evidence: 46 raw blank field occurrences across 44 source rows, 28 confirmed source supplementations and 18 unresolved preserved blanks. Raw connection labels remain source-presented text rather than canonical person or organisation identifiers.
-
-## Notebook 21 implementation evidence
+Manual-verification decision: `not_applicable`.
 
 Durable artifacts:
 
@@ -92,30 +61,45 @@ Durable artifacts:
 - `docs/NOTEBOOK_21_LESSONS_LEARNED.md`;
 - `docs/NOTEBOOK_21_CLOSEOUT.md`.
 
-Established baselines:
-
-- governed runner rows: **1,851,285**;
-- provisional races: **189,043**;
-- SQL null comments: **0**;
-- empty-string comments: **340,394**;
-- probable-placeholder or unresolved-code rows: **238**;
-- substantive-text rows: **1,510,653**;
-- candidate jurisdictions: **36**;
-- unresolved candidate-jurisdiction races: **0**.
-
-Manual-verification decision: `not_applicable`. Final conclusions depend on source-internal evidence; the informal equipment-code hypothesis was not accepted as validation and was not supported by source testing.
-
-Focused validation recorded on 4 August 2026:
+Focused validation on 4 August 2026:
 
 - `pytest -q tests/test_comment_information.py`: **8 passed in 0.46s**;
-- `python scripts/validate_comment_information.py`: **PASS**;
-- validated partition: 340,394 empty rows, 238 placeholder/code rows and 1,510,653 substantive rows across 1,851,285 governed runner rows;
-- provisional race count: 189,043.
+- `python scripts/validate_comment_information.py`: **PASS**.
+
+## End-of-series validation evidence
+
+The first complete repository test run found two genuine integration defects:
+
+1. a sub-minor-unit Great Britain prize value was incorrectly relabelled `currency_unresolved` after failing canonicalisation;
+2. the source-field loader did not permit the explicit later-notebook status `implemented_pending_validation`.
+
+Both were repaired and tested. The governance registers were then reconciled so completed source-field studies no longer remained falsely open or pending.
+
+Final local evidence on 4 August 2026:
+
+```text
+256 passed in 0.96s
+```
+
+All 26 discovered independent validator scripts passed. This included the complete immutable-source validators and confirmation that Notebook 08's lone `F` anomaly remained exactly preserved.
+
+Final field-governance totals:
+
+```text
+closed: 34
+implemented_with_governed_anomaly: 1
+preserve: 2
+```
+
+The source-field governance reference contains all 37 fields, requires raw preservation for all 37, and matches the SQLite field names, order and declared types.
 
 ## Current position
 
-The analytical source-field series is complete through Notebook 21. Notebook 21 has passed its focused local validation and remains pending only the end-of-series repository-wide test and validator sweep.
+The retrospective source-field implementation and repair branch is analytically and technically complete through Notebook 21.
 
-The next branch-level action is the complete repository test suite and all-validator sweep, followed by repair of any cross-notebook integration defects. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
+The remaining operational step is to verify a clean synchronized local branch after pulling these final documentation commits.
 
-After the sweep, complete the mandatory authority-response gate and begin the participant identity studies before physical participant schema design or participant-level analysis.
+Before physical database construction, complete the Notebook 19 authority-response gate. The next bounded analytical programme is:
+
+1. Notebook 22 — jockey and trainer identity;
+2. Notebook 23 — owner identity and ownership structures.
