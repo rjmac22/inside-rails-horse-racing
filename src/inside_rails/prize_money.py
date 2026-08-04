@@ -96,6 +96,21 @@ def _to_exact_minor_units(amount: Decimal) -> int | None:
     return int(quantized * 100)
 
 
+def _invalid_result(raw_prize: Any, amount: Decimal | None = None) -> dict[str, Any]:
+    """Return a governed invalid result without discarding the parsed amount."""
+
+    return PrizeMoneyResult(
+        prize_raw=raw_prize,
+        prize_source_presented_amount=amount,
+        prize_canonical_minor_units=None,
+        prize_currency=None,
+        prize_interpretation_status="invalid",
+        prize_interpretation_method="unrecognised_source_value",
+        prize_conversion_multiplier=None,
+        prize_confidence="unresolved",
+    ).as_dict()
+
+
 def parse_prize_money(raw_prize: Any, candidate_jurisdiction: str | None) -> dict[str, Any]:
     """Interpret one raw runner-level prize value under Notebook 13 policy.
 
@@ -121,32 +136,34 @@ def parse_prize_money(raw_prize: Any, candidate_jurisdiction: str | None) -> dic
     if jurisdiction in GB_JURISDICTIONS:
         amount = _decimal_from_numeric(raw_prize)
         minor_units = _to_exact_minor_units(amount) if amount is not None else None
-        if minor_units is not None:
-            return PrizeMoneyResult(
-                prize_raw=raw_prize,
-                prize_source_presented_amount=amount,
-                prize_canonical_minor_units=minor_units,
-                prize_currency="GBP",
-                prize_interpretation_status="canonical",
-                prize_interpretation_method="direct_gb_numeric_gbp",
-                prize_conversion_multiplier=None,
-                prize_confidence="confirmed",
-            ).as_dict()
+        if minor_units is None:
+            return _invalid_result(raw_prize, amount)
+        return PrizeMoneyResult(
+            prize_raw=raw_prize,
+            prize_source_presented_amount=amount,
+            prize_canonical_minor_units=minor_units,
+            prize_currency="GBP",
+            prize_interpretation_status="canonical",
+            prize_interpretation_method="direct_gb_numeric_gbp",
+            prize_conversion_multiplier=None,
+            prize_confidence="confirmed",
+        ).as_dict()
 
     if jurisdiction in IRELAND_JURISDICTIONS:
         amount = _decimal_from_euro_text(raw_prize)
         minor_units = _to_exact_minor_units(amount) if amount is not None else None
-        if minor_units is not None:
-            return PrizeMoneyResult(
-                prize_raw=raw_prize,
-                prize_source_presented_amount=amount,
-                prize_canonical_minor_units=minor_units,
-                prize_currency="EUR",
-                prize_interpretation_status="canonical",
-                prize_interpretation_method="direct_ireland_euro_text",
-                prize_conversion_multiplier=None,
-                prize_confidence="confirmed",
-            ).as_dict()
+        if minor_units is None:
+            return _invalid_result(raw_prize, amount)
+        return PrizeMoneyResult(
+            prize_raw=raw_prize,
+            prize_source_presented_amount=amount,
+            prize_canonical_minor_units=minor_units,
+            prize_currency="EUR",
+            prize_interpretation_status="canonical",
+            prize_interpretation_method="direct_ireland_euro_text",
+            prize_conversion_multiplier=None,
+            prize_confidence="confirmed",
+        ).as_dict()
 
     source_amount = _decimal_from_numeric(raw_prize)
     if source_amount is None:
