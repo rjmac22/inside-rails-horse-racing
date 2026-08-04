@@ -80,7 +80,7 @@ Recorded closeout result: 46 raw blank field occurrences, 28 confirmed supplemen
 
 ### Notebook 21 — Comment and embedded information
 
-**Status:** implemented pending focused local validation and the end-of-series repository sweep.
+**Status:** implemented; focused local validation passed; pending the end-of-series repository sweep.
 
 Notebook 21 established that substantive comments are generally runner-level English-language descriptions of race position and performance. The broad meaning is consistent across inspected jurisdictions, but availability is strongly jurisdiction- and feed-dependent.
 
@@ -104,6 +104,11 @@ Recorded baselines:
 
 Durable implementation, focused tests, an independent source validator, persisted outputs, integration documentation, report, lessons and closeout record are committed.
 
+Focused validation recorded on 4 August 2026:
+
+- `pytest -q tests/test_comment_information.py`: **8 passed in 0.46s**;
+- `python scripts/validate_comment_information.py`: **PASS** across 1,851,285 governed runner rows and 189,043 provisional races.
+
 ## Source-field series position
 
 The bounded source-field investigation series is analytically complete through Notebook 21.
@@ -112,16 +117,14 @@ The immediate work is no longer another source-field notebook. It is the end-of-
 
 ## Current next action — End-of-series validation sweep
 
-1. run Notebook 21 focused tests;
-2. run `scripts/validate_comment_information.py`;
-3. record exact results in `docs/NOTEBOOK_21_CLOSEOUT.md`;
-4. run the complete repository test suite;
-5. run every applicable independent validator;
-6. preserve Notebook 08's lone governed `F` failure as expected evidence;
-7. repair any cross-notebook integration defects;
-8. reconcile README, project plan, audit, field governance, closeout records and lessons learned;
-9. verify a clean local tree and synchronized remote branch;
-10. mark Notebook 21 fully closed only after the recorded sweep passes.
+1. run the complete repository test suite;
+2. run every applicable independent validator;
+3. preserve Notebook 08's lone governed `F` failure as expected evidence;
+4. repair any cross-notebook integration defects;
+5. reconcile README, project plan, audit, field governance, closeout records and lessons learned;
+6. record exact branch-level validation evidence;
+7. verify a clean local tree and synchronized remote branch;
+8. mark Notebook 21 fully closed only after the recorded sweep passes.
 
 ## Mandatory pre-database authority gate
 
