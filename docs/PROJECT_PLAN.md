@@ -57,9 +57,9 @@ Retained governed limits:
 - Notebook 20 preserves 18 unresolved connection blanks;
 - Notebook 21 does not authorise a general narrative parser.
 
-## End-of-series validation — completed 4 August 2026
+## End-of-source-field-series validation — completed 4 August 2026
 
-The complete repository test suite and every discovered independent validator were run after Notebook 21.
+The complete repository test suite and every then-discovered independent validator were run after Notebook 21.
 
 Final evidence:
 
@@ -85,6 +85,45 @@ preserve: 2
 
 All 37 source fields require raw preservation and match the SQLite schema names, order and declared types.
 
+## Participant identity programme
+
+### Consolidated Notebook 22 — jockey, trainer and owner identity
+
+**Status: fully closed on 4 August 2026.**
+
+The programme preserves immutable raw labels and row lineage while adding a separate conservative participant-identity layer.
+
+Established governed results:
+
+- 7,917 jockey labels profiled;
+- 212 jockey candidate groups and 216 candidate relationships retained for review;
+- one confirmed provisional jockey label identity: `Mlle Marie Velon` / `Mme Marie Velon`;
+- 26 bounded provisional trainer transitions covering 52 labels and 6,350 source rows;
+- 936 owner token-multiset candidate groups;
+- 41 same-race-supported provisional ownership compositions covering 95 labels and 9,788 source rows;
+- 895 owner groups retained unresolved.
+
+The owner-identity and ownership-structure work originally scheduled as Notebook 23 was completed inside the consolidated Notebook 22 archival investigation. A separate Notebook 23 is not required.
+
+Focused validation evidence:
+
+```text
+14 passed in 0.61s
+
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships
+trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
+owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
+participant identity validation: PASS
+```
+
+Retained controls:
+
+- raw-label summaries must remain explicitly labelled as source-label analysis;
+- normalised text is a candidate-generation aid, not a definitive identity key;
+- unresolved relationships remain preserved rather than guessed;
+- unsupported automatic cross-role merging is prohibited;
+- participant-level publication or modelling must use the governed identity layer and state its limits.
+
 ## Mandatory pre-database authority gate
 
 **Status: next operational gate.**
@@ -101,36 +140,9 @@ Before physical database construction begins:
 
 Database construction must not proceed until this check has been completed and recorded.
 
-## Mandatory participant identity programme
-
-This is the next bounded analytical programme and must be completed before physical participant schema design, participant-level retrospective analysis, publication or modelling.
-
-### Notebook 22 — Jockey and trainer identity
-
-Resolve people, aliases, initials, punctuation variants, spelling changes, same-name collisions, jurisdiction and active-period boundaries while preserving unresolved mappings.
-
-### Notebook 23 — Owner identity and ownership structures
-
-Distinguish individuals, partnerships, syndicates, clubs, companies and other ownership entities, including compressed and changing ownership labels.
-
-Both studies must:
-
-- preserve immutable raw labels and row lineage;
-- create separate entity identifiers;
-- test alias and collision risk;
-- record every merge, split and unresolved relationship with provenance;
-- prevent unsupported automatic cross-role merging.
-
-Until this programme is complete:
-
-- raw-label summaries may be used only when explicitly labelled as source-label analysis;
-- normalised-text summaries may be used only for exploratory candidate matching;
-- no output may describe raw-label aggregates as an individual's definitive career performance;
-- trainer, jockey and owner comparisons intended for publication or modelling remain blocked.
-
 ## Phase 3 — Entity and key design
 
-After the authority gate and participant identity studies:
+After the authority gate:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
