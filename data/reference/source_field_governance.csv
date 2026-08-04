@@ -35,4 +35,4 @@ ordinal,source_field,declared_type,grain,field_family,raw_preservation,blank_pol
 34,dam,TEXT,runner,horse_and_pedigree_identity,required,field_not_supplied,not_expected,contextual_value,Notebook 19,implemented_later
 35,damsire,TEXT,runner,horse_and_pedigree_identity,required,field_not_supplied,not_expected,contextual_value,Notebook 19,implemented_later
 36,owner,TEXT,runner,connections_and_ownership,required,externally_supplement_or_unresolved,not_expected,contextual_value,Notebook 20,implemented_later
-37,comment,TEXT,runner,free_text,required,field_not_supplied,not_expected,contextual_value,Notebook 10,pending_semantics
+37,comment,TEXT,runner,free_text,required,source_absence_or_unresolved_code,probable_placeholder_or_narrative_punctuation,contextual_value,Notebook 21,implemented_pending_validation
