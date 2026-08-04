@@ -32,7 +32,11 @@ REQUIRED_COLUMNS: Final[tuple[str, ...]] = (
 ALLOWED_GRAINS: Final[frozenset[str]] = frozenset({"race", "runner"})
 ALLOWED_RAW_PRESERVATION: Final[frozenset[str]] = frozenset({"required"})
 ALLOWED_STATUSES: Final[frozenset[str]] = frozenset(
-    {"pending_semantics", "implemented_later"}
+    {
+        "pending_semantics",
+        "implemented_later",
+        "implemented_pending_validation",
+    }
 )
 
 
