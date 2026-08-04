@@ -46,6 +46,31 @@ The notebook working sequence remains:
 
 The Markdown explains the analytical purpose and boundaries. Inline comments explain how the code implements that stage. Neither replaces the other.
 
+## Performance and memory guardrail
+
+Before running a transformation across a large source population, identify the smallest grain at which the decision can be made.
+
+Do not use row-wise `DataFrame.apply` with a function that returns a `Series` across a large dataframe when the same result can be produced by:
+
+- reducing first to distinct decision inputs;
+- applying the function only to the small exceptional residue;
+- using vectorised conditions;
+- building a lookup table and joining it back;
+- performing grouped or set-based work in SQL.
+
+Series-returning row-wise application creates a large intermediate object and can exhaust notebook memory even when the final output is small. It is especially unsafe across source-wide race or runner populations.
+
+Before supplying or running such a cell:
+
+1. estimate the number of rows the Python function will process;
+2. check whether most rows share repeated input combinations;
+3. reduce to the smallest distinct or grouped decision grain;
+4. isolate genuinely context-dependent exceptions;
+5. join the compact result back only when necessary;
+6. prefer SQL or vectorised operations for source-wide counting and classification.
+
+A source-wide validator may still process the full population, but it should do so with bounded-memory, set-based or streaming logic rather than constructing one Python `Series` per source row.
+
 ## Proportionate use
 
 Comments are required around meaningful blocks, assumptions, transformations and checks. They are not required on every trivial assignment or every line.
@@ -60,5 +85,7 @@ Before supplying or committing a notebook code cell, check that a reader can ans
 - Why is it doing it?
 - What could fail?
 - What does the validation establish?
+- Is the transformation running at the smallest safe decision grain?
+- Could it create a large row-wise intermediate object unnecessarily?
 
 If those answers are not clear from the Markdown and inline comments together, the cell is not ready.
