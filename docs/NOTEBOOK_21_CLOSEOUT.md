@@ -2,9 +2,9 @@
 
 ## Status
 
-**Implemented pending local validation and end-of-series repository sweep.**
+**Implemented; focused local validation passed; pending end-of-series repository sweep.**
 
-The analytical investigation is complete and the durable implementation artifacts are committed. Final closure requires the focused local commands and then the complete source-field-series test and validator sweep.
+The analytical investigation and durable implementation are complete. Focused tests and the independent source-wide validator passed locally on 4 August 2026. Final closure now depends only on the complete repository test suite, all applicable validators, repair of any cross-notebook integration defects, and final branch reconciliation.
 
 ## Bounded question
 
@@ -66,7 +66,7 @@ Final governed conclusions were derived from source-internal profiling and direc
 - `data/processed/comment_information/comment_source_profile.csv`;
 - `data/processed/comment_information/comment_semantic_decisions.csv`.
 
-These preserve the compact source-wide baselines and the final decision register. They do not reproduce bulk comment text.
+These preserve the compact source-wide baselines and the final decision register. They do not reproduce bulk comment text. Focused tests reload and verify both files.
 
 ## Reusable implementation
 
@@ -76,7 +76,14 @@ No narrative, incident, market or attributed-report parser is implemented becaus
 
 ## Focused tests
 
-- `tests/test_comment_information.py` covers empty strings, unexpected nulls, probable placeholders, unresolved source codes, exact substantive preservation, leading whitespace and short substantive comments.
+- `tests/test_comment_information.py` covers empty strings, unexpected nulls, probable placeholders, unresolved source codes, exact substantive preservation, leading whitespace, short substantive comments, and persisted-output reload checks.
+
+Local result on 4 August 2026:
+
+```text
+........                                                                 [100%]
+8 passed in 0.46s
+```
 
 ## Independent validation
 
@@ -86,11 +93,16 @@ No narrative, incident, market or attributed-report parser is implemented becaus
 - checks the complete comment-state partition;
 - fails on changed null, blank, placeholder/code or substantive baselines.
 
-Expected local command:
+Local result on 4 August 2026:
 
-```bash
-pytest -q tests/test_comment_information.py
-python scripts/validate_comment_information.py
+```text
+runner_rows: 1,851,285
+null_rows: 0
+empty_rows: 340,394
+placeholder_or_code_rows: 238
+substantive_rows: 1,510,653
+provisional_races: 189,043
+comment information validation: PASS
 ```
 
 ## Database and integration consequence
@@ -109,7 +121,7 @@ See `docs/NOTEBOOK_21_LESSONS_LEARNED.md` and the project-wide lessons document.
 
 ## Status-document updates
 
-The following must agree before full closure:
+The following agree on the implemented Notebook 21 state and the remaining end-of-series gate:
 
 - `data/reference/source_field_governance.csv`;
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
@@ -119,12 +131,9 @@ The following must agree before full closure:
 
 ## Remaining closure gate
 
-After pulling these commits locally:
-
-1. run the focused test and validator commands above;
-2. record their exact output in this closeout document;
-3. run the complete repository test suite;
-4. run every applicable independent validator, treating Notebook 08's lone governed `F` failure as expected evidence;
-5. repair any cross-notebook integration defects;
-6. update this status from `implemented pending local validation` to `fully closed` only after the recorded sweep passes;
-7. verify a clean synchronized branch.
+1. run the complete repository test suite;
+2. run every applicable independent validator, treating Notebook 08's lone governed `F` failure as expected evidence;
+3. repair any cross-notebook integration defects;
+4. record the exact branch-level validation evidence;
+5. update this status to `fully closed` only after the recorded sweep passes;
+6. verify a clean synchronized branch.
