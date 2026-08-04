@@ -79,12 +79,15 @@ def _label_profile(
 
 def _comparison_groups_with_title_variation(
     labels: set[str],
+    *,
+    require_recognised_title: bool = True,
 ) -> dict[str, list[str]]:
     """Group labels after optional strict title removal.
 
-    Candidate groups must contain at least two raw labels and at least one
-    recognised titled form. Untitled counterparts remain in the group because
-    the notebook compared labels after optional, not mandatory, title removal.
+    Notebook 22 generated jockey candidates from every comparison key containing
+    more than one raw label after optional title removal, including one group of
+    two untitled labels differing only in whitespace. Trainer candidates remain
+    restricted to groups containing at least one recognised titled form.
     """
     grouped: dict[str, list[str]] = defaultdict(list)
     for raw_label in labels:
@@ -95,16 +98,22 @@ def _comparison_groups_with_title_variation(
         comparison: sorted(raw_labels)
         for comparison, raw_labels in grouped.items()
         if len(raw_labels) > 1
-        and any(
-            split_recognised_person_title(raw_label).title is not None
-            for raw_label in raw_labels
+        and (
+            not require_recognised_title
+            or any(
+                split_recognised_person_title(raw_label).title is not None
+                for raw_label in raw_labels
+            )
         )
     }
 
 
 def _validate_jockeys(connection: sqlite3.Connection) -> None:
     counts, _ = _label_profile(connection, "jockey")
-    groups = _comparison_groups_with_title_variation(set(counts))
+    groups = _comparison_groups_with_title_variation(
+        set(counts),
+        require_recognised_title=False,
+    )
     relationship_count = sum(len(tuple(combinations(labels, 2))) for labels in groups.values())
     candidate_labels = sum(len(labels) for labels in groups.values())
 
