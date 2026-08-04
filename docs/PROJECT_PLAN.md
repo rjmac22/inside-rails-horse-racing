@@ -89,7 +89,7 @@ All 37 source fields require raw preservation and match the SQLite schema names,
 
 ### Consolidated Notebook 22 — jockey, trainer and owner identity
 
-**Status: implementation complete; final strengthened-validator run pending.**
+**Status: fully closed on 4 August 2026.**
 
 The programme preserves immutable raw labels and row lineage while adding a separate conservative participant-identity layer.
 
@@ -114,15 +114,6 @@ Focused test evidence:
 14 passed in 0.61s
 ```
 
-The earlier source-wide validator version passed with:
-
-```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships
-trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
-owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
-participant identity validation: PASS
-```
-
 The final closeout audit found two implementation gaps:
 
 1. the accepted Marie Velon decision was persisted in the review queue but lacked a directly usable label-to-identity mapping file;
@@ -130,7 +121,14 @@ The final closeout audit found two implementation gaps:
 
 The repair added `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` and strengthened `scripts/validate_participant_identity.py` to enforce all 216 candidate pairs, the exact `1 / 1 / 214` decision partition, both decisive verification records, unresolved preservation actions and the exact two-row mapping.
 
-One fresh local PASS from the strengthened validator remains required.
+Final strengthened validator evidence on 4 August 2026:
+
+```text
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
+trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
+owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
+participant identity validation: PASS
+```
 
 Retained controls:
 
@@ -140,23 +138,11 @@ Retained controls:
 - unsupported automatic cross-role merging is prohibited;
 - participant-level publication or modelling must use the governed identity layer and state its limits.
 
-## Notebook 22 final validation gate
-
-**Status: next immediate action.**
-
-Run:
-
-```text
-python scripts/validate_participant_identity.py
-```
-
-The expected jockey line now includes the exact accepted, distinct and unresolved decision counts. Do not change an expected count merely to make validation pass. Record the complete output in the Notebook 22 closeout, audit register, README and this plan before restoring the fully closed classification.
-
 The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
 
 ## Mandatory pre-database authority gate
 
-**Status: follows the Notebook 22 validator gate.**
+**Status: next operational gate.**
 
 Before physical database construction begins:
 
@@ -172,7 +158,7 @@ Database construction must not proceed until this check has been completed and r
 
 ## Phase 3 — Entity and key design
 
-After the Notebook 22 validator gate and Notebook 19 authority gate:
+After the Notebook 19 authority gate:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
