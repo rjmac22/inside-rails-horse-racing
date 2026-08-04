@@ -2,9 +2,11 @@
 
 ## Status
 
-**Implementation complete; final strengthened-validator run pending.**
+**Fully closed on 4 August 2026.**
 
-The analytical investigation, governed outputs, reusable implementation, focused tests, integration documentation and project-status reconciliation are complete. A closeout audit on 4 August 2026 found that the jockey review queue was persisted but the accepted same-person decision lacked a directly usable mapping file, and the validator checked only the queue row count rather than exact decision closure. Both defects have been repaired. Notebook 22 returns to fully closed status when the strengthened source-wide validator passes locally against the immutable source.
+The analytical investigation, governed outputs, reusable implementation, focused tests, strengthened independent source-wide validation, integration documentation and project-status reconciliation are complete.
+
+A final closeout audit found that the jockey review queue had been persisted but the accepted same-person decision lacked a directly usable mapping file, and that the earlier validator checked only the queue row count rather than exact decision closure. Both defects were repaired and the strengthened validator passed locally against the immutable source on 4 August 2026.
 
 ## Bounded question
 
@@ -78,18 +80,18 @@ Local evidence on 4 August 2026:
 
 - `scripts/validate_participant_identity.py`
 
-The validator opens the immutable SQLite source read-only, applies `rowid <> 1`, reconstructs the source-wide jockey, trainer and owner populations, checks the accepted and unresolved baselines, and validates the governed CSV row counts.
+The validator opens the immutable SQLite source read-only, applies `rowid <> 1`, reconstructs the source-wide jockey, trainer and owner populations, checks accepted and unresolved baselines, closes exactly over all governed jockey decisions, verifies decisive external provenance and validates the governed mappings and CSV counts.
 
-The earlier version passed locally on 4 August 2026:
+Final strengthened local evidence on 4 August 2026:
 
 ```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
 trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
 owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
 participant identity validation: PASS
 ```
 
-The closeout audit strengthened the jockey section so it now also validates:
+The strengthened jockey section validates:
 
 - exact closure over all 216 source candidate relationships;
 - exactly one accepted same-person relationship, one confirmed distinct-person relationship and 214 unresolved relationships;
@@ -97,13 +99,11 @@ The closeout audit strengthened the jockey section so it now also validates:
 - unresolved preservation actions and deferred-review status;
 - the exact two-row direct jockey mapping.
 
-A fresh local execution of the strengthened validator is the remaining closure gate.
-
 ## Database integration
 
 - `docs/PARTICIPANT_IDENTITY_INTEGRATION.md`
 
-The integration contract preserves raw labels, separates provisional identities from candidates, prohibits unsupported cross-role merging and defines cardinality and update controls. It now identifies the direct jockey mapping as a governed input alongside the trainer and owner mappings.
+The integration contract preserves raw labels, separates provisional identities from candidates, prohibits unsupported cross-role merging and defines cardinality and update controls. It identifies the direct jockey mapping as a governed input alongside the trainer and owner mappings.
 
 ## Manual and external verification
 
@@ -134,15 +134,16 @@ No source field changes status in the source-field governance register. Jockey, 
 
 The owner-identity and ownership-structure work originally scheduled as Notebook 23 was completed inside the consolidated Notebook 22 archival investigation. A separate Notebook 23 is therefore not required for this programme.
 
-## Remaining closure evidence
+## Completion evidence
 
-Notebook 22 has:
+Notebook 22 is fully closed because:
 
-1. all 13 governed CSV outputs committed;
-2. focused unit-test evidence;
-3. reusable implementation and integration documentation;
-4. exact analytical results recorded here and in the audit register;
-5. README and project plan reconciliation;
-6. raw labels, lineage and unresolved candidates preserved.
+1. all 13 governed CSV outputs are committed;
+2. focused unit tests passed;
+3. the strengthened independent validator passed over the immutable 1,851,285-row source population;
+4. exact analytical results and decision closure are recorded here and in the audit register;
+5. the direct accepted jockey mapping and decisive external provenance are validated;
+6. README and project plan status are reconciled;
+7. raw labels, lineage and unresolved candidates remain preserved.
 
-The only remaining item is a fresh local PASS from the strengthened `scripts/validate_participant_identity.py`. The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate, in accordance with the project procedure.
+The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate, in accordance with the project procedure.
