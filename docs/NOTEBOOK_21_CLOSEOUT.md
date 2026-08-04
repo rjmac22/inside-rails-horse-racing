@@ -2,9 +2,9 @@
 
 ## Status
 
-**Implemented; focused local validation passed; pending end-of-series repository sweep.**
+**Fully closed on the retrospective implementation branch.**
 
-The analytical investigation and durable implementation are complete. Focused tests and the independent source-wide validator passed locally on 4 August 2026. Final closure now depends only on the complete repository test suite, all applicable validators, repair of any cross-notebook integration defects, and final branch reconciliation.
+The analytical investigation, durable implementation, focused validation, complete repository test suite, all applicable independent validators, cross-notebook repairs and field-governance reconciliation were completed on 4 August 2026.
 
 ## Bounded question
 
@@ -35,15 +35,13 @@ Great Britain and Ireland have complete comment coverage in this source. Several
 
 Notebook 21 uses the **executable notebook route**.
 
-The notebook was restarted and rerun from the beginning during construction after the unsafe jurisdiction cell was deleted. The saved notebook contains the successful analytical path and executed outputs. Temporary SQL state is created only in a separate writable temporary analytics database; the source database remains read-only and immutable.
+The notebook was restarted and rerun from the beginning during construction after the unsafe jurisdiction cell was deleted. Temporary SQL state is created only in a separate writable temporary analytics database; the source database remains read-only and immutable.
 
-Known historical failures during construction were:
+Historical failed approaches were removed or replaced:
 
 - a source-wide Series-returning row-wise jurisdiction operation that exhausted the kernel;
 - an attempted temporary-table write against the immutable source connection;
 - a pandas grouping-column retention failure in an intermediate sampling cell.
-
-Those approaches were removed or replaced. They are documented as workflow lessons and must not be restored.
 
 ## Raw evidence and lineage
 
@@ -59,14 +57,14 @@ Those approaches were removed or replaced. They are documented as workflow lesso
 
 `not_applicable`
 
-Final governed conclusions were derived from source-internal profiling and direct inspection of source rows. An informal specialist suggestion about isolated letter values was recorded as a hypothesis, was not accepted as external validation, and was not supported by source testing. No final correction, exception or enrichment depends on external evidence.
+Final governed conclusions were derived from source-internal profiling and direct inspection. An informal specialist suggestion about isolated letter values was treated as a hypothesis, not accepted as validation, and was not supported by source testing.
 
 ## Persisted outputs
 
 - `data/processed/comment_information/comment_source_profile.csv`;
 - `data/processed/comment_information/comment_semantic_decisions.csv`.
 
-These preserve the compact source-wide baselines and the final decision register. They do not reproduce bulk comment text. Focused tests reload and verify both files.
+Focused tests reload and verify both files.
 
 ## Reusable implementation
 
@@ -74,35 +72,55 @@ These preserve the compact source-wide baselines and the final decision register
 
 No narrative, incident, market or attributed-report parser is implemented because the evidence does not support a complete deterministic rule.
 
-## Focused tests
+## Focused validation
 
-- `tests/test_comment_information.py` covers empty strings, unexpected nulls, probable placeholders, unresolved source codes, exact substantive preservation, leading whitespace, short substantive comments, and persisted-output reload checks.
+- `tests/test_comment_information.py`: **8 passed in 0.46s**;
+- `scripts/validate_comment_information.py`: **PASS** across 1,851,285 governed runner rows and 189,043 provisional races.
 
-Local result on 4 August 2026:
+Validated comment partition:
+
+- empty rows: 340,394;
+- probable-placeholder or unresolved-code rows: 238;
+- substantive rows: 1,510,653;
+- SQL null rows: 0.
+
+## Branch-wide validation
+
+Initial complete-suite execution exposed two integration defects:
+
+1. a Great Britain prize-money value below the minor-unit boundary fell through to `currency_unresolved` rather than `invalid`;
+2. the source-field governance loader did not yet permit the explicit `implemented_pending_validation` status used by later notebooks.
+
+Both defects were repaired and covered by tests.
+
+Final local branch evidence on 4 August 2026:
 
 ```text
-........                                                                 [100%]
-8 passed in 0.46s
+256 passed in 0.96s
 ```
 
-## Independent validation
+Every discovered `scripts/validate_*.py` validator then passed. The sweep covered all 26 validator scripts, including source-wide validators over the immutable 1,851,285-row population.
 
-- `scripts/validate_comment_information.py` opens the source in read-only immutable mode;
-- applies `rowid <> 1`;
-- validates the full runner population and provisional race count;
-- checks the complete comment-state partition;
-- fails on changed null, blank, placeholder/code or substantive baselines.
-
-Local result on 4 August 2026:
+Notebook 08's lone raw starting-price value `F` remained exactly governed as unresolved. The starting-price validator passed while confirming:
 
 ```text
-runner_rows: 1,851,285
-null_rows: 0
-empty_rows: 340,394
-placeholder_or_code_rows: 238
-substantive_rows: 1,510,653
-provisional_races: 189,043
-comment information validation: PASS
+unresolved_rows: 1
+observed={'F': 1}
+expected={'F': 1}
+```
+
+Final governance reconciliation also passed:
+
+```text
+Field-governance validation passed.
+Source rows checked: 1,851,285
+Source fields governed: 37
+Status totals:
+  closed: 34
+  implemented_with_governed_anomaly: 1
+  preserve: 2
+
+Source-field governance validation passed.
 ```
 
 ## Database and integration consequence
@@ -117,23 +135,15 @@ See `docs/REPORT_21_COMMENT_AND_EMBEDDED_INFORMATION.md`.
 
 ## Lessons learned
 
-See `docs/NOTEBOOK_21_LESSONS_LEARNED.md` and the project-wide lessons document.
+See `docs/NOTEBOOK_21_LESSONS_LEARNED.md` and `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`.
 
-## Status-document updates
+## Closure consequence
 
-The following agree on the implemented Notebook 21 state and the remaining end-of-series gate:
+The source-field investigation series is fully closed through Notebook 21. The next work is not another source-field semantics notebook.
 
-- `data/reference/source_field_governance.csv`;
-- `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
-- `README.md`;
-- `docs/PROJECT_PLAN.md`;
-- `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`.
+Before physical database construction, complete the mandatory authority-response gate for Notebook 19. The next bounded analytical programme is participant identity:
 
-## Remaining closure gate
+1. Notebook 22 — jockey and trainer identity;
+2. Notebook 23 — owner identity and ownership structures.
 
-1. run the complete repository test suite;
-2. run every applicable independent validator, treating Notebook 08's lone governed `F` failure as expected evidence;
-3. repair any cross-notebook integration defects;
-4. record the exact branch-level validation evidence;
-5. update this status to `fully closed` only after the recorded sweep passes;
-6. verify a clean synchronized branch.
+A final local clean-tree and branch-synchronisation check remains an operational branch-reconciliation step, not an analytical or implementation gap in Notebook 21.
