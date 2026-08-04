@@ -43,7 +43,7 @@ This audit covers committed repository artifacts. Local uncommitted files are ou
 | 18 | Ratings semantics and availability | Governed `or`/`rpr`/`ts` transformation with exact invalid-value lineage | **Fully closed on this audit branch** | Fresh-kernel notebook execution passed. Reusable module, focused tests, independent source-wide validator, integration document, report, lessons and three permanent verification records are committed. |
 | 19 | Horse and pedigree identity | Governed pedigree reconciliation and provisional horse-occurrence identity | **Fully closed on this audit branch** | Explicit archival classification, specialist governance, reusable implementation, focused tests, manual-verification validation, independent source-wide validator, database integration documentation and persisted/reloaded outputs are committed. Five authority-dependent cases remain governed as unresolved rather than blocking closure. |
 | 20 | Connections and ownership identity | Governed blank-field supplementation without unsupported entity resolution | **Fully closed on this audit branch** | Notebook conclusions, 46 permanent verification records, 28 governed repair rows, reusable implementation, focused tests, manual-register validation, independent source-wide validation, integration documentation and closeout record are committed. Eighteen blanks remain deliberately unresolved. |
-| 21 | Comment and embedded information | Conservative raw-text state governance without speculative parsing | **Implemented pending local validation** | Executed notebook, persisted source profile and decisions, reusable classifier, focused tests, independent validator, integration contract, report, lessons and closeout record are committed. Focused local validation and the end-of-series repository sweep remain outstanding. |
+| 21 | Comment and embedded information | Conservative raw-text state governance without speculative parsing | **Implemented; focused validation passed; pending end-of-series sweep** | Executed notebook, persisted source profile and decisions, reusable classifier, focused tests, independent validator, integration contract, report, lessons and closeout record are committed. Focused tests passed 8/8 and the source-wide validator passed. Only the branch-level repository sweep remains. |
 
 ## Notebook 19 closure evidence
 
@@ -105,10 +105,17 @@ Established baselines:
 
 Manual-verification decision: `not_applicable`. Final conclusions depend on source-internal evidence; the informal equipment-code hypothesis was not accepted as validation and was not supported by source testing.
 
+Focused validation recorded on 4 August 2026:
+
+- `pytest -q tests/test_comment_information.py`: **8 passed in 0.46s**;
+- `python scripts/validate_comment_information.py`: **PASS**;
+- validated partition: 340,394 empty rows, 238 placeholder/code rows and 1,510,653 substantive rows across 1,851,285 governed runner rows;
+- provisional race count: 189,043.
+
 ## Current position
 
-The analytical source-field series is complete through Notebook 21. Notebook 21 remains **implemented pending local validation** until its focused test and validator results are recorded.
+The analytical source-field series is complete through Notebook 21. Notebook 21 has passed its focused local validation and remains pending only the end-of-series repository-wide test and validator sweep.
 
-The next branch-level action is the end-of-series complete repository test suite and all-validator sweep, followed by repair of any cross-notebook integration defects. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
+The next branch-level action is the complete repository test suite and all-validator sweep, followed by repair of any cross-notebook integration defects. Notebook 08's deliberate lone `F` failure remains governed evidence rather than a defect to normalise away.
 
 After the sweep, complete the mandatory authority-response gate and begin the participant identity studies before physical participant schema design or participant-level analysis.
