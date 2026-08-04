@@ -4,7 +4,7 @@
 
 Participant identity cannot be reconstructed safely through broad string cleaning.
 
-The defensible approach is to preserve every raw jockey, trainer and owner label, accept only narrow relationships supported by source-internal evidence, and keep unresolved candidates separate from governed mappings.
+The defensible approach is to preserve every raw jockey, trainer and owner label, accept only narrow relationships supported by evidence, use targeted external verification where source-internal evidence is insufficient, and keep unresolved candidates separate from governed mappings.
 
 ## Core evidence
 
@@ -18,7 +18,9 @@ Strict comparison after removing only a recognised leading personal title produc
 - 426 candidate labels;
 - 216 candidate relationships.
 
-Only `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional jockey label identity. `Miss B ONeill` and `Mr B ONeill` were confirmed different through a same-race collision. The remaining 214 relationships remain unresolved.
+Only `Mlle Marie Velon` and `Mme Marie Velon` were accepted as the same provisional jockey label identity. That decision was externally checked against a published participant profile. `Miss B ONeill` and `Mr B ONeill` were confirmed different through a same-race collision and a published result for that race. Both verification records, including evidence locators, access dates, confidence and database actions, are preserved in `data/processed/jockey_identity/jockey_strict_candidate_review_queue.csv`.
+
+The remaining 214 relationships remain unresolved.
 
 ### Trainers
 
@@ -57,7 +59,8 @@ The source sometimes changes how the same participant or ownership composition i
 
 Candidate generation therefore has value for recall, but it is not proof. The accepted relationships are deliberately narrow:
 
-- one jockey title relationship supported by the evidence reviewed;
+- one jockey title relationship supported by targeted external verification;
+- one same-race jockey collision supported by a published result and preserved as a distinct-person decision;
 - a bounded trainer title transition with chronology controls;
 - owner token-order equivalence only where same-race presentation proves the order is non-semantic.
 
@@ -98,4 +101,4 @@ The accepted mappings improve comparability for a small evidence-backed populati
 
 ## Next action
 
-Complete the reusable implementation, focused tests, independent source-wide validator and project-status closeout. Physical participant schema design may proceed only after the governed files and validation are committed and the Notebook 19 authority-response gate is complete.
+Use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
