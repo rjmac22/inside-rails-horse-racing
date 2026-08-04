@@ -32,7 +32,7 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 | 19 | Horse and pedigree identity | **Fully closed — archival route** | 353 governed transitions and 611 provisional occurrences; five cases remain deliberately unresolved pending authority responses. |
 | 20 | Connections and ownership identity | **Fully closed** | 46 permanent verifications, 28 supplementations and 18 preserved unresolved blanks. |
 | 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, focused tests, independent validator, integration contract, report, lessons and successful branch-wide sweep. |
-| 22 | Jockey, trainer and owner participant identity | **Implementation complete — strengthened validation pending** | Direct jockey mapping and exact decision-closure checks were added during the final audit; one fresh source-wide validator PASS remains required. |
+| 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive external provenance and full source-wide validation passed. |
 
 ## Notebook 21 evidence
 
@@ -111,15 +111,6 @@ Focused local test evidence on 4 August 2026:
 14 passed in 0.61s
 ```
 
-The earlier source-wide validator version passed locally on 4 August 2026:
-
-```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships
-trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
-owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
-participant identity validation: PASS
-```
-
 The final audit found that the earlier jockey validator checked the source candidate baseline and queue length but did not enforce the exact accepted, distinct and unresolved decision population or the external-provenance fields. It also found that the accepted Marie Velon relationship lacked a direct label-to-identity mapping file.
 
 The audit repair added:
@@ -131,7 +122,14 @@ The audit repair added:
 - unresolved preservation checks;
 - exact direct-mapping validation.
 
-A fresh local PASS from the strengthened validator remains the only Notebook 22 closure gate.
+Final strengthened local validator evidence on 4 August 2026:
+
+```text
+jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
+trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
+owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
+participant identity validation: PASS
+```
 
 The original 12 governed outputs were committed in `d60ac32`; the direct jockey mapping was added in `20296cd`.
 
@@ -162,10 +160,10 @@ preserve: 2
 
 The source-field governance reference contains all 37 fields, requires raw preservation for all 37, and matches the SQLite field names, order and declared types.
 
-Notebook 22 was subsequently implemented with focused tests and an independent source-wide validator. A new full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
+Notebook 22 was subsequently closed with focused tests and its strengthened independent source-wide validator. A new full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
 
 ## Current position
 
-The retrospective source-field implementation programme is fully closed through Notebook 21. The consolidated participant identity implementation is complete through Notebook 22, with one fresh run of the strengthened participant-identity validator required before its fully closed classification is restored.
+The retrospective source-field implementation programme is fully closed through Notebook 21. The consolidated participant identity programme is fully closed through Notebook 22.
 
-Before physical database construction, complete the Notebook 19 authority-response gate. After the Notebook 22 validator gate and Notebook 19 authority gate are recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
+Before physical database construction, complete the Notebook 19 authority-response gate. After that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
