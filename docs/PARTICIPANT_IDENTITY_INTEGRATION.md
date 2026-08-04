@@ -29,7 +29,13 @@ Only one relationship is accepted as the same provisional jockey label identity:
 - `Mlle Marie Velon`;
 - `Mme Marie Velon`.
 
-`Miss B ONeill` and `Mr B ONeill` are explicitly different because both occur within the same reconstructed race. The remaining 214 relationships remain unresolved.
+The decision was externally verified through the governed record `NB22-JOCKEY-0002`. Its two directly usable label mappings are persisted in:
+
+- `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv`.
+
+Both raw labels map to `JOCKEY-PROVISIONAL-0001`. The mapping retains the verification identifier and a reference back to `JOCKEY-STRICT-0002` in the governed jockey review queue.
+
+`Miss B ONeill` and `Mr B ONeill` are explicitly different because both occur within the same reconstructed race and the distinction was confirmed through the governed published-result record `NB22-JOCKEY-0001`. They must remain separate participant identities. The remaining 214 relationships remain unresolved.
 
 No general jockey-title stripping or automatic alias merge is authorised.
 
@@ -116,6 +122,8 @@ Required columns:
 - `effective_end_date` nullable;
 - unique constraint on (`participant_role`, `raw_label`) for active accepted mappings.
 
+The jockey mapping file, trainer mapping file and owner-composition mapping file are the governed inputs for this structure. Review queues and unresolved files must not be treated as accepted label maps.
+
 ### `participant_identity_candidate`
 
 Unresolved candidate relationships remain separate from accepted mappings.
@@ -164,6 +172,10 @@ Database builds must fail when:
 - one source row duplicates after a mapping join;
 - accepted and unresolved populations overlap;
 - expected unresolved cases disappear without a governed decision;
+- the jockey review queue does not close exactly over all 216 source candidate relationships;
+- the jockey decision population is not exactly one accepted same-person relationship, one confirmed distinct-person relationship and 214 unresolved relationships;
+- either decisive jockey record loses its verification identifier, evidence locator, access date, confidence or database action;
+- the direct jockey mapping differs from the two labels governed by `NB22-JOCKEY-0002`;
 - a new title or token-order population falls outside the established rules;
 - a blank-field supplementation lacks permanent verification provenance.
 
@@ -182,7 +194,7 @@ For future source updates:
 2. regenerate candidate populations using the reusable helper functions;
 3. compare new candidates with the governed mapping and unresolved files;
 4. investigate only the new or changed residue;
-5. preserve external evidence in the permanent verification register where used;
+5. preserve external evidence in the permanent manual-verification register or the governed role-specific decision table, whichever is the documented evidence authority for that decision;
 6. update accepted mappings and unresolved candidates together;
 7. rerun focused tests and the independent validator;
 8. rebuild dependent participant dimensions and analytical views;
