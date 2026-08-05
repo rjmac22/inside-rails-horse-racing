@@ -53,7 +53,7 @@ The completed programme governs course and jurisdiction context, result semantic
 Retained governed limits:
 
 - Notebook 08 preserves one unresolved raw starting-price value `F`;
-- Notebook 19 preserves five unresolved authority-dependent horse/pedigree transitions;
+- Notebook 19 preserves one unresolved authority-dependent horse/pedigree transition for `Runninsonofagun (IRE)`;
 - Notebook 20 preserves 18 unresolved connection blanks;
 - Notebook 21 does not authorise a general narrative parser.
 
@@ -142,7 +142,7 @@ The complete repository test suite and all-validator sweep remain deferred until
 
 ## Targeted cross-notebook implementation-completeness audit
 
-**Status: queued before physical database construction.**
+**Status: next operational gate before physical database construction.**
 
 This is a repository-level review of the existing notebook implementations, not a reopening or rerun of every notebook.
 
@@ -158,25 +158,58 @@ The audit should begin from the existing closeout documents, integration contrac
 
 Any defect found should be repaired through one bounded change, focused validation and documented evidence. A clean audit should be recorded without manufacturing additional work.
 
-## Mandatory pre-database authority gate
+## Mandatory pre-database authority gate — completed 5 August 2026
 
-**Status: next operational gate.**
+**Status: completed.**
 
-Before physical database construction begins:
+All available responses from studbooks and racing authorities contacted during Notebook 19 were checked before physical database construction.
 
-1. check all responses from studbooks and racing authorities contacted during Notebook 19;
-2. revisit the five unresolved horse/pedigree cases;
-3. update specialist governance and manual-verification records where new evidence changes a decision;
-4. rerun focused horse-identity tests and the independent validator;
-5. regenerate, reload and recommit governed transition and occurrence outputs;
-6. preserve unanswered cases as unresolved rather than guessing;
-7. record completion of this gate in project documentation.
+Authority evidence confirmed bounded pedigree corrections for:
 
-Database construction must not proceed until this check has been completed and recorded.
+- `Almavillalobas (GB)`;
+- `Colwyn Bay (FR)`;
+- `Diamond Tipp (IRE)`;
+- `LAziza Des Places (FR)`.
+
+Weatherbys Ireland had not replied about `Runninsonofagun (IRE)` by the gate date. That case remains explicitly `Unresolved`; its competing raw assertions are preserved and no governed pedigree is guessed.
+
+The specialist governance reference, reusable implementation baselines and generated outputs were updated. Final governed transition results are:
+
+```text
+Corrected: 91
+Different horse: 261
+Unresolved: 1
+provisional occurrences: 611
+```
+
+Focused test evidence:
+
+```text
+9 passed in 0.59s
+```
+
+Independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs:
+
+```text
+raw contradiction labels: 5573
+structured contradiction labels: 368
+structured pedigree rows: 96404
+structured pedigree groups: 741
+temporally separated horse labels: 350
+separated pedigree groups: 703
+governed transitions: 353
+Corrected: 91
+Different horse: 261
+Unresolved: 1
+provisional occurrences: 611
+Horse and pedigree identity validation passed.
+```
+
+The authority gate no longer blocks design work. Physical database construction remains gated by completion of the targeted cross-notebook implementation-completeness audit.
 
 ## Phase 3 — Entity and key design
 
-After the Notebook 19 authority gate and targeted cross-notebook implementation-completeness audit:
+After the targeted cross-notebook implementation-completeness audit:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
