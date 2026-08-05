@@ -101,6 +101,36 @@ def _assert_unique_race_keys(frame: pd.DataFrame, frame_name: str) -> None:
         raise ValueError(f"{frame_name} contains duplicate race keys: {examples}")
 
 
+def _normalise_course_local_summary_timestamps(frame: pd.DataFrame) -> pd.DataFrame:
+    """Return a summary-only copy with comparable local wall-clock timestamps.
+
+    Course-local timestamps are stored as an object series because the source
+    spans many IANA timezones. A London DST gap can also place ``NaT`` beside a
+    timezone-aware timestamp within one meeting. Pandas cannot apply grouped
+    ``min``/``max`` directly to that mixed object representation. Meeting
+    decisions need only the local calendar time, so this copy removes timezone
+    information while preserving missing candidates. Canonical timestamps in
+    the original frame remain timezone-aware and unchanged.
+    """
+
+    result = frame.copy()
+    for column in (
+        "candidate_a_course_local",
+        "candidate_b_course_local",
+    ):
+        result[column] = pd.to_datetime(
+            result[column].map(
+                lambda value: (
+                    pd.NaT
+                    if value is None or pd.isna(value)
+                    else pd.Timestamp(value).tz_localize(None)
+                )
+            ),
+            errors="raise",
+        )
+    return result
+
+
 def build_canonical_race_times(races_with_locations: pd.DataFrame) -> pd.DataFrame:
     """Build one governed temporal record per provisional race.
 
@@ -129,7 +159,8 @@ def build_canonical_race_times(races_with_locations: pd.DataFrame) -> pd.DataFra
 
     pre_candidates = reconstruct_pre_boundary_candidates(pre_boundary)
     pre_candidates = attach_pre_boundary_timezones(pre_candidates)
-    meeting_summary = summarise_pre_boundary_meetings(pre_candidates)
+    summary_candidates = _normalise_course_local_summary_timestamps(pre_candidates)
+    meeting_summary = summarise_pre_boundary_meetings(summary_candidates)
 
     post_times = build_post_boundary_times(post_boundary)
     course_profiles = build_post_boundary_course_profiles(post_times)
