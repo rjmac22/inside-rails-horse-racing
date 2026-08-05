@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/09_course_jurisdiction_racing_authority_and_betting_market_context.ipynb",
-  "status": "complete",
+  "status": "fully_closed_with_bounded_context_governance",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "source_table": "data",
   "source_commit": "74a1ad0",
@@ -23,13 +23,11 @@
     "multi_form_candidate_identities": 135,
     "same_date_multi_form_collisions": 0,
     "great_britain_context_units": 4,
-    "great_britain_missing_context_assignments": 0,
     "ireland_context_units_by_period": 8,
     "france_source_labelled_nh_flat_races": 23,
-    "open_interpretation_issues": 1,
-    "clean_kernel_run_all": true,
-    "independent_validator_passed": true,
-    "notebook_assertions_passed": true
+    "missing_worked_example_context_assignments": 0,
+    "wagering_context_assignments_asserted": 0,
+    "independent_validator_passed": true
   },
   "classification_method": {
     "default_grain": "jurisdiction",
@@ -42,86 +40,69 @@
     "escalation_rule": "Add deeper context only when the planned analysis, historical change or observed source behaviour requires it.",
     "unresolved_rule": "Preserve the source value and leave researched interpretation unassigned rather than forcing a classification."
   },
-  "worked_examples": {
+  "governed_context": {
+    "specialist_reference": "data/reference/jurisdiction_context_governance.csv",
+    "verification_ids": [
+      "NB09-CONTEXT-0001",
+      "NB09-CONTEXT-0002",
+      "NB09-CONTEXT-0003",
+      "NB09-CONTEXT-0004"
+    ],
     "great_britain": {
-      "authority": "British Horseracing Authority",
-      "observed_source_types": [
-        "Flat",
-        "Hurdle",
-        "Chase",
-        "NH Flat"
-      ],
-      "finding": "One principal authority covers several materially distinct racing-code contexts.",
-      "remaining_issue": "Detailed rules-version segmentation remains a later study."
+      "regulatory_authority": "British Horseracing Authority",
+      "source_types": ["Flat", "Hurdle", "Chase", "NH Flat"],
+      "wagering_context_status": "unresolved"
     },
-    "ireland": {
-      "observed_source_types": [
-        "Flat",
-        "Hurdle",
-        "Chase",
-        "NH Flat"
-      ],
-      "periods": [
-        "2015-2017",
-        "2018 onward"
-      ],
-      "current_regulatory_authority": "Irish Horseracing Regulatory Board",
+    "ireland_2015_2017": {
+      "regulatory_authority": "Irish Turf Club",
       "administrative_body": "Horse Racing Ireland",
-      "finding": "Authority role, racing code and historical period must remain distinct."
+      "source_types": ["Flat", "Hurdle", "Chase", "NH Flat"],
+      "wagering_context_status": "unresolved"
+    },
+    "ireland_2018_onward": {
+      "regulatory_authority": "Irish Horseracing Regulatory Board",
+      "administrative_body": "Horse Racing Ireland",
+      "source_types": ["Flat", "Hurdle", "Chase", "NH Flat"],
+      "wagering_context_status": "unresolved"
     },
     "france": {
-      "authority": "France Galop",
-      "source_labelled_nh_flat_races": 23,
-      "observed_population": "AQPS races run without obstacles",
-      "status": "native racing-code interpretation unresolved",
-      "preservation_rule": "Retain source type NH Flat unchanged and record the interpretation question separately."
+      "regulatory_authority": "France Galop",
+      "source_types": ["Flat", "Hurdle", "Chase", "NH Flat"],
+      "nh_flat_native_code_status": "unresolved_aqps_source_classification",
+      "wagering_context_status": "unresolved"
     }
   },
+  "manual_verification_decision": "specialist_reference",
   "information_layers": {
     "source": "Exact provider-supplied values and physical lineage.",
     "structural_derivation": "Reproducible candidate identities, jurisdiction and parsed source representations.",
-    "research_interpretation": "Evidence-backed authority, native code, rules period, wagering context and source-to-native mappings."
-  },
-  "reconstruction_requirements": {
-    "required_before_reconstruction": [
-      "Retain source type exactly as supplied.",
-      "Store reproducible candidate jurisdiction separately.",
-      "Preserve raw sp and interpret market meaning separately."
-    ],
-    "deferred_research_enrichment": [
-      "Native racing-code mappings.",
-      "Authority and rules records with effective periods.",
-      "Unresolved interpretation questions and later resolutions.",
-      "Detailed jurisdiction-specific wagering context."
-    ]
+    "research_interpretation": "Evidence-backed authority, native-code and effective-period context stored separately with provenance."
   },
   "decisions": [
-    "Do not overwrite source racing type with a researched interpretation.",
-    "Do not treat source type as a universal native racing code.",
-    "Do not treat raw sp as one globally comparable market measure.",
-    "Store candidate jurisdiction as a reproducible structural derivation.",
-    "Keep regulatory, administrative and racing-code roles distinct.",
-    "Use effective-period records only where historical change requires them.",
-    "Defer detailed country research until a country-specific or analytical study requires it.",
-    "Track unresolved research questions without forcing classifications.",
-    "Do not design the final target schema in this notebook."
+    "Do not overwrite source racing type with a researched interpretation",
+    "Do not treat source type as a universal native racing code",
+    "Do not treat raw sp as one globally comparable market measure",
+    "Store candidate jurisdiction as a reproducible structural derivation",
+    "Keep regulatory, administrative and racing-code roles distinct",
+    "Use effective-period records only where historical change requires them",
+    "Track unresolved research questions without forcing classifications",
+    "Keep all wagering-context fields unresolved until separately evidenced"
   ],
   "reusable_outputs": {
-    "module": "src/inside_rails/course_jurisdiction.py",
-    "validation_script": "scripts/validate_course_jurisdiction.py",
+    "candidate_mapping_module": "src/inside_rails/course_jurisdiction.py",
+    "context_module": "src/inside_rails/jurisdiction_context.py",
+    "specialist_reference": "data/reference/jurisdiction_context_governance.csv",
+    "focused_tests": [
+      "tests/test_course_jurisdiction.py",
+      "tests/test_jurisdiction_context.py"
+    ],
+    "validation_scripts": [
+      "scripts/validate_course_jurisdiction.py",
+      "scripts/validate_jurisdiction_context.py"
+    ],
+    "integration_document": "docs/JURISDICTION_CONTEXT_DATABASE_INTEGRATION.md",
     "report": "docs/REPORT_09_COURSE_JURISDICTION_RACING_AUTHORITY_AND_BETTING_MARKET_CONTEXT.md"
   },
-  "validation": {
-    "provisional_races_checked": 189043,
-    "candidate_jurisdictions_assigned": 189043,
-    "candidate_course_identities": 395,
-    "same_date_collisions": 0,
-    "clean_kernel_run_all": true,
-    "independent_validator": "passed",
-    "result": "passed"
-  },
-  "next_notebook": {
-    "number": 10,
-    "topic": "remaining source-field inventory and triage"
-  }
+  "database_consequence": "Preserve raw course, type, distance, weight and price values. Store candidate jurisdiction separately. Add authority and effective-period context only through the governed specialist reference, and leave market meaning unresolved unless separately evidenced.",
+  "next_action": "Use the bounded context reference during database design; extend it only for a defined jurisdiction-specific analytical requirement."
 }
