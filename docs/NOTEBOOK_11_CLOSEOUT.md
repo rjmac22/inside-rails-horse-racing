@@ -2,9 +2,9 @@
 
 ## Status
 
-**Archival analytical record; durable canonical-output repair prepared for local validation.**
+**Archival analytical record; durable canonical-output repair prepared for local validation and review acceptance.**
 
-Notebook 11 established the temporal interpretation and the settled source-wide decision totals. The cross-notebook audit found that those 189,043 meeting-level decisions were not persisted in the repository and could not be regenerated through a default production workflow. The old validator exercised helper functions and enforced full totals only when an external file was supplied optionally.
+Notebook 11 established the temporal interpretation and the settled source-wide decision totals. The cross-notebook audit found that those 189,043 race-level decisions were not persisted in the repository and could not be regenerated through a default production workflow. The old validator exercised helper functions and enforced full totals only when an external file was supplied optionally.
 
 This repair adds the missing source-to-output implementation, focused tests, atomic persistence, typed reload and mandatory independent output validation. It does not change the analytical interpretation or select any previously unresolved race.
 
@@ -20,10 +20,10 @@ The source encoding changes at 15 October 2025:
 Pre-boundary branch selection is authorised only by:
 
 1. course-local dead-of-night rejection;
-2. a stable post-boundary course profile across every governed margin;
+2. a stable post-boundary course profile across every governed margin, restricted to meetings where both candidate branches are valid;
 3. otherwise no selection.
 
-Unresolved races retain both candidates and no canonical timestamp.
+Ambiguous or nonexistent London daylight-saving candidates remain unresolved and are not passed into profile-based selection. Unresolved races retain both candidates and no canonical timestamp.
 
 ## Governed current-source result
 
@@ -45,7 +45,7 @@ Decision methods are exactly:
 - raw clock parser: `src/inside_rails/off_time.py`;
 - reconstruction helpers: `src/inside_rails/race_times.py`;
 - production orchestration and persistence: `src/inside_rails/race_time_pipeline.py`;
-- focused tests: `tests/test_off_time.py` and `tests/test_race_time_pipeline.py`;
+- focused tests: `tests/test_off_time.py`, `tests/test_race_time_pipeline.py` and `tests/test_race_time_pipeline_dst_regression.py`;
 - source builder: `scripts/build_race_time_governance.py`;
 - raw clock validator: `scripts/validate_off_time.py`;
 - independent canonical-output validator: `scripts/validate_race_times.py`;
@@ -69,13 +69,14 @@ The new pipeline:
 3. reconstructs both pre-boundary branches;
 4. derives course-local candidates through canonical UTC;
 5. applies the settled dead-of-night and stable-profile hierarchy;
-6. constructs every explicit post-boundary timestamp;
-7. preserves unresolved candidates without selecting a timestamp;
-8. enforces the exact population and method totals;
-9. writes the output atomically;
-10. compares persisted strings with the built dataframe;
-11. reloads timestamp types;
-12. repeats all integrity and conversion checks.
+6. excludes DST-edge meetings from profile-based selection when either branch is ambiguous or nonexistent in London civil time;
+7. constructs every explicit post-boundary timestamp;
+8. preserves unresolved candidates without selecting a timestamp;
+9. enforces the exact population and method totals;
+10. writes the output atomically;
+11. compares persisted strings with the built dataframe;
+12. reloads timestamp types;
+13. repeats all integrity and conversion checks.
 
 The independent validator then starts from the persisted output and reconciles it exactly to the immutable source and governed course reference.
 
@@ -117,9 +118,11 @@ Use canonical UTC as the conversion anchor. Do not attach the course timezone di
 ```bash
 PYTHONPATH=src .venv/bin/python -m pytest \
   tests/test_off_time.py \
-  tests/test_race_time_pipeline.py
+  tests/test_race_time_pipeline.py \
+  tests/test_race_time_pipeline_dst_regression.py
 
-PYTHONPATH=src .venv/bin/python scripts/validate_off_time.py
+PYTHONPATH=src .venv/bin/python scripts/validate_off_time.py \
+  data/raw/form_2015-present/form_2015-present/raceform.db
 
 PYTHONPATH=src .venv/bin/python \
   scripts/build_race_time_governance.py
