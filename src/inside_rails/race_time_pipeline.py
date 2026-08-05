@@ -10,6 +10,7 @@ import pandas as pd
 
 from inside_rails.race_times import (
     FORMAT_BOUNDARY,
+    MEETING_KEY_COLUMNS,
     RACE_KEY_COLUMNS,
     VALIDATED_TOTALS,
     attach_pre_boundary_timezones,
@@ -76,6 +77,8 @@ EXPECTED_METHOD_COUNTS: Final[dict[str, int]] = {
     "unresolved": VALIDATED_TOTALS.unresolved_races,
 }
 
+MINIMUM_PROFILE_MEETINGS: Final[int] = 5
+
 
 def _require_columns(
     frame: pd.DataFrame,
@@ -131,6 +134,44 @@ def _normalise_course_local_summary_timestamps(frame: pd.DataFrame) -> pd.DataFr
     return result
 
 
+def _has_eligible_course_profile(
+    meeting_summary: pd.DataFrame,
+    course_profiles: pd.DataFrame,
+) -> bool:
+    """Return whether any pre-boundary meeting has a usable course profile."""
+
+    profile_key = ["candidate_course_label", "candidate_jurisdiction"]
+    eligible_profiles = (
+        course_profiles.loc[
+            course_profiles["observed_meetings"].ge(MINIMUM_PROFILE_MEETINGS),
+            profile_key,
+        ]
+        .drop_duplicates()
+        .reset_index(drop=True)
+    )
+    if eligible_profiles.empty:
+        return False
+
+    meeting_profiles = meeting_summary.loc[:, profile_key].drop_duplicates()
+    return not meeting_profiles.merge(
+        eligible_profiles,
+        on=profile_key,
+        how="inner",
+        validate="many_to_many",
+    ).empty
+
+
+def _empty_profile_decisions() -> pd.DataFrame:
+    """Return the schema required when no stable profile can be evaluated."""
+
+    return pd.DataFrame(
+        {
+            column: pd.Series(dtype="object")
+            for column in (*MEETING_KEY_COLUMNS, "stable_profile_decision")
+        }
+    )
+
+
 def build_canonical_race_times(races_with_locations: pd.DataFrame) -> pd.DataFrame:
     """Build one governed temporal record per provisional race.
 
@@ -164,10 +205,14 @@ def build_canonical_race_times(races_with_locations: pd.DataFrame) -> pd.DataFra
 
     post_times = build_post_boundary_times(post_boundary)
     course_profiles = build_post_boundary_course_profiles(post_times)
-    profile_decisions = stable_course_profile_decisions(
-        meeting_summary,
-        course_profiles,
-    )
+    if _has_eligible_course_profile(meeting_summary, course_profiles):
+        profile_decisions = stable_course_profile_decisions(
+            meeting_summary,
+            course_profiles,
+            minimum_observed_meetings=MINIMUM_PROFILE_MEETINGS,
+        )
+    else:
+        profile_decisions = _empty_profile_decisions()
     meeting_decisions = combine_meeting_decisions(
         meeting_summary,
         profile_decisions,
