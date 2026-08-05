@@ -155,11 +155,10 @@ def main() -> None:
                     raise AssertionError("canonical prize requires exact minor units")
                 if parsed["prize_currency"] not in {"GBP", "EUR"}:
                     raise AssertionError("canonical prize currency must be GBP or EUR")
-            else:
-                if parsed["prize_canonical_minor_units"] is not None:
-                    raise AssertionError(
-                        "non-canonical prize must not receive canonical minor units"
-                    )
+            elif parsed["prize_canonical_minor_units"] is not None:
+                raise AssertionError(
+                    "non-canonical prize must not receive canonical minor units"
+                )
 
     if runner_rows != EXPECTED_RUNNER_ROWS:
         raise AssertionError(
@@ -175,17 +174,17 @@ def main() -> None:
             f"expected {EXPECTED_DISTINCT_RAW_VALUES} distinct raw prize values, "
             f"found {distinct_raw_values}"
         )
-    if dict(status_counts) != EXPECTED_STATUS_COUNTS:
+    if status_counts != Counter(EXPECTED_STATUS_COUNTS):
         raise AssertionError(
             f"unexpected prize status partition: observed={dict(status_counts)}, "
             f"expected={EXPECTED_STATUS_COUNTS}"
         )
-    if dict(method_counts) != EXPECTED_METHOD_COUNTS:
+    if method_counts != Counter(EXPECTED_METHOD_COUNTS):
         raise AssertionError(
             f"unexpected prize method partition: observed={dict(method_counts)}, "
             f"expected={EXPECTED_METHOD_COUNTS}"
         )
-    if dict(currency_counts) != EXPECTED_CURRENCY_COUNTS:
+    if currency_counts != Counter(EXPECTED_CURRENCY_COUNTS):
         raise AssertionError(
             f"unexpected prize currency partition: observed={dict(currency_counts)}, "
             f"expected={EXPECTED_CURRENCY_COUNTS}"
@@ -193,12 +192,15 @@ def main() -> None:
     if sum(status_counts.values()) != runner_rows:
         raise AssertionError("prize statuses do not partition the runner population")
 
+    normalised_statuses = {
+        key: status_counts[key] for key in EXPECTED_STATUS_COUNTS
+    }
     print("Prize-money source-wide validation passed.")
     print(f"  governed runner rows: {runner_rows:,}")
     print(f"  provisional races: {len(jurisdiction_by_race):,}")
     print(f"  distinct raw prize values: {distinct_raw_values:,}")
     print(f"  storage classes: {storage_counts}")
-    print(f"  status partition: {dict(status_counts)}")
+    print(f"  status partition: {normalised_statuses}")
     print(f"  method partition: {dict(method_counts)}")
     print(f"  currency partition: {dict(currency_counts)}")
     print("  canonical currencies: GBP and EUR only")
