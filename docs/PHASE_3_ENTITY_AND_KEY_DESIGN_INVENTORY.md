@@ -196,6 +196,8 @@ Within the current source version, the validated candidate matching rule is:
 
 `source race occurrence + raw horse label`
 
+This matching rule is a current-source validation rule. It is not the runner record's permanent technical identifier and does not establish permanent horse identity across races.
+
 **Identifier scope:** Current source-version-scoped unless later cross-version reconciliation establishes otherwise.
 
 **Required lineage:** Direct reference to the supporting source record, source race occurrence, raw horse label, supplied `race_id`, supplied `num` and all governed derivation statuses required by downstream fields.
@@ -207,15 +209,116 @@ Within the current source version, the validated candidate matching rule is:
 - every current source record produces exactly one current runner record;
 - every current runner record is supported by exactly one current source record;
 - many runner records belong to one source race occurrence;
-- a runner record may link to a provisional horse occurrence and governed participant labels separately.
+- a runner record preserves exactly one raw horse label from its supporting source record;
+- a runner record may link to at most one governed provisional horse occurrence under the accepted current governance release;
+- governed jockey, trainer and owner relationships remain separate from horse occurrence identity.
 
-**Accepted rule:** Source record and runner record receive separate technical identities even though they currently reconcile one-to-one.
+**Accepted rules:**
+
+- source record and runner record receive separate technical identities even though they currently reconcile one-to-one;
+- the runner record identifies participation in a race, not the permanent identity of the horse;
+- the raw horse label remains immutable source evidence and must never be replaced by a provisional horse identifier.
 
 **Unresolved design questions:** How later supplementary runner records and cross-source runner equivalence should be represented.
 
+## Runner record and horse identity distinction
+
+### 7. Raw horse-label assertion
+
+**Grain:** The exact source-presented horse label carried by one source record and inherited by its current runner record.
+
+**Status:** Immutable source assertion.
+
+**Candidate identifier:** The supporting source record and source field identify the assertion; no separate permanent real-world horse identifier is derived from the text.
+
+**Identifier scope:** Source-record-scoped.
+
+**Required lineage:** Source version, source relation, source record, raw `horse` value and original storage state.
+
+**Known uncertainty:** The same displayed horse label can represent different real horses, and one real horse can appear with inconsistent or incorrect supporting pedigree assertions.
+
+**Expected relationships:**
+
+- one current runner record preserves one raw horse-label assertion;
+- many runner records may share the same raw text without thereby sharing one verified horse identity;
+- the assertion may support a governed provisional horse occurrence assignment.
+
+**Accepted rule:** Raw horse text is evidence and a current-source matching attribute. It is not a permanent natural key for a horse.
+
+**Unresolved design questions:** None at this grain; cross-source label reconciliation remains deferred.
+
+### 8. Provisional horse occurrence
+
+**Grain:** One governed source-internal horse-history occurrence created by Notebook 19's bounded correction, split and unresolved rules.
+
+**Status:** Governed provisional identity used for analysis within the current source programme.
+
+**Candidate identifier:** The existing governed `provisional_horse_occurrence_id`, treated as an independent source-internal analytical identifier.
+
+**Identifier scope:** Current governed source population and governing identity release. It is not an official registration number, life number or provider-independent horse identifier.
+
+**Required lineage and evidence:**
+
+- every assigned runner record and its supporting source record;
+- exact raw horse label;
+- structured pedigree history used by the governed derivation;
+- occurrence sequence;
+- identity outcome and decision basis;
+- relevant transition decision identifiers;
+- governed pedigree fields where established;
+- verification identifier, confidence and review status where applicable;
+- explicit unresolved state where the evidence does not permit a correction or split.
+
+**Known uncertainty:** The occurrence model prevents unsafe same-label merging inside the current source, but it does not prove official horse identity across providers. `Runninsonofagun (IRE)` remains a governed unresolved pedigree relationship.
+
+**Expected relationships:**
+
+- one provisional horse occurrence may be linked from many runner records across races;
+- one runner record may link to at most one provisional horse occurrence under one accepted governance release;
+- a raw horse label may correspond to more than one provisional horse occurrence where governed different-horse split boundaries exist;
+- unresolved relationships remain explicit and must not be converted into an unsupported identity merge or split.
+
+**Accepted rules:**
+
+- runner participation identity and horse-history identity remain separate;
+- provisional occurrence links may be used for governed horse-level analysis while their source-internal status is stated;
+- raw horse and pedigree values remain unchanged even when a governed correction or split is applied;
+- analyses that do not require horse continuity may use runner records without implying permanent horse identity;
+- no provisional occurrence may be presented as an official or globally verified horse identity.
+
+**Unresolved design questions:**
+
+- how a future official horse identifier would be related to existing provisional occurrences;
+- how occurrence assignments are versioned if later authority evidence changes a governed boundary;
+- how provisional occurrences from another provider would be reconciled with this source-internal occurrence layer.
+
+### 9. Runner-to-horse-occurrence assignment
+
+**Grain:** One governed assignment of one runner record to one provisional horse occurrence under one accepted identity-governance release.
+
+**Status:** Governed relationship, not immutable source fact.
+
+**Candidate identifier:** Runner record plus governance release, supported by an independent relationship identifier if required by the later physical design.
+
+**Identifier scope:** Governance-release-scoped.
+
+**Required lineage and evidence:** Runner record, provisional horse occurrence, assignment method, governing output/reference version, decision basis, status, confidence where applicable and any supporting transition or verification identifier.
+
+**Known uncertainty:** Later authority evidence may amend an occurrence boundary or assignment. Historical accepted assignments must remain reconstructable rather than being silently overwritten.
+
+**Expected relationships:**
+
+- a runner record has zero or one accepted provisional horse occurrence assignment within one governance release;
+- a provisional horse occurrence may receive many runner-record assignments;
+- unresolved identity evidence must remain represented without creating multiple active accepted assignments.
+
+**Accepted rule:** The relationship must carry its governed status and release context so that a provisional horse occurrence is not mistaken for a raw source fact or eternal identity.
+
+**Unresolved design questions:** The detailed amendment and effective-version mechanism is deferred to the later Phase 3 history-design task.
+
 ## Source race occurrence and race-time distinction
 
-### 7. Source race occurrence
+### 10. Source race occurrence
 
 **Grain:** One race as represented within one exact source version.
 
@@ -246,7 +349,7 @@ Raw `race_name` remains a required validation attribute.
 
 **Unresolved design questions:** Cross-version and cross-provider race reconciliation when another actual source version or provider becomes available.
 
-### 8. Governed race-time decision
+### 11. Governed race-time decision
 
 **Grain:** One governed temporal interpretation for one source race occurrence.
 
@@ -311,14 +414,22 @@ Such a record must identify the exact source record and field, preserve the raw 
 
 ## Current accepted design boundary
 
-The inventory currently establishes only the source-evidence foundation, source-record and runner-record distinction, source race occurrence, and governed race-time separation.
+The inventory currently establishes:
+
+- the source-evidence foundation;
+- source-record and runner-record separation;
+- raw horse-label assertions;
+- provisional horse occurrences;
+- governed runner-to-horse-occurrence assignments;
+- source race occurrences;
+- governed race-time separation.
 
 It does not yet define:
 
 - SQL tables;
 - physical key types;
 - cross-version race reconciliation;
-- governed horse identity structure beyond its existing occurrence contract;
+- official or provider-independent horse identity;
 - participant or ownership entity detail;
 - amendment-history implementation;
 - import-manifest structure;
