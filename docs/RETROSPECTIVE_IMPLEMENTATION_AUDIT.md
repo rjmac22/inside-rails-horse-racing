@@ -12,27 +12,63 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 |---|---|---|---|
 | 00 | Project scope and methodology | **No reusable artifact required** | Durable methodology and closure rules are documented. |
 | 01 | Source database structure profile | **Fully closed** | Reusable profile module, tests, validator and integration documentation. |
-| 02 | Source field quality profile | **Fully closed** | Governed 37-field reference, loader, tests, validator and lineage policy. |
+| 02 | Source field quality profile | **Fully closed** | Governed 37-field reference, loader, tests, validator, corrected integration path and lineage policy. |
 | 03 | Race identity and source-key reconstruction | **Fully closed** | Reusable identity profiling, tests and source-wide reconciliation. |
 | 04 | Course jurisdiction and surface mapping | **Fully closed** | Reconciled jurisdiction and bounded surface governance. |
 | 05 | Finishing positions and non-finish outcomes | **Fully closed** | Complete governed result partition. |
 | 06 | Race distance parsing | **Fully closed** | Parser, tests, validator and integration contract. |
 | 07 | Carried weight parsing | **Fully closed** | Parser, tests, validator and integration contract. |
-| 08 | Starting price parsing | **Fully closed with governed anomaly** | The lone raw `F` remains preserved as unresolved; the validator passes only when the exact anomaly remains `{'F': 1}`. |
-| 09 | Jurisdiction, authority and betting-market context | **Fully closed** | Governed bounded context and source validation. |
-| 10 | Remaining source-field inventory and triage | **Fully closed** | Field-governance register and immutable-source schema validation. |
-| 11 | Off-time and temporal semantics | **Fully closed** | Clock parsing and temporal helper validation. |
-| 12 | Course location and timezone mapping | **Fully closed** | Complete 395-identity timezone reference and source join. |
-| 13 | Prize-money semantics and availability | **Fully closed** | Reusable governed parser, tests and validator; minor-unit fall-through defect repaired during final sweep. |
-| 14 | Runner counts, numbers and entries | **Fully closed** | Reusable interpretation and source-wide validation. |
-| 15 | Beaten-distance semantics | **Fully closed** | Conservative parsing, structural flags and independent validation. |
-| 16 | Race classification and eligibility | **Fully closed** | Structural parsers, unresolved preservation and source-wide validation. |
-| 17 | Runner characteristics and equipment | **Fully closed — archival route** | Persisted outputs, reusable implementation, manual evidence and source validation. |
-| 18 | Ratings semantics and availability | **Fully closed** | Exact unavailable and invalid-value governance across `or`, `rpr` and `ts`. |
-| 19 | Horse and pedigree identity | **Fully closed — archival route** | 353 governed transitions and 611 provisional occurrences; five cases remain deliberately unresolved pending authority responses. |
-| 20 | Connections and ownership identity | **Fully closed** | 46 permanent verifications, 28 supplementations and 18 preserved unresolved blanks. |
-| 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, focused tests, independent validator, integration contract, report, lessons and successful branch-wide sweep. |
-| 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive external provenance and full source-wide validation passed. |
+| 08 | Starting price parsing | **Fully closed with governed anomaly** | The lone raw `F` remains unresolved; the bounded Almendares external claim is separately governed and validated. |
+| 09 | Jurisdiction, authority and betting-market context | **Fully closed** | Exact four-record context provenance and source-context agreement. |
+| 10 | Remaining source-field inventory and triage | **Fully closed** | Reconciled closeout record, 37-field governance register and immutable-source schema validation. |
+| 11 | Off-time and temporal semantics | **Fully closed — archival route** | Complete 189,043-race builder, atomic persistence, typed reload and independent source reconciliation; 169,465 resolved and 19,578 unresolved. |
+| 12 | Course location and timezone mapping | **Fully closed** | Complete 395-identity timezone reference, two governed provenance records and exact evidence-to-reference validation. |
+| 13 | Prize-money semantics and availability | **Fully closed** | Complete immutable-source parsing and partition validator; no foreign-exchange conversion. |
+| 14 | Runner counts, numbers and entries | **Fully closed** | Exact five-decision validation and governed Saucats and Tosen Thunder supplementations. |
+| 15 | Beaten-distance semantics | **Fully closed** | Exact 17-decision validation and governed Great Navigator supplementation. |
+| 16 | Race classification and eligibility | **Fully closed** | Exact seven field decisions and four external decisions; correction candidates remain non-automatic. |
+| 17 | Runner characteristics and equipment | **Fully closed — archival route** | Direct source-wide validation, exact evidence closure and exact correction lineage. |
+| 18 | Ratings semantics and availability | **Fully closed** | Exact source-wide ratings partition plus three permanent semantic-provenance decisions. |
+| 19 | Horse and pedigree identity | **Fully closed — archival route** | 353 governed transitions: 91 corrected, 261 different horse and one unresolved; 611 provisional occurrences. |
+| 20 | Connections and ownership identity | **Fully closed** | Exact closure of 46 raw blank occurrences: 28 supplementations and 18 preserved unresolved; obsolete promotion utility retired. |
+| 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, tests and independent validation; no general narrative parser. |
+| 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive provenance and source-wide validation. |
+
+## Targeted cross-notebook audit result
+
+The targeted implementation-completeness audit found a finite set of bounded defects without reopening the analytical investigations.
+
+The completed repairs include:
+
+- Notebook 20 exact one-to-one closure of all 46 raw blank field occurrences;
+- Notebook 02 and 10 status-document reconciliation;
+- Notebook 08 governed external anomaly evidence;
+- Notebook 09 exact context-provenance enforcement;
+- Notebook 12 recovered provenance dates and exact reference agreement;
+- Notebook 13 complete source-wide prize-money validation;
+- Notebook 14 and 15 machine-usable missing-runner supplementations and exact decision partitions;
+- Notebook 16 exact field and external-decision validation;
+- Notebook 17 removal of false clean-checkout dependencies and exact correction lineage;
+- Notebook 18 exact closure of the three existing permanent semantic-evidence records;
+- retirement of the completed Notebook 20 promotion utility;
+- Notebook 11 complete canonical-output regeneration, persistence and independent validation.
+
+Every individual repair unit was reviewed and accepted before integration. The repair history remains visible in the dedicated review branches; the accepted content is consolidated on `audit/retrospective-implementation-integration`.
+
+## Notebook 11 acceptance evidence
+
+Local execution on 5 August 2026 established:
+
+- race-time pipeline and DST regression tests: **5 passed**;
+- raw off-time tests: **9 passed**;
+- raw off-time validator: **1,851,285 rows**, **1,380 distinct raw values**, **189,043 races**, **0 unresolved raw values**;
+- canonical source build: **passed**;
+- atomic persisted-output write and typed reload: **passed**;
+- independent source-wide validator: **passed**;
+- exact source-race, timezone and UTC/local conversion reconciliation: **passed**;
+- exact method totals: **111,871 dead-of-night**, **47,242 stable profile**, **10,352 explicit post-boundary**, **19,578 unresolved**.
+
+The repaired pipeline restores the original notebook's exclusion of 93 DST-edge meetings comprising 515 races from profile-based selection. Unsupported future inputs fail closed rather than being silently selected or imported.
 
 ## Notebook 21 evidence
 
@@ -49,108 +85,41 @@ Established baselines:
 
 Manual-verification decision: `not_applicable`.
 
-Durable artifacts:
-
-- `notebooks/21_comment_and_embedded_information.ipynb`;
-- `data/processed/comment_information/comment_source_profile.csv`;
-- `data/processed/comment_information/comment_semantic_decisions.csv`;
-- `src/inside_rails/comment_information.py`;
-- `tests/test_comment_information.py`;
-- `scripts/validate_comment_information.py`;
-- `docs/COMMENT_INFORMATION_INTEGRATION.md`;
-- `docs/REPORT_21_COMMENT_AND_EMBEDDED_INFORMATION.md`;
-- `docs/NOTEBOOK_21_LESSONS_LEARNED.md`;
-- `docs/NOTEBOOK_21_CLOSEOUT.md`.
-
-Focused validation on 4 August 2026:
-
-- `pytest -q tests/test_comment_information.py`: **8 passed in 0.46s**;
-- `python scripts/validate_comment_information.py`: **PASS**.
-
 ## Notebook 22 evidence
-
-The consolidated archival investigation covers jockey, trainer and owner participant identity. The owner programme originally scheduled separately as Notebook 23 was completed inside Notebook 22; no separate Notebook 23 is required.
 
 Established baselines:
 
 - jockey labels: **7,917**;
-- jockey candidate groups: **212**;
 - jockey candidate relationships: **216**;
-- confirmed provisional jockey identity groups: **1**;
-- confirmed distinct-person jockey relationships: **1**;
+- confirmed same-person relationships: **1**;
+- confirmed different-person relationships: **1**;
 - unresolved jockey relationships: **214**;
 - directly mapped jockey labels: **2**;
 - trainer labels: **10,708**;
-- accepted bounded trainer groups: **26**;
-- accepted trainer labels: **52**;
-- trainer mapped rows: **6,350**;
+- accepted trainer groups: **26** covering **6,350** source rows;
 - owner labels: **98,234**;
-- owner candidate groups: **936**;
-- same-race-supported ownership compositions: **41**;
-- accepted owner labels: **95**;
-- owner mapped rows: **9,788**;
+- accepted owner groups: **41** covering **9,788** source rows;
 - unresolved owner groups: **895**.
 
 Manual-verification decision: `specialist_reference`.
 
-Durable artifacts:
+Focused local tests passed with **14 passed in 0.61s**. The strengthened validator enforces exact candidate closure, decisive external provenance, unresolved preservation and the exact direct jockey mapping.
 
-- `notebooks/22_jockey_and_trainer_identity.ipynb`;
-- 13 governed CSV outputs under `data/processed/jockey_identity/`, `data/processed/trainer_identity/` and `data/processed/owner_identity/`, including `jockey_provisional_identity_mapping.csv`;
-- `src/inside_rails/participant_identity.py`;
-- `tests/test_participant_identity.py`;
-- `scripts/validate_participant_identity.py`;
-- `docs/PARTICIPANT_IDENTITY_INTEGRATION.md`;
-- `docs/REPORT_22_PARTICIPANT_IDENTITY.md`;
-- `docs/NOTEBOOK_22_LESSONS_LEARNED.md`;
-- `docs/NOTEBOOK_22_CLOSEOUT.md`.
+## Historical end-of-source-field-series evidence
 
-Focused local test evidence on 4 August 2026:
+The complete repository test run after Notebook 21 found and repaired two integration defects:
 
-```text
-14 passed in 0.61s
-```
+1. a Great Britain sub-minor-unit prize value incorrectly fell through to `currency_unresolved`;
+2. the source-field loader did not allow the explicit later-notebook pending-validation status.
 
-The final audit found that the earlier jockey validator checked the source candidate baseline and queue length but did not enforce the exact accepted, distinct and unresolved decision population or the external-provenance fields. It also found that the accepted Marie Velon relationship lacked a direct label-to-identity mapping file.
-
-The audit repair added:
-
-- `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` with the exact two labels governed by `NB22-JOCKEY-0002`;
-- exact source-pair closure across all 216 jockey candidates;
-- exact relationship counts of one same-person, one different-people and 214 unresolved decisions;
-- exact decisive-record provenance and database-action checks;
-- unresolved preservation checks;
-- exact direct-mapping validation.
-
-Final strengthened local validator evidence on 4 August 2026:
-
-```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
-trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
-owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
-participant identity validation: PASS
-```
-
-The original 12 governed outputs were committed in `d60ac32`; the direct jockey mapping was added in `20296cd`.
-
-## End-of-series validation evidence
-
-The first complete repository test run after Notebook 21 found two genuine integration defects:
-
-1. a sub-minor-unit Great Britain prize value was incorrectly relabelled `currency_unresolved` after failing canonicalisation;
-2. the source-field loader did not permit the explicit later-notebook status `implemented_pending_validation`.
-
-Both were repaired and tested. The governance registers were then reconciled so completed source-field studies no longer remained falsely open or pending.
-
-Final local evidence for the source-field series on 4 August 2026:
+Final local evidence on 4 August 2026 was:
 
 ```text
 256 passed in 0.96s
+ALL 26 THEN-DISCOVERED VALIDATORS PASSED
 ```
 
-All 26 then-discovered independent validator scripts passed. This included the complete immutable-source validators and confirmation that Notebook 08's lone `F` anomaly remained exactly preserved.
-
-Final field-governance totals:
+Final field-governance totals were:
 
 ```text
 closed: 34
@@ -158,12 +127,26 @@ implemented_with_governed_anomaly: 1
 preserve: 2
 ```
 
-The source-field governance reference contains all 37 fields, requires raw preservation for all 37, and matches the SQLite field names, order and declared types.
+All 37 fields require raw preservation and match the SQLite field names, order and declared types.
 
-Notebook 22 was subsequently closed with focused tests and its strengthened independent source-wide validator. A new full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
+## Database consequence
+
+All future database ingestion is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
+
+No source-derived output may enter staging, core or analytical structures until it has passed its applicable unit tests, source-wide validators, persisted-output readback and source reconciliation. Candidate database structures must be built and validated transactionally or as a complete replacement before the last known-good database is changed.
+
+Unknown, changed or unmatched data must fail closed, remain explicitly unresolved or be quarantined. Partial success and silent coercion are prohibited.
 
 ## Current position
 
-The retrospective source-field implementation programme is fully closed through Notebook 21. The consolidated participant identity programme is fully closed through Notebook 22.
+All individual notebook and cross-notebook repair units are accepted and integrated.
 
-Before physical database construction, complete the Notebook 19 authority-response gate. After that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
+The remaining closure gate is:
+
+1. run the complete repository test suite from the integration branch;
+2. run every applicable independent validator;
+3. repair any genuine integration defect found;
+4. record the final integrated evidence in this register, `README.md` and `docs/PROJECT_PLAN.md`;
+5. merge only after the integrated branch is clean and the complete gate passes.
+
+After that, proceed to Phase 3 entity and key design. No further source-field notebook investigation is required unless a new source snapshot or failed validator produces concrete new evidence.
