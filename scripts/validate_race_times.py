@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate reusable race-time reconstruction helpers."""
+"""Independently validate the persisted Notebook 11 race-time output."""
 
 from __future__ import annotations
 
@@ -8,160 +8,180 @@ from pathlib import Path
 
 import pandas as pd
 
-from inside_rails.race_times import (
-    FORMAT_BOUNDARY,
-    VALIDATED_TOTALS,
-    build_post_boundary_times,
-    classify_london_civil_time,
-    parse_12_hour_minutes,
-    parse_24_hour_minutes,
-    reconstruct_pre_boundary_candidates,
+from inside_rails.course_locations import (
+    load_course_locations,
+    merge_source_course_locations,
+)
+from inside_rails.race_time_pipeline import (
+    CANDIDATE_TIMESTAMP_COLUMNS,
+    load_canonical_race_times,
+    validate_exact_temporal_totals,
+    validate_timestamp_conversions,
+)
+from inside_rails.race_times import FORMAT_BOUNDARY
+from inside_rails.source_sqlite import connect_read_only
+
+
+EXPECTED_PROVISIONAL_RACES = 189_043
+EXPECTED_PRE_BOUNDARY_RACES = 178_691
+EXPECTED_POST_BOUNDARY_RACES = 10_352
+DEFAULT_DATABASE = Path(
+    "data/raw/form_2015-present/form_2015-present/raceform.db"
+)
+DEFAULT_COURSE_LOCATIONS = Path("data/reference/course_locations.csv")
+DEFAULT_CANONICAL = Path(
+    "data/processed/race_times/canonical_race_times.csv"
+)
+SOURCE_COMPARISON_COLUMNS = (
+    "date",
+    "course",
+    "off",
+    "race_id",
+    "race_name",
+    "type",
+    "candidate_course_label",
+    "candidate_jurisdiction",
+    "iana_timezone",
 )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Validate reusable race-time reconstruction helpers."
-    )
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--database", type=Path, default=DEFAULT_DATABASE)
     parser.add_argument(
-        "canonical_path",
-        nargs="?",
+        "--course-locations",
         type=Path,
-        help=(
-            "Optional canonical race-time CSV or Parquet file. When supplied, "
-            "the validated Notebook 11 population totals are enforced."
-        ),
+        default=DEFAULT_COURSE_LOCATIONS,
     )
+    parser.add_argument("--canonical", type=Path, default=DEFAULT_CANONICAL)
     return parser.parse_args()
 
 
-def validate_clock_parsers() -> None:
-    assert parse_12_hour_minutes("12:30") == 30
-    assert parse_12_hour_minutes("1:05") == 65
-    assert parse_12_hour_minutes("11:59") == 719
-    assert parse_24_hour_minutes("00:30") == 30
-    assert parse_24_hour_minutes("13:05") == 785
-    assert parse_24_hour_minutes("23:59") == 1439
+def load_governed_source_races(
+    database: Path,
+    course_locations_path: Path,
+) -> pd.DataFrame:
+    if not database.exists():
+        raise FileNotFoundError(database)
+    with connect_read_only(database) as connection:
+        source = pd.read_sql_query(
+            """
+            SELECT DISTINCT date, course, off, race_id, race_name, type
+            FROM data
+            WHERE rowid <> 1
+            ORDER BY date, course, off
+            """,
+            connection,
+        )
+    if len(source) != EXPECTED_PROVISIONAL_RACES:
+        raise AssertionError(
+            f"expected {EXPECTED_PROVISIONAL_RACES:,} source races, "
+            f"found {len(source):,}"
+        )
+    if source.duplicated(["date", "course", "off"]).any():
+        raise AssertionError("source race context is not constant within race keys")
 
-
-def validate_dst_classification() -> None:
-    assert classify_london_civil_time("2015-03-29 01:30") == (
-        "nonexistent_dst_time"
+    course_locations = load_course_locations(course_locations_path)
+    merged = merge_source_course_locations(
+        source,
+        course_locations,
+        require_all_matches=True,
     )
-    assert classify_london_civil_time("2015-10-25 01:30") == (
-        "ambiguous_dst_time"
-    )
-    assert classify_london_civil_time("2015-01-01 13:30") == "valid"
+    if merged["iana_timezone"].isna().any():
+        raise AssertionError("governed source race has no IANA timezone")
+    return merged
 
 
-def validate_meeting_unwrap() -> None:
-    races = pd.DataFrame(
-        {
-            "date": ["2015-01-01"] * 4,
-            "course": ["Example"] * 4,
-            "off": ["11:30", "12:05", "12:40", "1:15"],
-            "race_id": [1, 2, 3, 4],
-        }
-    )
-    result = reconstruct_pre_boundary_candidates(races)
-    expected_a = pd.to_datetime(
-        [
-            "2015-01-01 11:30",
-            "2015-01-01 12:05",
-            "2015-01-01 12:40",
-            "2015-01-01 13:15",
-        ]
-    )
-    assert result["candidate_a_uk_naive"].tolist() == expected_a.tolist()
-    assert (
-        result["candidate_b_uk_naive"]
-        - result["candidate_a_uk_naive"]
-    ).eq(pd.Timedelta(hours=12)).all()
+def validate_source_reconciliation(
+    canonical: pd.DataFrame,
+    source: pd.DataFrame,
+) -> None:
+    canonical_comparison = canonical.loc[:, list(SOURCE_COMPARISON_COLUMNS)].copy()
+    source_comparison = source.loc[:, list(SOURCE_COMPARISON_COLUMNS)].copy()
 
+    for frame in (canonical_comparison, source_comparison):
+        for column in SOURCE_COMPARISON_COLUMNS:
+            frame[column] = frame[column].fillna("").astype(str)
+        frame.sort_values(["date", "course", "off"], inplace=True)
+        frame.reset_index(drop=True, inplace=True)
 
-def validate_explicit_post_boundary() -> None:
-    races = pd.DataFrame(
-        {
-            "date": [FORMAT_BOUNDARY.date().isoformat()],
-            "course": ["Example"],
-            "off": ["13:05"],
-            "race_id": [1],
-            "iana_timezone": ["Europe/Paris"],
-        }
-    )
-    result = build_post_boundary_times(races)
-    assert str(result.loc[0, "advertised_start_uk"]) == (
-        "2025-10-15 13:05:00+01:00"
-    )
-    assert str(result.loc[0, "advertised_start_utc"]) == (
-        "2025-10-15 12:05:00+00:00"
-    )
-    assert str(result.loc[0, "advertised_start_course_local"]) == (
-        "2025-10-15 14:05:00+02:00"
-    )
-
-
-def load_canonical(path: Path) -> pd.DataFrame:
-    if path.suffix.lower() == ".parquet":
-        return pd.read_parquet(path)
-    if path.suffix.lower() == ".csv":
-        return pd.read_csv(path)
-    raise ValueError("Canonical path must be a CSV or Parquet file")
-
-
-def validate_population_totals(frame: pd.DataFrame) -> None:
-    required = {
-        "decision_method",
-        "temporal_resolution_status",
-    }
-    missing = sorted(required - set(frame.columns))
-    if missing:
-        raise ValueError(
-            "Canonical file is missing required columns: " + ", ".join(missing)
+    if not canonical_comparison.equals(source_comparison):
+        differing = int((canonical_comparison != source_comparison).any(axis=1).sum())
+        raise AssertionError(
+            f"canonical output differs from governed source context on {differing} races"
         )
 
-    resolved = int(frame["temporal_resolution_status"].eq("resolved").sum())
-    unresolved = int(frame["temporal_resolution_status"].eq("unresolved").sum())
-    method_counts = frame["decision_method"].value_counts()
 
-    observed = {
-        "canonical_races": len(frame),
-        "resolved_races": resolved,
-        "unresolved_races": unresolved,
-        "dead_of_night_races": int(
-            method_counts.get("course_local_dead_of_night_rejection", 0)
-        ),
-        "stable_profile_races": int(
-            method_counts.get("stable_post_boundary_course_profile", 0)
-        ),
-        "explicit_post_boundary_races": int(
-            method_counts.get("explicit_post_boundary_time", 0)
-        ),
-    }
+def validate_regime_contract(canonical: pd.DataFrame) -> None:
+    dates = pd.to_datetime(canonical["date"], errors="raise")
+    pre = dates.lt(FORMAT_BOUNDARY)
+    post = dates.ge(FORMAT_BOUNDARY)
 
-    for field, value in observed.items():
-        expected = getattr(VALIDATED_TOTALS, field)
-        if value != expected:
-            raise AssertionError(
-                f"Unexpected {field}: expected {expected}, found {value}."
-            )
+    if int(pre.sum()) != EXPECTED_PRE_BOUNDARY_RACES:
+        raise AssertionError("pre-boundary population changed")
+    if int(post.sum()) != EXPECTED_POST_BOUNDARY_RACES:
+        raise AssertionError("post-boundary population changed")
+
+    if not canonical.loc[post, "temporal_resolution_status"].eq("resolved").all():
+        raise AssertionError("every post-boundary race must remain resolved")
+    if not canonical.loc[post, "decision_method"].eq(
+        "explicit_post_boundary_time"
+    ).all():
+        raise AssertionError("post-boundary races must use the explicit 24-hour method")
+    if canonical.loc[post, list(CANDIDATE_TIMESTAMP_COLUMNS)].notna().any().any():
+        raise AssertionError("post-boundary races must not carry reconstructed candidates")
+
+    if canonical.loc[pre, "candidate_a_uk_naive"].isna().any():
+        raise AssertionError("every pre-boundary race must preserve candidate A")
+    if canonical.loc[pre, "candidate_b_uk_naive"].isna().any():
+        raise AssertionError("every pre-boundary race must preserve candidate B")
+
+    unresolved = canonical["temporal_resolution_status"].eq("unresolved")
+    if not unresolved.loc[pre].equals(
+        canonical.loc[pre, "decision_method"].eq("unresolved")
+    ):
+        raise AssertionError(
+            "pre-boundary unresolved status and decision method must agree exactly"
+        )
+    if canonical.loc[unresolved, "selected_branch"].notna().any():
+        raise AssertionError("unresolved races must not select a candidate branch")
+
+    resolved_pre = pre & canonical["temporal_resolution_status"].eq("resolved")
+    if not canonical.loc[resolved_pre, "selected_branch"].isin(
+        ["candidate_a", "candidate_b"]
+    ).all():
+        raise AssertionError("resolved pre-boundary races require candidate A or B")
 
 
 def main() -> None:
     args = parse_args()
-    validate_clock_parsers()
-    validate_dst_classification()
-    validate_meeting_unwrap()
-    validate_explicit_post_boundary()
+    if not args.canonical.exists():
+        raise FileNotFoundError(
+            f"canonical race-time output not found: {args.canonical}; "
+            "run scripts/build_race_time_governance.py first"
+        )
 
-    print("Race-time helper validation passed")
-    print(f"Format boundary: {FORMAT_BOUNDARY.date()}")
+    canonical = load_canonical_race_times(args.canonical)
+    validate_exact_temporal_totals(canonical)
+    validate_timestamp_conversions(canonical)
+    validate_regime_contract(canonical)
 
-    if args.canonical_path is not None:
-        canonical = load_canonical(args.canonical_path)
-        validate_population_totals(canonical)
-        print("Canonical population totals passed")
-        print(f"Canonical races: {len(canonical)}")
+    source = load_governed_source_races(args.database, args.course_locations)
+    validate_source_reconciliation(canonical, source)
+
+    print("Race-time source-wide validation passed.")
+    print(f"  canonical races: {len(canonical):,}")
+    print(f"  pre-boundary races: {EXPECTED_PRE_BOUNDARY_RACES:,}")
+    print(f"  explicit post-boundary races: {EXPECTED_POST_BOUNDARY_RACES:,}")
+    print(
+        "  resolved / unresolved: "
+        f"{canonical['temporal_resolution_status'].eq('resolved').sum():,} / "
+        f"{canonical['temporal_resolution_status'].eq('unresolved').sum():,}"
+    )
+    for method, count in canonical["decision_method"].value_counts().items():
+        print(f"  {method}: {count:,}")
+    print("  exact source race and timezone reconciliation: PASS")
+    print("  resolved UTC / UK / course-local conversion agreement: PASS")
 
 
 if __name__ == "__main__":
