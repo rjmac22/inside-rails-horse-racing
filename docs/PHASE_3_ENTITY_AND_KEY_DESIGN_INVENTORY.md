@@ -316,9 +316,210 @@ This matching rule is a current-source validation rule. It is not the runner rec
 
 **Unresolved design questions:** The detailed amendment and effective-version mechanism is deferred to the later Phase 3 history-design task.
 
+## Runner record and participant identity distinction
+
+### 10. Raw participant-label assertion
+
+**Grain:** One exact source-presented label in one participant-role field on one source record and inherited by its runner record.
+
+**Status:** Immutable source assertion.
+
+**Candidate identifier:** The supporting source record plus the exact source field; no real-world participant identifier is derived directly from the text.
+
+**Identifier scope:** Source-record-and-role-scoped.
+
+**Required lineage and evidence:** Source version, source relation, source record, participant role, exact raw value and original storage state.
+
+The current participant roles in scope are jockey and trainer. The raw owner field is governed separately as an ownership-composition assertion because it may represent more than one person or organisation.
+
+**Known uncertainty:** Participant labels may contain initials, titles, abbreviations, spelling variants, punctuation variants or errors. The same displayed label may represent different people, while one person may appear under several labels.
+
+**Expected relationships:**
+
+- one runner record preserves the source-presented jockey and trainer assertions where populated;
+- many assertions may share identical raw text without thereby identifying one verified person;
+- one assertion may support an optional governed provisional participant assignment;
+- blank or unresolved values remain preserved through the source record and do not create artificial participant entities.
+
+**Accepted rules:**
+
+- raw participant labels are source facts, not verified people;
+- textual normalisation alone does not authorise identity merging;
+- an unresolved label remains unresolved rather than being attached to a generic `unknown` participant.
+
+**Unresolved design questions:** Source-specific handling for future roles such as breeder, agent or stable representative will be considered only when those fields are introduced.
+
+### 11. Provisional participant identity
+
+**Grain:** One governed source-internal identity for a jockey or trainer where available evidence supports the link.
+
+**Status:** Optional governed interpretation.
+
+**Candidate identifier:** Independent project-assigned technical identifier.
+
+**Identifier scope:** Current governed source population and participant-governance release. Identity remains role-scoped unless explicit evidence supports a cross-role equivalence.
+
+**Required lineage and evidence:**
+
+- every linked raw participant-label assertion and runner record;
+- participant role;
+- accepted display label and known source-presented variants;
+- decision method and evidence;
+- governance release;
+- resolution status;
+- confidence and review status where applicable;
+- external identifiers only where independently verified and recorded with provenance.
+
+**Known uncertainty:** The project has not confirmed the real-world identity behind many jockey and trainer labels. A provisional participant identity is not automatically an official licensing identity or a provider-independent person record.
+
+**Expected relationships:**
+
+- one provisional participant identity may receive many governed label assignments;
+- a raw participant-label assertion may have zero or one accepted provisional identity assignment within one governance release;
+- unresolved or competing candidate relationships remain separate from accepted assignments;
+- the same normalised label may remain split across provisional identities where evidence does not support a merge.
+
+**Accepted rules:**
+
+- provisional participant identities are created only where the governed evidence supports them;
+- no participant identity is created merely to eliminate a null or unresolved label;
+- provisional identities must not be presented as official or globally verified people;
+- raw labels remain unchanged after a provisional assignment is made.
+
+**Unresolved design questions:**
+
+- how future official licence or registration identifiers should relate to provisional participant identities;
+- whether and when cross-role person identity should be governed;
+- how participant identities from another provider should be reconciled.
+
+### 12. Runner-to-participant-role assignment
+
+**Grain:** One governed assignment of one runner record's participant-role assertion to one provisional participant identity under one accepted governance release.
+
+**Status:** Governed relationship, not immutable source fact.
+
+**Candidate identifier:** Runner record plus participant role plus governance release, supported by an independent relationship identifier if required by the later physical design.
+
+**Identifier scope:** Governance-release-scoped.
+
+**Required lineage and evidence:** Runner record, raw participant-label assertion, participant role, provisional participant identity where accepted, assignment method, evidence, status, confidence where applicable and governing output/reference version.
+
+**Known uncertainty:** Later authoritative evidence may change an assignment. Previous accepted states must remain reconstructable and must not be silently overwritten.
+
+**Expected relationships:**
+
+- a runner record has zero or one accepted provisional identity assignment for each participant role within one governance release;
+- one provisional participant identity may be assigned to many runner records;
+- unresolved candidate relationships may be retained without becoming accepted assignments;
+- analyses may use raw participant labels where identity continuity is unnecessary.
+
+**Accepted rule:** The governed link is optional. Absence of a verified or provisional identity must not prevent preservation or use of the runner record.
+
+**Unresolved design questions:** The detailed amendment and effective-version mechanism remains deferred to the later Phase 3 history-design task.
+
+## Runner record and ownership-composition distinction
+
+### 13. Raw ownership-composition assertion
+
+**Grain:** The exact complete owner label supplied for one source record and inherited by its runner record.
+
+**Status:** Immutable source assertion.
+
+**Candidate identifier:** The supporting source record plus the raw owner field; no individual owner identity is derived directly from the text.
+
+**Identifier scope:** Source-record-scoped.
+
+**Required lineage and evidence:** Source version, source relation, source record, exact raw owner value, punctuation, ordering, separators and original storage state.
+
+**Known uncertainty:** An owner label may represent one person, several people, a partnership, syndicate, company, stud, club or another organisation. Apparent separators and ordering do not reliably prove component membership or legal identity.
+
+**Expected relationships:**
+
+- one runner record preserves the complete source-presented owner assertion where populated;
+- many runner records may share identical raw owner text without thereby establishing a verified owner or ownership group;
+- the complete assertion may support an optional provisional ownership-composition assignment;
+- any later component-level identities remain separate governed interpretations.
+
+**Accepted rules:**
+
+- the whole source-presented ownership composition is the primary assertion;
+- raw owner text must not be automatically split into individual people or organisations;
+- reordering, punctuation changes or normalisation alone do not prove composition equivalence;
+- unresolved owner labels remain unresolved rather than creating artificial owner entities.
+
+**Unresolved design questions:** Whether particular source syntaxes can later support governed component parsing after separate validation.
+
+### 14. Provisional ownership composition
+
+**Grain:** One governed source-internal ownership composition, treated as a complete composition, where evidence supports linking source-presented owner assertions.
+
+**Status:** Optional governed interpretation.
+
+**Candidate identifier:** Independent project-assigned technical identifier.
+
+**Identifier scope:** Current governed source population and ownership-governance release. It is not automatically an official registered ownership entity.
+
+**Required lineage and evidence:**
+
+- every linked raw ownership-composition assertion and runner record;
+- accepted display label and source-presented variants;
+- composition decision method;
+- governance release;
+- resolution status;
+- evidence, confidence and review status where applicable;
+- constituent participant or organisation identities only where separately confirmed and governed.
+
+**Known uncertainty:** Ownership can change over time, and labels that look similar may represent different compositions. A syndicate or partnership name may itself be the ownership entity rather than a list of underlying members.
+
+**Expected relationships:**
+
+- one provisional ownership composition may be assigned to many runner records;
+- one raw ownership-composition assertion may have zero or one accepted composition assignment within one governance release;
+- one composition may later relate to zero or more separately governed constituent identities;
+- unresolved or competing composition candidates remain separate from accepted assignments.
+
+**Accepted rules:**
+
+- ownership-composition identity applies to the complete composition, not automatically to each apparent name within it;
+- no individual owner person or organisation is created from unverified string parsing;
+- raw owner labels remain unchanged after a governed composition assignment;
+- provisional compositions must not be presented as official or globally verified ownership registrations.
+
+**Unresolved design questions:**
+
+- whether and how constituent ownership members should later be represented;
+- how ownership changes and effective periods should be modelled;
+- how official registered-owner evidence should relate to provisional compositions;
+- how compositions from another provider should be reconciled.
+
+### 15. Runner-to-ownership-composition assignment
+
+**Grain:** One governed assignment of one runner record's raw ownership-composition assertion to one provisional ownership composition under one accepted governance release.
+
+**Status:** Governed relationship, not immutable source fact.
+
+**Candidate identifier:** Runner record plus governance release, supported by an independent relationship identifier if required by the later physical design.
+
+**Identifier scope:** Governance-release-scoped.
+
+**Required lineage and evidence:** Runner record, raw ownership-composition assertion, provisional ownership composition where accepted, assignment method, evidence, status, confidence where applicable and governing output/reference version.
+
+**Known uncertainty:** Later evidence may change whether two owner labels represent the same composition. Previous accepted states must remain reconstructable rather than being silently overwritten.
+
+**Expected relationships:**
+
+- a runner record has zero or one accepted provisional ownership-composition assignment within one governance release;
+- one provisional ownership composition may receive many runner-record assignments;
+- unresolved candidate relationships may be retained without becoming accepted assignments;
+- analyses that do not require ownership continuity may use raw owner labels without implying verified ownership identity.
+
+**Accepted rule:** Ownership identity remains optional and composition-level. Failure to resolve it must not prevent preservation or analysis of the runner record.
+
+**Unresolved design questions:** The detailed amendment and effective-version mechanism remains deferred to the later Phase 3 history-design task.
+
 ## Source race occurrence and race-time distinction
 
-### 10. Source race occurrence
+### 16. Source race occurrence
 
 **Grain:** One race as represented within one exact source version.
 
@@ -349,7 +550,7 @@ Raw `race_name` remains a required validation attribute.
 
 **Unresolved design questions:** Cross-version and cross-provider race reconciliation when another actual source version or provider becomes available.
 
-### 11. Governed race-time decision
+### 17. Governed race-time decision
 
 **Grain:** One governed temporal interpretation for one source race occurrence.
 
@@ -421,6 +622,12 @@ The inventory currently establishes:
 - raw horse-label assertions;
 - provisional horse occurrences;
 - governed runner-to-horse-occurrence assignments;
+- raw jockey and trainer label assertions;
+- optional provisional participant identities;
+- governed runner-to-participant-role assignments;
+- raw ownership-composition assertions;
+- optional provisional ownership compositions;
+- governed runner-to-ownership-composition assignments;
 - source race occurrences;
 - governed race-time separation.
 
@@ -430,7 +637,8 @@ It does not yet define:
 - physical key types;
 - cross-version race reconciliation;
 - official or provider-independent horse identity;
-- participant or ownership entity detail;
+- official or provider-independent participant identity;
+- verified constituent owner identities;
 - amendment-history implementation;
 - import-manifest structure;
 - validation-evidence record structure;
