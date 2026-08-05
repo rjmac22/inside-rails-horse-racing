@@ -31,20 +31,14 @@ The candidate provisional race key is `date + course + off`. The raw SQLite data
 
 The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
-Notebook 08 retains one governed source anomaly: the standalone starting-price value `F` remains unresolved rather than being silently normalised. The source validator passes only when the exact unresolved population remains `{'F': 1}`.
+Retained governed limits include:
 
-Notebook 19 retains five deliberately unresolved horse/pedigree transitions pending the mandatory authority-response gate. Notebook 20 retains 18 unresolved connection blanks after 28 confirmed supplementations.
+- Notebook 08 preserves the lone unresolved starting-price value `F`;
+- Notebook 19 preserves one unresolved authority-dependent transition for `Runninsonofagun (IRE)`;
+- Notebook 20 preserves 18 unresolved connection blanks after 28 confirmed supplementations;
+- Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
 
-Notebook 21 established that substantive `comment` values are generally runner-level English-language descriptions of race position and performance, with strong jurisdiction- and feed-dependent coverage differences. Exact raw text remains preserved; `A`, `B` and `V` remain unresolved; no general narrative parser is authorised.
-
-Notebook 21 baselines:
-
-- 340,394 empty-string comments;
-- 1,510,891 populated comments;
-- 1,426,745 distinct populated values;
-- 238 probable-placeholder or unresolved-code rows;
-- 1,510,653 substantive-text rows;
-- 0 SQL nulls.
+Notebook 11 now has a durable source-to-output builder and independent validator for all 189,043 provisional races. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions. Unsupported future values or changed populations fail closed for investigation.
 
 ### Participant identity programme — consolidated Notebook 22
 
@@ -67,39 +61,16 @@ Governed outcomes:
 
 The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22, so no separate Notebook 23 is required.
 
-Focused test evidence on 4 August 2026:
+## Validation history
 
-```text
-14 passed in 0.61s
-```
-
-Final strengthened source-wide validator evidence on 4 August 2026:
-
-```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
-trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
-owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
-participant identity validation: PASS
-```
-
-The final closeout audit added the direct jockey mapping and strengthened the validator to enforce exact candidate closure, decisive external provenance, unresolved preservation and the exact two-row accepted mapping.
-
-## End-of-source-field-series validation
-
-Final local validation after Notebook 21 on 4 August 2026:
+The end-of-source-field-series validation on 4 August 2026 passed:
 
 ```text
 256 passed in 0.96s
+ALL 26 THEN-DISCOVERED VALIDATORS PASSED
 ```
 
-All 26 then-discovered `scripts/validate_*.py` validators passed, including complete source-wide checks over the immutable 1,851,285-row population.
-
-The sweep found and repaired two integration defects:
-
-- a sub-minor-unit Great Britain prize value fell through to `currency_unresolved` instead of `invalid`;
-- the source-field loader did not yet allow the explicit later-notebook pending-validation status.
-
-The field-governance registers were then reconciled. Final status totals are:
+The field-governance registers reconciled to:
 
 ```text
 closed: 34
@@ -109,24 +80,35 @@ preserve: 2
 
 All 37 source fields require raw preservation and match the SQLite names, order and declared types.
 
-A new full repository suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
+The later targeted cross-notebook audit found and repaired bounded implementation defects involving stale closeout records, provenance enforcement, missing usable outputs, exact decision closure, correction lineage, source-wide validators and canonical race-time regeneration.
+
+All individual audit repair units have been accepted and consolidated on `audit/retrospective-implementation-integration`. One complete integrated test and validator sweep remains before the audit branch is finally closed.
+
+## Database admission rule
+
+Every future database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
+
+> No validated output, no database write. No partial success. The last known-good database remains intact.
+
+Candidate outputs must be built away from the live database, validated source-wide, persisted and read back, loaded transactionally into temporary or replacement structures, and validated again after load. Unknown or changed cases must fail closed, remain explicitly unresolved or be quarantined; they must never be silently guessed or partially loaded.
 
 ## Durable project controls
 
 See:
 
 - `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
+- `docs/CROSS_NOTEBOOK_IMPLEMENTATION_COMPLETENESS_AUDIT.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
+- `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
 - `docs/PROJECT_PLAN.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
+- `docs/NOTEBOOK_11_CLOSEOUT.md`;
 - `docs/NOTEBOOK_22_CLOSEOUT.md`;
 - `docs/PARTICIPANT_IDENTITY_INTEGRATION.md`.
 
 ## Next bounded action
 
-Complete the mandatory Notebook 19 authority-response gate.
-
-Once that gate is recorded, proceed to entity and key design using the governed race, runner, horse, jockey, trainer and ownership identity requirements.
+Run the complete repository test suite and every applicable independent validator from the integrated audit branch. Reconcile the final evidence in the audit register, README and project plan, then proceed to entity and key design.
 
 ## Working method
 
