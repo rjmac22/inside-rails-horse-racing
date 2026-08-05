@@ -4,9 +4,11 @@
 
 The source fields `or`, `rpr` and `ts` are runner-level ratings with distinct meanings, producers and timing. They must remain separate throughout ingestion, storage and analysis.
 
-- `or`: official pre-race handicap mark applicable to the runner for the race.
-- `rpr`: retrospective and potentially revisable Racing Post performance rating.
+- `or`: official pre-race handicap mark applicable to the runner for the race;
+- `rpr`: retrospective and potentially revisable Racing Post performance rating;
 - `ts`: retrospective Racing Post speed figure for the completed performance.
+
+These meanings are governed by the exact publisher-reference records `NB18-OR-0001`, `NB18-RPR-0001` and `NB18-TS-0001` in `data/reference/manual_verifications.csv`.
 
 ## Required columns
 
@@ -71,23 +73,39 @@ After the exact invalid-RPR exclusion:
 
 These ranges are regression baselines for this immutable source, not universal validity limits for future feeds.
 
-## Evidence and validation
+## Semantic evidence contract
 
-Permanent publisher-reference records:
+The exact three-record partition is:
 
-- `NB18-OR-0001`;
-- `NB18-RPR-0001`;
-- `NB18-TS-0001`.
+- `NB18-OR-0001`: confirmed publisher reference; `reference_enrichment`;
+- `NB18-RPR-0001`: confirmed publisher reference; `reference_enrichment`;
+- `NB18-TS-0001`: confirmed publisher reference; `reference_enrichment`.
 
-Focused implementation tests:
+All three must retain:
 
-- `tests/test_ratings.py`.
+- subject type `source_value`;
+- their exact source field and raw token;
+- the governed semantic statement;
+- publisher-reference type and locator;
+- evidence access date `2026-08-01`;
+- high confidence;
+- governing notebook `18`;
+- nonblank notes.
 
-Independent source-wide validation:
+A generic manual-register row count does not protect these claims. `scripts/validate_ratings.py` now enforces the exact IDs, semantics and provenance before validating source availability and ranges.
 
-- `scripts/validate_ratings.py`.
+## Validation commands
+
+```bash
+PYTHONPATH=src .venv/bin/python -m pytest tests/test_ratings.py
+PYTHONPATH=src .venv/bin/python scripts/validate_ratings.py
+```
+
+The validator must pass both the semantic-evidence checks and the complete immutable-source partition before ratings are integrated.
 
 The manual-verification register remains independently governed by:
 
-- `tests/test_manual_verifications.py`;
-- `scripts/validate_manual_verifications.py`.
+```bash
+PYTHONPATH=src .venv/bin/python -m pytest tests/test_manual_verifications.py
+PYTHONPATH=src .venv/bin/python scripts/validate_manual_verifications.py
+```
