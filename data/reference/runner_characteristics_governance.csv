@@ -1,0 +1,4 @@
+source_field,source_meaning,safe_derived_treatment,unresolved_or_unsafe_treatment,status
+a ge,Source-recorded runner age stored as an integer,Preserve the exact integer and expose it as source-recorded age,Do not infer official eligibility or silently correct anomalous ages,confirmed_source_integer_contextual_semantics
+sex,Source-presented runner sex code,Normalise C F G H M and R through NB17-SEX-0001 and apply B or BB corrections only to the exact verified runner lineage,Do not globally map B or BB or infer sex from colour wording,confirmed_reference_with_exact_corrections
+hg,Source-presented headgear or equipment shorthand,Preserve raw text and decompose only the governed component vocabulary while retaining order and suffix,Do not interpret blank as no equipment or accept unseen tokens and suffixes,confirmed_parser_with_source_specific_component
