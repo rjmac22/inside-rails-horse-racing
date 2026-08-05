@@ -116,10 +116,10 @@ Ambiguous or nonexistent London daylight-saving times remain explicitly classifi
 The settled hierarchy is:
 
 1. **course-local dead-of-night rejection** — select the only branch that does not place the complete meeting between midnight and 05:59 course-local;
-2. **stable post-boundary course profile** — where at least five explicit meetings exist, select a branch only when it remains uniquely compatible across every governed margin of 60, 90, 120 and 180 minutes;
+2. **stable post-boundary course profile** — only for meetings where both London candidate branches are valid, and where at least five explicit meetings exist, select a branch only when it remains uniquely compatible across every governed margin of 60, 90, 120 and 180 minutes;
 3. otherwise retain the race unresolved.
 
-The stable profile is evidence from the current source population, not a universal racing-hours rule. A decision must be stable across all four margins before it is accepted.
+DST-edge meetings with an ambiguous or nonexistent candidate are not eligible for profile-based selection. The stable profile is evidence from the current source population, not a universal racing-hours rule. A decision must be stable across all four margins before it is accepted.
 
 ### Post-boundary construction
 
@@ -155,7 +155,7 @@ These are regression baselines for the immutable current source. They must not b
 - deterministic reconstruction helpers: `src/inside_rails/race_times.py`;
 - source-to-output orchestration, persistence and reload: `src/inside_rails/race_time_pipeline.py`;
 - raw clock helpers: `src/inside_rails/off_time.py`;
-- focused tests: `tests/test_off_time.py` and `tests/test_race_time_pipeline.py`;
+- focused tests: `tests/test_off_time.py`, `tests/test_race_time_pipeline.py` and `tests/test_race_time_pipeline_dst_regression.py`;
 - source builder: `scripts/build_race_time_governance.py`;
 - independent output validator: `scripts/validate_race_times.py`;
 - raw clock validator: `scripts/validate_off_time.py`.
@@ -234,9 +234,11 @@ For a new source snapshot:
 ```bash
 PYTHONPATH=src .venv/bin/python -m pytest \
   tests/test_off_time.py \
-  tests/test_race_time_pipeline.py
+  tests/test_race_time_pipeline.py \
+  tests/test_race_time_pipeline_dst_regression.py
 
-PYTHONPATH=src .venv/bin/python scripts/validate_off_time.py
+PYTHONPATH=src .venv/bin/python scripts/validate_off_time.py \
+  data/raw/form_2015-present/form_2015-present/raceform.db
 
 PYTHONPATH=src .venv/bin/python \
   scripts/build_race_time_governance.py
