@@ -517,9 +517,216 @@ The current participant roles in scope are jockey and trainer. The raw owner fie
 
 **Unresolved design questions:** The detailed amendment and effective-version mechanism remains deferred to the later Phase 3 history-design task.
 
+## Source course assertion and racecourse context distinction
+
+### 16. Raw course-label assertion
+
+**Grain:** The exact source-presented `course` value attached to one source race occurrence through its supporting source records.
+
+**Status:** Immutable source assertion.
+
+**Candidate identifier:** Source version, source race occurrence and source field; no permanent racecourse identity is derived directly from the label.
+
+**Identifier scope:** Source-race-occurrence-scoped.
+
+**Required lineage and evidence:** Source version, supporting source records, exact raw `course` value, source-presented jurisdiction context where available, race date and original storage state.
+
+**Known uncertainty:** A course may change name, use sponsorship naming, reuse an historical name, relocate, close, reopen or be confused with a same-named course in another jurisdiction.
+
+**Expected relationships:**
+
+- every current source race occurrence preserves exactly one raw course-label assertion;
+- many source race occurrences may share the same raw label without thereby proving one venue, site or configuration;
+- a raw course-label assertion may support an optional governed course-context assignment;
+- same-named labels in different jurisdictions remain separate candidates unless explicit evidence establishes another relationship.
+
+**Accepted rules:**
+
+- the raw course label remains immutable source evidence;
+- `course label + jurisdiction + relevant date` is matching evidence, not a permanent natural key;
+- textual normalisation, abbreviation expansion or sponsorship-name removal alone does not authorise a merge.
+
+**Unresolved design questions:** Source-specific handling where jurisdiction must itself be inferred rather than supplied.
+
+### 17. Governed racecourse venue
+
+**Grain:** One continuing real-world racing venue or institutional course identity whose continuity may span verified name changes and, in exceptional cases, changes of physical site.
+
+**Status:** Governed real-world entity with explicitly bounded continuity.
+
+**Candidate identifier:** Independent project-assigned technical identifier.
+
+**Identifier scope:** Project-wide, subject to governed historical amendment rather than source-label scope.
+
+**Required lineage and evidence:**
+
+- accepted venue name and verified historical or sponsored names;
+- jurisdiction and relevant racing authority;
+- evidence supporting continuity through each name or status change;
+- operational dates where known;
+- relationships to physical sites and course configurations;
+- closure, reopening, relocation, predecessor or successor evidence where applicable;
+- governance release, decision status and confidence.
+
+**Known uncertainty:** Institutional continuity is not always the same as physical continuity. A named racing organisation may move, rebuild or temporarily stage racing elsewhere.
+
+**Expected relationships:**
+
+- one racecourse venue may have many verified name assertions over time;
+- one venue may use one or more physical sites over its history;
+- one physical site may host more than one institutional venue in exceptional cases;
+- one venue may have many course configurations or configuration eras;
+- predecessor, successor or temporary-host relationships remain explicit rather than being represented as unconditional identity merges.
+
+**Accepted rules:**
+
+- a verified naming or sponsorship change may remain the same venue;
+- a change of physical site does not automatically preserve or end venue identity; the continuity decision must be explicit and evidenced;
+- same-named courses in different jurisdictions are never merged automatically;
+- the venue identifier answers an institutional-continuity question, not every course-equivalence question.
+
+**Unresolved design questions:** The exact evidence threshold for treating a relocated institution as the same venue rather than a predecessor and successor pair.
+
+### 18. Racecourse physical site
+
+**Grain:** One geographically distinct real-world location at which racing is staged during a defined period.
+
+**Status:** Governed geographical entity.
+
+**Candidate identifier:** Independent project-assigned technical identifier.
+
+**Identifier scope:** Project-wide and location-specific.
+
+**Required lineage and evidence:**
+
+- verified coordinates or bounded location description;
+- jurisdiction, locality and timezone evidence;
+- effective dates where use of the site changed;
+- source and confidence for location attributes;
+- related venue or venues;
+- temporary, replacement or relocated-use status where applicable.
+
+**Known uncertainty:** Coordinates, boundaries and published addresses can vary in precision. A course may occupy the same broad site while its racing surface or layout changes materially.
+
+**Expected relationships:**
+
+- one racecourse venue may be associated with several physical sites over time;
+- one physical site may support several course configurations, including simultaneous straight, round, inner, outer, hurdle or chase layouts;
+- weather, altitude, geography and travel analysis should normally resolve at physical-site level rather than venue-name level;
+- a temporary relocation links the race to the temporary physical site even where institutional venue continuity is retained.
+
+**Accepted rules:**
+
+- physical location is separate from venue name and institutional continuity;
+- a genuine move to another site creates a distinct physical-site identity;
+- site-level analysis must not assume that all races under one venue name occurred at one unchanged location;
+- location and timezone attributes require provenance and effective periods where they can change.
+
+**Unresolved design questions:** The precision standard required for coordinates and site boundaries in later geographical and weather studies.
+
+### 19. Course configuration era
+
+**Grain:** One materially consistent racing layout, surface or course configuration at one physical site during a defined effective period.
+
+**Status:** Governed analysis context.
+
+**Candidate identifier:** Independent project-assigned technical identifier.
+
+**Identifier scope:** Physical-site-and-effective-period-scoped, with separate identities where simultaneous materially different layouts exist.
+
+**Required lineage and evidence:**
+
+- physical site and related venue;
+- configuration or layout label where available;
+- racing code and surface where relevant;
+- geometry, direction, turns, straight length, obstacles, rails, drainage or other material design attributes where established;
+- effective start and end dates or bounded uncertainty;
+- evidence for openings, closures, redesigns, resurfacing or material alterations;
+- governance release, status and confidence.
+
+**Known uncertainty:** Not every alteration is analytically material, and the threshold depends on the study. Some changes affect draw, pace, going or distance comparability while others do not.
+
+**Expected relationships:**
+
+- one physical site may have many successive configuration eras;
+- one physical site may have several simultaneous configurations or named layouts;
+- one venue may therefore relate to several configurations at the same time;
+- a material redesign may end one configuration era and begin another without creating a new venue or physical site;
+- configuration-level evidence may remain unresolved even when venue and site are known.
+
+**Accepted rules:**
+
+- a major redesign can remain the same venue and site while becoming a different configuration era;
+- straight, round, inner, outer, hurdle, chase or other materially distinct layouts may be treated separately where the evidence and analysis require it;
+- minor changes are not forced into new configuration identities unless a governed study establishes material analytical impact;
+- configuration identity must carry effective-period evidence rather than being treated as timeless.
+
+**Unresolved design questions:** The field-specific materiality rules that determine when rails, drainage, obstacle, surface or geometry changes require a new configuration era.
+
+### 20. Source-race-to-course-context assignment
+
+**Grain:** One governed assignment of one source race occurrence to its best-supported venue, physical site and course configuration context under one accepted governance release.
+
+**Status:** Governed relationship, not immutable source fact.
+
+**Candidate identifier:** Source race occurrence plus governance release, supported by an independent relationship identifier if required by the later physical design.
+
+**Identifier scope:** Governance-release-scoped.
+
+**Required lineage and evidence:**
+
+- source race occurrence and raw course-label assertion;
+- race date and jurisdiction evidence;
+- assigned venue where resolved;
+- assigned physical site where resolved;
+- assigned configuration era where resolved;
+- assignment method, evidence, confidence and review status;
+- unresolved or competing candidates;
+- governing reference-data version.
+
+**Known uncertainty:** Resolution may be partial. A venue may be confidently known while the physical site or exact configuration remains unresolved.
+
+**Expected relationships:**
+
+- each source race occurrence has zero or one accepted venue assignment within one governance release;
+- each source race occurrence has zero or one accepted physical-site assignment within one governance release;
+- each source race occurrence has zero or one accepted configuration-era assignment within one governance release;
+- unresolved finer-grained context does not invalidate a supported broader assignment;
+- later evidence may amend an assignment while retaining the historical accepted state.
+
+**Accepted rules:**
+
+- course context may be resolved at different levels rather than forced into one all-purpose course identity;
+- raw course labels are never overwritten by governed venue, site or configuration assignments;
+- analyses must use the narrowest supported course level needed for their question and must not silently substitute venue equivalence for site or configuration equivalence;
+- failure to resolve a configuration must not prevent valid venue-level or site-level analysis.
+
+**Unresolved design questions:** The detailed amendment and effective-version mechanism remains deferred to the later Phase 3 history-design task.
+
+## Analysis-dependent course equivalence
+
+The phrase `same course` is not treated as one universal database fact. It is a study-level equivalence decision made from separately preserved course entities.
+
+The expected analytical levels are:
+
+- **venue continuity:** use when the question concerns the continuing institution, long-run operation or published course identity;
+- **physical-site continuity:** use for geography, weather, altitude, travel and other location-dependent analysis;
+- **configuration-era continuity:** use for draw, pace, distance, going, surface, obstacle or layout-sensitive analysis;
+- **exact supported layout:** use where a study has evidence that a more specific simultaneous layout distinction is material.
+
+A study must declare the course-equivalence level it uses and the unresolved cases it excludes or retains. The database must not collapse venue, site and configuration history into one permanent course label merely for convenience.
+
+Examples of accepted treatment are:
+
+- a verified sponsorship rename may be the same venue, site and configuration;
+- a major redesign may be the same venue and site but a new configuration era;
+- a move to a different location creates a new physical site and requires an explicit decision on institutional venue continuity;
+- a temporary relocation may retain institutional continuity while assigning affected races to a different physical site;
+- simultaneous straight, round, inner, outer or code-specific layouts may be different configurations without being different venues.
+
 ## Source race occurrence and race-time distinction
 
-### 16. Source race occurrence
+### 21. Source race occurrence
 
 **Grain:** One race as represented within one exact source version.
 
@@ -543,6 +750,7 @@ Raw `race_name` remains a required validation attribute.
 
 - one source race occurrence contains one or more runner records;
 - every current runner record belongs to exactly one source race occurrence;
+- one source race occurrence may have one governed course-context assignment resolved at venue, physical-site and configuration levels;
 - one source race occurrence may have one governed race-time decision containing resolved or unresolved interpretations;
 - possible cross-version or cross-provider real-world race links are deferred.
 
@@ -550,7 +758,7 @@ Raw `race_name` remains a required validation attribute.
 
 **Unresolved design questions:** Cross-version and cross-provider race reconciliation when another actual source version or provider becomes available.
 
-### 17. Governed race-time decision
+### 22. Governed race-time decision
 
 **Grain:** One governed temporal interpretation for one source race occurrence.
 
@@ -570,7 +778,7 @@ Raw `race_name` remains a required validation attribute.
 - decision method;
 - confidence;
 - resolution status;
-- course and timezone reference versions;
+- course, physical-site and timezone reference versions;
 - preserved unresolved candidates.
 
 **Known uncertainty:** The current validated output resolves 169,465 source race occurrences and preserves 19,578 unresolved. A resolved value remains a governed interpretation rather than a component of immutable race identity.
@@ -588,7 +796,7 @@ A source race occurrence is not yet a verified provider-independent real-world r
 When a later source version or another provider becomes available, possible equivalence may be assessed using evidence such as:
 
 - race date;
-- governed course identity;
+- governed venue, physical-site and course-configuration context;
 - race name;
 - runners or horse labels;
 - supplied provider identifiers as supporting evidence only;
@@ -628,6 +836,12 @@ The inventory currently establishes:
 - raw ownership-composition assertions;
 - optional provisional ownership compositions;
 - governed runner-to-ownership-composition assignments;
+- raw course-label assertions;
+- governed racecourse venues;
+- physical racecourse sites;
+- course configuration eras;
+- governed source-race-to-course-context assignments;
+- analysis-dependent course equivalence;
 - source race occurrences;
 - governed race-time separation.
 
@@ -639,6 +853,8 @@ It does not yet define:
 - official or provider-independent horse identity;
 - official or provider-independent participant identity;
 - verified constituent owner identities;
+- complete historical course-reference coverage;
+- field-specific configuration-change materiality rules;
 - amendment-history implementation;
 - import-manifest structure;
 - validation-evidence record structure;
