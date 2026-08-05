@@ -35,26 +35,54 @@ def test_common_runner_sex_codes_are_normalised() -> None:
         assert result["verification_id"] == "NB17-SEX-0001"
 
 
-def test_source_sex_anomalies_require_exact_verification_id() -> None:
+def test_source_sex_anomalies_require_exact_verification_and_lineage() -> None:
+    par_coeur = normalise_runner_sex(
+        "BB",
+        verification_id="NB17-SEX-0002",
+        source_date="2017-10-15",
+        source_course="Cologne (GER)",
+        source_off="1:35",
+        source_horse="Par Coeur (GER)",
+    )
+    assert par_coeur["normalised_sex"] == "gelding"
+    assert par_coeur["interpretation_status"] == "verified_source_correction"
+
+    la_venezolana = normalise_runner_sex(
+        "B",
+        verification_id="NB17-SEX-0003",
+        source_date="2019-11-29",
+        source_course="Gulfstream Park (USA)",
+        source_off="8:30",
+        source_horse="La Venezolana (VEN)",
+    )
+    assert la_venezolana["normalised_sex"] == "filly"
+    assert la_venezolana["interpretation_status"] == "verified_source_correction"
+
+
+def test_source_sex_anomaly_rejects_reused_id_or_wrong_lineage() -> None:
     assert normalise_runner_sex("B")["interpretation_status"] == "unresolved"
     assert normalise_runner_sex("BB")["interpretation_status"] == "unresolved"
     assert (
-        normalise_runner_sex("B", verification_id="NB17-SEX-0002")[
-            "interpretation_status"
-        ]
+        normalise_runner_sex(
+            "B",
+            verification_id="NB17-SEX-0003",
+            source_date="2019-11-29",
+            source_course="Gulfstream Park (USA)",
+            source_off="8:30",
+            source_horse="Different Horse (USA)",
+        )["interpretation_status"]
         == "unresolved"
     )
     assert (
-        normalise_runner_sex("B", verification_id="NB17-SEX-0003")[
-            "normalised_sex"
-        ]
-        == "filly"
-    )
-    assert (
-        normalise_runner_sex("BB", verification_id="NB17-SEX-0002")[
-            "normalised_sex"
-        ]
-        == "gelding"
+        normalise_runner_sex(
+            "B",
+            verification_id="NB17-SEX-0002",
+            source_date="2019-11-29",
+            source_course="Gulfstream Park (USA)",
+            source_off="8:30",
+            source_horse="La Venezolana (VEN)",
+        )["interpretation_status"]
+        == "unresolved"
     )
 
 
