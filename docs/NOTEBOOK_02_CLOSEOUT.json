@@ -19,7 +19,7 @@
     "scripts/validate_source_fields.py",
     "scripts/validate_field_governance.py"
   ],
-  "integration_document": "docs/SOURCE_FIELD_GOVERNANCE_DATABASE_INTEGRATION.md",
+  "integration_document": "docs/FIELD_GOVERNANCE_DATABASE_INTEGRATION.md",
   "validation": {
     "clean_kernel_run_all": true,
     "governed_fields": 37,
