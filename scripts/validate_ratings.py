@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Independently validate the Notebook 18 ratings governance rules."""
+"""Independently validate Notebook 18 ratings data and semantic evidence."""
 
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import sqlite3
 from pathlib import Path
 
+from inside_rails.manual_verifications import load_manual_verifications
 from inside_rails.ratings import (
     INVALID_RPR_RAW_VALUE,
     INVALID_RPR_SOURCE_ROWID,
@@ -26,6 +28,28 @@ EXPECTED_RANGES = {
     "rpr": (1, 184),
     "ts": (1, 178),
 }
+EXPECTED_VERIFICATION_IDS = {
+    "NB18-OR-0001",
+    "NB18-RPR-0001",
+    "NB18-TS-0001",
+}
+EXPECTED_SEMANTIC_FACTS = {
+    "NB18-OR-0001": {
+        "source_field": "or",
+        "raw_source_value": "or",
+        "verified_value": "official handicap mark applicable to the horse for the race; a current pre-race handicap state used to allocate handicap weights",
+    },
+    "NB18-RPR-0001": {
+        "source_field": "rpr",
+        "raw_source_value": "rpr",
+        "verified_value": "retrospective Racing Post performance rating for the completed race; normally compiled after the race and potentially revised as later form changes the assessment",
+    },
+    "NB18-TS-0001": {
+        "source_field": "ts",
+        "raw_source_value": "ts",
+        "verified_value": "retrospective speed figure estimating how fast the horse ran in the completed race on that particular day",
+    },
+}
 
 
 def default_database() -> Path:
@@ -34,9 +58,63 @@ def default_database() -> Path:
     )
 
 
-def validate(database: Path) -> None:
+def default_manual_verifications() -> Path:
+    return Path("data/reference/manual_verifications.csv")
+
+
+def validate_semantic_evidence(path: Path) -> None:
+    all_rows = load_manual_verifications(path)
+    rows = tuple(
+        row
+        for row in all_rows
+        if row.verification_id.startswith("NB18-")
+    )
+    ids = {row.verification_id for row in rows}
+    if len(rows) != 3 or ids != EXPECTED_VERIFICATION_IDS:
+        raise AssertionError(
+            "Notebook 18 semantic evidence closure changed; "
+            f"missing={sorted(EXPECTED_VERIFICATION_IDS - ids)}, "
+            f"extra={sorted(ids - EXPECTED_VERIFICATION_IDS)}"
+        )
+    if Counter(row.verification_status for row in rows) != Counter({"confirmed": 3}):
+        raise AssertionError("all Notebook 18 semantic records must remain confirmed")
+    if Counter(row.database_action for row in rows) != Counter(
+        {"reference_enrichment": 3}
+    ):
+        raise AssertionError(
+            "all Notebook 18 semantic records must remain reference enrichments"
+        )
+
+    indexed = {row.verification_id: row for row in rows}
+    for verification_id, expected in EXPECTED_SEMANTIC_FACTS.items():
+        row = indexed[verification_id]
+        if row.subject_type != "source_value":
+            raise AssertionError(f"{verification_id}: subject_type must be source_value")
+        if row.governing_notebook != "18":
+            raise AssertionError(f"{verification_id}: governing_notebook must be 18")
+        if row.verification_status != "confirmed":
+            raise AssertionError(f"{verification_id}: verification must be confirmed")
+        if row.evidence_type != "publisher_reference":
+            raise AssertionError(f"{verification_id}: publisher evidence is required")
+        if row.evidence_accessed_date != "2026-08-01":
+            raise AssertionError(f"{verification_id}: evidence access date changed")
+        if row.confidence != "high" or not row.evidence_locator or not row.notes:
+            raise AssertionError(
+                f"{verification_id}: confidence, locator and notes must be preserved"
+            )
+        for field, expected_value in expected.items():
+            if getattr(row, field) != expected_value:
+                raise AssertionError(
+                    f"{verification_id}: {field} changed; "
+                    f"observed={getattr(row, field)!r}, expected={expected_value!r}"
+                )
+
+
+def validate(database: Path, manual_verifications: Path) -> None:
     if not database.exists():
         raise FileNotFoundError(f"Source database not found: {database}")
+
+    validate_semantic_evidence(manual_verifications)
 
     connection = sqlite3.connect(f"file:{database.resolve()}?mode=ro", uri=True)
     try:
@@ -78,8 +156,8 @@ def validate(database: Path) -> None:
                     SUM(CASE
                         WHEN NOT ({invalid_condition})
                          AND typeof({quoted}) = 'integer'
-                        THEN CAST({quoted} AS INTEGER)
-                    END IS NOT NULL) AS numeric_rows,
+                        THEN 1 ELSE 0
+                    END) AS numeric_rows,
                     MIN(CASE
                         WHEN NOT ({invalid_condition})
                          AND typeof({quoted}) = 'integer'
@@ -162,6 +240,8 @@ def validate(database: Path) -> None:
             f"unavailable={expected['unavailable']:,}; "
             f"invalid={expected['invalid']:,}; range={minimum}-{maximum}"
         )
+    print("  semantic evidence records: 3 confirmed publisher references")
+    print("  semantic evidence-to-field agreement: PASS")
 
 
 def main() -> None:
@@ -173,8 +253,14 @@ def main() -> None:
         default=default_database(),
         help="Path to the immutable Raceform SQLite source",
     )
+    parser.add_argument(
+        "--manual-verifications",
+        type=Path,
+        default=default_manual_verifications(),
+        help="Path to the permanent manual-verification register",
+    )
     args = parser.parse_args()
-    validate(args.database)
+    validate(args.database, args.manual_verifications)
 
 
 if __name__ == "__main__":
