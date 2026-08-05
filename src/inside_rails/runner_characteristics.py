@@ -19,9 +19,27 @@ SEX_CODE_MAP: dict[str, str] = {
     "R": "rig",
 }
 
-VERIFIED_SEX_CORRECTIONS: dict[tuple[str, str], str] = {
-    ("BB", "NB17-SEX-0002"): "gelding",
-    ("B", "NB17-SEX-0003"): "filly",
+# B and BB are not globally valid sex codes. The two accepted corrections are
+# bound to the exact immutable runner lineage reviewed in Notebook 17.
+VERIFIED_SEX_CORRECTIONS: dict[
+    tuple[str, str, str, str, str, str], str
+] = {
+    (
+        "BB",
+        "NB17-SEX-0002",
+        "2017-10-15",
+        "Cologne (GER)",
+        "1:35",
+        "Par Coeur (GER)",
+    ): "gelding",
+    (
+        "B",
+        "NB17-SEX-0003",
+        "2019-11-29",
+        "Gulfstream Park (USA)",
+        "8:30",
+        "La Venezolana (VEN)",
+    ): "filly",
 }
 
 HEADGEAR_COMPONENT_MAP: dict[str, str] = {
@@ -74,8 +92,17 @@ def normalise_runner_sex(
     raw_sex: Any,
     *,
     verification_id: str | None = None,
+    source_date: str | None = None,
+    source_course: str | None = None,
+    source_off: str | None = None,
+    source_horse: str | None = None,
 ) -> dict[str, Any]:
-    """Normalise an exact governed sex code or verification-backed anomaly."""
+    """Normalise a common code or one exact verification-backed anomaly.
+
+    Common codes are governed source vocabulary. Bounded corrections require
+    the permanent verification ID and the exact source race-and-runner lineage;
+    reusing a verification ID on another B or BB value remains unresolved.
+    """
 
     result: dict[str, Any] = {
         "raw_sex": raw_sex,
@@ -95,7 +122,15 @@ def normalise_runner_sex(
         )
         return result
 
-    corrected_value = VERIFIED_SEX_CORRECTIONS.get((raw_sex, verification_id or ""))
+    correction_key = (
+        str(raw_sex),
+        verification_id or "",
+        source_date or "",
+        source_course or "",
+        source_off or "",
+        source_horse or "",
+    )
+    corrected_value = VERIFIED_SEX_CORRECTIONS.get(correction_key)
     if corrected_value is not None:
         result.update(
             {
