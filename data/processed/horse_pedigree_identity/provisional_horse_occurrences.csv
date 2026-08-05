@@ -10,7 +10,7 @@ Alcala (FR),2,Alcala (FR)::02,1,4,2024-04-29,2025-01-21,3,4,F,0
 Alderley Charlie (GB),1,Alderley Charlie (GB)::01,2,12,2024-11-06,2026-05-20,4,6,G,0
 All Good (GB),1,All Good (GB)::01,1,1,2018-06-09,2018-06-09,4,4,F,0
 All Good (GB),2,All Good (GB)::02,1,2,2025-09-19,2025-10-14,2,2,F,0
-Almavillalobas (GB),1,Almavillalobas (GB)::01,2,9,2023-08-16,2026-05-07,3,6,F | M | M,1
+Almavillalobas (GB),1,Almavillalobas (GB)::01,2,9,2023-08-16,2026-05-07,3,6,F | M | M,0
 Amoretti (FR),1,Amoretti (FR)::01,1,1,2017-08-28,2017-08-28,13,13,H,0
 Amoretti (FR),2,Amoretti (FR)::02,1,2,2023-05-25,2024-04-16,2,3,C,0
 An Bhfuil Tu Reidh (IRE),1,An Bhfuil Tu Reidh (IRE)::01,1,6,2018-05-18,2019-04-25,2,3,G,0
@@ -132,7 +132,7 @@ Change Of Command (USA),1,Change Of Command (USA)::01,1,3,2015-02-21,2016-03-26,
 Change Of Command (USA),2,Change Of Command (USA)::02,1,1,2024-02-10,2024-02-10,3,3,C,0
 Circuit Breaker (GB),1,Circuit Breaker (GB)::01,1,4,2016-08-17,2016-11-11,3,3,G,0
 Circuit Breaker (GB),2,Circuit Breaker (GB)::02,1,22,2023-05-08,2026-05-08,3,6,G,0
-Colwyn Bay (FR),1,Colwyn Bay (FR)::01,2,2,2026-04-02,2026-05-01,7,7,G,1
+Colwyn Bay (FR),1,Colwyn Bay (FR)::01,2,2,2026-04-02,2026-05-01,7,7,G,0
 Confucius (IRE),1,Confucius (IRE)::01,1,6,2018-07-27,2018-10-12,2,2,C,0
 Confucius (IRE),2,Confucius (IRE)::02,1,2,2026-04-03,2026-05-09,2,2,C,0
 Crack Shot (IRE),1,Crack Shot (IRE)::01,1,10,2015-04-07,2016-02-18,3,4,C,0
@@ -161,7 +161,7 @@ Dewsbury (FR),1,Dewsbury (FR)::01,1,1,2015-10-24,2015-10-24,3,3,G,0
 Dewsbury (FR),2,Dewsbury (FR)::02,1,1,2024-12-23,2024-12-23,2,2,F,0
 Diamond Heart (GB),1,Diamond Heart (GB)::01,1,7,2016-01-08,2017-02-03,3,4,F,0
 Diamond Heart (GB),2,Diamond Heart (GB)::02,1,1,2023-02-25,2023-02-25,3,3,F,0
-Diamond Tipp (IRE),1,Diamond Tipp (IRE)::01,2,11,2024-07-05,2026-04-05,4,6,F | F | M,1
+Diamond Tipp (IRE),1,Diamond Tipp (IRE)::01,2,11,2024-07-05,2026-04-05,4,6,F | F | M,0
 Diligent (FR),1,Diligent (FR)::01,2,35,2017-06-05,2024-01-08,4,11,C | G | G,0
 Direct Approach (IRE),1,Direct Approach (IRE)::01,1,5,2015-01-29,2015-03-24,11,11,G,0
 Direct Approach (IRE),2,Direct Approach (IRE)::02,1,4,2025-08-23,2025-12-31,3,3,G,0
@@ -319,7 +319,7 @@ Kings Crown (FR),1,Kings Crown (FR)::01,1,4,2015-01-30,2015-09-21,3,3,C,0
 Kings Crown (FR),2,Kings Crown (FR)::02,1,3,2022-09-19,2024-12-12,2,4,C,0
 Kokomo (GB),1,Kokomo (GB)::01,1,7,2016-02-11,2016-08-24,5,5,M,0
 Kokomo (GB),2,Kokomo (GB)::02,1,7,2023-04-21,2023-11-18,3,3,F,0
-LAziza Des Places (FR),1,LAziza Des Places (FR)::01,2,10,2024-05-27,2026-05-26,3,5,F | F | M,1
+LAziza Des Places (FR),1,LAziza Des Places (FR)::01,2,10,2024-05-27,2026-05-26,3,5,F | F | M,0
 Lady V (IRE),1,Lady V (IRE)::01,1,5,2018-01-25,2019-03-26,4,5,F | M,0
 Lady V (IRE),2,Lady V (IRE)::02,1,2,2025-10-20,2026-05-23,2,3,F,0
 Ladys Choice (IRE),1,Ladys Choice (IRE)::01,1,4,2016-07-20,2016-10-15,3,3,F,0
