@@ -34,6 +34,16 @@ Established source population:
 - 37 source columns;
 - candidate provisional race key: `date + course + off`.
 
+## Database admission gate
+
+Every future staging, core or analytical database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
+
+The standing rule is:
+
+> No validated output, no database write. No partial success. The last known-good database remains intact.
+
+Candidate outputs must be built outside the live database, validated source-wide, persisted and read back, loaded transactionally into temporary or replacement structures, and validated again after load. Unknown or changed data must fail closed for investigation, remain explicitly unresolved or be quarantined; it must never be silently guessed, discarded or partially loaded.
+
 ## Phase 1 — Source understanding
 
 ### Notebooks 00–03
@@ -138,26 +148,6 @@ Retained controls:
 - unsupported automatic cross-role merging is prohibited;
 - participant-level publication or modelling must use the governed identity layer and state its limits.
 
-The complete repository test suite and all-validator sweep remain deferred until the next appropriate end-of-series or repair-branch gate.
-
-## Targeted cross-notebook implementation-completeness audit
-
-**Status: next operational gate before physical database construction.**
-
-This is a repository-level review of the existing notebook implementations, not a reopening or rerun of every notebook.
-
-The audit must check for the specific closure defects exposed by Notebook 22:
-
-1. accepted decisions that exist only in review or decision tables without a directly usable governed mapping or output;
-2. validators that prove only file existence or row counts without checking the governed decisions, partitions, exceptions and provenance they claim to protect;
-3. external evidence mentioned in notebooks or reports but not preserved with identifiers, locators, access dates, confidence and permitted actions;
-4. documentation claiming full closure where the implementation artifacts do not support the stated database consequence;
-5. accepted, unresolved and rejected populations that are not explicitly separated or could overlap in downstream joins.
-
-The audit should begin from the existing closeout documents, integration contracts, governed outputs, tests and validators. It must not rerun archival notebooks or recreate completed implementations unless a concrete defect is found.
-
-Any defect found should be repaired through one bounded change, focused validation and documented evidence. A clean audit should be recorded without manufacturing additional work.
-
 ## Mandatory pre-database authority gate — completed 5 August 2026
 
 **Status: completed.**
@@ -188,33 +178,27 @@ Focused test evidence:
 9 passed in 0.59s
 ```
 
-Independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs:
+Independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs.
 
-```text
-raw contradiction labels: 5573
-structured contradiction labels: 368
-structured pedigree rows: 96404
-structured pedigree groups: 741
-temporally separated horse labels: 350
-separated pedigree groups: 703
-governed transitions: 353
-Corrected: 91
-Different horse: 261
-Unresolved: 1
-provisional occurrences: 611
-Horse and pedigree identity validation passed.
-```
+## Targeted cross-notebook implementation-completeness audit
 
-The authority gate no longer blocks design work. Physical database construction remains gated by completion of the targeted cross-notebook implementation-completeness audit.
+**Status: all bounded repair units accepted; final integrated test and validator sweep pending.**
+
+The audit reviewed the existing notebook implementations without reopening their analytical investigations. It repaired stale closeout records, missing governed outputs, incomplete provenance enforcement, weak source-wide validation, correction-lineage gaps, an obsolete construction utility and the missing canonical race-time regeneration path.
+
+Notebook 11 was accepted after the full 189,043-race output built, wrote, reloaded and independently reconciled to the source with the exact settled totals of 169,465 resolved and 19,578 unresolved races.
+
+The repair branches have been consolidated on `audit/retrospective-implementation-integration`. The remaining audit gate is one complete repository test run, every applicable independent validator, and final status-document reconciliation from that integrated branch.
 
 ## Phase 3 — Entity and key design
 
-After the targeted cross-notebook implementation-completeness audit:
+Begin after the final integrated audit sweep passes:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
 - define amended-record versioning and reconciliation controls;
-- decide which unresolved relationships remain nullable or quarantined.
+- decide which unresolved relationships remain nullable or quarantined;
+- define the import manifest and validation-evidence record required by the database admission gate.
 
 ## Phase 4 — Target architecture
 
@@ -224,9 +208,11 @@ Only after the evidence base is sufficient:
 - select the physical database technology;
 - define staging, core and analytical schemas;
 - create tables, constraints and indexes;
-- implement repeatable ingestion;
+- implement repeatable fail-closed ingestion;
 - preserve raw source values and technical lineage;
-- add automated reconciliation and integrity tests.
+- build into temporary or versioned structures;
+- add automated source-to-output, cross-table and post-load reconciliation;
+- commit or atomically swap the new database only after every gate passes.
 
 ## Phase 5 — Analytical products and writing
 
