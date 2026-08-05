@@ -2,11 +2,13 @@
 
 ## Status
 
-**Archival analytical record; durable canonical-output repair prepared for local validation and review acceptance.**
+**Accepted on 5 August 2026 after local source-wide build, reload, focused-test and independent-validator evidence.**
 
 Notebook 11 established the temporal interpretation and the settled source-wide decision totals. The cross-notebook audit found that those 189,043 race-level decisions were not persisted in the repository and could not be regenerated through a default production workflow. The old validator exercised helper functions and enforced full totals only when an external file was supplied optionally.
 
 This repair adds the missing source-to-output implementation, focused tests, atomic persistence, typed reload and mandatory independent output validation. It does not change the analytical interpretation or select any previously unresolved race.
+
+Acceptance is conditional on fail-closed behaviour for future source snapshots: unfamiliar formats, missing governed context, changed populations or failed reconciliation must stop the workflow for investigation rather than be silently absorbed into a database.
 
 ## Bounded conclusion
 
@@ -80,20 +82,43 @@ The new pipeline:
 
 The independent validator then starts from the persisted output and reconciles it exactly to the immutable source and governed course reference.
 
+## Validation and acceptance evidence
+
+Local execution on 5 August 2026 established:
+
+- `tests/test_race_time_pipeline.py` plus `tests/test_race_time_pipeline_dst_regression.py`: **5 passed**;
+- `tests/test_off_time.py`: **9 passed**;
+- raw off-time validation: **1,851,285 source rows**, **1,380 distinct raw values**, **189,043 provisional races**, **0 unresolved raw values**;
+- full canonical build: **passed**;
+- persisted CSV write and typed reload: **passed**;
+- independent source-wide validator: **passed**;
+- exact source race and timezone reconciliation: **passed**;
+- resolved UTC, UK and course-local conversion agreement: **passed**;
+- expected method and population totals: **exactly reproduced**;
+- working tree after validation and cleanup: **clean**.
+
+The DST regression repair was evidence-led. The original notebook excluded 93 DST-edge meetings comprising 515 races from profile-based selection. Restoring that restriction removed the exact 515-race divergence and reproduced the settled notebook totals without weakening any threshold or changing any baseline.
+
+## Fail-closed source-update behaviour
+
+This implementation does not silently repair unsupported future data.
+
+- new or malformed raw clock forms fail `validate_off_time.py`;
+- missing course identities or IANA timezones stop canonical construction;
+- duplicate race keys stop canonical construction;
+- changed population or method totals fail the settled baseline checks;
+- invalid or missing selected timestamps fail integrity checks;
+- failed UTC, UK or course-local conversion agreement fails validation;
+- persisted output must reload and reconcile exactly to the immutable source;
+- the builder writes a generated CSV only and does not write into the source or target database.
+
+A new source snapshot may require deliberate investigation and a governed baseline update. The correct response to a failed check is to diagnose the new evidence, not to bypass the validator or import a partial output.
+
 ## Persisted-output status
 
 The generated CSV is deliberately **not created through the GitHub connector**. It is source-derived output and must be generated from the user’s local immutable SQLite database.
 
-This review unit remains prepared rather than accepted until local execution proves:
-
-- the full output builds successfully;
-- all exact totals match;
-- the CSV writes and reloads without change;
-- every source race and timezone reconciles;
-- every resolved timestamp conversion agrees through UTC;
-- focused tests and both validators pass.
-
-After that evidence is reviewed, the generated CSV may be force-added despite the project’s general processed-data ignore policy.
+The accepted review evidence proves that the full output was generated locally, written atomically, compared with the in-memory result, reloaded into typed timestamp fields and independently reconciled. The processed output remains governed by the repository’s processed-data policy and was not force-added during this review.
 
 ## Reproducibility classification
 
@@ -112,6 +137,8 @@ Notebook 11 used bounded external pilot checks during investigation, but the pro
 Preserve raw `date`, `course` and `off`. Store candidate course identity and timezone separately. Add one canonical temporal record per staged race, preserving both candidates for unresolved pre-boundary races.
 
 Use canonical UTC as the conversion anchor. Do not attach the course timezone directly to raw `date + off`, use fixed UTC offsets, invent a branch for unresolved meetings, or represent the timestamp as actual-off time.
+
+Only an output that has passed the builder, typed reload and independent validator may be supplied to a later database-import stage.
 
 ## Focused validation commands
 
