@@ -70,41 +70,6 @@ Local execution on 5 August 2026 established:
 
 The repaired pipeline restores the original notebook's exclusion of 93 DST-edge meetings comprising 515 races from profile-based selection. Unsupported future inputs fail closed rather than being silently selected or imported.
 
-## Notebook 21 evidence
-
-Established baselines:
-
-- governed runner rows: **1,851,285**;
-- provisional races: **189,043**;
-- SQL null comments: **0**;
-- empty-string comments: **340,394**;
-- probable-placeholder or unresolved-code rows: **238**;
-- substantive-text rows: **1,510,653**;
-- candidate jurisdictions: **36**;
-- unresolved candidate-jurisdiction races: **0**.
-
-Manual-verification decision: `not_applicable`.
-
-## Notebook 22 evidence
-
-Established baselines:
-
-- jockey labels: **7,917**;
-- jockey candidate relationships: **216**;
-- confirmed same-person relationships: **1**;
-- confirmed different-person relationships: **1**;
-- unresolved jockey relationships: **214**;
-- directly mapped jockey labels: **2**;
-- trainer labels: **10,708**;
-- accepted trainer groups: **26** covering **6,350** source rows;
-- owner labels: **98,234**;
-- accepted owner groups: **41** covering **9,788** source rows;
-- unresolved owner groups: **895**.
-
-Manual-verification decision: `specialist_reference`.
-
-Focused local tests passed with **14 passed in 0.61s**. The strengthened validator enforces exact candidate closure, decisive external provenance, unresolved preservation and the exact direct jockey mapping.
-
 ## Historical end-of-source-field-series evidence
 
 The complete repository test run after Notebook 21 found and repaired two integration defects:
@@ -129,6 +94,24 @@ preserve: 2
 
 All 37 fields require raw preservation and match the SQLite field names, order and declared types.
 
+## Final integrated audit evidence — 5 August 2026
+
+The consolidated integration branch passed the complete repository test suite:
+
+```text
+282 passed in 1.52s
+```
+
+Every current validator under `scripts/validate_*.py` also passed:
+
+```text
+ALL 28 VALIDATORS PASSED
+```
+
+The sweep covered all current source-wide, governed-reference, exact-decision, lineage, persisted-output and reconciliation validators. The separately invoked `validate_source_profile.py` and `validate_starting_price.py` both passed after the initial sweep harness omitted the required positional database argument for `validate_source_profile.py`; this was a command-harness mistake, not a repository defect.
+
+No genuine integration defect was found by the final gate.
+
 ## Database consequence
 
 All future database ingestion is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
@@ -139,14 +122,8 @@ Unknown, changed or unmatched data must fail closed, remain explicitly unresolve
 
 ## Current position
 
-All individual notebook and cross-notebook repair units are accepted and integrated.
+The retrospective notebook programme, participant-identity programme and targeted cross-notebook implementation audit are fully closed.
 
-The remaining closure gate is:
+The integrated test and validator gate has passed. No further source-field notebook investigation is required unless a new source snapshot or failed validator produces concrete new evidence.
 
-1. run the complete repository test suite from the integration branch;
-2. run every applicable independent validator;
-3. repair any genuine integration defect found;
-4. record the final integrated evidence in this register, `README.md` and `docs/PROJECT_PLAN.md`;
-5. merge only after the integrated branch is clean and the complete gate passes.
-
-After that, proceed to Phase 3 entity and key design. No further source-field notebook investigation is required unless a new source snapshot or failed validator produces concrete new evidence.
+The next project stage is Phase 3 entity and key design. The integration branch is ready for final merge after the final documentation commit is pulled locally and the working tree is confirmed clean.
