@@ -35,8 +35,6 @@ VERIFICATION_COLUMNS = (
     "notes",
 )
 REFERENCE_MATCH_COLUMNS = (
-    "candidate_course_label",
-    "candidate_jurisdiction",
     "physical_venue_name",
     "locality",
     "region",
@@ -141,8 +139,11 @@ def main() -> None:
         )
 
     indexed = course_locations.set_index(
-        ["candidate_course_label", "candidate_jurisdiction"], verify_integrity=True
+        ["candidate_course_label", "candidate_jurisdiction"]
     )
+    if not indexed.index.is_unique:
+        raise AssertionError("Course-location reference contains duplicate identity keys")
+
     for verification in verifications:
         verification_id = verification["verification_id"]
         key = (
