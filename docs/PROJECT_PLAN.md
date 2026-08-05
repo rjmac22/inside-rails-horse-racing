@@ -56,7 +56,7 @@ Established raw-source immutability, source grain and quality, physical lineage 
 
 ### Notebooks 04–21
 
-**Status: fully closed on the retrospective implementation branch.**
+**Status: fully closed.**
 
 The completed programme governs course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree labels, connection-field blanks and comment-field states.
 
@@ -75,10 +75,8 @@ Final evidence:
 
 ```text
 256 passed in 0.96s
-ALL VALIDATORS PASSED
+ALL 26 THEN-DISCOVERED VALIDATORS PASSED
 ```
-
-The validator sweep covered 26 scripts, including source-wide checks over the immutable 1,851,285-row source population.
 
 The sweep found and repaired:
 
@@ -99,7 +97,7 @@ All 37 source fields require raw preservation and match the SQLite schema names,
 
 ### Consolidated Notebook 22 — jockey, trainer and owner identity
 
-**Status: fully closed on 4 August 2026.**
+**Status: fully closed.**
 
 The programme preserves immutable raw labels and row lineage while adding a separate conservative participant-identity layer.
 
@@ -124,21 +122,7 @@ Focused test evidence:
 14 passed in 0.61s
 ```
 
-The final closeout audit found two implementation gaps:
-
-1. the accepted Marie Velon decision was persisted in the review queue but lacked a directly usable label-to-identity mapping file;
-2. the jockey validator checked the source baseline and queue length but did not enforce exact accepted, distinct and unresolved decision closure or decisive external provenance.
-
-The repair added `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` and strengthened `scripts/validate_participant_identity.py` to enforce all 216 candidate pairs, the exact `1 / 1 / 214` decision partition, both decisive verification records, unresolved preservation actions and the exact two-row mapping.
-
-Final strengthened validator evidence on 4 August 2026:
-
-```text
-jockeys: 7,917 labels; 212 groups; 216 candidate relationships; 1 accepted; 1 distinct; 214 unresolved
-trainers: 10,708 labels; 26 accepted groups; 6,350 mapped rows
-owners: 98,234 labels; 41 accepted groups; 9,788 mapped rows; 895 unresolved groups
-participant identity validation: PASS
-```
+The closeout repair added `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` and strengthened `scripts/validate_participant_identity.py` to enforce all 216 candidate pairs, the exact `1 / 1 / 214` decision partition, both decisive verification records, unresolved preservation actions and the exact two-row mapping.
 
 Retained controls:
 
@@ -163,7 +147,7 @@ Authority evidence confirmed bounded pedigree corrections for:
 
 Weatherbys Ireland had not replied about `Runninsonofagun (IRE)` by the gate date. That case remains explicitly `Unresolved`; its competing raw assertions are preserved and no governed pedigree is guessed.
 
-The specialist governance reference, reusable implementation baselines and generated outputs were updated. Final governed transition results are:
+Final governed transition results are:
 
 ```text
 Corrected: 91
@@ -172,39 +156,44 @@ Unresolved: 1
 provisional occurrences: 611
 ```
 
-Focused test evidence:
+Focused tests and independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs.
 
-```text
-9 passed in 0.59s
-```
+## Targeted cross-notebook implementation-completeness audit — completed 5 August 2026
 
-Independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs.
-
-## Targeted cross-notebook implementation-completeness audit
-
-**Status: all bounded repair units accepted; final integrated test and validator sweep pending.**
+**Status: fully closed.**
 
 The audit reviewed the existing notebook implementations without reopening their analytical investigations. It repaired stale closeout records, missing governed outputs, incomplete provenance enforcement, weak source-wide validation, correction-lineage gaps, an obsolete construction utility and the missing canonical race-time regeneration path.
 
 Notebook 11 was accepted after the full 189,043-race output built, wrote, reloaded and independently reconciled to the source with the exact settled totals of 169,465 resolved and 19,578 unresolved races.
 
-The repair branches have been consolidated on `audit/retrospective-implementation-integration`. The remaining audit gate is one complete repository test run, every applicable independent validator, and final status-document reconciliation from that integrated branch.
+Every repair unit was reviewed individually before integration. The accepted content was consolidated on `audit/retrospective-implementation-integration`.
+
+Final integrated evidence:
+
+```text
+282 passed in 1.52s
+ALL 28 VALIDATORS PASSED
+```
+
+The 28-validator sweep covered every current `scripts/validate_*.py` file. No genuine integration defect was found.
 
 ## Phase 3 — Entity and key design
 
-Begin after the final integrated audit sweep passes:
+**Status: next active phase.**
+
+The next bounded work is to:
 
 - consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
 - distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
 - define amended-record versioning and reconciliation controls;
 - decide which unresolved relationships remain nullable or quarantined;
-- define the import manifest and validation-evidence record required by the database admission gate.
+- define the import manifest and validation-evidence record required by the database admission gate;
+- produce the conceptual entity and key design before selecting a physical database technology.
 
 ## Phase 4 — Target architecture
 
-Only after the evidence base is sufficient:
+Only after the entity and key design is accepted:
 
-- define a conceptual staging model;
 - select the physical database technology;
 - define staging, core and analytical schemas;
 - create tables, constraints and indexes;
