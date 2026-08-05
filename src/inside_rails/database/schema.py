@@ -9,7 +9,10 @@ from typing import Any
 APPLICATION_ID = 1_230_130_259
 SCHEMA_VERSION = 1
 MINIMUM_SQLITE_VERSION = (3, 37, 0)
-_SCHEMA_RESOURCE = "schema/v001_minimum_core.sql"
+_SCHEMA_RESOURCES = (
+    "schema/v001_minimum_core.sql",
+    "schema/v001_minimum_core_enforcement.sql",
+)
 
 
 def require_supported_sqlite(version: tuple[int, int, int] | None = None) -> None:
@@ -59,7 +62,11 @@ def configure_governed_connection(
 
 
 def _schema_sql() -> str:
-    return files("inside_rails.database").joinpath(_SCHEMA_RESOURCE).read_text(encoding="utf-8")
+    package = files("inside_rails.database")
+    return "\n".join(
+        package.joinpath(resource).read_text(encoding="utf-8")
+        for resource in _SCHEMA_RESOURCES
+    )
 
 
 def schema_inventory(connection: sqlite3.Connection) -> list[tuple[str, str, str]]:
