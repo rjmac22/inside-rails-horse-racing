@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/08_starting_price_parsing.ipynb",
-  "status": "complete",
+  "status": "fully_closed_with_governed_anomaly",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "source_table": "data",
   "source_commit": "4af1263",
@@ -30,8 +30,7 @@
     "winner_only_nonblank_races": 122,
     "contiguous_leading_finishers_nonblank_races": 53,
     "irregular_partial_coverage_races": 19,
-    "clean_kernel_run_all": true,
-    "notebook_assertions_passed": true
+    "independent_source_validator_passed": true
   },
   "observed_notation": {
     "fractional_structure": "<numerator>/<denominator>[optional F, J or C]",
@@ -53,46 +52,41 @@
   },
   "semantic_limitation": {
     "finding": "The source sp column contains mixed price and return semantics rather than one universal conventional starting-price measure.",
-    "observed_possible_meanings": [
-      "fixed-odds starting price",
-      "fractionalised tote or pari-mutuel dividend",
-      "winner-only return",
-      "limited leading-finisher return",
-      "favourite marker without numeric price",
-      "blank because wagering did not apply",
-      "blank because no race-level price or return was supplied",
-      "unexplained omission"
-    ],
     "consequence": "A parsed fraction establishes arithmetic representation but does not independently establish market type or cross-jurisdiction comparability."
   },
-  "known_external_exception": {
-    "runner": "Almendares",
-    "race": "2025 Wickerr Stakes",
-    "course": "Del Mar",
+  "governed_anomaly": {
+    "verification_id": "NB08-SP-0001",
+    "source_rowid": 1708860,
+    "runner": "Almendares (GB)",
+    "source_date": "2025-07-20",
+    "course": "Del Mar (USA)",
+    "off": "1:03",
     "raw_sp": "F",
     "parser_derived_numeric_price": null,
-    "externally_verified_price": "5/2",
-    "externally_verified_favourite": true,
-    "preservation_rule": "Retain as separate external correction or enrichment evidence and do not infer a general mapping from F to 5/2."
+    "externally_verified_price": "5/2 favourite",
+    "specialist_reference": "data/reference/starting_price_external_evidence.csv",
+    "preservation_rule": "Retain raw F and parser-unresolved status. The external value is a bounded reference enrichment and does not authorise a general F-to-price mapping."
   },
+  "manual_verification_decision": "specialist_reference",
   "decisions": [
-    "Preserve exact raw sp unchanged.",
-    "Parse only supported exact structures.",
-    "Preserve raw numerator and denominator without forcing lowest terms.",
-    "Preserve the literal favourite marker separately.",
-    "Treat arithmetic parse validity separately from market semantics.",
-    "Retain race-level price-coverage context.",
-    "Do not collapse all blank sp values into one missing category.",
-    "Keep external corrections separate from parser-derived values.",
-    "Leave unsupported future values unresolved rather than trimming, normalising or guessing.",
-    "Do not derive universally comparable implied probabilities until market context is established.",
-    "Do not design the final target schema in this notebook."
+    "Preserve exact raw sp unchanged",
+    "Parse only supported exact structures",
+    "Preserve raw numerator and denominator without forcing lowest terms",
+    "Preserve the literal favourite marker separately",
+    "Treat arithmetic parse validity separately from market semantics",
+    "Retain race-level price-coverage context",
+    "Do not collapse all blank sp values into one missing category",
+    "Keep external evidence separate from parser-derived values",
+    "Leave unsupported future values unresolved rather than trimming, normalising or guessing",
+    "Do not derive universally comparable implied probabilities until market context is established"
   ],
   "reusable_outputs": {
-    "module": null,
-    "validation_script": null,
-    "report": "docs/REPORT_08_STARTING_PRICE_PARSING.md",
-    "note": "The representation parser remains in the notebook pending jurisdiction and market-context work."
+    "module": "src/inside_rails/starting_price.py",
+    "focused_tests": "tests/test_starting_price.py",
+    "validation_script": "scripts/validate_starting_price.py",
+    "specialist_reference": "data/reference/starting_price_external_evidence.csv",
+    "integration_document": "docs/STARTING_PRICE_DATABASE_INTEGRATION.md",
+    "report": "docs/REPORT_08_STARTING_PRICE_PARSING.md"
   },
   "validation": {
     "runner_records_checked": 1851285,
@@ -100,11 +94,12 @@
     "blank_string_runner_records": 9097,
     "marker_only_runner_records": 1,
     "unsupported_current_runner_records": 0,
-    "clean_kernel_run_all": true,
+    "governed_unresolved_values": {
+      "F": 1
+    },
+    "external_evidence_rows": 1,
     "result": "passed"
   },
-  "next_notebook": {
-    "number": 9,
-    "topic": "course jurisdiction, racing authority and betting-market context"
-  }
+  "database_consequence": "Store raw sp, arithmetic parse components, favourite marker, parse status, race-level coverage context and any external evidence separately. Never overwrite raw F or treat the external 5/2 value as parser-derived.",
+  "next_action": "Use the existing governed parser and specialist evidence during database design; investigate new notation or market semantics only when source changes or a bounded analytical question requires it."
 }
