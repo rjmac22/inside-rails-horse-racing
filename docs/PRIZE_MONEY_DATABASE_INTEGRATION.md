@@ -4,7 +4,7 @@
 
 This contract implements the governed treatment established in Notebook 13.
 The reusable parser is `src/inside_rails/prize_money.py` and the independent
-smoke validator is `scripts/validate_prize_money.py`.
+immutable-source validator is `scripts/validate_prize_money.py`.
 
 The source `prize` field is runner-level recorded prize money. It is not the
 advertised race purse, total race value, or a guaranteed payment schedule.
@@ -69,6 +69,36 @@ Blank values remain null with status `blank`; they must never become zero.
 Values that do not match a governed rule receive status `invalid` and remain
 available through `prize_raw` for review.
 
+## Validated source population
+
+The independent validator opens the immutable SQLite source read-only, derives
+the governed candidate jurisdiction for all 189,043 provisional races, and
+parses all 1,851,285 runner rows.
+
+The expected current-source partition is:
+
+| Status or method | Runner rows |
+|---|---:|
+| source blank preserved | 839,715 |
+| direct Great Britain GBP parsing | 561,852 |
+| direct Ireland EUR parsing | 168,466 |
+| source-presented amount with currency unresolved | 281,252 |
+| invalid current source rows | 0 |
+
+The source contains 47,215 distinct raw prize values. SQLite storage classes
+must remain exactly 225,078 integer rows, 618,026 real rows and 1,008,181 text
+rows. Any new status, method, storage-class population or unresolved
+jurisdiction is a review event, not a reason to update the baselines blindly.
+
+The validator also enforces:
+
+- exact preservation of every raw value;
+- complete partitioning of the governed runner population;
+- canonical minor units only for GBP and EUR rows;
+- no canonical minor units on blank, unresolved or invalid rows;
+- no currency-conversion multiplier on any current row;
+- no foreign-exchange reconstruction.
+
 ## Race-level aggregation
 
 Any race-level sum derived from runner records must be named explicitly as a
@@ -109,8 +139,9 @@ sequence:
 3. record the interpretation or conversion method by name;
 4. retain any multiplier and supporting evidence separately;
 5. add tests using confirmed source examples and known exceptions;
-6. rerun the validator and full test suite;
-7. reprocess affected rows without altering unrelated jurisdictions.
+6. rerun the focused tests and independent source-wide validator;
+7. reprocess affected rows without altering unrelated jurisdictions;
+8. compare the complete status, method, currency and storage partitions with the previous version.
 
 Historical transformations must not be represented as direct source currency.
 A reconstructed canonical value requires explicit provenance and confidence.
@@ -120,8 +151,8 @@ A reconstructed canonical value requires explicit provenance and confidence.
 From the repository root:
 
 ```bash
-python3 -m pytest tests/test_prize_money.py
-PYTHONPATH=src python3 scripts/validate_prize_money.py
+PYTHONPATH=src .venv/bin/python -m pytest tests/test_prize_money.py
+PYTHONPATH=src .venv/bin/python scripts/validate_prize_money.py
 ```
 
 Both must pass before the parser is used in the database build.
