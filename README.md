@@ -27,7 +27,7 @@ The candidate provisional race key is `date + course + off`. The raw SQLite data
 
 ### Source-field investigation series — Notebooks 00–21
 
-**Status: fully closed on the retrospective implementation branch.**
+**Status: fully closed.**
 
 The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
@@ -38,11 +38,11 @@ Retained governed limits include:
 - Notebook 20 preserves 18 unresolved connection blanks after 28 confirmed supplementations;
 - Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
 
-Notebook 11 now has a durable source-to-output builder and independent validator for all 189,043 provisional races. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions. Unsupported future values or changed populations fail closed for investigation.
+Notebook 11 has a durable source-to-output builder and independent validator for all 189,043 provisional races. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions. Unsupported future values or changed populations fail closed for investigation.
 
 ### Participant identity programme — consolidated Notebook 22
 
-**Status: fully closed on 4 August 2026.**
+**Status: fully closed.**
 
 Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
 
@@ -61,6 +61,14 @@ Governed outcomes:
 
 The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22, so no separate Notebook 23 is required.
 
+### Targeted cross-notebook implementation audit
+
+**Status: completed on 5 August 2026.**
+
+The audit found and repaired bounded implementation defects involving stale closeout records, provenance enforcement, missing usable outputs, exact decision closure, correction lineage, source-wide validators, an obsolete construction utility and canonical race-time regeneration.
+
+Every repair unit was reviewed individually before integration. The accepted content was consolidated on `audit/retrospective-implementation-integration` and then passed the final integrated gate.
+
 ## Validation history
 
 The end-of-source-field-series validation on 4 August 2026 passed:
@@ -70,7 +78,18 @@ The end-of-source-field-series validation on 4 August 2026 passed:
 ALL 26 THEN-DISCOVERED VALIDATORS PASSED
 ```
 
-The field-governance registers reconciled to:
+The final integrated audit validation on 5 August 2026 passed:
+
+```text
+282 passed in 1.52s
+ALL 28 VALIDATORS PASSED
+```
+
+The 28-validator sweep covered every current `scripts/validate_*.py` file, including complete immutable-source checks, governed-reference closure, source-to-output reconciliation and the accepted Notebook 11 canonical race-time output.
+
+No genuine integration defect was found by the final sweep.
+
+The field-governance registers remain reconciled to:
 
 ```text
 closed: 34
@@ -79,10 +98,6 @@ preserve: 2
 ```
 
 All 37 source fields require raw preservation and match the SQLite names, order and declared types.
-
-The later targeted cross-notebook audit found and repaired bounded implementation defects involving stale closeout records, provenance enforcement, missing usable outputs, exact decision closure, correction lineage, source-wide validators and canonical race-time regeneration.
-
-All individual audit repair units have been accepted and consolidated on `audit/retrospective-implementation-integration`. One complete integrated test and validator sweep remains before the audit branch is finally closed.
 
 ## Database admission rule
 
@@ -108,7 +123,9 @@ See:
 
 ## Next bounded action
 
-Run the complete repository test suite and every applicable independent validator from the integrated audit branch. Reconcile the final evidence in the audit register, README and project plan, then proceed to entity and key design.
+Proceed to Phase 3 entity and key design. Consolidate the governed race, runner, horse-occurrence, participant and ownership identity requirements before selecting or building the physical target database.
+
+No further source-field notebook investigation is required unless a new source snapshot or failed validator produces concrete new evidence.
 
 ## Working method
 
