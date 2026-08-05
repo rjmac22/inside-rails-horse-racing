@@ -1,17 +1,42 @@
 {
   "notebook": "notebooks/02_source_field_quality_profile.ipynb",
-  "status": "complete_locally_pending_notebook_commit",
+  "status": "fully_closed_on_retrospective_implementation_branch",
   "scope": "Systematic field-level quality and domain-value profiling of the immutable raceform.db source",
   "source": "data/raw/form_2015-present/form_2015-present/raceform.db",
-  "completed_commit": null,
+  "completed_commit": "9cbec48562a032d08971ad2aca21d37023d22c9b",
   "report": "docs/REPORT_02_SOURCE_FIELD_QUALITY_PROFILE.md",
-  "reusable_code": [],
-  "validation": [
-    "Clean-kernel Run All completed successfully in Jupyter"
+  "reproducibility_classification": "executable_notebook_with_durable_external_validation",
+  "manual_verification_decision": "not_applicable",
+  "reusable_code": [
+    "src/inside_rails/source_fields.py",
+    "src/inside_rails/source_sqlite.py"
   ],
+  "governed_reference": "data/reference/source_field_governance.csv",
+  "focused_tests": [
+    "tests/test_source_fields.py"
+  ],
+  "independent_validation": [
+    "scripts/validate_source_fields.py",
+    "scripts/validate_field_governance.py"
+  ],
+  "integration_document": "docs/SOURCE_FIELD_GOVERNANCE_DATABASE_INTEGRATION.md",
+  "validation": {
+    "clean_kernel_run_all": true,
+    "governed_fields": 37,
+    "raw_preservation_required": 37,
+    "sqlite_schema_names_order_and_declared_types_match": true,
+    "final_field_governance_status_totals": {
+      "closed": 34,
+      "implemented_with_governed_anomaly": 1,
+      "preserve": 2
+    },
+    "end_of_source_field_series_tests": "256 passed in 0.96s",
+    "end_of_source_field_series_validator_sweep": "all 26 then-discovered validators passed on 4 August 2026"
+  },
   "established_facts": {
     "data_rows": 1851285,
     "apparent_races": 189043,
+    "source_fields": 37,
     "sql_null_usage": "none meaningful",
     "parseable_time_rows": 1756877,
     "dash_time_rows": 94408,
@@ -32,9 +57,9 @@
     "Do not assume contiguous placings or pos less than or equal to ran",
     "Do not treat names as stable entity identifiers",
     "Do not truncate long comments",
-    "Do not begin final target-schema design yet"
+    "Do not begin final target-schema design until the field and identity programmes are complete"
   ],
-  "open_investigations": [
+  "historical_open_investigations": [
     "race identity and source-key reconstruction",
     "course jurisdiction and surface mapping",
     "finishing position and non-finish outcomes",
@@ -46,5 +71,6 @@
     "ratings semantics and availability",
     "horse trainer jockey and owner identity risks"
   ],
-  "next_notebook": "Race identity and source-key reconstruction"
+  "current_consequence": "The historical open investigations were completed through the later notebook series. Notebook 02 now supplies the governed 37-field source contract used by downstream validation and database design.",
+  "next_action": "Use the governed source-field reference during entity/key design; do not reopen field profiling without a concrete source change or failed validator."
 }
