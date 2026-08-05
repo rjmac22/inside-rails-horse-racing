@@ -55,15 +55,7 @@ def test_governed_reference_loads() -> None:
     assert governance.explicit_partial_splits == frozenset(
         {"Lyneham (FR)", "Marakan (IRE)", "What A Whopper (IRE)"}
     )
-    assert governance.unresolved_horses == frozenset(
-        {
-            "Almavillalobas (GB)",
-            "Colwyn Bay (FR)",
-            "Diamond Tipp (IRE)",
-            "LAziza Des Places (FR)",
-            "Runninsonofagun (IRE)",
-        }
-    )
+    assert governance.unresolved_horses == frozenset({"Runninsonofagun (IRE)"})
 
 
 def test_duplicate_reference_decision_fails(tmp_path: Path) -> None:
