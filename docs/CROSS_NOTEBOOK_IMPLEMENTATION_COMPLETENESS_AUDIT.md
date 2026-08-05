@@ -46,7 +46,7 @@ The analytical conclusions remain usable. The audit found a finite set of implem
 | 09 | Authority names and the Irish 2018 regulatory transition are hard-coded in `jurisdiction_context.py`; evidence URLs remain only inside the archived notebook. | Add a governed context-evidence reference and enforce exact agreement between it and the reusable context rows. |
 | 12 | The two permanent Argentina course-location verifications have blank access dates, although the archived request log preserves both request dates. Existing validators do not enforce exact evidence-to-reference agreement. | Add/repair governed provenance with the recovered `2026-07-26` access date and validate the exact La Plata and Palermo reference values. |
 | 16 | The source-wide parser validator does not enforce the exact four external age/eligibility decisions or the seven-row persisted field-decision output. | Strengthen validation without converting correction candidates into automatic repairs. |
-| 18 | Ratings coverage and the exact RPR anomaly are source-validated, but the three publisher-reference decisions defining `or`, `rpr` and `ts` semantics are not enforced. | Add a governed semantic-evidence reference and validate its exact three-record closure. |
+| 18 | Ratings coverage and the exact RPR anomaly are source-validated, but the three publisher-reference decisions defining `or`, `rpr` and `ts` semantics in the permanent manual-verification register are not enforced. | Strengthen the ratings validator to require exact closure of those three existing permanent records; do not create a duplicate semantic-evidence store. |
 
 ### Missing usable output or incomplete validator repairs
 
@@ -58,6 +58,7 @@ The analytical conclusions remain usable. The audit found a finite set of implem
 | 15 | Great Navigator's confirmed missing-runner/fifth-place supplementation exists only in the manual register. The validator does not enforce the exact 17 external decisions or the persisted field-decision table. | Add the bounded supplementation to the same governed runner-supplementation layer and strengthen exact decision validation. |
 | 17 | `validate_runner_characteristics.py` requires three ignored `data/processed/...` CSVs that are absent from a clean checkout. It also cites verification IDs without validating the five corresponding evidence decisions, and correction application is not sufficiently lineage-bound. | Remove the false clean-checkout dependency or restore governed outputs, validate exact evidence, and enforce exact runner lineage for `B` and `BB` corrections. |
 | 20 | The earlier validator proved totals and the 28 repairs but not exact one-to-one closure of all 46 raw blank `(source_rowid, source_field)` occurrences. | Repaired in commit `3270c6d`: exact IDs, decision partition, raw-blank closure, locators, repair agreement and unresolved exclusion are now enforced. |
+| 20 | `scripts/promote_connection_identity_verifications.py` is a completed one-time construction utility that depends on the ignored local file `data/derived/connection_identity/manual_connection_repair_evidence_log.csv`, so it is not runnable from a clean checkout and is not part of the future database build. | Retire the utility, retain its history in Git, and document the permanent manual-verification register and repair reference as the authoritative current inputs. |
 
 ## Repair discipline
 
@@ -86,6 +87,7 @@ The intended review order is:
 7. Notebook 16 decision validation;
 8. Notebook 17 clean-checkout and lineage repair;
 9. Notebook 18 semantic provenance validation;
-10. Notebook 11 canonical temporal output and regeneration;
-11. final audit-register, README and project-plan reconciliation;
-12. final complete test suite and all-validator sweep.
+10. Notebook 20 obsolete promotion-utility retirement;
+11. Notebook 11 canonical temporal output and regeneration;
+12. final audit-register, README and project-plan reconciliation;
+13. final complete test suite and all-validator sweep.
