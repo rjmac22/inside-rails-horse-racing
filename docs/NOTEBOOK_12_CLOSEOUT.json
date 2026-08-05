@@ -1,6 +1,6 @@
 {
   "notebook": "notebooks/12_course_timezone_resolution_completed_archive.ipynb",
-  "status": "complete_archived_executed_record_with_validated_durable_source_join_repair",
+  "status": "complete_archived_executed_record_with_validated_durable_source_join_and_provenance",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What governed course-location and timezone reference is required to interpret source off-times safely across all course identities in the current source extract?",
   "identity_key": [
@@ -26,9 +26,24 @@
   },
   "reference_outputs": {
     "permanent_reference": "data/reference/course_locations.csv",
+    "specialist_manual_verifications": "data/reference/course_location_verifications.csv",
     "manual_review": "data/reference/course_location_manual_review.csv",
     "manual_timezone_resolution": "data/reference/course_location_manual_timezone_resolution.csv",
     "geocoding_run_summary": "data/reference/course_location_geocoding_run_summary.csv"
+  },
+  "manual_verification_decision": "specialist_reference",
+  "manual_verification_closure": {
+    "verification_ids": [
+      "NB12-COURSE-0001",
+      "NB12-COURSE-0002"
+    ],
+    "subjects": [
+      "La Plata (ARG)",
+      "Palermo (ARG)"
+    ],
+    "recovered_evidence_accessed_date": "2026-07-26",
+    "recovery_basis": "The archived geocoding request log preserves both cited request timestamps on 26 July 2026.",
+    "validation_rule": "Each specialist record must match the exact governed course-location row, raw source label, manually_validated status and IANA timezone."
   },
   "reusable_outputs": {
     "module": "src/inside_rails/course_locations.py",
@@ -45,7 +60,7 @@
     "Join canonical identities using candidate_course_label plus candidate_jurisdiction.",
     "Treat raw_course_labels as construction provenance rather than a production join key.",
     "Store iana_timezone separately from raw off-time text.",
-    "Preserve timezone resolution method and evidence.",
+    "Preserve timezone resolution method, evidence and manual verification identifier.",
     "Allow exact venue coordinates to remain nullable enrichment.",
     "Reject duplicate course-reference identities and multiple matches.",
     "Expose unmatched future source identities as a clear review residue and fail in strict validation contexts.",
@@ -53,15 +68,6 @@
   ],
   "durable_source_join_repair": {
     "reason": "Notebook 14 exposed a direct raw course to raw_course_labels join that bypassed the governed canonical derivation and produced seven false unmatched labels.",
-    "false_unmatched_labels": [
-      "Bordeaux Le Bouscat",
-      "Chukyo",
-      "Cidade Jardim",
-      "Hipodromo Chile",
-      "Les Landes",
-      "Monterrico",
-      "Nakayama"
-    ],
     "replacement_contract": "Use merge_source_course_locations to preserve raw course text, derive the canonical identity from race context, validate a many-to-one reference match and expose unmatched residue.",
     "contextual_collisions": "Ascot and Newcastle legitimately resolve to Great Britain or Australia from governed date, race-type and race-name context; raw-label uniqueness is not required.",
     "notebook_rerun_claim": "No fresh-kernel rerun is claimed. Durable implementation and independent validation supersede the incorrect direct-join conclusion."
@@ -76,27 +82,16 @@
     "focused_test_command": "PYTHONPATH=src .venv/bin/python -m pytest tests/test_course_locations.py",
     "focused_test_result": "24 passed in 0.57s under Python 3.12.3 and pytest 9.1.1.",
     "reference_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations.py",
-    "reference_result": "passed: 395 course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones.",
+    "reference_expected_result": "395 course identities, 395 timezone assignments, zero unresolved timezones, 51 distinct IANA timezones, two exact manual provenance records and exact verification-to-reference agreement.",
     "source_join_command": "PYTHONPATH=src .venv/bin/python scripts/validate_course_locations_source.py",
-    "source_join_result": "passed: 189,043 provisional race contexts, 528 distinct raw course labels, 395 matched governed identities, zero unmatched source race contexts, with Ascot and Newcastle recorded as contextual raw labels."
+    "source_join_result": "passed: 189,043 provisional race contexts, 528 distinct raw course labels, 395 matched governed identities and zero unmatched source race contexts."
   },
-  "lessons_learned": [
-    "Define the minimum downstream requirement before pursuing optional enrichment.",
-    "Exact location completeness and timezone sufficiency are separate problems.",
-    "Canonical venue identity and raw source labels must remain separate.",
-    "A provenance label column is not automatically a production join key.",
-    "A raw label may be context-dependent even when every source row resolves deterministically.",
-    "Use automation to generate candidates and manual review to resolve ambiguity.",
-    "Do not overengineer a finite unresolved residue.",
-    "Treat completed research notebooks and reusable production pipelines as different artefacts.",
-    "Save and commit the executed notebook before rerun or cleanup attempts."
-  ],
   "fresh_kernel_status": {
     "archival_notebook": "not_applicable_after_reference_persistence",
     "reason": "The notebook changed its own future input state by persisting the completed course-location reference. The executed archive is retained as the historical construction record, while reusable validation is provided independently."
   },
   "next_action": {
-    "stage": "repair_closed",
-    "instruction": "Course-reference join repair is complete and locally validated. Continue the notebook series without further expansion of this repair unless a new unmatched source residue appears."
+    "stage": "repair_prepared_for_review",
+    "instruction": "Run the focused reference and source-join validators against the local repository before accepting the provenance repair."
   }
 }
