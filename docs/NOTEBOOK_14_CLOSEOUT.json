@@ -1,19 +1,10 @@
 {
   "notebook": "notebooks/14_runner_counts_numbers_and_entries.ipynb",
-  "status": "implemented_source_validated_and_archived_with_course_join_repair_closed",
+  "status": "implemented_source_validated_archived_and_missing_runner_output_repaired",
   "source_database": "data/raw/form_2015-present/form_2015-present/raceform.db",
   "bounded_question": "What do the source ran and num fields safely represent, how should their raw states and exceptions be governed, and can num participate in runner identity?",
-  "candidate_race_identity": [
-    "date",
-    "course",
-    "off"
-  ],
-  "candidate_runner_identity": [
-    "date",
-    "course",
-    "off",
-    "horse"
-  ],
+  "candidate_race_identity": ["date", "course", "off"],
+  "candidate_runner_identity": ["date", "course", "off", "horse"],
   "validated_findings": {
     "source_runner_rows": 1851285,
     "provisional_races": 189043,
@@ -35,6 +26,47 @@
     "mixed_num_state_races": 18,
     "repeated_race_and_horse_groups": 0
   },
+  "manual_verification": {
+    "decision": "specialist_reference",
+    "permanent_register": "data/reference/manual_verifications.csv",
+    "verification_ids": [
+      "NB14-RAN-0001",
+      "NB14-RAN-0002",
+      "NB14-RAN-0003",
+      "NB14-RAN-0004",
+      "NB14-RAN-0005"
+    ],
+    "decision_partition": {
+      "source_supplementation": 2,
+      "source_correction_candidate": 3
+    },
+    "status_partition": {
+      "confirmed": 3,
+      "contradicted": 2
+    }
+  },
+  "missing_runner_output": {
+    "reference": "data/reference/runner_record_supplementations.csv",
+    "loader": "src/inside_rails/runner_record_supplementations.py",
+    "focused_tests": "tests/test_runner_record_supplementations.py",
+    "validator": "scripts/validate_runner_record_supplementations.py",
+    "integration": "docs/RUNNER_RECORD_SUPPLEMENTATION_INTEGRATION.md",
+    "accepted_rows": [
+      {
+        "verification_id": "NB14-RAN-0001",
+        "runner": "Saucats",
+        "verified_outcome": "F",
+        "verified_position": null
+      },
+      {
+        "verification_id": "NB14-RAN-0005",
+        "runner": "Tosen Thunder (JPN)",
+        "verified_outcome": "did_not_finish",
+        "verified_position": null
+      }
+    ],
+    "rule": "Append only the verified runner label and result fact in a separate governed clean-layer union. Preserve raw race rows and raw ran; leave every unsupported runner field null."
+  },
   "governed_decisions": [
     "Preserve ran as source_reported_ran rather than an unqualified starter count.",
     "Keep internal row-count comparison separate from external completeness and external ran validation.",
@@ -44,73 +76,46 @@
     "Allow shared positive num values within a race.",
     "Do not infer confirmed coupling or duplicate runners from shared num alone.",
     "Retain candidate race identity plus horse as the leading natural runner identity.",
-    "Do not reconstruct lost coupled-entry suffixes."
+    "Do not reconstruct lost coupled-entry suffixes.",
+    "Do not convert correction candidates into runner supplementations."
   ],
   "reusable_outputs": [
     "src/inside_rails/runner_entries.py",
     "tests/test_runner_entries.py",
     "scripts/validate_runner_entries.py",
     "scripts/validate_runner_entries_source.py",
-    "docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md"
+    "docs/RUNNER_ENTRIES_DATABASE_INTEGRATION.md",
+    "data/reference/runner_record_supplementations.csv",
+    "src/inside_rails/runner_record_supplementations.py",
+    "tests/test_runner_record_supplementations.py",
+    "scripts/validate_runner_record_supplementations.py",
+    "docs/RUNNER_RECORD_SUPPLEMENTATION_INTEGRATION.md"
   ],
   "course_reference_correction": {
     "archived_notebook_defect": "Two notebook cells joined raw course directly to the Notebook 12 raw_course_labels provenance column.",
-    "false_unmatched_labels": [
-      "Bordeaux Le Bouscat",
-      "Chukyo",
-      "Cidade Jardim",
-      "Hipodromo Chile",
-      "Les Landes",
-      "Monterrico",
-      "Nakayama"
-    ],
     "correct_contract": "Preserve raw course, derive candidate_course_label and candidate_jurisdiction from governed race-context rules, then join the canonical identity pair to course_locations.csv.",
-    "contextual_raw_labels": [
-      "Ascot",
-      "Newcastle"
-    ],
-    "contextual_rule": "Ascot and Newcastle may each resolve to Great Britain or Australia, but every source race context resolves deterministically from date, race type and race name.",
-    "durable_replacement": [
-      "src/inside_rails/course_locations.py",
-      "tests/test_course_locations.py",
-      "scripts/validate_course_locations_source.py",
-      "docs/COURSE_LOCATIONS_DATABASE_INTEGRATION.md"
-    ],
-    "interpretation": "The seven labels were false misses caused by the notebook join path; they are not missing governed course identities.",
     "fresh_kernel_claim": "No fresh-kernel Notebook 14 rerun is claimed. The archived construction record remains unchanged and its direct-join conclusion is superseded by durable validation."
   },
   "limitations": [
     "The source alone does not establish a universal sporting definition for ran.",
     "External checks covered selected exceptions rather than all races.",
     "The source does not preserve coupled-entry suffixes such as 1A or 1B.",
-    "The archived notebook contains a superseded direct course-reference join and must not be treated as the durable integration contract.",
-    "The notebook does not repair missing runners or externally contradicted counts."
+    "The two supplemented missing runners are incomplete governed records, not reconstructed full source rows.",
+    "Three externally reviewed races remain correction candidates rather than automatic repairs."
   ],
-  "workflow_lessons": [
-    "Use SQLite for heavy source reduction before loading results into pandas.",
-    "A kernel restart erases analytical state even when visible notebook output remains.",
-    "Restore the saved dependency sequence and rerun from the top after kernel failure.",
-    "Record rejected screens as findings so they are not repeated.",
-    "Separate reference-data maintenance from field parser logic.",
-    "Do not join raw source text to a provenance column when a governed canonical derivation already exists.",
-    "Do not require raw-label uniqueness where explicit source context resolves a legitimate venue collision."
-  ],
-  "notebook_commit": "5f1cb3a",
   "validation": {
-    "module_compilation": "python3 -m py_compile src/inside_rails/runner_entries.py passed",
-    "unit_tests": "20 passed in 0.05s under Python 3.12.3 and pytest 9.1.1",
-    "governed_case_validator": "Runner-entry validation passed for 9 governed cases.",
-    "source_wide_validator": "Source-wide runner-entry validation passed: 1,851,285 rows, 189,043 races, 523 shared-number groups.",
-    "course_join_focused_tests": "24 passed in 0.57s under Python 3.12.3 and pytest 9.1.1.",
-    "course_reference_validator": "Passed: 395 course identities, 395 timezone assignments, zero unresolved timezones and 51 distinct IANA timezones.",
-    "course_join_source_validator": "Passed: 189,043 provisional race contexts, 528 distinct raw course labels, 395 matched governed identities, zero unmatched source race contexts, with Ascot and Newcastle recorded as contextual raw labels."
+    "runner_entry_unit_tests": "20 passed in 0.05s under Python 3.12.3 and pytest 9.1.1",
+    "source_wide_runner_entry_validator": "passed: 1,851,285 rows, 189,043 races and 523 shared-number groups",
+    "supplementation_focused_command": "PYTHONPATH=src .venv/bin/python -m pytest tests/test_runner_record_supplementations.py",
+    "supplementation_source_command": "PYTHONPATH=src .venv/bin/python scripts/validate_runner_record_supplementations.py",
+    "supplementation_status": "prepared for focused local validation before review acceptance"
   },
   "fresh_kernel_status": {
     "status": "archived_construction_record_with_durable_replacement_validation",
-    "note": "A genuine fresh-kernel top-to-bottom rerun has not been completed. Reusable runner-entry logic is independently validated, and the superseded course join is repaired outside the notebook through governed implementation and source-wide validation."
+    "note": "Reusable runner-entry and missing-runner supplementation logic is validated independently of the archival notebook."
   },
   "next_action": {
-    "stage": "repair_closed",
-    "instruction": "Notebook 14 and its upstream course-reference join repair are closed. Continue the notebook series; do not expand this repair unless a new unmatched source residue appears."
+    "stage": "repair_prepared_for_review",
+    "instruction": "Run the focused supplementation tests and independent source validator before accepting this review unit."
   }
 }
