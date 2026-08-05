@@ -205,9 +205,20 @@ def build_canonical_race_times(races_with_locations: pd.DataFrame) -> pd.DataFra
 
     post_times = build_post_boundary_times(post_boundary)
     course_profiles = build_post_boundary_course_profiles(post_times)
-    if _has_eligible_course_profile(meeting_summary, course_profiles):
+
+    # Notebook 11 restricted profile evidence to meetings where both candidate
+    # branches were valid and neither branch was wholly dead-of-night. DST-edge
+    # meetings must remain outside this stage because a profile must never select
+    # a branch containing an ambiguous or nonexistent London civil timestamp.
+    profile_meeting_summary = meeting_summary.loc[
+        meeting_summary["preliminary_branch_result"].eq(
+            "both_not_wholly_dead_of_night"
+        )
+    ].copy()
+
+    if _has_eligible_course_profile(profile_meeting_summary, course_profiles):
         profile_decisions = stable_course_profile_decisions(
-            meeting_summary,
+            profile_meeting_summary,
             course_profiles,
             minimum_observed_meetings=MINIMUM_PROFILE_MEETINGS,
         )
