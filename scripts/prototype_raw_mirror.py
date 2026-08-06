@@ -14,7 +14,7 @@ SRC_ROOT = PROJECT_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from inside_rails.database.raw_mirror_prototype import run_raw_mirror_prototype
+from inside_rails.database.accepted_source import run_accepted_raw_mirror_prototype
 
 
 DEFAULT_SOURCE = (
@@ -30,8 +30,9 @@ DEFAULT_OUTPUT = (
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Copy only representative Source Version 1 records into a temporary governed "
-            "SQLite schema and verify exact value, typeof() and fingerprint readback."
+            "Copy only representative records from the accepted exact Source Version 1 "
+            "file into a temporary governed SQLite schema and verify exact value, "
+            "typeof() and fingerprint readback."
         )
     )
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
@@ -41,7 +42,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    summary = run_raw_mirror_prototype(args.source, args.output)
+    summary = run_accepted_raw_mirror_prototype(args.source, args.output)
     print(json.dumps(asdict(summary), indent=2, sort_keys=True))
     return 0
 
