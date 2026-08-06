@@ -60,7 +60,7 @@ class RawMirrorCandidateSummary:
     application_id: int
     user_version: int
     source_hash_unchanged: bool
-    persisted_readback_passed: bool
+    persisted_structural_checks_passed: bool
 
 
 def _validate_batch_size(batch_size: int) -> int:
@@ -490,5 +490,5 @@ def build_raw_mirror_candidate(
         application_id=application_id,
         user_version=user_version,
         source_hash_unchanged=True,
-        persisted_readback_passed=True,
+        persisted_structural_checks_passed=True,
     )
