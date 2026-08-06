@@ -229,9 +229,10 @@ def select_representative_source_rowids(connection: sqlite3.Connection) -> tuple
     requirements = (
         "retained rowid 1",
         "first admitted record",
-        "prize NULL",
+        "prize empty TEXT",
         "prize INTEGER",
-        "prize TEXT",
+        "prize REAL",
+        "prize non-empty TEXT",
         "num INTEGER",
         "num TEXT",
         "ovr_btn REAL",
@@ -241,9 +242,24 @@ def select_representative_source_rowids(connection: sqlite3.Connection) -> tuple
         SELECT
             MIN(CASE WHEN rowid = 1 THEN rowid END),
             MIN(CASE WHEN rowid <> 1 THEN rowid END),
-            MIN(CASE WHEN rowid <> 1 AND typeof("prize") = 'null' THEN rowid END),
+            MIN(
+                CASE
+                    WHEN rowid <> 1
+                     AND typeof("prize") = 'text'
+                     AND "prize" = ''
+                    THEN rowid
+                END
+            ),
             MIN(CASE WHEN rowid <> 1 AND typeof("prize") = 'integer' THEN rowid END),
-            MIN(CASE WHEN rowid <> 1 AND typeof("prize") = 'text' THEN rowid END),
+            MIN(CASE WHEN rowid <> 1 AND typeof("prize") = 'real' THEN rowid END),
+            MIN(
+                CASE
+                    WHEN rowid <> 1
+                     AND typeof("prize") = 'text'
+                     AND "prize" <> ''
+                    THEN rowid
+                END
+            ),
             MIN(CASE WHEN rowid <> 1 AND typeof("num") = 'integer' THEN rowid END),
             MIN(CASE WHEN rowid <> 1 AND typeof("num") = 'text' THEN rowid END),
             MIN(CASE WHEN rowid <> 1 AND typeof("ovr_btn") = 'real' THEN rowid END)
@@ -520,7 +536,7 @@ def _validate_persisted_readback(
                 f"Prototype foreign_key_check returned {foreign_key_rows} rows"
             )
 
-    required_classes = {"null", "integer", "real", "text"}
+    required_classes = {"integer", "real", "text"}
     if not required_classes.issubset(observed_storage_classes):
         missing = sorted(required_classes - observed_storage_classes)
         raise RuntimeError(f"Prototype sample lacks required observed storage classes: {missing}")
