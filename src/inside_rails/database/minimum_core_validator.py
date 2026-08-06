@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from itertools import zip_longest
 from pathlib import Path
 import re
@@ -89,6 +90,7 @@ _EXPECTED_VALIDATION_STAGES = (
 _COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
 _IMPORT_CODE_PATTERN = re.compile(r"imp:(\d{8}T\d{12}Z):[0-9a-f]{8}")
 _DATABASE_CODE_PATTERN = re.compile(r"db:(\d{8}T\d{12}Z):[0-9a-f]{8}")
+_TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 
 @dataclass(frozen=True)
@@ -196,6 +198,13 @@ def _value_token(value: object) -> tuple[str, object]:
 
 def _race_key(values: tuple[object, object, object]) -> tuple[tuple[str, object], ...]:
     return tuple(_value_token(value) for value in values)
+
+
+def _parsed_timestamp(value: object, *, label: str) -> datetime:
+    try:
+        return datetime.strptime(str(value), _TIMESTAMP_FORMAT)
+    except ValueError as exc:
+        raise RuntimeError(f"{label} is not a canonical UTC timestamp") from exc
 
 
 def _expected_schema_inventory() -> list[tuple[str, str, str]]:
@@ -448,6 +457,7 @@ def _validate_governance(
         or release_row[1]
         != governance_release_code(source_sha256, "source-v1-structure", 1)
         or release_row[2:5] != (1, 1, "accepted")
+        or release_row[5] != str(release_row[10])[:10]
         or release_row[6] != method_row[4]
         or release_row[7] != "rowid <> 1"
         or release_row[8]
@@ -457,9 +467,10 @@ def _validate_governance(
             "database release."
         )
         or release_row[9] is not None
-        or not str(release_row[10]).endswith("Z")
+        or release_row[10] != method_row[6]
     ):
         raise RuntimeError("Candidate governance-release metadata mismatch")
+    _parsed_timestamp(method_row[6], label="Governance timestamp")
 
     evidence = connection.execute(
         """
@@ -513,6 +524,18 @@ def _validate_manifest(
         raise RuntimeError("Candidate import or database-release code is malformed")
     if import_match.group(1) != database_match.group(1):
         raise RuntimeError("Candidate event codes do not share one build timestamp")
+    if manifest[10] is None:
+        raise RuntimeError("Candidate completion timestamp is missing")
+    started_at = _parsed_timestamp(manifest[9], label="Manifest start timestamp")
+    completed_at = _parsed_timestamp(
+        manifest[10],
+        label="Manifest completion timestamp",
+    )
+    compact_started_at = started_at.strftime("%Y%m%dT%H%M%S%fZ")
+    if import_match.group(1) != compact_started_at:
+        raise RuntimeError("Candidate event codes do not match the build timestamp")
+    if completed_at < started_at:
+        raise RuntimeError("Candidate completion timestamp precedes its start")
     if (
         manifest[0] != 1
         or manifest[3:6] != (1, 1, 1)
