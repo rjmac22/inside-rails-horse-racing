@@ -147,7 +147,7 @@ def test_full_candidate_copies_every_row_in_batches_and_persists_exact_values(
     assert summary.quick_check == "ok"
     assert summary.foreign_key_check_rows == 0
     assert summary.source_hash_unchanged is True
-    assert summary.persisted_readback_passed is True
+    assert summary.persisted_structural_checks_passed is True
     assert summary.output_file_size_bytes == output.stat().st_size
     assert summary.output_file_size_bytes > 0
     assert summary.build_elapsed_seconds > 0
