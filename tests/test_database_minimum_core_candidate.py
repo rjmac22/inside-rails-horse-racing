@@ -251,11 +251,16 @@ def test_complete_candidate_builds_all_races_runners_and_manifest(
         assert connection.execute(
             "SELECT COUNT(*) FROM import_manifest WHERE build_status = 'release_accepted'"
         ).fetchone()[0] == 0
-        with pytest.raises(sqlite3.IntegrityError, match="invalid import manifest state"):
+        # Multiple fail-closed triggers can reject this invalid jump; SQLite does not
+        # promise which applicable BEFORE trigger reports first.
+        with pytest.raises(sqlite3.IntegrityError):
             connection.execute(
                 "UPDATE import_manifest SET build_status = 'release_accepted'"
             )
         connection.rollback()
+        assert connection.execute(
+            "SELECT build_status FROM import_manifest"
+        ).fetchone()[0] == "built"
         assert connection.execute("PRAGMA quick_check").fetchone()[0] == "ok"
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
     finally:
