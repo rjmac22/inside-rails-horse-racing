@@ -68,7 +68,7 @@ ALL 28 VALIDATORS PASSED
 
 ### Minimum stable core and physical database candidate
 
-**Status: complete through independently validated disposable candidate on 6 August 2026. No database release has been accepted.**
+**Status: complete through independently validated disposable candidate and final repository-wide technical gate on 6 August 2026. No database release has been accepted.**
 
 The project now has SQLite schema version 1 implementing the authorised minimum structural core:
 
@@ -103,10 +103,17 @@ Independent validation checked:
 1,851,285 runner codes and source-row links
 ```
 
-The final bounded database gate passed:
+The bounded database gate passed:
 
 ```text
 72 passed in 14.54s
+```
+
+The final repository-wide technical gate then passed at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba`:
+
+```text
+354 passed in 18.28s
+ALL 31 VALIDATORS PASSED
 ```
 
 The candidate remains ignored generated output. It is not installed as a live database and has not been promoted or marked `release_accepted`.
@@ -131,6 +138,13 @@ Final bounded minimum-core gate, 6 August 2026:
 
 ```text
 72 passed in 14.54s
+```
+
+Final Phase 4 repository-wide technical gate, 6 August 2026:
+
+```text
+354 passed in 18.28s
+ALL 31 VALIDATORS PASSED
 ```
 
 The field-governance registers remain reconciled to:
@@ -165,15 +179,16 @@ See:
 - `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
 - `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
 - `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
-- `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`.
+- `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
+- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`.
 
 ## Next bounded action
 
 Define the release-acceptance and promotion boundary for the validated minimum-core candidate.
 
-That work must remain separate from the completed candidate build and must cover project acceptance evidence, active-release resolution, atomic promotion or replacement, prior-release preservation, rollback behaviour and the final accepted database location.
+The final repository-wide technical gate is complete for the current candidate and commit, but it does not itself accept or promote a release. The next work must cover durable association of acceptance evidence, active-release resolution, atomic promotion or replacement, prior-release preservation, rollback behaviour and the final accepted database location.
 
-No branch movement, merge or database promotion should occur without explicit review and acceptance.
+No branch movement, merge or database promotion should occur without explicit review and acceptance. Any code or governed-reference change made while implementing the release boundary must trigger the appropriate tests and a fresh final repository-wide gate.
 
 Only after release acceptance should governed field-level and identity-aware analytical structures be added to the minimum core.
 
