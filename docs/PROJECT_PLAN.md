@@ -152,7 +152,7 @@ Primary governing documents:
 
 ## Phase 4 — Physical target architecture and complete disposable candidate
 
-**Status: complete through independently validated disposable candidate; no database release accepted.**
+**Status: complete through independently validated disposable candidate and final repository-wide technical gate; no database release accepted.**
 
 The selected physical technology is SQLite schema version 1. The implementation now includes:
 
@@ -196,26 +196,37 @@ Final bounded database gate:
 72 passed in 14.54s
 ```
 
+Final repository-wide technical gate at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba`:
+
+```text
+354 passed in 18.28s
+ALL 31 VALIDATORS PASSED
+```
+
 Evidence:
 
 - `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
 - `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
 - `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
-- `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`.
+- `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
+- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`.
 
 The generated database remains an ignored, disposable candidate. It has not been promoted, installed as an active database or marked `release_accepted`.
 
 ## Next bounded stage — release acceptance and analytical extension planning
 
+The final repository-wide technical gate is complete for the current candidate and repository commit. It is evidence for a future release decision, not the release decision itself.
+
 Before any promotion or active-database replacement, the project must separately define and execute the release-acceptance boundary. That stage must cover, at minimum:
 
-- the full project acceptance gate required before `release_accepted`;
-- how independent validation evidence is durably associated with the candidate;
+- how independent and repository-wide validation evidence is durably associated with the candidate;
 - active-release resolution and atomic promotion or replacement;
 - prior-release preservation and rollback behaviour;
 - the location and naming of the accepted analytical database;
-- final complete repository test and validator sweeps at the appropriate series gate;
+- the exact authorised transition from `built` to any later manifest state;
 - explicit user review and acceptance before branch movement, merge or promotion.
+
+Any code or governed-reference change made while implementing that boundary must trigger the appropriate focused tests and a fresh final repository-wide technical gate before release acceptance.
 
 Only after that boundary is accepted should governed field-level and identity-aware analytical structures be added to the minimum core.
 
