@@ -8,7 +8,7 @@ The project is evidence-led. Profiling and domain interpretation come before cle
 
 ## Standing method
 
-For each substantive notebook:
+For each substantive investigation:
 
 1. state one bounded question;
 2. declare the source and grain under investigation;
@@ -17,32 +17,34 @@ For each substantive notebook:
 5. extract stable reusable plumbing only after it works;
 6. add focused unit tests including failure behaviour;
 7. validate extracted code and governed references independently;
-8. document the database and update consequence;
-9. produce a concise Minto-style report;
+8. document the database consequence;
+9. produce a concise reader-facing report where applicable;
 10. record decisions, uncertainty and lessons learned;
-11. update the audit register, field governance, this plan and the README;
+11. update the audit record, project plan and README;
 12. commit and verify the complete closeout.
 
-The full procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
+The full notebook procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
 
 The raw SQLite database remains read-only. All source-data queries use `rowid <> 1`.
 
-Established source population:
+Established Source Version 1 population:
 
-- 1,851,285 governed runner rows;
-- 189,043 provisional races;
+- 1,851,286 physical source records;
+- 1,851,285 admitted runner records;
+- one retained excluded physical row;
+- 189,043 reconstructed source race occurrences;
 - 37 source columns;
-- candidate provisional race key: `date + course + off`.
+- authorised Source Version 1 race key: exact raw `date + course + off`.
 
 ## Database admission gate
 
-Every future staging, core or analytical database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
+Every staging, core or analytical database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
 
 The standing rule is:
 
 > No validated output, no database write. No partial success. The last known-good database remains intact.
 
-Candidate outputs must be built outside the live database, validated source-wide, persisted and read back, loaded transactionally into temporary or replacement structures, and validated again after load. Unknown or changed data must fail closed for investigation, remain explicitly unresolved or be quarantined; it must never be silently guessed, discarded or partially loaded.
+Candidates must be built away from any live database, validated source-wide, persisted and read back, and accepted through a separate explicit gate. Unknown or changed data must fail closed, remain explicitly unresolved or be quarantined; it must never be silently guessed, discarded or partially loaded.
 
 ## Phase 1 — Source understanding
 
@@ -71,19 +73,14 @@ Retained governed limits:
 
 The complete repository test suite and every then-discovered independent validator were run after Notebook 21.
 
-Final evidence:
-
 ```text
 256 passed in 0.96s
 ALL 26 THEN-DISCOVERED VALIDATORS PASSED
 ```
 
-The sweep found and repaired:
+The sweep found and repaired a prize-money minor-unit fall-through defect and a source-field status-loader compatibility defect.
 
-1. a prize-money minor-unit fall-through defect;
-2. a source-field status-loader compatibility defect.
-
-The final field-governance reconciliation passed with:
+Final field-governance reconciliation:
 
 ```text
 closed: 34
@@ -101,72 +98,30 @@ All 37 source fields require raw preservation and match the SQLite schema names,
 
 The programme preserves immutable raw labels and row lineage while adding a separate conservative participant-identity layer.
 
-Established governed results:
+Established governed results include:
 
-- 7,917 jockey labels profiled;
-- 212 jockey candidate groups and 216 candidate relationships retained for review;
-- one confirmed provisional jockey label identity: `Mlle Marie Velon` / `Mme Marie Velon`;
-- one confirmed distinct-person jockey relationship: `Miss B ONeill` / `Mr B ONeill`;
+- 7,917 jockey labels;
+- 212 jockey candidate groups and 216 candidate relationships;
+- one confirmed provisional jockey label identity;
+- one confirmed distinct-person jockey relationship;
 - 214 jockey relationships retained unresolved;
-- two direct jockey label mappings to `JOCKEY-PROVISIONAL-0001`;
-- 26 bounded provisional trainer transitions covering 52 labels and 6,350 source rows;
-- 936 owner token-multiset candidate groups;
-- 41 same-race-supported provisional ownership compositions covering 95 labels and 9,788 source rows;
+- 26 bounded provisional trainer transitions;
+- 41 same-race-supported provisional ownership compositions;
 - 895 owner groups retained unresolved.
 
-The owner-identity and ownership-structure work originally scheduled as Notebook 23 was completed inside the consolidated Notebook 22 archival investigation. A separate Notebook 23 is not required.
-
-Focused test evidence:
-
-```text
-14 passed in 0.61s
-```
-
-The closeout repair added `data/processed/jockey_identity/jockey_provisional_identity_mapping.csv` and strengthened `scripts/validate_participant_identity.py` to enforce all 216 candidate pairs, the exact `1 / 1 / 214` decision partition, both decisive verification records, unresolved preservation actions and the exact two-row mapping.
-
-Retained controls:
-
-- raw-label summaries must remain explicitly labelled as source-label analysis;
-- normalised text is a candidate-generation aid, not a definitive identity key;
-- unresolved relationships remain preserved rather than guessed;
-- unsupported automatic cross-role merging is prohibited;
-- participant-level publication or modelling must use the governed identity layer and state its limits.
+The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22. A separate Notebook 23 is not required.
 
 ## Mandatory pre-database authority gate — completed 5 August 2026
 
 **Status: completed.**
 
-All available responses from studbooks and racing authorities contacted during Notebook 19 were checked before physical database construction.
-
-Authority evidence confirmed bounded pedigree corrections for:
-
-- `Almavillalobas (GB)`;
-- `Colwyn Bay (FR)`;
-- `Diamond Tipp (IRE)`;
-- `LAziza Des Places (FR)`.
-
-Weatherbys Ireland had not replied about `Runninsonofagun (IRE)` by the gate date. That case remains explicitly `Unresolved`; its competing raw assertions are preserved and no governed pedigree is guessed.
-
-Final governed transition results are:
-
-```text
-Corrected: 91
-Different horse: 261
-Unresolved: 1
-provisional occurrences: 611
-```
-
-Focused tests and independent source-wide validation passed against the immutable source and wrote and reloaded both governed outputs.
+Available authority responses were checked before physical database construction. Four bounded pedigree corrections were confirmed. `Runninsonofagun (IRE)` remains explicitly unresolved; its competing raw assertions are preserved and no governed pedigree is guessed.
 
 ## Targeted cross-notebook implementation-completeness audit — completed 5 August 2026
 
 **Status: fully closed.**
 
-The audit reviewed the existing notebook implementations without reopening their analytical investigations. It repaired stale closeout records, missing governed outputs, incomplete provenance enforcement, weak source-wide validation, correction-lineage gaps, an obsolete construction utility and the missing canonical race-time regeneration path.
-
-Notebook 11 was accepted after the full 189,043-race output built, wrote, reloaded and independently reconciled to the source with the exact settled totals of 169,465 resolved and 19,578 unresolved races.
-
-Every repair unit was reviewed individually before integration. The accepted content was consolidated on `audit/retrospective-implementation-integration`.
+The audit repaired stale closeout records, missing governed outputs, incomplete provenance enforcement, weak source-wide validation, correction-lineage gaps, an obsolete construction utility and the missing canonical race-time regeneration path.
 
 Final integrated evidence:
 
@@ -175,36 +130,97 @@ Final integrated evidence:
 ALL 28 VALIDATORS PASSED
 ```
 
-The 28-validator sweep covered every current `scripts/validate_*.py` file. No genuine integration defect was found.
+## Phase 3 — Minimum stable entity and key design
 
-## Phase 3 — Entity and key design
+**Status: completed and evidenced on 6 August 2026.**
 
-**Status: next active phase.**
+Phase 3 established the bounded minimum stable core needed before field-level analytical extensions:
 
-The next bounded work is to:
+- immutable physical source lineage;
+- deterministic source-version, relation, record, race and runner codes;
+- source race occurrences grouped by exact raw `date + course + off`;
+- one runner participation for each admitted source record;
+- explicit governance method and release records;
+- import-manifest and validation-result structures;
+- fail-closed lifecycle and acceptance-state constraints;
+- preservation of unresolved identity and semantic work outside the minimum structural core.
 
-- consolidate race, runner, horse-occurrence, participant and ownership identity requirements;
-- distinguish source labels, source-internal occurrence identifiers and verified real-world identities;
-- define amended-record versioning and reconciliation controls;
-- decide which unresolved relationships remain nullable or quarantined;
-- define the import manifest and validation-evidence record required by the database admission gate;
-- produce the conceptual entity and key design before selecting a physical database technology.
+Primary governing documents:
 
-## Phase 4 — Target architecture
+- `docs/PHASE_3_MINIMUM_STABLE_CORE_IMPLEMENTATION_BRIEF.md`;
+- `docs/PHASE_4_MINIMUM_CORE_PHYSICAL_SCHEMA_SPECIFICATION.md`.
 
-Only after the entity and key design is accepted:
+## Phase 4 — Physical target architecture and complete disposable candidate
 
-- select the physical database technology;
-- define staging, core and analytical schemas;
-- create tables, constraints and indexes;
-- implement repeatable fail-closed ingestion;
-- preserve raw source values and technical lineage;
-- build into temporary or versioned structures;
-- add automated source-to-output, cross-table and post-load reconciliation;
-- commit or atomically swap the new database only after every gate passes.
+**Status: complete through independently validated disposable candidate; no database release accepted.**
+
+The selected physical technology is SQLite schema version 1. The implementation now includes:
+
+- exact source-file identity enforcement;
+- a complete immutable raw mirror;
+- deterministic source, race and runner identifiers;
+- complete core race and runner population;
+- governance, import-manifest and validation-evidence tables;
+- STRICT tables, foreign keys, indexes and protective triggers;
+- durable candidate construction with complete cleanup after failure;
+- builder persisted readback;
+- a separate source-wide validator that does not trust builder counters;
+- explicit separation between `built`, `validated` and `release_accepted` states.
+
+Complete candidate results:
+
+```text
+physical source records: 1,851,286
+admitted runner records: 1,851,285
+source race occurrences: 189,043
+runner participations: 1,851,285
+candidate size: 1,730,048,000 bytes
+candidate SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
+manifest status: built
+release accepted: false
+```
+
+Independent validation reconciled:
+
+```text
+raw records: 1,851,286
+raw values: 68,497,582
+SQLite storage classes: 68,497,582
+race codes, groupings and runner counts: 189,043 each
+runner codes and source lineage: 1,851,285 each
+```
+
+Final bounded database gate:
+
+```text
+72 passed in 14.54s
+```
+
+Evidence:
+
+- `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
+- `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
+- `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
+- `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`.
+
+The generated database remains an ignored, disposable candidate. It has not been promoted, installed as an active database or marked `release_accepted`.
+
+## Next bounded stage — release acceptance and analytical extension planning
+
+Before any promotion or active-database replacement, the project must separately define and execute the release-acceptance boundary. That stage must cover, at minimum:
+
+- the full project acceptance gate required before `release_accepted`;
+- how independent validation evidence is durably associated with the candidate;
+- active-release resolution and atomic promotion or replacement;
+- prior-release preservation and rollback behaviour;
+- the location and naming of the accepted analytical database;
+- final complete repository test and validator sweeps at the appropriate series gate;
+- explicit user review and acceptance before branch movement, merge or promotion.
+
+Only after that boundary is accepted should governed field-level and identity-aware analytical structures be added to the minimum core.
 
 ## Phase 5 — Analytical products and writing
 
-Potential outputs after the database is validated include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
+Potential outputs after database release acceptance include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
 
-Comment-derived features remain future bounded studies. Predictive work remains downstream of reliable source interpretation, governed identity resolution and database design.
+Comment-derived features remain future bounded studies. Predictive work remains downstream of reliable source interpretation, governed identity resolution and accepted database infrastructure.
