@@ -19,16 +19,16 @@ from inside_rails.database.raw_mirror_prototype import (
 
 FIXED_TIMESTAMP = "2026-08-06T00:00:00.000000Z"
 FIXTURE_BASELINE = SourceBaseline(
-    physical_record_count=4,
-    admitted_record_count=3,
+    physical_record_count=5,
+    admitted_record_count=4,
     excluded_record_count=1,
     minimum_source_date="2026-01-01",
-    maximum_source_date="2026-01-03",
+    maximum_source_date="2026-01-04",
 )
 
 
 def raw_values(**overrides: object) -> list[object]:
-    values = {name: None for name in RAW_COLUMN_NAMES}
+    values = {name: "" for name in RAW_COLUMN_NAMES}
     values.update(overrides)
     return [values[name] for name in RAW_COLUMN_NAMES]
 
@@ -64,7 +64,7 @@ def create_source_database(
                 course="Ascot",
                 race_id=901,
                 off="13:00",
-                prize=100,
+                prize="",
                 num=1,
                 ovr_btn=0.5 if include_real_example else 1,
                 horse="Horse One",
@@ -77,7 +77,7 @@ def create_source_database(
                 course="Ascot",
                 race_id=902,
                 off="13:30",
-                prize="€12.50",
+                prize=100,
                 num="",
                 ovr_btn=1,
                 horse="Horse Two",
@@ -90,10 +90,23 @@ def create_source_database(
                 course="Ascot",
                 race_id=903,
                 off="14:00",
-                prize=None,
+                prize=12.5,
                 num=2,
                 ovr_btn=2.25 if include_real_example else 2,
                 horse="Horse Three",
+            ),
+        )
+        connection.execute(
+            f"INSERT INTO data VALUES ({placeholders})",
+            raw_values(
+                date="2026-01-04",
+                course="Ascot",
+                race_id=904,
+                off="14:30",
+                prize="€12.50",
+                num=3,
+                ovr_btn=3,
+                horse="Horse Four",
             ),
         )
         connection.commit()
@@ -116,12 +129,12 @@ def test_source_backed_prototype_persists_exact_values_types_and_fingerprints(
         created_at_utc=FIXED_TIMESTAMP,
     )
 
-    assert summary.selected_source_rowids == (1, 2, 3, 4)
-    assert summary.copied_record_count == 4
-    assert summary.observed_storage_classes == ("integer", "null", "real", "text")
-    assert summary.value_comparisons == 4 * 37
-    assert summary.typeof_comparisons == 4 * 37
-    assert summary.fingerprint_comparisons == 4
+    assert summary.selected_source_rowids == (1, 2, 3, 4, 5)
+    assert summary.copied_record_count == 5
+    assert summary.observed_storage_classes == ("integer", "real", "text")
+    assert summary.value_comparisons == 5 * 37
+    assert summary.typeof_comparisons == 5 * 37
+    assert summary.fingerprint_comparisons == 5
     assert summary.quick_check == "ok"
     assert summary.foreign_key_check_rows == 0
     assert summary.source_hash_unchanged is True
@@ -157,7 +170,7 @@ def test_source_backed_prototype_persists_exact_values_types_and_fingerprints(
                 2,
                 source_record_code(source_hash, 2),
                 "admitted_runner_record",
-                "integer",
+                "text",
                 "integer",
                 "real",
             ),
@@ -165,7 +178,7 @@ def test_source_backed_prototype_persists_exact_values_types_and_fingerprints(
                 3,
                 source_record_code(source_hash, 3),
                 "admitted_runner_record",
-                "text",
+                "integer",
                 "text",
                 "integer",
             ),
@@ -173,9 +186,17 @@ def test_source_backed_prototype_persists_exact_values_types_and_fingerprints(
                 4,
                 source_record_code(source_hash, 4),
                 "admitted_runner_record",
-                "null",
+                "real",
                 "integer",
                 "real",
+            ),
+            (
+                5,
+                source_record_code(source_hash, 5),
+                "admitted_runner_record",
+                "text",
+                "integer",
+                "integer",
             ),
         ]
         assert connection.execute("PRAGMA quick_check").fetchone()[0] == "ok"
@@ -229,11 +250,11 @@ def test_baseline_mismatch_and_existing_output_do_not_create_partial_success(
     output = tmp_path / "prototype.sqlite3"
     create_source_database(source)
     wrong_baseline = SourceBaseline(
-        physical_record_count=5,
-        admitted_record_count=4,
+        physical_record_count=6,
+        admitted_record_count=5,
         excluded_record_count=1,
         minimum_source_date="2026-01-01",
-        maximum_source_date="2026-01-03",
+        maximum_source_date="2026-01-04",
     )
 
     with pytest.raises(RuntimeError, match="baseline mismatch"):
