@@ -448,6 +448,8 @@ def validate_raw_mirror_candidate(
                 {quoted_columns},
                 {type_columns}
             FROM source_raceform_v1_record
+            WHERE source_version_id = 1
+              AND source_relation_id = 1
             ORDER BY source_rowid
             """
         )
@@ -596,6 +598,14 @@ def validate_raw_mirror_candidate(
         expected_source_sha256=expected_source_sha256,
     )
     candidate_hash_after = sha256_file(candidate)
+    final_sidecars = [
+        path for path in _candidate_sidecar_paths(candidate) if path.exists()
+    ]
+    if final_sidecars:
+        raise RuntimeError(
+            "Raw-mirror candidate acquired unexpected SQLite sidecars during validation: "
+            + ", ".join(str(path) for path in final_sidecars)
+        )
     if source_hash_after != source_hash_before:
         raise RuntimeError("Immutable source hash changed during validation")
     if candidate_hash_after != candidate_hash_before:
