@@ -17,7 +17,10 @@ if str(SRC_ROOT) not in sys.path:
 from inside_rails.database.raw_mirror_prototype import run_raw_mirror_prototype
 
 
-DEFAULT_SOURCE = PROJECT_ROOT / "data/raw/form_2015-present/raceform.db"
+DEFAULT_SOURCE = (
+    PROJECT_ROOT
+    / "data/raw/form_2015-present/form_2015-present/raceform.db"
+)
 DEFAULT_OUTPUT = (
     PROJECT_ROOT
     / "data/processed/database/prototypes/raceform_v1_raw_mirror_prototype.sqlite3"
