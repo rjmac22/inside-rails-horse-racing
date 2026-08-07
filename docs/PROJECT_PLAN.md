@@ -213,49 +213,24 @@ Evidence:
 
 The generated database remains an ignored, disposable candidate. It has not been promoted, installed as an active database or marked `release_accepted`.
 
-## Phase 5 — Release acceptance and activation
+## Next bounded stage — release acceptance and analytical extension planning
 
-**Status: implementation contract accepted on 7 August 2026; implementation and real release acceptance pending.**
+The final repository-wide technical gate is complete for the current candidate and repository commit. It is evidence for a future release decision, not the release decision itself.
 
-Governing specification:
+Before any promotion or active-database replacement, the project must separately define and execute the release-acceptance boundary. That stage must cover, at minimum:
 
-- `docs/DATABASE_RELEASE_ACCEPTANCE_AND_ACTIVATION_SPECIFICATION.md`.
+- how independent and repository-wide validation evidence is durably associated with the candidate;
+- active-release resolution and atomic promotion or replacement;
+- prior-release preservation and rollback behaviour;
+- the location and naming of the accepted analytical database;
+- the exact authorised transition from `built` to any later manifest state;
+- explicit user review and acceptance before branch movement, merge or promotion.
 
-The accepted design requires:
+Any code or governed-reference change made while implementing that boundary must trigger the appropriate focused tests and a fresh final repository-wide technical gate before release acceptance.
 
-- preservation of the tested candidate unchanged at `built`;
-- a separate acceptance copy that alone may transition through `validated` to `release_accepted`;
-- seven passed required validation stages recorded inside the accepted release;
-- a final immutable versioned SQLite release file;
-- a separate deterministic immutable release manifest containing the final database hash;
-- an `active_database.json` pointer as the only mutable release selector;
-- query-only resolution through one governed helper;
-- retention of every prior accepted release;
-- rollback by reactivating an earlier immutable release;
-- separate user decisions for real release acceptance and later activation.
+Only after that boundary is accepted should governed field-level and identity-aware analytical structures be added to the minimum core.
 
-### Current bounded implementation unit
-
-Implement the release lifecycle against synthetic databases before touching the real Source Version 1 candidate.
-
-The implementation must prove:
-
-- candidate immutability;
-- exact `built -> validated -> release_accepted` transitions on the copy;
-- final database and manifest hash agreement;
-- independent accepted-release validation;
-- atomic first activation and later replacement;
-- unchanged prior releases;
-- rollback through the active pointer;
-- fail-closed path and symlink validation;
-- query-only consumer connections;
-- cleanup of staging artifacts after failure.
-
-Planned implementation boundaries include acceptance, independent release validation, activation, active resolution and active-state validation as separate modules and commands.
-
-After focused lifecycle tests pass, the existing database test gate, complete repository suite and all-validator sweep must be rerun. The real candidate must not be accepted before implementation review and explicit user authorisation. A newly accepted real release must initially remain inactive until separately reviewed and activated.
-
-## Phase 6 — Analytical products and writing
+## Phase 5 — Analytical products and writing
 
 Potential outputs after database release acceptance include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
 
