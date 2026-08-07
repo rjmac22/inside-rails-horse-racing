@@ -118,22 +118,6 @@ ALL 31 VALIDATORS PASSED
 
 The candidate remains ignored generated output. It is not installed as a live database and has not been promoted or marked `release_accepted`.
 
-### Release acceptance and activation boundary
-
-**Status: design accepted on 7 August 2026; implementation and real release acceptance remain pending.**
-
-The selected lifecycle is:
-
-- preserve the tested candidate unchanged at `built`;
-- create a separate acceptance copy;
-- record the complete acceptance evidence in that copy;
-- validate and hash the final accepted copy;
-- retain it at an immutable versioned release path;
-- select the active release only through an atomically replaced `active_database.json` pointer;
-- retain every earlier accepted release and use the same pointer mechanism for rollback.
-
-Acceptance and activation are separate operations. The first implementation must be proved on synthetic databases before the real Source Version 1 candidate is accepted. Real acceptance and later activation each require an explicit user decision.
-
 ## Validation history
 
 End of source-field series, 4 August 2026:
@@ -190,7 +174,6 @@ See:
 - `docs/CROSS_NOTEBOOK_IMPLEMENTATION_COMPLETENESS_AUDIT.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
 - `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
-- `docs/DATABASE_RELEASE_ACCEPTANCE_AND_ACTIVATION_SPECIFICATION.md`;
 - `docs/PROJECT_PLAN.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
 - `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
@@ -201,11 +184,11 @@ See:
 
 ## Next bounded action
 
-Implement the accepted release lifecycle against synthetic databases.
+Define the release-acceptance and promotion boundary for the validated minimum-core candidate.
 
-The next code must prove candidate immutability, accepted-copy state transitions, immutable release manifests, independent accepted-release validation, safe active-pointer replacement, query-only resolution and rollback behaviour. It must not accept or activate the real Source Version 1 candidate while lifecycle behaviour is still being developed.
+The final repository-wide technical gate is complete for the current candidate and commit, but it does not itself accept or promote a release. The next work must cover durable association of acceptance evidence, active-release resolution, atomic promotion or replacement, prior-release preservation, rollback behaviour and the final accepted database location.
 
-No branch movement, merge, real database acceptance or activation should occur without explicit review. Any code or governed-reference change made during implementation must trigger the appropriate focused tests and a fresh final repository-wide gate before real release acceptance.
+No branch movement, merge or database promotion should occur without explicit review and acceptance. Any code or governed-reference change made while implementing the release boundary must trigger the appropriate tests and a fresh final repository-wide gate.
 
 Only after release acceptance should governed field-level and identity-aware analytical structures be added to the minimum core.
 
