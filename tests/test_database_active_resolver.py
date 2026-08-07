@@ -224,8 +224,11 @@ def test_active_resolver_verifies_release_and_returns_query_only_connection(
 
 def test_active_resolver_rejects_changed_database_hash(tmp_path: Path) -> None:
     database, _, _ = create_active_fixture(tmp_path)
-    with database.open("ab") as handle:
-        handle.write(b"changed")
+    with database.open("r+b") as handle:
+        handle.seek(100)
+        original = handle.read(1)
+        handle.seek(100)
+        handle.write(bytes([original[0] ^ 0x01]))
 
     with pytest.raises(RuntimeError, match="SHA-256 mismatch"):
         resolve_active_release(tmp_path)
@@ -246,14 +249,21 @@ def test_active_resolver_rejects_manifest_disagreement(tmp_path: Path) -> None:
 
 
 def test_active_resolver_rejects_path_outside_releases(tmp_path: Path) -> None:
-    _, _, active = create_active_fixture(tmp_path)
+    _, release, active = create_active_fixture(tmp_path)
     paths = release_paths(tmp_path, DATABASE_RELEASE_CODE)
-    payload = active.to_mapping()
-    payload["database_relative_path"] = (
-        "data/processed/database/candidates/not-a-release.sqlite3"
-    )
+    outside_path = "data/processed/database/candidates/not-a-release.sqlite3"
+
+    active_payload = active.to_mapping()
+    active_payload["database_relative_path"] = outside_path
     paths.active_database_manifest.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        json.dumps(active_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    release_payload = release.to_mapping()
+    release_payload["database_relative_path"] = outside_path
+    paths.release_manifest.write_text(
+        json.dumps(release_payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
 
