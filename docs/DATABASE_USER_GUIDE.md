@@ -2,12 +2,12 @@
 
 ## Practical User Guide — Database v1
 
-**Guide date:** 7 August 2026  
-**Working database:** `data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3`
+**Guide date:** 8 August 2026  
+**Accepted database:** `data/processed/database/releases/inside_rails_v1.sqlite3`
 
 ## 1. What this database is
 
-Database v1 is the project's complete, validated SQLite research database for the supplied historical horse-racing source. It contains:
+Database v1 is the project's accepted, validated SQLite research database for the supplied historical horse-racing source. It contains:
 
 - the complete retained raw source layer;
 - one reconstructed race occurrence for every authorised raw `date + course + off` group;
@@ -18,22 +18,33 @@ Database v1 is the project's complete, validated SQLite research database for th
 
 It is intended for local research, notebook analysis, evidence-backed articles and reusable query development. It is not a live racecard service, a tip generator or a guarantee that a historical pattern will remain profitable.
 
-The word `candidate` in the filename reflects where the completed build was created. In practical project use, this is database v1. Treat it as read-only.
+Treat the accepted release as read-only. The preserved candidate remains in the candidate directory for evidence and rollback, but normal analysis should use the accepted release path above.
 
-### Validated identity
+### Accepted identity
 
 ```text
 file size: 1,730,048,000 bytes
-SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+manifest status: release_accepted
+validation-result rows: 7
 physical source records retained: 1,851,286
 admitted runner records: 1,851,285
 reconstructed race occurrences: 189,043
 runner participations: 1,851,285
 SQLite application_id: 1230130259
 SQLite user_version: 1
+quick_check: ok
+foreign-key check rows: 0
 ```
 
-The final repository gate recorded **354 passing tests** and **all 31 independent validators passing**.
+The preserved validated candidate remains unchanged at:
+
+```text
+path: data/processed/database/candidates/inside_rails_v1_candidate.sqlite3
+SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
+```
+
+The Phase 4 technical gate recorded **354 passing tests** and **all 31 independent validators passing**. The later release-boundary implementation passed **6 focused promotion tests** and the complete repository suite at **360 passing tests** before promotion.
 
 ## 2. Two-minute quick start
 
@@ -49,7 +60,7 @@ The project uses a `src` layout. Prefix Python commands with `PYTHONPATH=src` un
 Confirm the database exists:
 
 ```bash
-ls -lh data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3
+ls -lh data/processed/database/releases/inside_rails_v1.sqlite3
 ```
 
 Open it read-only in Python:
@@ -57,10 +68,7 @@ Open it read-only in Python:
 ```python
 from inside_rails.source_sqlite import connect_read_only
 
-DATABASE = (
-    "data/processed/database/candidates/"
-    "raceform_v1_minimum_core_candidate.sqlite3"
-)
+DATABASE = "data/processed/database/releases/inside_rails_v1.sqlite3"
 
 with connect_read_only(DATABASE) as connection:
     race_count = connection.execute(
@@ -89,7 +97,7 @@ Open it in the SQLite shell:
 
 ```bash
 sqlite3 -readonly \
-  data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3
+  data/processed/database/releases/inside_rails_v1.sqlite3
 ```
 
 Useful shell settings:
@@ -129,7 +137,7 @@ Use `source_race_occurrence_code` as the stable race identifier. Do not use the 
 | `view_source_raceform_v1_records` | One retained physical source record | Raw-source inspection, including the retained excluded record. |
 | `view_source_record_lineage` | One retained source record | Source row, status and fingerprint auditing. |
 | `view_database_release_evidence` | One database build manifest | Build counts, commits and validation flags. |
-| `view_import_validation_evidence` | One stored validation result | Builder validation evidence. |
+| `view_import_validation_evidence` | One stored validation result | Builder and release validation evidence. |
 
 For most runner-level analysis, start with `view_core_runner_participations`. For race-level analysis, start with `view_core_source_race_occurrences`.
 
@@ -425,7 +433,9 @@ PYTHONPATH=src jupyter lab
 
 ### Unable to open the database
 
-Check the working directory, exact path, file existence and read permission.
+Check the working directory, exact accepted-release path, file existence and read permission.
+
+Do not silently fall back to the candidate or raw source.
 
 ### A column behaves strangely
 
@@ -478,6 +488,6 @@ The strongest Inside Rails pieces combine a familiar claim, a clearly defined po
 source .venv/bin/activate
 PYTHONPATH=src python script.py
 PYTHONPATH=src jupyter lab
-sqlite3 -readonly data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3
+sqlite3 -readonly data/processed/database/releases/inside_rails_v1.sqlite3
 git status --short
 ```
