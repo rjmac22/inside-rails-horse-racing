@@ -55,7 +55,16 @@ def test_governed_reference_loads() -> None:
     assert governance.explicit_partial_splits == frozenset(
         {"Lyneham (FR)", "Marakan (IRE)", "What A Whopper (IRE)"}
     )
-    assert governance.unresolved_horses == frozenset({"Runninsonofagun (IRE)"})
+    assert governance.unresolved_horses == frozenset()
+
+    runninsonofagun = governance.rows.set_index("decision_id").loc["NB19-ID-0013"]
+    assert runninsonofagun["horse"] == "Runninsonofagun (IRE)"
+    assert runninsonofagun["analytical_outcome"] == "Corrected"
+    assert runninsonofagun["raw_sire"] == "Inns Of Court (IRE)"
+    assert runninsonofagun["raw_dam"] == "High Society Lady (IRE)"
+    assert runninsonofagun["raw_damsire"] == "General Monash | Society Rock"
+    assert runninsonofagun["governed_damsire"] == "Society Rock (IRE)"
+    assert runninsonofagun["verification_status"] == "confirmed"
 
 
 def test_duplicate_reference_decision_fails(tmp_path: Path) -> None:
@@ -69,7 +78,10 @@ def test_duplicate_reference_decision_fails(tmp_path: Path) -> None:
 
 def test_unresolved_reference_cannot_assign_governed_pedigree(tmp_path: Path) -> None:
     frame = pd.read_csv(REFERENCE, dtype=str, keep_default_na=False)
-    index = frame.index[frame["analytical_outcome"].eq("Unresolved")][0]
+    index = frame.index[0]
+    frame.loc[index, "analytical_outcome"] = "Unresolved"
+    frame.loc[index, "verification_status"] = "unresolved"
+    frame.loc[index, ["governed_sire", "governed_dam", "governed_damsire"]] = ""
     frame.loc[index, "governed_dam"] = "Invented Dam"
     path = tmp_path / "invalid_unresolved.csv"
     frame.to_csv(path, index=False)
