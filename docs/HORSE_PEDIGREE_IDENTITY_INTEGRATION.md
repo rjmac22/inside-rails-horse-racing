@@ -63,7 +63,7 @@ Every governed contradiction boundary must resolve to one of:
 - `Different horse`: the exact source horse label is reused and the histories must receive separate provisional occurrence identifiers.
 - `Unresolved`: no correction or split is permitted until further evidence is obtained.
 
-Following the final Weatherbys Ireland authority response received on 8 August 2026, the expected Notebook 19 transition partition is:
+Following the final Weatherbys Ireland authority response received on 8 August 2026, the validated Notebook 19 transition partition is:
 
 - 92 `Corrected`
 - 261 `Different horse`
@@ -142,7 +142,7 @@ The validator writes:
 
 These outputs must not be treated as valid until the validator has completed successfully and the written files have been reloaded.
 
-The 8 August 2026 Weatherbys Ireland decision changes one transition from `Unresolved` to `Corrected` without introducing an identity split. The checked-in processed outputs from the earlier authority gate must therefore be regenerated from the immutable source before the new `92 / 261 / 0` baseline is accepted.
+The 8 August 2026 Weatherbys Ireland decision changes one transition from `Unresolved` to `Corrected` without introducing an identity split. The independent source-wide validator regenerated, wrote and reloaded both processed outputs from the immutable source and confirmed the new `92 / 261 / 0` baseline across 353 governed transitions and 611 provisional occurrences.
 
 ## Rebuild consequence
 
