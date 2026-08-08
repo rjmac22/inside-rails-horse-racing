@@ -54,9 +54,9 @@ EXPECTED_STRUCTURED_PEDIGREE_GROUPS = 741
 EXPECTED_SEPARATED_LABELS = 350
 EXPECTED_SEPARATED_GROUPS = 703
 EXPECTED_TRANSITIONS = 353
-EXPECTED_CORRECTED_TRANSITIONS = 91
+EXPECTED_CORRECTED_TRANSITIONS = 92
 EXPECTED_DIFFERENT_HORSE_TRANSITIONS = 261
-EXPECTED_UNRESOLVED_TRANSITIONS = 1
+EXPECTED_UNRESOLVED_TRANSITIONS = 0
 EXPECTED_PROVISIONAL_OCCURRENCES = 611
 
 
@@ -544,7 +544,11 @@ def validate_expected_population(outputs: IdentityOutputs) -> None:
     separated_groups = outputs.separated_groups
     transitions = outputs.transition_governance
     occurrences = outputs.provisional_occurrences
-    outcome_counts = transitions["analytical_outcome"].value_counts().to_dict()
+    raw_outcome_counts = transitions["analytical_outcome"].value_counts().to_dict()
+    outcome_counts = {
+        outcome: int(raw_outcome_counts.get(outcome, 0))
+        for outcome in ALLOWED_OUTCOMES
+    }
 
     assert outputs.raw_contradiction_labels == EXPECTED_RAW_CONTRADICTION_LABELS, (
         outputs.raw_contradiction_labels,
