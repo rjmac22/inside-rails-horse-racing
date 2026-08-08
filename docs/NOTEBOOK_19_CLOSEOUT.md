@@ -2,11 +2,11 @@
 
 ## Status
 
-**Validated and analytically closed. Authority gate completed 5 August 2026.**
+**Analytically closed; final authority response incorporated on 8 August 2026; focused local regeneration and validation required before the updated governed outputs are accepted.**
 
-The analytical investigation is complete. The notebook is classified as a **non-rerunnable archival construction record**. Durable implementation, governed reference data, focused tests, an independent source-wide validator and database-integration documentation exist outside the notebook.
+Notebook 19 remains a **non-rerunnable archival construction record**. Durable implementation, governed reference data, focused tests, the independent source-wide validator and database-integration documentation live outside the notebook.
 
-The two validator-generated CSV outputs were regenerated, written, reloaded and committed after the authority review.
+The 5 August 2026 authority gate reduced the unresolved population from five cases to one. On 8 August 2026 Weatherbys Ireland supplied the final outstanding pedigree confirmation. That response changes the last governed `Unresolved` transition to `Corrected` and requires regeneration of the two source-derived Notebook 19 outputs.
 
 ## Bounded question
 
@@ -18,19 +18,21 @@ The raw `horse` field is a source-presented label, not a permanent horse identif
 
 The same displayed horse name and breeding-country suffix can be reused by different real horses. One real horse can also appear with incorrect, incomplete or inconsistent pedigree assertions. Horse identity and pedigree therefore require a governed analytical layer rather than direct use of the raw strings.
 
-The 353 material transitions between temporally separated structured pedigree histories now produce:
+The 353 material transitions between temporally separated structured pedigree histories now have the expected final authority-reviewed partition:
 
-- 91 `Corrected` transitions;
+- 92 `Corrected` transitions;
 - 261 `Different horse` transitions;
-- 1 `Unresolved` transition.
+- 0 `Unresolved` transitions.
 
-The governed split boundaries produce 611 provisional source-internal horse occurrences from 350 exact source labels and 703 structured pedigree groups.
+Because the final authority decision is a correction rather than an identity split, the expected provisional source-internal horse-occurrence population remains **611** from 350 exact source labels and 703 separated pedigree groups.
+
+These updated counts must be confirmed by the focused tests and independent source-wide validator before the regenerated outputs are accepted.
 
 ## Core evidence
 
 The source population contains 1,851,285 governed runner rows and 189,043 provisional races under `rowid <> 1`.
 
-The source pedigree fields are highly populated, but repeated exact horse labels can carry incompatible pedigrees. The validated funnel is:
+The validated identity funnel before the final 8 August output regeneration is structurally unchanged:
 
 - 5,573 raw contradiction labels;
 - 368 structured contradiction labels after reversible dam-suffix treatment;
@@ -39,20 +41,11 @@ The source pedigree fields are highly populated, but repeated exact horse labels
 - 350 temporally separated exact labels;
 - 703 separated pedigree groups;
 - 353 governed transitions;
-- 611 provisional occurrences.
+- expected 611 provisional occurrences.
 
 Complete pedigree changes combined with long chronological gaps and incompatible age progression provide strong evidence of exact-label reuse. Short-gap exceptions and partial changes were reviewed separately rather than forced through a universal rule.
 
-External and manual evidence established bounded corrections and aliases including Almutawakel, New President, Herbert, Bonny Ezra, Alderley Charlie, Hangry and Felix Felicis. Forest King supplied a confirmed example of two different registered horses sharing the same exact source label.
-
-The pre-database authority review added confirmed bounded corrections for:
-
-- `Almavillalobas (GB)` — governed dam `Nation (USA)`;
-- `Colwyn Bay (FR)` — governed pedigree `Falco (USA)` / `Eudora (IRE)` / `King's Best (USA)`;
-- `Diamond Tipp (IRE)` — governed pedigree `Diamond Boy (FR)` / `Soundout (IRE)` / `Oscar (IRE)`;
-- `LAziza Des Places (FR)` — governed sire `Alanadi (FR)`.
-
-## Interpretation
+## Analytical outcomes
 
 ### Corrected
 
@@ -68,11 +61,46 @@ The provisional identifier prevents accidental merging inside this source. It is
 
 ### Unresolved
 
-The sole unresolved case is:
+The durable implementation retains an `Unresolved` state for future evidence gaps. Following the final Weatherbys Ireland response on 8 August 2026, the current Notebook 19 governed transition population is expected to contain **zero unresolved transitions**.
 
-- `Runninsonofagun (IRE)`.
+## Final authority resolution — Runninsonofagun (IRE)
 
-Weatherbys Ireland had not replied by 5 August 2026. The competing raw damsire assertions remain preserved, governed pedigree values remain null, and no identity split is created merely from publication consensus.
+The previously unresolved case was:
+
+`Runninsonofagun (IRE)`
+
+The source transition is between otherwise matching pedigree histories:
+
+- sire: `Inns Of Court (IRE)`;
+- dam: `High Society Lady (IRE)`;
+- earlier raw damsire assertion: `General Monash`;
+- later raw damsire assertion: `Society Rock`.
+
+The specialist governance row had also retained stale sire/dam metadata from an earlier review state (`Jet Away (GB)` / `Sounds Of Thunder (IRE)`). The governed transition output showed the correct source history and the specialist reference has now been corrected to match it.
+
+On 8 August 2026 the user supplied an email response from **Georgina Doherty, Senior Pedigree Researcher, Weatherbys Ireland**, confirming:
+
+> High Society Lady (IRE) is by Society Rock (IRE).
+
+Database consequence:
+
+- `NB19-ID-0013` changes from `Unresolved` to `Corrected`;
+- governed damsire becomes `Society Rock (IRE)`;
+- raw competing assertions `General Monash` and `Society Rock` remain preserved;
+- no horse-identity split is created;
+- the occurrence sequence therefore does not change;
+- the transition decision basis becomes the normal bounded correction path rather than `pending_official_confirmation`.
+
+## Other authority-reviewed bounded corrections
+
+The earlier authority review established bounded corrections including:
+
+- `Almavillalobas (GB)` — governed dam `Nation (USA)`;
+- `Colwyn Bay (FR)` — governed pedigree `Falco (USA)` / `Eudora (IRE)` / `King's Best (USA)`;
+- `Diamond Tipp (IRE)` — governed pedigree `Diamond Boy (FR)` / `Soundout (IRE)` / `Oscar (IRE)`;
+- `LAziza Des Places (FR)` — governed sire `Alanadi (FR)`.
+
+Other accepted bounded corrections and splits remain preserved in `data/reference/horse_pedigree_identity_governance.csv`.
 
 ## Confidence
 
@@ -80,13 +108,15 @@ Confidence is high in the central conclusion that raw horse labels cannot serve 
 
 Confidence is high in the 261 different-horse boundaries because the dominant evidence combines materially different pedigrees, separated chronology and generally incompatible age progression.
 
-Confidence in individual corrected pedigrees varies with the evidence recorded in the specialist governance reference. That confidence is preserved per decision rather than implied globally.
+The final Runninsonofagun damsire correction is high confidence because it is supported by direct Weatherbys Ireland pedigree confirmation.
+
+Confidence in individual corrected pedigrees remains decision-specific and is preserved in the specialist governance reference.
 
 ## Limitations
 
 The result is bounded to the supplied source database, the governed `rowid <> 1` population and the period and jurisdictions represented there.
 
-The study does not prove that every stable pedigree is correct. It does not provide official identities for every horse. It does not establish that a name and country suffix are unique outside this dataset. One material case remains unresolved.
+The study does not prove that every stable pedigree is correct. It does not provide official identities for every horse. It does not establish that a name and country suffix are unique outside this dataset.
 
 The occurrence assignment is a source-internal analytical construction. It must not be represented as an official registration or life number.
 
@@ -98,7 +128,7 @@ The work justifies:
 - refusing to use raw `horse` as a permanent natural key;
 - applying bounded governed pedigree corrections;
 - splitting the 261 identified same-label histories;
-- excluding or isolating the remaining unresolved pedigree relationship;
+- using the final Weatherbys-backed Runninsonofagun damsire correction;
 - rebuilding horse-level derived data around governed occurrence identity.
 
 It does not justify overwriting the source, globally stripping suffixes or numerals, inferring identity from name similarity, or treating the source as professionally complete.
@@ -113,13 +143,15 @@ Notebook 19 depends on manual and external evidence. Three claims are recorded i
 
 The specialist table is the governing reference for Notebook 19 identity and pedigree decisions. It never overwrites immutable source data.
 
+The final `NB19-ID-0013` evidence locator records the Weatherbys Ireland email confirmation supplied by the user on 8 August 2026, with high confidence and the corrected governed damsire.
+
 ## Archival classification
 
 Notebook 19 is a **non-rerunnable archival construction record**.
 
-The saved executed notebook preserves the completed investigation, output tables, anomalies, external-review reasoning and final conclusion. It is not intended to regenerate permanent outputs directly.
+The saved executed notebook preserves the completed investigation, output tables, anomalies, external-review reasoning and original conclusion. It is not intended to regenerate permanent outputs directly.
 
-A fresh-kernel rerun would add little reliability and would depend on interactive research, authority enquiries and external evidence that may change. Material exploratory classification cells must not be rerun and treated as production output independently of the governed reference and source-wide validator.
+A fresh-kernel rerun would depend on interactive research, authority enquiries and external evidence that may change. Production outputs are regenerated only through the governed reference and independent source-wide validator.
 
 Durable replacement validation is provided by:
 
@@ -131,7 +163,7 @@ Durable replacement validation is provided by:
 - `scripts/validate_horse_pedigree_identity.py`;
 - `docs/HORSE_PEDIGREE_IDENTITY_INTEGRATION.md`.
 
-## Validation evidence
+## Historical validation evidence
 
 ### Original closeout validation — 3 August 2026
 
@@ -157,74 +189,44 @@ Results:
 
 ### Pre-database authority gate — 5 August 2026
 
-The focused identity tests were updated to enforce the final authority-reviewed unresolved set:
+The focused identity tests and independent source-wide validator passed with the then-final governed baselines:
+
+- 353 transitions;
+- 91 `Corrected`;
+- 261 `Different horse`;
+- 1 `Unresolved`;
+- 611 provisional occurrences.
+
+Those counts are historical evidence of the 5 August authority state and are now superseded by the 8 August Weatherbys Ireland confirmation.
+
+## Required post-authority validation — 8 August 2026
+
+The updated repository now expects:
+
+- 353 governed transitions;
+- 92 `Corrected`;
+- 261 `Different horse`;
+- 0 `Unresolved`;
+- 611 provisional occurrences;
+- zero unresolved boundaries in the persisted occurrence output.
+
+Before this update is accepted, run locally from the repository root:
 
 ```bash
-pytest -q tests/test_horse_pedigree_identity.py
+PYTHONPATH=src .venv/bin/python -m pytest \
+  tests/test_horse_pedigree_identity.py \
+  tests/test_horse_pedigree_identity_counts.py
+
+PYTHONPATH=src .venv/bin/python \
+  scripts/validate_horse_pedigree_identity.py
 ```
 
-Result: **9 passed in 0.59s**.
-
-Independent source-wide validation:
-
-```bash
-python scripts/validate_horse_pedigree_identity.py
-```
-
-Result: **passed** with the final governed baselines:
-
-- raw contradiction labels: 5,573;
-- structured contradiction labels: 368;
-- structured pedigree rows: 96,404;
-- structured pedigree groups: 741;
-- temporally separated horse labels: 350;
-- separated pedigree groups: 703;
-- governed transitions: 353;
-- `Corrected`: 91;
-- `Different horse`: 261;
-- `Unresolved`: 1;
-- provisional occurrences: 611.
-
-The validator successfully wrote and reloaded both processed outputs.
-
-## Persisted outputs
-
-The independent validator wrote and reloaded:
+The validator must regenerate, write and reload:
 
 - `data/processed/horse_pedigree_identity/transition_governance.csv`;
 - `data/processed/horse_pedigree_identity/provisional_horse_occurrences.csv`.
 
-The authority-reviewed outputs and updated reusable expected populations were committed and pushed in commit `7bdff5d`.
-
-## Lessons learned
-
-### Identity cannot be repaired with generic string cleaning
-
-Suffixes, terminal numerals, prefixes and spelling differences can be formatting variants, aliases, metadata defects or real entity distinctions. Identity work must begin with contradiction structure and bounded evidence, not global replacements.
-
-### Populated-value semantics must survive extraction
-
-The independent implementation initially counted blank pedigree strings as competing labels, adding two false contradictions. Notebook 19 counted multiple populated labels. Production extraction must preserve that semantic distinction explicitly and test it.
-
-### Full pedigree change is powerful but not sufficient alone
-
-A complete pedigree change usually identified label reuse, but short-gap cases such as Felix Felicis demonstrated that a source row can instead carry the wrong pedigree. Chronology and age progression must remain part of identity classification.
-
-### Manual review was appropriate for the finite residue
-
-Once the unresolved set fell to five consequential cases, authority enquiries were more defensible than another automated similarity layer. Four replies or official confirmations resolved four cases; the unanswered case remains unresolved rather than guessed.
-
-### The main analytical model should stay simple
-
-The useful downstream outcomes are `Corrected`, `Different horse` and `Unresolved`. Detailed variant taxonomies are audit provenance, not the main analytical interface.
-
-### External evidence must be captured while open
-
-Future work should create the manual-verification or specialist-reference row at the time evidence is reviewed, not during final closeout.
-
-### Stop exploratory analysis when the bounded question is answered
-
-Once the three-outcome model and transition counts were established, the work should move directly to durable closeout implementation.
+The complete repository test suite and all-validator sweep remain deferred to the Database v2 acceptance boundary rather than this bounded authority update.
 
 ## Database consequence
 
@@ -234,6 +236,4 @@ Any existing derived table that groups histories by raw `horse` alone must be re
 
 ## Remaining action
 
-Notebook 19 no longer blocks database design. `Runninsonofagun (IRE)` remains a governed unresolved case pending any future Weatherbys Ireland response.
-
-The next repository gate is the targeted cross-notebook implementation-completeness audit. The complete repository test suite and all-validator sweep remain deferred until the next appropriate branch-level gate.
+Regenerate and validate the two Notebook 19 processed outputs from the immutable source using the focused commands above. Once they pass and are committed, Notebook 19 will again have no outstanding authority case or implementation residue.
