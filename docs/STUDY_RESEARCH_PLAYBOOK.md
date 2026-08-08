@@ -1122,6 +1122,28 @@ The goal is cumulative methodological improvement, not an ever-growing diary.
 
 ---
 
+## 68. Comment substantive notebook code for analytical readability
+
+Study notebooks are part of the research record, not disposable scratch code.
+
+Substantive analytical code cells must contain concise comments wherever they help a later reader understand the reasoning or audit the population. In particular, comment:
+
+- why a database, table, view or governed helper is being used;
+- population-changing filters and exclusions;
+- joins and the intended join grain;
+- assertions that protect a research invariant;
+- non-obvious transformations or derived measures;
+- steps where the analytical unit changes, such as runner rows becoming race-level observations;
+- choices that would otherwise be difficult to reconstruct from code alone.
+
+Comments should explain **why a step exists or what analytical safeguard it provides**, not merely translate obvious Python syntax into English.
+
+Do not clutter cells by commenting every import, assignment or self-explanatory line. The goal is readable, auditable research code rather than maximum comment density.
+
+Where a code cell changes the study population or implements a material analytical decision, a reader should not need to reverse-engineer that decision from the code.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
