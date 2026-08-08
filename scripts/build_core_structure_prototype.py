@@ -33,7 +33,7 @@ DEFAULT_RAW_MIRROR = (
     / "processed"
     / "database"
     / "candidates"
-    / "raceform_v1_raw_mirror_candidate.sqlite3"
+    / "inside_rails_v1_raw_mirror_candidate.sqlite3"
 )
 DEFAULT_OUTPUT = (
     ROOT
@@ -41,7 +41,7 @@ DEFAULT_OUTPUT = (
     / "processed"
     / "database"
     / "prototypes"
-    / "raceform_v1_core_structure_prototype.sqlite3"
+    / "inside_rails_v1_core_structure_prototype.sqlite3"
 )
 
 
