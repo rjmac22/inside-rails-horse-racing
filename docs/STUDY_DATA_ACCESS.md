@@ -4,9 +4,15 @@
 
 This document is a mandatory pre-study reference for reader-facing analytical studies.
 
-Read it alongside `docs/STUDY_RESEARCH_PLAYBOOK.md` and `docs/STUDY_REVISIT_REGISTER.md` before beginning a new study.
+Read it alongside:
+
+- `docs/STUDY_RESEARCH_PLAYBOOK.md`;
+- `docs/STUDY_DATABASE_REFERENCE.md`;
+- `docs/STUDY_REVISIT_REGISTER.md`.
 
 Its purpose is to prevent repeated mistakes about source paths, database identity, release status and read/write boundaries.
+
+The fuller study-facing database structure, table grains, identifier rules and current release state are maintained in `docs/STUDY_DATABASE_REFERENCE.md` and must be read before every study.
 
 ---
 
@@ -54,7 +60,7 @@ The original `raceform.db` filename may appear in source-lineage documentation, 
 
 Inside Rails-generated databases use project-owned names.
 
-The naming convention is:
+The approved naming convention is:
 
 - validated but not release-accepted candidate: `inside_rails_v1_candidate.sqlite3`;
 - accepted/promoted Version 1 database: `inside_rails_v1.sqlite3`.
@@ -69,17 +75,27 @@ This distinction is intentional:
 
 A future schema or release version should follow the same project-owned naming pattern rather than inheriting a source-provider filename.
 
+### Current legacy candidate filename
+
+The already-built Phase 4 disposable candidate predates this naming decision and currently uses:
+
+`data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3`
+
+This is a legacy generated filename only. The candidate is not release-accepted and must not become the accepted database name.
+
+Updating the builder/output convention to the approved Inside Rails filename is pending governed database work.
+
 ---
 
 ## Release status rule
 
-Before selecting a study data source, check the current database release state.
+Before selecting a study data source, check `docs/STUDY_DATABASE_REFERENCE.md` for the current release state.
 
 A database that is merely built or independently validated must not be silently treated as an accepted live analytical release.
 
 Until `inside_rails_v1.sqlite3` has been explicitly release-accepted and promoted under the governed release procedure, studies must use the appropriate governed source/reference outputs rather than pretending a candidate is live.
 
-When an accepted analytical database becomes available, this document must be updated with its canonical local path and release identifier before a study begins using it.
+When an accepted analytical database becomes available, this document and `docs/STUDY_DATABASE_REFERENCE.md` must be updated with its canonical local path and release identifier before a study begins using it.
 
 ---
 
@@ -87,11 +103,12 @@ When an accepted analytical database becomes available, this document must be up
 
 Before writing the first analytical cell of any study, confirm:
 
-1. which database or governed outputs the study will use;
-2. the exact canonical path;
-3. whether the database is source, candidate or accepted release;
-4. that the connection mode matches the data-access rule;
-5. that relevant fields and identities are already governed;
-6. that no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
+2. which database or governed outputs the study will use;
+3. the exact canonical path;
+4. whether the database is source, candidate or accepted release;
+5. that the connection mode matches the data-access rule;
+6. that relevant fields and identities are already governed;
+7. that no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
-Do not reconstruct paths or database names from memory when they are recorded here.
+Do not reconstruct paths, database names, table grains or release status from memory when they are recorded in the study documents.
