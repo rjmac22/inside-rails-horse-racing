@@ -32,18 +32,18 @@ The authorised Source Version 1 race key is exact raw `date + course + off`. The
 
 ### Source-field investigation series — Notebooks 00–21
 
-**Status: fully closed, with a post-closeout Notebook 19 authority amendment awaiting focused regenerated-output validation.**
+**Status: fully closed, including the 8 August 2026 Notebook 19 authority amendment and focused regenerated-output validation.**
 
 The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
 Retained governed limits include:
 
 - Notebook 08 preserves the lone unresolved starting-price value `F`;
-- Notebook 19 now has zero expected unresolved horse/pedigree transitions after Weatherbys Ireland confirmed on 8 August 2026 that High Society Lady (IRE) is by Society Rock (IRE); `Runninsonofagun (IRE)` therefore uses governed damsire `Society Rock (IRE)` while the competing raw source assertions remain preserved;
+- Notebook 19 now has zero unresolved horse/pedigree transitions after Weatherbys Ireland confirmed on 8 August 2026 that High Society Lady (IRE) is by Society Rock (IRE); `Runninsonofagun (IRE)` therefore uses governed damsire `Society Rock (IRE)` while the competing raw source assertions remain preserved;
 - Notebook 20 preserves 18 unresolved connection blanks after 28 confirmed supplementations;
 - Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
 
-The Notebook 19 transition baseline changes from the historical 5 August authority state `91 corrected / 261 different horse / 1 unresolved` to an expected `92 / 261 / 0`. The focused tests and independent source-wide validator must regenerate and reload the two processed identity outputs before the amended state is accepted as fully validated.
+The Notebook 19 transition baseline is now `92 corrected / 261 different horse / 0 unresolved`. Focused tests passed `12 passed in 0.78s`, and the independent source-wide validator regenerated, wrote and reloaded both governed processed outputs while confirming 353 transitions and 611 provisional occurrences.
 
 Notebook 11 has a durable source-to-output builder and independent validator for all 189,043 source race occurrences. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions.
 
@@ -197,7 +197,17 @@ Release-boundary implementation gate, 8 August 2026:
 360 complete repository tests passed
 ```
 
-Post-authority Notebook 19 focused validation on 8 August 2026 is still pending local execution and processed-output regeneration.
+Post-authority Notebook 19 focused validation, 8 August 2026:
+
+```text
+12 passed in 0.78s
+353 governed transitions
+92 Corrected
+261 Different horse
+0 Unresolved
+611 provisional occurrences
+both processed outputs written and reloaded successfully
+```
 
 The field-governance registers remain reconciled to:
 
@@ -243,7 +253,7 @@ See:
 
 ## Next bounded action
 
-Complete the focused Notebook 19 authority-amendment regeneration and validation, then continue the Notebook 25 Database v2 governed-integration inventory before returning immediately to Study 01.
+Continue the Notebook 25 Database v2 governed-integration inventory, then return immediately to Study 01 once the coherent Database v2 integration work is complete.
 
 The false comment-markup issue is closed. Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
 
