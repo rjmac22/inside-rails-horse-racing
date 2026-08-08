@@ -20,6 +20,7 @@ Before proposing or running the next step, confirm that:
 - repository paths, helper functions and other project details have been checked against the repository rather than reconstructed from memory;
 - non-obvious code includes enough comments to preserve its purpose, assumptions and limits for a later reader;
 - raw values, source lineage and unresolved states remain preserved;
+- rendered notebook output, copied tables, clipboard markup and chat transport have not been mistaken for the underlying stored value when a formatting anomaly is under investigation;
 - the cell does not assume a conclusion, parser, reference output or reusable implementation before the evidence supports it;
 - the next analytical step follows from the inspected output rather than from a prewritten sequence.
 
@@ -40,6 +41,7 @@ This is a judgement rule, not a demand that every trivial line receive a comment
 - Preserve the source database, table, row identifier, and supplied identifiers required for lineage.
 - Record transformation status and method separately from the raw value.
 - Preserve anomalies as evidence; do not silently normalise them away.
+- When suspicious markup, whitespace or other formatting appears only in rendered or copied output, inspect the underlying stored value directly before authorising any cleaning or parser change. Presentation and transport artefacts are not raw-source evidence.
 - Where a known anomaly is intentionally allowed to fail validation, document the exact expected failure and why it remains unresolved.
 
 ### Manual and external verification
