@@ -32,16 +32,18 @@ The authorised Source Version 1 race key is exact raw `date + course + off`. The
 
 ### Source-field investigation series — Notebooks 00–21
 
-**Status: fully closed.**
+**Status: fully closed, with a post-closeout Notebook 19 authority amendment awaiting focused regenerated-output validation.**
 
 The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
 Retained governed limits include:
 
 - Notebook 08 preserves the lone unresolved starting-price value `F`;
-- Notebook 19 preserves one unresolved authority-dependent transition for `Runninsonofagun (IRE)`;
+- Notebook 19 now has zero expected unresolved horse/pedigree transitions after Weatherbys Ireland confirmed on 8 August 2026 that High Society Lady (IRE) is by Society Rock (IRE); `Runninsonofagun (IRE)` therefore uses governed damsire `Society Rock (IRE)` while the competing raw source assertions remain preserved;
 - Notebook 20 preserves 18 unresolved connection blanks after 28 confirmed supplementations;
 - Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
+
+The Notebook 19 transition baseline changes from the historical 5 August authority state `91 corrected / 261 different horse / 1 unresolved` to an expected `92 / 261 / 0`. The focused tests and independent source-wide validator must regenerate and reload the two processed identity outputs before the amended state is accepted as fully validated.
 
 Notebook 11 has a durable source-to-output builder and independent validator for all 189,043 source race occurrences. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions.
 
@@ -55,16 +57,18 @@ The owner-identity scope originally scheduled as Notebook 23 was completed insid
 
 ### Targeted cross-notebook implementation audit
 
-**Status: completed on 5 August 2026.**
+**Status: completed on 5 August 2026 for the then-governed evidence state.**
 
 The audit repaired bounded implementation defects involving stale closeout records, provenance enforcement, missing usable outputs, exact decision closure, correction lineage, source-wide validators, an obsolete construction utility and canonical race-time regeneration.
 
-Final integrated evidence:
+Historical integrated evidence:
 
 ```text
 282 passed in 1.52s
 ALL 28 VALIDATORS PASSED
 ```
+
+The 8 August Notebook 19 Weatherbys Ireland response is a later governed evidence amendment and receives a separate focused validation rather than rewriting that historical gate.
 
 ### Minimum stable core and accepted Database v1
 
@@ -140,7 +144,7 @@ complete repository tests: 360 passed in 15.36s
 
 The 31-validator Phase 4 result is prior technical evidence durably associated with the accepted release; promotion did not pretend to rerun that historical sweep.
 
-### Reader-facing Study 01 — field size and race predictability
+### Reader-facing Study 01 and Database v2 governed-integration inventory
 
 **Status: in progress.**
 
@@ -154,6 +158,8 @@ A temporary diagnostic was opened after copied notebook output appeared to show 
 - no comment-cleaning transformation or database change is required.
 
 The durable consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`. Study work should not reopen this false comment defect without new stored-data evidence.
+
+Study 01 also exposed that accepted Database v1 deliberately materialised only the minimum structural core while many reusable governed Notebook 04–22 outputs remained external. Notebook 25 is therefore inventorying those outputs before one coherent Database v2 design. Database v1 remains immutable; no v2 schema or database write is authorised until all notebook dispositions and final reconciliation items are explicit.
 
 ## Validation history
 
@@ -190,6 +196,8 @@ Release-boundary implementation gate, 8 August 2026:
 6 focused promotion tests passed
 360 complete repository tests passed
 ```
+
+Post-authority Notebook 19 focused validation on 8 August 2026 is still pending local execution and processed-output regeneration.
 
 The field-governance registers remain reconciled to:
 
@@ -235,11 +243,9 @@ See:
 
 ## Next bounded action
 
-Continue reader-facing Study 01 using the accepted Inside Rails Version 1 database as the default analytical source.
+Complete the focused Notebook 19 authority-amendment regeneration and validation, then continue the Notebook 25 Database v2 governed-integration inventory before returning immediately to Study 01.
 
-The false comment-markup issue is closed. If Study 01 still requires study-facing access to already-governed race-time information, handle that as a separate bounded database/integration question using the established Notebook 11 temporal implementation rather than conflating it with comment cleaning.
-
-Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
+The false comment-markup issue is closed. Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
 
 ## Working method
 
