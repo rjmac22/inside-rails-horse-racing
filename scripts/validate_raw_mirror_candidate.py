@@ -23,7 +23,7 @@ DEFAULT_SOURCE = Path(
     "data/raw/form_2015-present/form_2015-present/raceform.db"
 )
 DEFAULT_CANDIDATE = Path(
-    "data/processed/database/candidates/raceform_v1_raw_mirror_candidate.sqlite3"
+    "data/processed/database/candidates/inside_rails_v1_raw_mirror_candidate.sqlite3"
 )
 
 
