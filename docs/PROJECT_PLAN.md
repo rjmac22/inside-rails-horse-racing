@@ -240,14 +240,36 @@ The accepted release is the default read-only analytical database for reader-fac
 
 ## Phase 5 — Analytical products and writing
 
-**Status: ready to proceed using accepted Database v1.**
+**Status: in progress using accepted Database v1.**
 
-Reader-facing studies can now consume:
+### Study 01 — field size and race predictability
 
-`data/processed/database/releases/inside_rails_v1.sqlite3`
+The first reader-facing study asks:
 
-Potential outputs include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
+> What relationship, if any, exists between field size and the predictability of British horse races?
 
-The immediate study programme should remain question-led rather than schema-led. A study-specific derivation does not automatically belong in the database; only reusable or correctness-critical infrastructure should trigger a database-governance escalation.
+Established so far:
+
+- 111,634 British races in the accepted study population before the walkover exclusion;
+- field-size mode 8 and median 9;
+- approximately 74.0% of British races have 6–12 runners;
+- approximately 89.8% have 5–14 runners;
+- 21 one-runner British races were inspected and confirmed as genuine walkovers;
+- the competitive British population is therefore 111,613 races.
+
+A temporary diagnostic branch was opened after copied notebook output appeared to contain `Walkover<br><br><br>`. That branch is closed:
+
+- Source Version 1 contains zero admitted comments with a literal `<` character;
+- the accepted Database v1 value is exactly `Walkover`;
+- the apparent markup came from rendered-output / copy-paste transport;
+- no comment parser, HTML cleaner, `comment_plain_text` field or comment database migration is required.
+
+This field consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`, and the workflow safeguard is recorded in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
+
+The separate study-facing race-time convenience issue remains distinct. If Study 01 still needs governed local/UTC race-time fields directly from the database, handle that as its own bounded integration task using the existing Notebook 11 temporal implementation.
+
+Potential later outputs include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
+
+The immediate study programme remains question-led rather than schema-led. A study-specific derivation does not automatically belong in the database; only reusable or correctness-critical infrastructure should trigger a database-governance escalation.
 
 Comment-derived features remain future bounded studies. Predictive work remains downstream of reliable source interpretation, governed identity resolution and accepted database infrastructure.
