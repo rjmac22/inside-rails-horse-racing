@@ -76,8 +76,9 @@ def main() -> None:
     assert set(transition_reload["analytical_outcome"]) == {
         "Corrected",
         "Different horse",
-        "Unresolved",
     }
+    assert not transition_reload["analytical_outcome"].eq("Unresolved").any()
+    assert int(occurrence_reload["unresolved_boundaries"].sum()) == 0
 
     print("Horse and pedigree identity validation passed.")
     print(f"  specialist governance rows: {len(governance.rows)}")
