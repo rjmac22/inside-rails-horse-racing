@@ -140,6 +140,21 @@ complete repository tests: 360 passed in 15.36s
 
 The 31-validator Phase 4 result is prior technical evidence durably associated with the accepted release; promotion did not pretend to rerun that historical sweep.
 
+### Reader-facing Study 01 — field size and race predictability
+
+**Status: in progress.**
+
+The first reader-facing study has established the British race population and field-size distribution and has confirmed that the 21 one-runner British races are genuine walkovers rather than reconstruction errors.
+
+A temporary diagnostic was opened after copied notebook output appeared to show `Walkover<br><br><br>`. That apparent comment-markup defect is now closed:
+
+- Source Version 1 contains zero admitted comments with a literal `<` character;
+- the accepted Database v1 Hereford / Queensbury Boy value is exactly `Walkover`;
+- the apparent `<br>` markup was introduced during rendered-output / copy-paste transport;
+- no comment-cleaning transformation or database change is required.
+
+The durable consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`. Study work should not reopen this false comment defect without new stored-data evidence.
+
 ## Validation history
 
 End of source-field series, 4 August 2026:
@@ -209,6 +224,7 @@ See:
 - `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
 - `docs/PROJECT_PLAN.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
+- `docs/COMMENT_INFORMATION_INTEGRATION.md`;
 - `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
 - `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
 - `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
@@ -219,7 +235,9 @@ See:
 
 ## Next bounded action
 
-Return to reader-facing analytical studies using the accepted Inside Rails Version 1 database as the default analytical source.
+Continue reader-facing Study 01 using the accepted Inside Rails Version 1 database as the default analytical source.
+
+The false comment-markup issue is closed. If Study 01 still requires study-facing access to already-governed race-time information, handle that as a separate bounded database/integration question using the established Notebook 11 temporal implementation rather than conflating it with comment cleaning.
 
 Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
 
