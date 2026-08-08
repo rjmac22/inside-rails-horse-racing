@@ -36,7 +36,7 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 
 ## Study-era diagnostic closure — 8 August 2026
 
-`notebooks/study_01_comment_rendering_diagnostic.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
+`studies/01_comment_rendering_diagnostic.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
 
 The comment branch is **fully closed as an archival diagnostic with no reusable implementation required**.
 
