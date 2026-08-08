@@ -29,7 +29,7 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 | 16 | Race classification and eligibility | **Fully closed** | Exact seven field decisions and four external decisions; correction candidates remain non-automatic. |
 | 17 | Runner characteristics and equipment | **Fully closed — archival route** | Direct source-wide validation, exact evidence closure and exact correction lineage. |
 | 18 | Ratings semantics and availability | **Fully closed** | Exact source-wide ratings partition plus three permanent semantic-provenance decisions. |
-| 19 | Horse and pedigree identity | **Fully closed — archival route** | 353 governed transitions: 91 corrected, 261 different horse and one unresolved; 611 provisional occurrences. |
+| 19 | Horse and pedigree identity | **Analytically closed — archival route; 8 August authority amendment pending focused regenerated-output validation** | Final authority evidence supports 353 governed transitions: 92 corrected, 261 different horse and zero unresolved; 611 provisional occurrences expected. |
 | 20 | Connections and ownership identity | **Fully closed** | Exact closure of 46 raw blank occurrences: 28 supplementations and 18 preserved unresolved; obsolete promotion utility retired. |
 | 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, tests and independent validation; no general narrative parser. |
 | 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive provenance and source-wide validation. |
@@ -78,7 +78,7 @@ The completed repairs include:
 - retirement of the completed Notebook 20 promotion utility;
 - Notebook 11 complete canonical race-time regeneration, persistence and independent validation.
 
-Every individual repair unit was reviewed and accepted before integration. The repair history remains visible in the dedicated review branches; the accepted content is consolidated on `audit/retrospective-implementation-integration`.
+Every individual repair unit was reviewed and accepted before integration. The accepted historical 5 August audit state is documented in `docs/CROSS_NOTEBOOK_IMPLEMENTATION_COMPLETENESS_AUDIT.md`.
 
 ## Notebook 11 acceptance evidence
 
@@ -135,7 +135,57 @@ ALL 28 VALIDATORS PASSED
 
 The sweep covered all current source-wide, governed-reference, exact-decision, lineage, persisted-output and reconciliation validators. The separately invoked `validate_source_profile.py` and `validate_starting_price.py` both passed after the initial sweep harness omitted the required positional database argument for `validate_source_profile.py`; this was a command-harness mistake, not a repository defect.
 
-No genuine integration defect was found by the final gate.
+No genuine integration defect was found by that historical gate.
+
+## Notebook 19 post-authority amendment — 8 August 2026
+
+The final outstanding Notebook 19 authority enquiry has now been answered.
+
+The user supplied an email from **Georgina Doherty, Senior Pedigree Researcher, Weatherbys Ireland**, confirming that `High Society Lady (IRE)` is by `Society Rock (IRE)`.
+
+The governed source transition for `Runninsonofagun (IRE)` contains:
+
+- sire `Inns Of Court (IRE)` in both histories;
+- dam `High Society Lady (IRE)` in both histories;
+- earlier raw damsire `General Monash`;
+- later raw damsire `Society Rock`.
+
+The specialist governance reference had also retained stale sire/dam metadata from an earlier review state; that metadata is now reconciled to the governed source transition.
+
+Decision `NB19-ID-0013` is amended as follows:
+
+- analytical outcome: `Corrected`;
+- verification status: `confirmed`;
+- governed damsire: `Society Rock (IRE)`;
+- confidence: `high`;
+- identity split: no;
+- raw competing assertions: preserved.
+
+Expected source-wide consequence:
+
+```text
+353 governed transitions
+92 Corrected
+261 Different horse
+0 Unresolved
+611 provisional occurrences
+0 unresolved occurrence boundaries
+```
+
+The specialist reference, `horse_pedigree_identity.py`, focused tests and independent validator contract have been updated. The validator-generated CSV outputs are deliberately **not** hand-edited through the GitHub connector; they must be regenerated from the immutable local source, written, reloaded and validated by `scripts/validate_horse_pedigree_identity.py`.
+
+The required focused local gate is:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m pytest \
+  tests/test_horse_pedigree_identity.py \
+  tests/test_horse_pedigree_identity_counts.py
+
+PYTHONPATH=src .venv/bin/python \
+  scripts/validate_horse_pedigree_identity.py
+```
+
+The complete repository test suite and all-validator sweep remain deferred until the Database v2 acceptance boundary.
 
 ## Database consequence
 
@@ -147,6 +197,6 @@ Unknown, changed or unmatched data must fail closed, remain explicitly unresolve
 
 ## Current position
 
-The retrospective source-field programme, participant-identity programme, targeted implementation audit and Database v1 release are complete.
+The retrospective source-field programme, participant-identity programme, targeted implementation audit and Database v1 release are complete for their historical accepted states.
 
-Reader-facing Study 01 is now the active analytical programme. The false comment-markup blocker is closed: no comment transformation or database change is required. The remaining study-facing race-time convenience question, if still required by Study 01, must be handled as a separate bounded task using the already-governed Notebook 11 temporal implementation rather than being conflated with comment cleaning.
+One bounded Notebook 19 post-authority regeneration remains before the new `92 / 261 / 0` identity state is accepted. After that focused gate, work returns immediately to the Notebook 25 Database v2 governed-integration inventory and then Study 01.
