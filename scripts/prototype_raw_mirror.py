@@ -23,7 +23,7 @@ DEFAULT_SOURCE = (
 )
 DEFAULT_OUTPUT = (
     PROJECT_ROOT
-    / "data/processed/database/prototypes/raceform_v1_raw_mirror_prototype.sqlite3"
+    / "data/processed/database/prototypes/inside_rails_v1_raw_mirror_prototype.sqlite3"
 )
 
 
