@@ -150,11 +150,11 @@ Primary governing documents:
 - `docs/PHASE_3_MINIMUM_STABLE_CORE_IMPLEMENTATION_BRIEF.md`;
 - `docs/PHASE_4_MINIMUM_CORE_PHYSICAL_SCHEMA_SPECIFICATION.md`.
 
-## Phase 4 — Physical target architecture and complete disposable candidate
+## Phase 4 — Physical target architecture, candidate validation and Database v1 release
 
-**Status: complete through independently validated disposable candidate and final repository-wide technical gate; no database release accepted.**
+**Status: fully closed with Version 1 release accepted and promoted on 8 August 2026.**
 
-The selected physical technology is SQLite schema version 1. The implementation now includes:
+The selected physical technology is SQLite schema version 1. The implementation includes:
 
 - exact source-file identity enforcement;
 - a complete immutable raw mirror;
@@ -165,11 +165,13 @@ The selected physical technology is SQLite schema version 1. The implementation 
 - durable candidate construction with complete cleanup after failure;
 - builder persisted readback;
 - a separate source-wide validator that does not trust builder counters;
-- explicit separation between `built`, `validated` and `release_accepted` states.
+- explicit separation between `built`, `validated` and `release_accepted` states;
+- a tested release-copy, atomic-promotion and rollback boundary.
 
-Complete candidate results:
+Preserved candidate identity:
 
 ```text
+path: data/processed/database/candidates/inside_rails_v1_candidate.sqlite3
 physical source records: 1,851,286
 admitted runner records: 1,851,285
 source race occurrences: 189,043
@@ -177,7 +179,6 @@ runner participations: 1,851,285
 candidate size: 1,730,048,000 bytes
 candidate SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
 manifest status: built
-release accepted: false
 ```
 
 Independent validation reconciled:
@@ -196,11 +197,33 @@ Final bounded database gate:
 72 passed in 14.54s
 ```
 
-Final repository-wide technical gate at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba`:
+Final Phase 4 repository-wide technical gate at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba`:
 
 ```text
 354 passed in 18.28s
 ALL 31 VALIDATORS PASSED
+```
+
+Release-boundary implementation gate on 8 August 2026:
+
+```text
+focused promotion tests: 6 passed in 0.64s
+complete repository tests: 360 passed in 15.36s
+```
+
+Accepted Version 1 release:
+
+```text
+path: data/processed/database/releases/inside_rails_v1.sqlite3
+size: 1,730,048,000 bytes
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+manifest status: release_accepted
+validation-result rows: 7
+quick_check: ok
+foreign_key_check rows: 0
+SQLite application_id: 1230130259
+SQLite user_version: 1
+candidate hash unchanged during promotion: true
 ```
 
 Evidence:
@@ -209,29 +232,22 @@ Evidence:
 - `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
 - `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
 - `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
-- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`.
+- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`;
+- `docs/PHASE_4_RELEASE_ACCEPTANCE_AND_PROMOTION_CONTRACT.md`;
+- `docs/PHASE_4_RELEASE_ACCEPTANCE_EVIDENCE.md`.
 
-The generated database remains an ignored, disposable candidate. It has not been promoted, installed as an active database or marked `release_accepted`.
-
-## Next bounded stage — release acceptance and analytical extension planning
-
-The final repository-wide technical gate is complete for the current candidate and repository commit. It is evidence for a future release decision, not the release decision itself.
-
-Before any promotion or active-database replacement, the project must separately define and execute the release-acceptance boundary. That stage must cover, at minimum:
-
-- how independent and repository-wide validation evidence is durably associated with the candidate;
-- active-release resolution and atomic promotion or replacement;
-- prior-release preservation and rollback behaviour;
-- the location and naming of the accepted analytical database;
-- the exact authorised transition from `built` to any later manifest state;
-- explicit user review and acceptance before branch movement, merge or promotion.
-
-Any code or governed-reference change made while implementing that boundary must trigger the appropriate focused tests and a fresh final repository-wide technical gate before release acceptance.
-
-Only after that boundary is accepted should governed field-level and identity-aware analytical structures be added to the minimum core.
+The accepted release is the default read-only analytical database for reader-facing studies. The validated candidate remains unchanged as evidence and rollback material.
 
 ## Phase 5 — Analytical products and writing
 
-Potential outputs after database release acceptance include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
+**Status: ready to proceed using accepted Database v1.**
+
+Reader-facing studies can now consume:
+
+`data/processed/database/releases/inside_rails_v1.sqlite3`
+
+Potential outputs include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
+
+The immediate study programme should remain question-led rather than schema-led. A study-specific derivation does not automatically belong in the database; only reusable or correctness-critical infrastructure should trigger a database-governance escalation.
 
 Comment-derived features remain future bounded studies. Predictive work remains downstream of reliable source interpretation, governed identity resolution and accepted database infrastructure.
