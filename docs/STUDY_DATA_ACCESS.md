@@ -30,6 +30,30 @@ Study notebooks live under:
 
 `studies/`
 
+### Canonical local Jupyter startup
+
+On the primary local development machine, start the Inside Rails Jupyter environment from the shell with:
+
+```bash
+rails
+```
+
+The `rails` shell alias is part of the project working environment and must resolve to:
+
+```bash
+cd /home/rob/Documents/inside-rails-horse-racing && source .venv/bin/activate && PYTHONPATH=src jupyter lab
+```
+
+This launch contract matters because the repository uses a `src` layout. Starting Jupyter without `PYTHONPATH=src` can cause imports such as:
+
+```python
+from inside_rails.source_sqlite import connect_read_only
+```
+
+to fail with `ModuleNotFoundError` even though the project code is present.
+
+For normal local study work, use `rails` rather than manually reconstructing the repository path, virtual-environment activation and `PYTHONPATH` command each session. If `rails` stops resolving to the command above, repair the alias before continuing notebook work rather than adding notebook-local `sys.path` workarounds.
+
 ---
 
 ## Immutable third-party source
@@ -119,11 +143,12 @@ The candidate remains evidence and rollback material. It is not the normal study
 Before writing the first analytical cell of any study, confirm:
 
 1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
-2. the accepted Version 1 database is the intended study source unless the question explicitly requires raw/source evidence;
-3. the exact canonical path is `data/processed/database/releases/inside_rails_v1.sqlite3`;
-4. the release state is `release_accepted`;
-5. the connection is read-only and query-only where applicable;
-6. relevant fields and identities are already governed;
-7. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+2. the local Jupyter environment was started with the canonical `rails` alias so `PYTHONPATH=src` is active;
+3. the accepted Version 1 database is the intended study source unless the question explicitly requires raw/source evidence;
+4. the exact canonical path is `data/processed/database/releases/inside_rails_v1.sqlite3`;
+5. the release state is `release_accepted`;
+6. the connection is read-only and query-only where applicable;
+7. relevant fields and identities are already governed;
+8. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
-Do not reconstruct paths, database names, table grains or release status from memory when they are recorded in the study documents.
+Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the study documents.
