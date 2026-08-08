@@ -32,7 +32,7 @@ DEFAULT_OUTPUT = (
     / "processed"
     / "database"
     / "candidates"
-    / "raceform_v1_raw_mirror_candidate.sqlite3"
+    / "inside_rails_v1_raw_mirror_candidate.sqlite3"
 )
 
 
