@@ -125,7 +125,7 @@ This resolves the sole Notebook 19 transition that remained `Unresolved` at the 
 
 The specialist reference also contained stale sire/dam metadata for this decision and has been reconciled to the source transition.
 
-Expected post-amendment Notebook 19 partition:
+Validated post-amendment Notebook 19 partition:
 
 ```text
 Corrected: 92
@@ -135,7 +135,7 @@ Total transitions: 353
 Provisional occurrences: 611
 ```
 
-The specialist reference, reusable implementation, focused tests and independent validator contract have been updated. The two source-derived Notebook 19 outputs must be regenerated locally from the immutable source and reloaded before this amended state is accepted.
+The specialist reference, reusable implementation, focused tests and independent validator contract were updated. Focused tests passed `12 passed in 0.78s`, and the independent validator regenerated, wrote and reloaded both source-derived Notebook 19 outputs from the immutable source, confirming the amended state.
 
 This focused post-audit update does **not** require rerunning the complete repository suite or all-validator sweep; those remain deferred to the Database v2 acceptance boundary.
 
