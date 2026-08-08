@@ -1144,6 +1144,32 @@ Where a code cell changes the study population or implements a material analytic
 
 ---
 
+## 69. Interpret each analytical output before moving on
+
+Do not move directly from one analytical output to the next question.
+
+After each substantive analytical result:
+
+1. inspect the output before writing further analysis;
+2. add a concise notebook explanation of what the result establishes;
+3. state what the result does **not** yet establish where that distinction matters;
+4. keep important denominators, sample sizes, anomalies and uncertainty visible;
+5. decide whether a chart or other visual would materially improve understanding;
+6. if a visual is useful, create the simplest appropriate visual before moving on;
+7. only then decide what analytical question follows from the evidence.
+
+Do not accumulate a sequence of unexplained tables and charts and reconstruct the narrative retrospectively at the end of the study.
+
+A chart is not mandatory after every table. Use one when it makes the distribution, comparison, trend or relationship materially easier to understand. Where a small table or prose communicates the evidence better, do not create a chart merely for decoration.
+
+The notebook should therefore preserve the research rhythm:
+
+> question -> analysis -> result -> explanation -> appropriate visual -> next question
+
+This keeps the analytical reasoning visible and helps ensure that later questions respond to the evidence rather than to a predetermined story.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
