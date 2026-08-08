@@ -41,10 +41,12 @@ rails
 The `rails` shell alias is part of the project working environment and must resolve to:
 
 ```bash
-cd /home/rob/Documents/inside-rails-horse-racing && source .venv/bin/activate && PYTHONPATH=src jupyter lab
+cd /home/rob/Documents/inside-rails-horse-racing && source .venv/bin/activate && PYTHONPATH=/home/rob/Documents/inside-rails-horse-racing/src jupyter lab
 ```
 
-This launch contract matters because the repository uses a `src` layout. Starting Jupyter without `PYTHONPATH=src` can cause imports such as:
+This launch contract matters because the repository uses a `src` layout. The `PYTHONPATH` value is deliberately absolute so kernels started for notebooks under `studies/` or `notebooks/` resolve the project package from the repository `src` directory rather than from a notebook-relative `src` path.
+
+Starting Jupyter without the absolute project `PYTHONPATH` can cause imports such as:
 
 ```python
 from inside_rails.source_sqlite import connect_read_only
@@ -143,7 +145,7 @@ The candidate remains evidence and rollback material. It is not the normal study
 Before writing the first analytical cell of any study, confirm:
 
 1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
-2. the local Jupyter environment was started with the canonical `rails` alias so `PYTHONPATH=src` is active;
+2. the local Jupyter environment was started with the canonical `rails` alias so the absolute project `PYTHONPATH` is active;
 3. the accepted Version 1 database is the intended study source unless the question explicitly requires raw/source evidence;
 4. the exact canonical path is `data/processed/database/releases/inside_rails_v1.sqlite3`;
 5. the release state is `release_accepted`;
