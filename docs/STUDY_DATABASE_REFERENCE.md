@@ -67,39 +67,57 @@ Inside Rails-built databases use project-owned names and must not inherit the th
 
 Approved naming convention:
 
-- unreleased Version 1 candidate: `inside_rails_v1_candidate.sqlite3`;
+- validated Version 1 candidate: `inside_rails_v1_candidate.sqlite3`;
 - accepted/promoted Version 1 release: `inside_rails_v1.sqlite3`.
 
 Future releases should follow the same Inside Rails-owned naming pattern.
 
-### Current implementation note
+### Current implementation
 
-The already-built Phase 4 disposable candidate was generated before this naming decision and currently uses the legacy filename:
+Preserved validated candidate:
 
-`data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3`
+`data/processed/database/candidates/inside_rails_v1_candidate.sqlite3`
 
-That candidate is validated but **not release-accepted**.
+Candidate SHA-256:
 
-The legacy filename must not become the accepted database name. Renaming the builder/output convention to `inside_rails_v1_candidate.sqlite3` is pending database implementation work and must be completed through the governed database process before release acceptance.
+`7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2`
 
-Study notebooks must not silently treat the legacy candidate as a live analytical database.
+Canonical accepted Version 1 release:
+
+`data/processed/database/releases/inside_rails_v1.sqlite3`
+
+Accepted-release SHA-256:
+
+`2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`
+
+The candidate is retained unchanged as pre-release evidence and rollback material. Reader-facing studies should not use it as the normal analytical database.
 
 ---
 
 ## 3. Current release state
 
-Current state at the creation of this reference:
+Inside Rails Version 1 was explicitly release-accepted and promoted on 8 August 2026.
+
+Current state:
 
 - minimum-core SQLite schema version 1: implemented;
-- complete disposable candidate: built;
-- independent source-wide validation: passed;
-- repository-wide technical gate: passed;
-- release accepted: **false**;
-- active/promoted Inside Rails database: **none**.
+- complete candidate: built and independently validated;
+- repository-wide release implementation gate: 360 tests passed;
+- manifest transition: `built -> validated -> release_accepted`;
+- release accepted: **true**;
+- active/promoted Inside Rails database: `data/processed/database/releases/inside_rails_v1.sqlite3`;
+- release SHA-256: `2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`;
+- release size: 1,730,048,000 bytes;
+- validation-result rows: 7;
+- `PRAGMA quick_check`: `ok`;
+- `PRAGMA foreign_key_check`: zero rows;
+- SQLite `application_id`: 1230130259;
+- SQLite `user_version`: 1;
+- preserved candidate hash unchanged during promotion: **true**.
 
-Therefore, until an accepted release exists, studies must use the immutable source and governed reference/derived outputs appropriate to the question rather than pretending the candidate is live.
+Reader-facing studies should use this accepted release as the default analytical database and consume it read-only.
 
-This section must be updated immediately when release acceptance or promotion occurs.
+There is no silent fallback to the candidate or raw third-party source if the accepted release is missing.
 
 ---
 
@@ -269,7 +287,7 @@ Before the first analytical cell of every study, confirm:
 1. this document has been read;
 2. `docs/STUDY_DATA_ACCESS.md` has been read;
 3. the current database release state is known;
-4. the exact source/database path is taken from documentation rather than memory;
+4. the exact accepted database path is taken from documentation rather than memory;
 5. the study's unit of observation is declared;
 6. every required field has sufficient governance for the proposed use;
 7. source/candidate/accepted-release status is not being conflated;
