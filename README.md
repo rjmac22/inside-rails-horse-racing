@@ -66,11 +66,11 @@ Final integrated evidence:
 ALL 28 VALIDATORS PASSED
 ```
 
-### Minimum stable core and physical database candidate
+### Minimum stable core and accepted Database v1
 
-**Status: complete through independently validated disposable candidate and final repository-wide technical gate on 6 August 2026. No database release has been accepted.**
+**Status: release accepted and promoted on 8 August 2026.**
 
-The project now has SQLite schema version 1 implementing the authorised minimum structural core:
+The project has SQLite schema version 1 implementing the authorised minimum structural core:
 
 - a complete immutable raw mirror;
 - deterministic source, race and runner identifiers;
@@ -81,19 +81,34 @@ The project now has SQLite schema version 1 implementing the authorised minimum 
 - STRICT tables, foreign keys, indexes and protective triggers;
 - durable fail-closed construction and cleanup;
 - complete builder readback;
-- a separate source-wide independent validator.
+- a separate source-wide independent validator;
+- an explicit fail-closed release-acceptance and atomic-promotion boundary.
 
-Generated candidate:
+Preserved validated candidate:
 
 ```text
-path: data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3
+path: data/processed/database/candidates/inside_rails_v1_candidate.sqlite3
 size: 1,730,048,000 bytes
 SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
 manifest status: built
-release accepted: false
 ```
 
-Independent validation checked:
+Accepted Version 1 release:
+
+```text
+path: data/processed/database/releases/inside_rails_v1.sqlite3
+size: 1,730,048,000 bytes
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+manifest status: release_accepted
+validation-result rows: 7
+quick_check: ok
+foreign_key_check rows: 0
+SQLite application_id: 1230130259
+SQLite user_version: 1
+candidate hash unchanged during promotion: true
+```
+
+Independent candidate validation checked:
 
 ```text
 1,851,286 raw records
@@ -109,14 +124,21 @@ The bounded database gate passed:
 72 passed in 14.54s
 ```
 
-The final repository-wide technical gate then passed at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba`:
+The Phase 4 repository-wide technical gate at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba` passed:
 
 ```text
 354 passed in 18.28s
 ALL 31 VALIDATORS PASSED
 ```
 
-The candidate remains ignored generated output. It is not installed as a live database and has not been promoted or marked `release_accepted`.
+Release-management implementation then passed:
+
+```text
+focused promotion tests: 6 passed in 0.64s
+complete repository tests: 360 passed in 15.36s
+```
+
+The 31-validator Phase 4 result is prior technical evidence durably associated with the accepted release; promotion did not pretend to rerun that historical sweep.
 
 ## Validation history
 
@@ -147,6 +169,13 @@ Final Phase 4 repository-wide technical gate, 6 August 2026:
 ALL 31 VALIDATORS PASSED
 ```
 
+Release-boundary implementation gate, 8 August 2026:
+
+```text
+6 focused promotion tests passed
+360 complete repository tests passed
+```
+
 The field-governance registers remain reconciled to:
 
 ```text
@@ -165,6 +194,10 @@ Every database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
 
 Candidate outputs must be built away from any live database, validated source-wide, persisted and read back, and accepted through a separate explicit gate. Unknown or changed cases must fail closed, remain explicitly unresolved or be quarantined; they must never be silently guessed or partially loaded.
 
+Accepted Database v1 is consumed read-only from:
+
+`data/processed/database/releases/inside_rails_v1.sqlite3`
+
 ## Durable project controls
 
 See:
@@ -180,17 +213,15 @@ See:
 - `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
 - `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
 - `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
-- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`.
+- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`;
+- `docs/PHASE_4_RELEASE_ACCEPTANCE_AND_PROMOTION_CONTRACT.md`;
+- `docs/PHASE_4_RELEASE_ACCEPTANCE_EVIDENCE.md`.
 
 ## Next bounded action
 
-Define the release-acceptance and promotion boundary for the validated minimum-core candidate.
+Return to reader-facing analytical studies using the accepted Inside Rails Version 1 database as the default analytical source.
 
-The final repository-wide technical gate is complete for the current candidate and commit, but it does not itself accept or promote a release. The next work must cover durable association of acceptance evidence, active-release resolution, atomic promotion or replacement, prior-release preservation, rollback behaviour and the final accepted database location.
-
-No branch movement, merge or database promotion should occur without explicit review and acceptance. Any code or governed-reference change made while implementing the release boundary must trigger the appropriate tests and a fresh final repository-wide gate.
-
-Only after release acceptance should governed field-level and identity-aware analytical structures be added to the minimum core.
+Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
 
 ## Working method
 
