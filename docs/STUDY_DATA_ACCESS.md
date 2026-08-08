@@ -62,7 +62,7 @@ Inside Rails-generated databases use project-owned names.
 
 The approved naming convention is:
 
-- validated but not release-accepted candidate: `inside_rails_v1_candidate.sqlite3`;
+- validated candidate: `inside_rails_v1_candidate.sqlite3`;
 - accepted/promoted Version 1 database: `inside_rails_v1.sqlite3`.
 
 The name `raceform` must not be used for an Inside Rails-generated database.
@@ -70,32 +70,47 @@ The name `raceform` must not be used for an Inside Rails-generated database.
 This distinction is intentional:
 
 - `raceform.db` means immutable third-party source evidence;
-- `inside_rails_v1_candidate.sqlite3` means an Inside Rails-built candidate that has not yet been accepted;
+- `inside_rails_v1_candidate.sqlite3` means the preserved validated pre-release candidate;
 - `inside_rails_v1.sqlite3` means the accepted Inside Rails Version 1 database.
 
 A future schema or release version should follow the same project-owned naming pattern rather than inheriting a source-provider filename.
 
-### Current legacy candidate filename
+Canonical local candidate path:
 
-The already-built Phase 4 disposable candidate predates this naming decision and currently uses:
+`data/processed/database/candidates/inside_rails_v1_candidate.sqlite3`
 
-`data/processed/database/candidates/raceform_v1_minimum_core_candidate.sqlite3`
+Canonical accepted-release path:
 
-This is a legacy generated filename only. The candidate is not release-accepted and must not become the accepted database name.
+`data/processed/database/releases/inside_rails_v1.sqlite3`
 
-Updating the builder/output convention to the approved Inside Rails filename is pending governed database work.
+Accepted-release SHA-256:
+
+`2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`
+
+The preserved candidate remains unchanged at SHA-256:
+
+`7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2`
 
 ---
 
 ## Release status rule
 
-Before selecting a study data source, check `docs/STUDY_DATABASE_REFERENCE.md` for the current release state.
+Inside Rails Version 1 was release-accepted and promoted on 8 August 2026.
 
-A database that is merely built or independently validated must not be silently treated as an accepted live analytical release.
+Current status:
 
-Until `inside_rails_v1.sqlite3` has been explicitly release-accepted and promoted under the governed release procedure, studies must use the appropriate governed source/reference outputs rather than pretending a candidate is live.
+- accepted release exists at the canonical release path;
+- import manifest status is `release_accepted`;
+- release validation result count is 7;
+- SQLite `quick_check` returned `ok`;
+- foreign-key check returned zero rows;
+- candidate hash remained unchanged during promotion.
 
-When an accepted analytical database becomes available, this document and `docs/STUDY_DATABASE_REFERENCE.md` must be updated with its canonical local path and release identifier before a study begins using it.
+Reader-facing studies should use the accepted release by default and open it read-only.
+
+There is no fallback from the accepted release path to the candidate or raw source. If the accepted release is absent or its identity cannot be verified when verification is required, fail closed rather than silently changing data source.
+
+The candidate remains evidence and rollback material. It is not the normal study database.
 
 ---
 
@@ -104,11 +119,11 @@ When an accepted analytical database becomes available, this document and `docs/
 Before writing the first analytical cell of any study, confirm:
 
 1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
-2. which database or governed outputs the study will use;
-3. the exact canonical path;
-4. whether the database is source, candidate or accepted release;
-5. that the connection mode matches the data-access rule;
-6. that relevant fields and identities are already governed;
-7. that no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+2. the accepted Version 1 database is the intended study source unless the question explicitly requires raw/source evidence;
+3. the exact canonical path is `data/processed/database/releases/inside_rails_v1.sqlite3`;
+4. the release state is `release_accepted`;
+5. the connection is read-only and query-only where applicable;
+6. relevant fields and identities are already governed;
+7. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
 Do not reconstruct paths, database names, table grains or release status from memory when they are recorded in the study documents.
