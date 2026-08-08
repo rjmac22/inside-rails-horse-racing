@@ -33,10 +33,11 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 | 20 | Connections and ownership identity | **Fully closed** | Exact closure of 46 raw blank occurrences: 28 supplementations and 18 preserved unresolved; obsolete promotion utility retired. |
 | 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, tests and independent validation; no general narrative parser. |
 | 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive provenance and source-wide validation. |
+| 23 | Study 01 comment-rendering diagnostic | **Fully closed — archival route; no reusable implementation required** | Stored comments contain no HTML markup; apparent `<br>` tokens were rendered-output / copy-paste artefacts. |
 
-## Study-era diagnostic closure — 8 August 2026
+## Notebook 23 diagnostic closure — 8 August 2026
 
-`notebooks/database_extension_01_comment_rendering_diagnostic.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
+`notebooks/23_comment_rendering_diagnostic.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
 
 The comment branch is **fully closed as an archival diagnostic with no reusable implementation required**.
 
