@@ -36,7 +36,7 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 
 ## Study-era diagnostic closure — 8 August 2026
 
-`notebooks/database_extension_01_study_facing_time_and_comments.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
+`notebooks/study_01_comment_rendering_diagnostic.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
 
 The comment branch is **fully closed as an archival diagnostic with no reusable implementation required**.
 
@@ -75,7 +75,7 @@ The completed repairs include:
 - Notebook 17 removal of false clean-checkout dependencies and exact correction lineage;
 - Notebook 18 exact closure of the three existing permanent semantic-evidence records;
 - retirement of the completed Notebook 20 promotion utility;
-- Notebook 11 complete canonical-output regeneration, persistence and independent validation.
+- Notebook 11 complete canonical race-time regeneration, persistence and independent validation.
 
 Every individual repair unit was reviewed and accepted before integration. The repair history remains visible in the dedicated review branches; the accepted content is consolidated on `audit/retrospective-implementation-integration`.
 
