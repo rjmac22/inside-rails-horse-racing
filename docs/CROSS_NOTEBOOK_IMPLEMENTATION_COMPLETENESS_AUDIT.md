@@ -14,20 +14,18 @@ It does not reopen the analytical investigations or rerun archival notebooks. It
 
 ## Overall result
 
-**Status: completed and fully closed on 5 August 2026 for the evidence state available at that gate.**
+**Status: completed and fully closed on 5 August 2026.**
 
 The audit found a finite set of implementation and status-document defects. Every finding was repaired as a bounded review unit, reviewed individually, integrated on `audit/retrospective-implementation-integration`, and then subjected to the complete repository test suite and every current independent validator.
 
-Historical final integrated evidence:
+Final integrated evidence:
 
 ```text
 282 passed in 1.52s
 ALL 28 VALIDATORS PASSED
 ```
 
-No genuine integration defect was found by the final 5 August gate. The analytical conclusions did not need to be reopened.
-
-A later Weatherbys Ireland reply on 8 August 2026 changes one Notebook 19 governed transition. That post-audit amendment is documented separately below and does not rewrite the historical 5 August test evidence.
+No genuine integration defect was found by the final gate. The analytical conclusions did not need to be reopened.
 
 ## Findings and completed repairs
 
@@ -42,7 +40,7 @@ A later Weatherbys Ireland reply on 8 August 2026 changes one Notebook 19 govern
 | 05 | Clean | Result representation forms a complete validated source partition. |
 | 06 | Clean | Distance parser covers the complete observed race vocabulary and preserves limits. |
 | 07 | Clean | Carried-weight parser covers the complete observed vocabulary and rejects unsupported forms. |
-| 19 | Clean after authority-gate repair | Exact historical 5 August `91 / 261 / 1` decision partition, usable occurrence output, focused tests and independent validator pass. |
+| 19 | Clean after authority-gate repair | Exact `91 / 261 / 1` decision partition, usable occurrence output, focused tests and independent validator pass. |
 | 21 | Clean | Source-wide comment partition plus tests that reload both persisted governed outputs. |
 | 22 | Clean after closeout repair | Direct participant mapping, exact decision closure and decisive provenance enforced. |
 
@@ -107,40 +105,12 @@ The review proceeded in this order:
 12. final audit-register, README and project-plan reconciliation;
 13. final complete test suite and all-validator sweep.
 
-All thirteen stages were complete at the 5 August gate.
-
-## Post-audit Notebook 19 authority amendment — 8 August 2026
-
-Weatherbys Ireland Senior Pedigree Researcher Georgina Doherty confirmed that `High Society Lady (IRE)` is by `Society Rock (IRE)`.
-
-This resolves the sole Notebook 19 transition that remained `Unresolved` at the 5 August audit gate:
-
-- horse: `Runninsonofagun (IRE)`;
-- source sire history: `Inns Of Court (IRE)`;
-- source dam history: `High Society Lady (IRE)`;
-- competing raw damsire assertions: `General Monash` and `Society Rock`;
-- governed damsire: `Society Rock (IRE)`;
-- outcome: `Corrected`;
-- identity split: no.
-
-The specialist reference also contained stale sire/dam metadata for this decision and has been reconciled to the source transition.
-
-Validated post-amendment Notebook 19 partition:
-
-```text
-Corrected: 92
-Different horse: 261
-Unresolved: 0
-Total transitions: 353
-Provisional occurrences: 611
-```
-
-The specialist reference, reusable implementation, focused tests and independent validator contract were updated. Focused tests passed `12 passed in 0.78s`, and the independent validator regenerated, wrote and reloaded both source-derived Notebook 19 outputs from the immutable source, confirming the amended state.
-
-This focused post-audit update does **not** require rerunning the complete repository suite or all-validator sweep; those remain deferred to the Database v2 acceptance boundary.
+All thirteen stages are complete.
 
 ## Final consequence
 
-The targeted 5 August audit no longer blocks physical database design, and the later authority amendment does not alter that conclusion.
+The targeted audit no longer blocks physical database design.
 
 All future ingestion is subject to `docs/DATABASE_IMPORT_VALIDATION_GATE.md`: no validated output, no database write; no partial success; the last known-good database remains intact.
+
+The next project stage is Phase 3 entity and key design.

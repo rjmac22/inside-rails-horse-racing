@@ -53,7 +53,7 @@ The reference preserves:
 - confidence
 - review notes
 
-Notebook 19 uses the `specialist_reference` manual-verification route. Three claims are also present in `data/reference/manual_verifications.csv`; the specialist reference governs the remaining bounded decisions and authority enquiries.
+Notebook 19 uses the `specialist_reference` manual-verification route. Three claims are also present in `data/reference/manual_verifications.csv`; the specialist reference governs the remaining bounded decisions and pending authority enquiries.
 
 ## Analytical outcomes
 
@@ -63,14 +63,12 @@ Every governed contradiction boundary must resolve to one of:
 - `Different horse`: the exact source horse label is reused and the histories must receive separate provisional occurrence identifiers.
 - `Unresolved`: no correction or split is permitted until further evidence is obtained.
 
-Following the final Weatherbys Ireland authority response received on 8 August 2026, the validated Notebook 19 transition partition is:
+The expected Notebook 19 transition partition is:
 
-- 92 `Corrected`
+- 87 `Corrected`
 - 261 `Different horse`
-- 0 `Unresolved`
+- 5 `Unresolved`
 - 353 total governed transitions
-
-The final formerly unresolved case is `Runninsonofagun (IRE)`. Weatherbys Ireland Senior Pedigree Researcher Georgina Doherty confirmed that High Society Lady (IRE) is by Society Rock (IRE). The governed analytical damsire is therefore `Society Rock (IRE)`, while the competing raw source assertions `General Monash` and `Society Rock` remain preserved. No horse-identity split is created.
 
 ## Derived fields
 
@@ -111,9 +109,7 @@ Required cardinality rules:
 
 Blank raw pedigree fields remain blank or null according to the raw preservation policy.
 
-The current governed Notebook 19 transition population has no unresolved boundaries after the 8 August 2026 authority response. The unresolved-state rules remain part of the durable contract for future source updates or newly disputed relationships.
-
-For any future `Unresolved` case:
+For `Unresolved` cases:
 
 - governed pedigree fields remain null
 - `horse_identity_split` remains null rather than false
@@ -142,8 +138,6 @@ The validator writes:
 
 These outputs must not be treated as valid until the validator has completed successfully and the written files have been reloaded.
 
-The 8 August 2026 Weatherbys Ireland decision changes one transition from `Unresolved` to `Corrected` without introducing an identity split. The independent source-wide validator regenerated, wrote and reloaded both processed outputs from the immutable source and confirmed the new `92 / 261 / 0` baseline across 353 governed transitions and 611 provisional occurrences.
-
 ## Rebuild consequence
 
 Any existing derived table that groups runner histories by raw `horse` alone must be rebuilt before horse-level or pedigree-level analysis.
@@ -167,4 +161,4 @@ When new source data or authority replies arrive:
 11. investigate every count change before updating an expected baseline;
 12. rebuild dependent analytical tables.
 
-An authority reply may change a governed row from `Unresolved` to either `Corrected` or `Different horse`, but only with the reply provenance, date, confidence and permitted database consequence preserved. Historical raw assertions and earlier governed states remain part of the audit trail.
+Authority replies for the five unresolved cases should change the relevant row from `Unresolved` to either `Corrected` or `Different horse`, with the reply locator, date, confidence and permitted database consequence preserved.

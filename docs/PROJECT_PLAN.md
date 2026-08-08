@@ -58,18 +58,16 @@ Established raw-source immutability, source grain and quality, physical lineage 
 
 ### Notebooks 04–21
 
-**Status: fully closed, including the 8 August 2026 Notebook 19 authority amendment and focused regenerated-output validation.**
+**Status: fully closed.**
 
 The completed programme governs course and jurisdiction context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, betting-market context, temporal reconstruction, course mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree labels, connection-field blanks and comment-field states.
 
 Retained governed limits:
 
 - Notebook 08 preserves one unresolved raw starting-price value `F`;
-- Notebook 19 has no remaining unresolved pedigree transition after the 8 August 2026 Weatherbys Ireland confirmation for `Runninsonofagun (IRE)`; the competing raw damsire assertions remain preserved and the governed analytical damsire is `Society Rock (IRE)`;
+- Notebook 19 preserves one unresolved authority-dependent horse/pedigree transition for `Runninsonofagun (IRE)`;
 - Notebook 20 preserves 18 unresolved connection blanks;
 - Notebook 21 does not authorise a general narrative parser.
-
-The Notebook 19 authority amendment changes the current transition partition from the historical 5 August state `91 corrected / 261 different horse / 1 unresolved` to the validated `92 / 261 / 0` state. Focused tests passed `12 passed in 0.78s`; the independent source-wide validator confirmed 353 transitions and 611 provisional occurrences and regenerated, wrote and reloaded both governed processed outputs.
 
 ## End-of-source-field-series validation — completed 4 August 2026
 
@@ -113,37 +111,24 @@ Established governed results include:
 
 The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22. A separate Notebook 23 is not required.
 
-## Mandatory pre-database authority gate — completed 5 August 2026; final follow-up resolved 8 August 2026
+## Mandatory pre-database authority gate — completed 5 August 2026
 
-**Status: completed and validated.**
+**Status: completed.**
 
-The 5 August authority gate confirmed four bounded pedigree corrections and left `Runninsonofagun (IRE)` explicitly unresolved.
-
-On 8 August 2026 Weatherbys Ireland Senior Pedigree Researcher Georgina Doherty confirmed that `High Society Lady (IRE)` is by `Society Rock (IRE)`. Notebook 19 decision `NB19-ID-0013` is therefore now a high-confidence bounded correction:
-
-- raw horse: `Runninsonofagun (IRE)`;
-- source sire history: `Inns Of Court (IRE)`;
-- source dam history: `High Society Lady (IRE)`;
-- competing raw damsire assertions: `General Monash` and `Society Rock`;
-- governed damsire: `Society Rock (IRE)`;
-- identity split: no.
-
-The specialist governance reference, reusable implementation, focused tests and validator contract were updated. Focused tests then passed `12 passed in 0.78s`, and the independent source-wide validator regenerated and reloaded the source-derived transition and occurrence outputs, confirming `92 / 261 / 0` across 353 governed transitions and 611 provisional occurrences.
+Available authority responses were checked before physical database construction. Four bounded pedigree corrections were confirmed. `Runninsonofagun (IRE)` remains explicitly unresolved; its competing raw assertions are preserved and no governed pedigree is guessed.
 
 ## Targeted cross-notebook implementation-completeness audit — completed 5 August 2026
 
-**Status: fully closed for its 5 August evidence state.**
+**Status: fully closed.**
 
 The audit repaired stale closeout records, missing governed outputs, incomplete provenance enforcement, weak source-wide validation, correction-lineage gaps, an obsolete construction utility and the missing canonical race-time regeneration path.
 
-Historical integrated evidence:
+Final integrated evidence:
 
 ```text
 282 passed in 1.52s
 ALL 28 VALIDATORS PASSED
 ```
-
-The later 8 August Notebook 19 authority amendment is a new governed evidence update and does not invalidate that historical gate. It receives its own focused validation rather than rewriting the 5 August evidence.
 
 ## Phase 3 — Minimum stable entity and key design
 
@@ -255,7 +240,7 @@ The accepted release is the default read-only analytical database for reader-fac
 
 ## Phase 5 — Analytical products and writing
 
-**Status: in progress using accepted Database v1, with a bounded Database v2 governed-integration inventory underway where studies require previously external governed outputs.**
+**Status: in progress using accepted Database v1.**
 
 ### Study 01 — field size and race predictability
 
@@ -281,7 +266,7 @@ A temporary diagnostic branch was opened after copied notebook output appeared t
 
 This field consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`, and the workflow safeguard is recorded in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
 
-The study exposed that Database v1 deliberately materialised only the minimum structural core while many reusable governed Notebook 04–22 outputs remained external. Notebook 25 therefore inventories those outputs before one coherent Database v2 design. Database v1 remains immutable and no v2 schema or write is authorised until that inventory is complete.
+The separate study-facing race-time convenience issue remains distinct. If Study 01 still needs governed local/UTC race-time fields directly from the database, handle that as its own bounded integration task using the existing Notebook 11 temporal implementation.
 
 Potential later outputs include research views, form-history datasets, identity-aware trainer/jockey/course/horse summaries, reproducible feature datasets, claim-testing investigations and reader-facing stories about hidden data assumptions.
 

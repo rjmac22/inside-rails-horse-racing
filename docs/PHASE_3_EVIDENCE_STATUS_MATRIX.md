@@ -124,15 +124,13 @@ Completed notebook work proves that these interpretations are reproducible. It d
 
 | Topic | Principal evidence | Evidence maturity | Conceptual status | Physical database status | Remaining gate before implementation |
 |---|---|---|---|---|---|
-| Provisional horse occurrence | Notebook 19; final authority evidence supports 92 corrected, 261 different horse, zero unresolved; 611 occurrences expected after focused regeneration | Implemented and validated through the 5 August state; 8 August authority amendment pending focused output regeneration and revalidation | Conceptually designed | **Eligible for bounded extension brief** | Regenerate the governed outputs, then define the immediate horse-level analysis and preserve release-scoped provisional status. |
-| Runner-to-horse-occurrence assignment | Notebook 19 governed outputs and validators | Implemented and validated through the prior authority state; amended output regeneration pending | Conceptually designed | **Eligible for bounded extension brief** | Regenerate the governed outputs and define append-only release handling without implying official identity. |
+| Provisional horse occurrence | Notebook 19; 91 corrected, 261 different horse, one unresolved; 611 occurrences | Implemented and validated as source-internal identity | Conceptually designed | **Eligible for bounded extension brief** | Define the immediate horse-level analysis and preserve release-scoped provisional status. |
+| Runner-to-horse-occurrence assignment | Notebook 19 governed outputs and validators | Implemented and validated | Conceptually designed | **Eligible for bounded extension brief** | Define append-only release handling without implying official identity. |
 | Jockey provisional identity | Notebook 22; exact `1 / 1 / 214` decision partition and two-row mapping | Implemented and validated for bounded decisions | Conceptually designed | **Eligible for bounded extension brief** | Demonstrate a product need and preserve unresolved candidates. |
 | Trainer provisional transitions | Notebook 22; 26 transitions covering 52 labels and 6,350 rows | Implemented and validated | Conceptually designed | **Eligible for bounded extension brief** | Define the analysis and retain role-, evidence- and release-scoped status. |
 | Ownership compositions | Notebook 22; 41 supported compositions and 895 unresolved groups | Implemented and validated for the bounded supported set | Conceptually designed | **Eligible for bounded extension brief** | Implement only for an accepted owner-level analysis; constituent splitting needs another study. |
 | Official/global horse, jockey, trainer or owner identity | No official registry dataset held | Uninspected enrichment | Deferred relationship safeguards only | **Deferred enrichment** | Inspect an obtainable official or licensed identity dataset. |
 | Cross-provider identity reconciliation | Only one governed primary source version is in scope | Uninspected | Conceptual safeguards only | **Deferred until another source exists** | Inspect the actual second source before designing reconciliation. |
-
-The 8 August 2026 Notebook 19 authority amendment resolves `Runninsonofagun (IRE)` as a bounded correction rather than a split. Weatherbys Ireland confirmed that High Society Lady (IRE) is by Society Rock (IRE). Raw `General Monash` and `Society Rock` assertions remain preserved; governed damsire is `Society Rock (IRE)`.
 
 The stable core runner identifier is the future attachment point for these layers. No identity extension is part of the first implementation.
 
@@ -211,21 +209,33 @@ Physical authority for the stable core comes only from:
 
 ### Completed — evidence and conceptual boundary
 
-- Notebooks 00–22 and the targeted implementation audit are closed and validated for their accepted historical gates.
+- Notebooks 00–22 and the targeted implementation audit are closed and validated.
 - The evidence-first gate is accepted.
 - The evidence-status matrix is accepted.
 - The minimum stable-core boundary is accepted.
 - The minimum stable-core implementation brief is accepted.
 
-### Post-closeout authority amendment
+### Next — physical architecture selection
 
-- Notebook 19 received one final authority response on 8 August 2026.
-- The specialist governance reference, implementation expectations, tests and validator contract have been updated.
-- The two source-derived identity outputs require focused regeneration and readback before the amended `92 / 261 / 0` state is accepted.
+Select the database technology and physical architecture that best implement the authorised core without expanding it.
+
+The decision must cover:
+
+- technical identifier representation;
+- exact raw-value storage and round trip;
+- constraints and indexes;
+- database versioning;
+- candidate-build and atomic-activation strategy;
+- generated-artifact location and retention;
+- query-performance needs for source, race and runner access.
+
+### Then — bounded stable-core implementation
+
+Implement, review and validate the core in focused units. Run the complete project-level test and validator gate at final integration rather than after every small step.
 
 ### Later — extensions one at a time
 
-Each governed extension requires an accepted use and a separate bounded brief or superseding Database v2 integration authority.
+Each governed extension requires an accepted use and a separate bounded brief.
 
 ### Later — enrichments only when evidence exists
 
@@ -237,16 +247,16 @@ Weather, sectionals, official identifiers and market feeds remain deferred until
 
 The accepted evidence-status position is:
 
-1. Notebooks 00–22 and the targeted cross-notebook audit are closed and validated for their historical accepted states.
+1. Notebooks 00–22 and the targeted cross-notebook audit are closed and validated.
 2. Closed notebook evidence does not automatically authorise physical database representation.
 3. Existing conceptual documents remain safeguards rather than schema promises.
-4. The minimum stable structural core was explicitly authorised by `PHASE_3_MINIMUM_STABLE_CORE_IMPLEMENTATION_BRIEF.md` and implemented in accepted Database v1.
-5. The stable-core authority remains limited to source lineage, immutable physical records, admission state, Source Version 1 race occurrences, runner participations, raw recoverability, structural governance and import evidence.
-6. Governed source-field and provisional identity layers require explicit extension or Database v2 authority.
-7. The final Notebook 19 authority reply resolves the last horse/pedigree transition but requires focused regenerated-output validation before the amended state is accepted.
-8. Meetings, recurring race series, course configurations and incomplete betting regimes need further focused studies when required.
-9. Weather, sectionals, tracking, official registries and similar unavailable datasets remain deferred enrichments.
-10. The database must remain extension-friendly without containing empty speculative structures.
+4. The minimum stable structural core is now explicitly authorised by `PHASE_3_MINIMUM_STABLE_CORE_IMPLEMENTATION_BRIEF.md`.
+5. That authority is limited to source lineage, immutable physical records, admission state, Source Version 1 race occurrences, runner participations, raw recoverability, structural governance and import evidence.
+6. All governed source-field and provisional identity layers remain unauthorised extensions.
+7. Meetings, recurring race series, course configurations and incomplete betting regimes need further focused studies.
+8. Weather, sectionals, tracking, official registries and similar unavailable datasets remain deferred enrichments.
+9. The database must remain extension-friendly without containing empty speculative structures.
+10. The next decision is physical database technology and architecture for the authorised core.
 
 The governing rule remains:
 

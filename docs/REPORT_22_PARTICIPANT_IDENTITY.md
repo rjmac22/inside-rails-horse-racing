@@ -107,6 +107,4 @@ The strengthened independent validator passed against the immutable source on 4 
 
 ## Next action
 
-Use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material.
-
-The Notebook 19 authority-response dependency is now resolved at the evidence level: Weatherbys Ireland confirmed the final outstanding `Runninsonofagun (IRE)` damsire case on 8 August 2026. The associated Notebook 19 source-derived outputs require their focused regeneration and validation before the amended horse-identity state is accepted, but there is no remaining authority enquiry blocking participant or Database v2 design.
+Use the governed participant identity keys in downstream cohort, feature and leakage-control work. Keep unresolved labels raw unless a specific analytical use makes further verification material. Physical participant schema design may proceed only after the Notebook 19 authority-response gate is complete.
