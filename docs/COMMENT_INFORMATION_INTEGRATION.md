@@ -19,6 +19,23 @@ The immutable source value must be retained exactly as supplied, including:
 
 No integration step may trim, rewrite, translate or split the raw value in place.
 
+## Rendered-output safeguard
+
+A Study 01 follow-up diagnostic on 8 August 2026 investigated an apparent copied value resembling `Walkover<br><br><br>`.
+
+The source-wide check found **zero admitted comments containing a literal `<` character**. The accepted Inside Rails Version 1 database stores the decisive Hereford / Queensbury Boy value exactly as `Walkover`: SQLite type `text`, character length 8, no line feed, no carriage return, and UTF-8 hexadecimal `57616C6B6F766572`.
+
+The apparent `<br>` material was introduced after the stored value, during rendered-output / copy-paste transport. The pasted representation also merged text from a separate diagnostic cell, confirming that the markup was not part of the governed comment value.
+
+Database consequence:
+
+- do **not** add `comment_plain_text` merely to remove HTML-like markup;
+- do **not** add generic HTML stripping, `<br>` removal or newline stripping on the basis of copied notebook output;
+- inspect the stored value directly before treating presentation markup as source evidence;
+- preserve Notebook 21's conservative raw-comment governance unchanged unless new stored-data evidence establishes a real source-format requirement.
+
+This diagnostic does not prohibit a future bounded presentation field if independently justified by actual stored source content. It establishes only that the observed Study 01 markup did not justify one.
+
 ## Governed fields
 
 A future staging or core model should expose at least:
