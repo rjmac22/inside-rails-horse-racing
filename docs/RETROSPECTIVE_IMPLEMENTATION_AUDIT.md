@@ -34,6 +34,30 @@ A notebook is fully closed only when its conclusion, reproducibility or archival
 | 21 | Comment and embedded information | **Fully closed** | Persisted profiles, conservative classifier, tests and independent validation; no general narrative parser. |
 | 22 | Jockey, trainer and owner participant identity | **Fully closed — archival route** | Direct jockey mapping, exact decision closure, decisive provenance and source-wide validation. |
 
+## Study-era diagnostic closure — 8 August 2026
+
+`notebooks/database_extension_01_study_facing_time_and_comments.ipynb` was opened after Study 01 appeared to expose comment markup resembling `Walkover<br><br><br>`.
+
+The comment branch is **fully closed as an archival diagnostic with no reusable implementation required**.
+
+Evidence established:
+
+- Source Version 1 has zero admitted comments containing a literal `<` character;
+- the accepted Database v1 row for Hereford / Queensbury Boy stores exactly `Walkover`;
+- that stored value has character length 8, no line feed or carriage return, and UTF-8 hexadecimal `57616C6B6F766572`;
+- copied notebook output subsequently merged this value with material from a separate diagnostic cell using HTML/entity formatting.
+
+Conclusion:
+
+- the apparent `<br>` markup was introduced in rendered-output / copy-paste transport, not in the source or accepted database;
+- Notebook 21 comment governance remains unchanged;
+- no `comment_plain_text`, HTML stripper, `<br>` removal, newline stripping or general parser is authorised;
+- no reusable code, unit tests, independent validator, reference data or database migration is required for this false alarm;
+- manual/external verification status is `not_applicable` because the conclusion is source-internal;
+- the separate question of exposing already-governed race-time information to Study 01 remains outside this diagnostic closure.
+
+The durable field consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`. The reusable workflow safeguard is recorded in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
+
 ## Targeted cross-notebook audit result
 
 The targeted implementation-completeness audit found a finite set of bounded defects without reopening the analytical investigations.
@@ -122,8 +146,6 @@ Unknown, changed or unmatched data must fail closed, remain explicitly unresolve
 
 ## Current position
 
-The retrospective notebook programme, participant-identity programme and targeted cross-notebook implementation audit are fully closed.
+The retrospective source-field programme, participant-identity programme, targeted implementation audit and Database v1 release are complete.
 
-The integrated test and validator gate has passed. No further source-field notebook investigation is required unless a new source snapshot or failed validator produces concrete new evidence.
-
-The next project stage is Phase 3 entity and key design. The integration branch is ready for final merge after the final documentation commit is pulled locally and the working tree is confirmed clean.
+Reader-facing Study 01 is now the active analytical programme. The false comment-markup blocker is closed: no comment transformation or database change is required. The remaining study-facing race-time convenience question, if still required by Study 01, must be handled as a separate bounded task using the already-governed Notebook 11 temporal implementation rather than being conflated with comment cleaning.
