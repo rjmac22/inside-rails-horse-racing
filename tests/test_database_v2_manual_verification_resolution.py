@@ -17,6 +17,8 @@ RACE_DATE = "2023-12-23"
 RACE_COURSE = "Gulfstream Park (USA)"
 RACE_OFF = "9:36"
 HORSE = "Great Navigator (USA)"
+TIMESTAMP = "2026-08-09T00:00:00.000000Z"
+COMMIT = "1" * 40
 
 
 def _connection_with_missing_runner_race() -> sqlite3.Connection:
@@ -24,9 +26,25 @@ def _connection_with_missing_runner_race() -> sqlite3.Connection:
     create_governed_integration_schema(connection)
 
     # These tests isolate source-locator resolution. Foreign keys are disabled so
-    # the fixture can represent the exact structural race without recreating the
-    # full Source Version 1 metadata hierarchy.
+    # the fixture does not have to recreate the full Source Version 1 metadata
+    # hierarchy, but the structural race trigger still requires an accepted
+    # governance release for the race's source version. Seed that exact minimum
+    # governance state explicitly rather than weakening the production trigger.
     connection.execute("PRAGMA foreign_keys = OFF")
+    connection.execute(
+        """
+        INSERT INTO governance_release (
+            governance_release_id, governance_release_code, source_version_id,
+            governance_method_id, release_status, accepted_date,
+            repository_commit, population_predicate, release_description,
+            superseded_by_release_id, created_at_utc
+        ) VALUES (
+            1, 'gr:fixture:v2', 1, 1, 'accepted', '2026-08-09', ?,
+            'rowid <> 1', 'Fixture accepted governance.', NULL, ?
+        )
+        """,
+        (COMMIT, TIMESTAMP),
+    )
     connection.execute(
         """
         INSERT INTO core_source_race_occurrence VALUES (
