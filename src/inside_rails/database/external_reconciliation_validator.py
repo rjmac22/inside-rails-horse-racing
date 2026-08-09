@@ -156,12 +156,17 @@ def _assert_exact_reconciliations(connection: sqlite3.Connection) -> None:
     if ecstasy != (31, 3, "externally_corrected"):
         raise RuntimeError(f"Ecstasy age reconciliation mismatch: {ecstasy!r}")
 
+    # The Gavea source row is intentionally located by the exact governed
+    # resolution codes. The reconciliation input itself uses the unique second
+    # position within the exact race because the notebook-facing horse label was
+    # not an exact immutable-source locator. Do not reintroduce that display label
+    # as a validator dependency.
     gavea = connection.execute(
         """
         SELECT raw_ovr_btn, raw_btn, governed_ovr_btn_numeric, governed_btn_numeric
         FROM view_reconciled_source_runner_participations
-        WHERE raw_horse='Gevrey-Chambertain' AND raw_date='2025-04-06'
-          AND raw_course='Gavea (BRZ)' AND raw_off='7:35'
+        WHERE ovr_btn_resolution_code='V3-RES-0008'
+          AND btn_resolution_code='V3-RES-0009'
         """
     ).fetchone()
     if gavea != (0, 0, 16.5, 16.5):
