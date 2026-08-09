@@ -59,6 +59,18 @@ def test_almendares_is_exact_5_to_2_favourite_correction() -> None:
     assert row["analytical_action"] == "replace"
 
 
+def test_gavea_margin_uses_unique_position_as_source_locator() -> None:
+    rows = _rows("data/reference/external_value_resolutions.csv")
+    gavea_rows = [
+        row for row in rows if row["resolution_id"] in {"V3-RES-0008", "V3-RES-0009"}
+    ]
+    assert len(gavea_rows) == 2
+    assert {row["source_field"] for row in gavea_rows} == {"ovr_btn", "btn"}
+    assert all(row["source_horse"] == "" for row in gavea_rows)
+    assert all(row["source_position"] == "2" for row in gavea_rows)
+    assert all("Gevrey-Chambertain" in row["notes"] for row in gavea_rows)
+
+
 def test_known_wrong_beaten_distances_do_not_invent_numeric_replacements() -> None:
     rows = _rows("data/reference/external_value_resolutions.csv")
     invalidations = [row for row in rows if row["resolution_kind"] == "invalidation"]
