@@ -130,7 +130,10 @@ def _runner_source_record_id(
     source_course: str,
     source_off: str,
     source_horse: str,
-) -> int:
+    allow_missing: bool = False,
+) -> int | None:
+    """Resolve one runner locator, allowing absence only for governed supplementation."""
+
     rows = connection.execute(
         """
         SELECT source.source_record_id
@@ -146,13 +149,15 @@ def _runner_source_record_id(
         """,
         (source_date, source_course, source_off, source_horse),
     ).fetchall()
-    if len(rows) != 1:
-        raise GovernedReferenceLoadError(
-            "Expected one source-backed runner for manual verification locator "
-            f"{(source_date, source_course, source_off, source_horse)!r}; "
-            f"observed {len(rows)}"
-        )
-    return int(rows[0][0])
+    if len(rows) == 1:
+        return int(rows[0][0])
+    if len(rows) == 0 and allow_missing:
+        return None
+    raise GovernedReferenceLoadError(
+        "Runner manual verification did not resolve safely to one source record for "
+        f"{(source_date, source_course, source_off, source_horse)!r}; "
+        f"observed {len(rows)}"
+    )
 
 
 def _manual_source_rowid(row: ManualVerification) -> int | None:
@@ -317,9 +322,11 @@ def _insert_manual_verifications(
                 row.source_off,
             )
 
-        # Runner verifications with a complete locator should resolve to one
-        # source record even when the historical register predates explicit rowid
-        # storage. This is critical for exact-lineage corrections such as NB17.
+        # Runner verifications with a complete locator should normally resolve
+        # to exactly one source record, even when the historical register predates
+        # explicit rowid storage. The only governed exception is an explicit
+        # source supplementation whose subject is absent from immutable source
+        # rows; that absence is the fact being preserved by Notebook 14/15.
         if (
             source_record_id is None
             and row.subject_type == "runner"
@@ -332,6 +339,7 @@ def _insert_manual_verifications(
                 source_course=row.source_course,
                 source_off=row.source_off,
                 source_horse=row.source_horse,
+                allow_missing=row.database_action == "source_supplementation",
             )
 
         source_relation_field_id = field_ids.get(row.source_field)
