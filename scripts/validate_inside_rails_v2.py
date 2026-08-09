@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""Independently validate a built or validated Inside Rails Database v2 candidate read-only."""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import asdict
+import json
+from pathlib import Path
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from inside_rails.database.governed_integration_candidate import (
+    default_base_release_path,
+    default_v2_candidate_path,
+)
+from inside_rails.database.governed_integration_validator import (
+    validate_governed_integration_candidate,
+)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--candidate",
+        type=Path,
+        default=default_v2_candidate_path(ROOT),
+    )
+    parser.add_argument(
+        "--base-release",
+        type=Path,
+        default=default_base_release_path(ROOT),
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=5_000,
+        help="Rows compared per streaming source/core validation batch.",
+    )
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    summary = validate_governed_integration_candidate(
+        args.candidate,
+        args.base_release,
+        ROOT,
+        batch_size=args.batch_size,
+    )
+    print(json.dumps(asdict(summary), indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()
