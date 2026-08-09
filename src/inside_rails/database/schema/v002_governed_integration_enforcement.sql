@@ -77,6 +77,34 @@ BEGIN
     SELECT RAISE(ABORT, 'jurisdiction context effective periods overlap');
 END;
 
+-- Notebook 20 decisions are intentionally limited to the three connection
+-- fields reviewed in that notebook. Reject any other physical source field
+-- before the broader evidence-compatibility trigger so failures identify the
+-- actual governed boundary rather than reporting a generic mismatch.
+CREATE TRIGGER trg_connection_decision_field_insert
+BEFORE INSERT ON governance_connection_value_decision
+WHEN NOT EXISTS (
+    SELECT 1
+    FROM source_relation_field AS field
+    WHERE field.source_relation_field_id = NEW.source_relation_field_id
+      AND field.field_name IN ('jockey', 'trainer', 'owner')
+)
+BEGIN
+    SELECT RAISE(ABORT, 'connection decision source field must be jockey, trainer or owner');
+END;
+
+CREATE TRIGGER trg_connection_decision_field_update
+BEFORE UPDATE OF source_relation_field_id ON governance_connection_value_decision
+WHEN NOT EXISTS (
+    SELECT 1
+    FROM source_relation_field AS field
+    WHERE field.source_relation_field_id = NEW.source_relation_field_id
+      AND field.field_name IN ('jockey', 'trainer', 'owner')
+)
+BEGIN
+    SELECT RAISE(ABORT, 'connection decision source field must be jockey, trainer or owner');
+END;
+
 -- A Notebook 20 operational decision must point to the same permanent
 -- verification subject: exact source record, exact physical source field and an
 -- action compatible with the operational status. This prevents a valid evidence
