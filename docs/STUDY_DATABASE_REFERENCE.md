@@ -16,9 +16,7 @@ When the database schema, release status, canonical paths or study-facing analyt
 
 ---
 
-## 1. Database identities
-
-### Immutable third-party Source Version 1
+## 1. Immutable third-party Source Version 1
 
 Original filename:
 
@@ -39,101 +37,125 @@ Source Version 1 admission rule:
 
 `rowid <> 1`
 
-Accepted population:
+Governed source population:
 
-- 1,851,286 physical source records;
-- 1,851,285 admitted runner records;
-- 1 retained excluded physical row;
-- 189,043 source race occurrences;
-- 37 source columns.
+- physical source records: **1,851,286**;
+- admitted runner-bearing records: **1,851,285**;
+- retained excluded physical records: **1**;
+- source race occurrences: **189,043**;
+- source columns: **37**;
+- minimum source date: `2015-01-01`;
+- maximum source date: `2026-05-27`.
 
 Authorised Source Version 1 race identity:
 
 `exact raw date + course + off`
 
-Minimum source date:
+Source Version 1 SHA-256:
 
-`2015-01-01`
-
-Maximum source date:
-
-`2026-05-27`
+`77b5dbbbfdee69d4d92a582655344e1e5ba29ca4646a5999c383de8161eeeaa7`
 
 ---
 
-## 2. Inside Rails database naming
+## 2. Current accepted Inside Rails database
 
-Inside Rails-built databases use project-owned names and must not inherit the third-party source filename.
+### Database v2 — current study database
 
-Approved naming convention:
+Accepted and promoted on **9 August 2026**.
 
-- validated Version 1 candidate: `inside_rails_v1_candidate.sqlite3`;
-- accepted/promoted Version 1 release: `inside_rails_v1.sqlite3`.
+Canonical release path:
 
-Future releases should follow the same Inside Rails-owned naming pattern.
+`data/processed/database/releases/inside_rails_v2.sqlite3`
 
-### Current implementation
+Accepted release SHA-256:
 
-Preserved validated candidate:
+`80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe`
 
-`data/processed/database/candidates/inside_rails_v1_candidate.sqlite3`
+Release size:
 
-Candidate SHA-256:
+`3,137,044,480 bytes`
 
-`7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2`
+SQLite identity:
 
-Canonical accepted Version 1 release:
+- `application_id`: **1230130259**;
+- `user_version`: **2**;
+- manifest status: **`release_accepted`**;
+- validation-result rows: **7**;
+- `PRAGMA quick_check`: **`ok`**;
+- `PRAGMA foreign_key_check`: **0 rows**.
+
+Promotion verification:
+
+- all **1,851,286** raw-record fingerprints were recomputed;
+- **2,040,328** carried structural rows were compared back to accepted Database v1;
+- candidate hash remained unchanged during promotion;
+- Database v1 remained unchanged and available for rollback.
+
+Promotion implementation commit:
+
+`78087b0ae1985809d63ee2feacd71423ac18c727`
+
+Reader-facing studies should use Database v2 read-only by default.
+
+There is no silent fallback to Database v1, the validated candidate or the raw third-party source if Database v2 is missing.
+
+### Preserved validated Database v2 candidate
+
+Path:
+
+`data/processed/database/candidates/inside_rails_v2_candidate.sqlite3`
+
+SHA-256:
+
+`5fc6adaada69b7111a56021a9d67deeb62f6bb98268c69ad5c36009d337e39fe`
+
+Manifest status:
+
+`validated`
+
+The candidate is immutable pre-release evidence. Normal studies must not use it as the analytical database.
+
+### Retained Database v1 release
+
+Path:
 
 `data/processed/database/releases/inside_rails_v1.sqlite3`
 
-Accepted-release SHA-256:
+SHA-256:
 
 `2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`
 
-The candidate is retained unchanged as pre-release evidence and rollback material. Reader-facing studies should not use it as the normal analytical database.
+Database v1 remains retained as the prior accepted release and rollback material. It is no longer the default study database.
 
 ---
 
-## 3. Current release state
+## 3. Release evidence boundary
 
-Inside Rails Version 1 was explicitly release-accepted and promoted on 8 August 2026.
+Database v2 was accepted only after:
 
-Current state:
+- the full Database v2 build completed successfully;
+- standalone independent v2 validation passed;
+- focused Database v2 tests passed;
+- the complete applicable independent-validator sweep passed;
+- the repository suite passed at the final promotion implementation commit: **392 passed in 16.93s**;
+- the six promotion-specific tests separately passed: **6 passed in 0.51s**;
+- the release copy was independently validated again after acceptance evidence was written.
 
-- minimum-core SQLite schema version 1: implemented;
-- complete candidate: built and independently validated;
-- repository-wide release implementation gate: 360 tests passed;
-- manifest transition: `built -> validated -> release_accepted`;
-- release accepted: **true**;
-- active/promoted Inside Rails database: `data/processed/database/releases/inside_rails_v1.sqlite3`;
-- release SHA-256: `2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`;
-- release size: 1,730,048,000 bytes;
-- validation-result rows: 7;
-- `PRAGMA quick_check`: `ok`;
-- `PRAGMA foreign_key_check`: zero rows;
-- SQLite `application_id`: 1230130259;
-- SQLite `user_version`: 1;
-- preserved candidate hash unchanged during promotion: **true**.
+The accepted database contains seven required import-validation records. The embedded `project_acceptance_gate` record preserves the earlier 386-test candidate-era repository gate plus the applicable-validator sweep; the later 392-test run at the promotion commit is the final repository corroboration recorded here and in the release documentation.
 
-Reader-facing studies should use this accepted release as the default analytical database and consume it read-only.
-
-There is no silent fallback to the candidate or raw third-party source if the accepted release is missing.
+The accepted release must now be treated as immutable.
 
 ---
 
-## 4. Engine and database contract
+## 4. Current consumer contract
 
-Inside Rails Version 1 uses SQLite.
+The current study-facing consumer contract is the exact immutable Database v2 release path documented above.
 
-Minimum supported SQLite version:
+Do not invent or infer an `active_database.json` file, symbolic link or mutable `inside_rails.db` alias. The older architecture decision record describes an active-manifest mechanism as an intended lifecycle pattern, but no active-manifest resolver is currently the implemented study interface.
 
-`3.37.0`
+Until that mechanism is deliberately implemented and documented, studies must take the accepted release path from this file rather than reconstructing it from memory.
 
-The minimum core uses `STRICT` tables except for the raw mirrored source table, which deliberately preserves original SQLite storage classes.
-
-Accepted database releases are immutable after final hashing and must be consumed read-only.
-
-Normal accepted-release consumer connections must use:
+Normal accepted-release connections must be read-only and should enforce:
 
 ```text
 PRAGMA query_only = ON;
@@ -141,15 +163,16 @@ PRAGMA foreign_keys = ON;
 PRAGMA trusted_schema = OFF;
 ```
 
-The original source database remains physically separate from Inside Rails-built releases.
-
 ---
 
-## 5. Minimum-core table inventory
+## 5. Database v2 physical model
 
-The authorised first-release minimum core contains thirteen physical tables:
+Database v2 contains **31 physical tables**:
 
-### Source metadata and raw evidence
+- **13** carried forward from Database v1;
+- **18** Database v2 governed-integration tables.
+
+### Carried structural/source tables
 
 - `source_provider`
 - `source_product`
@@ -157,160 +180,265 @@ The authorised first-release minimum core contains thirteen physical tables:
 - `source_relation`
 - `source_relation_field`
 - `source_raceform_v1_record`
-
-### Governance
-
+- `core_source_race_occurrence`
+- `core_runner_participation`
 - `governance_method`
 - `governance_release`
 - `governance_release_evidence`
-
-### Structural racing core
-
-- `core_source_race_occurrence`
-- `core_runner_participation`
-
-### Build and validation evidence
-
 - `import_manifest`
 - `import_validation_result`
 
-No analytical field-extension tables were authorised in the minimum-core release.
+### Database v2 governed tables
+
+- `core_source_race_occurrence_governed`
+- `core_source_race_occurrence_time`
+- `core_runner_participation_governed`
+- `reference_course`
+- `reference_jurisdiction_context`
+- `governance_source_field_treatment`
+- `governance_manual_verification`
+- `governance_connection_value_decision`
+- `governance_runner_record_supplementation`
+- `governance_horse_pedigree_specialist_decision`
+- `identity_horse_occurrence`
+- `identity_runner_horse_occurrence`
+- `identity_horse_pedigree_decision`
+- `identity_participant_source_label`
+- `identity_participant`
+- `identity_participant_label_map`
+- `identity_participant_candidate`
+- `identity_participant_candidate_label`
 
 ---
 
-## 6. Important table grains
+## 6. Recommended study-facing views
+
+For normal analytical work prefer the documented views rather than rebuilding governance joins in every notebook.
+
+### `view_governed_race_occurrences`
+
+Grain:
+
+> one governed Source Version 1 race occurrence.
+
+Expected rows:
+
+**189,043**
+
+Use for race-level analysis, including course/jurisdiction context, source-supported surface, literal source-distance interpretation, runner-count semantics, race classification and governed advertised-start-time fields.
+
+### `view_governed_source_runner_participations`
+
+Grain:
+
+> one source-backed runner participation.
+
+Expected rows:
+
+**1,851,285**
+
+Use when the analysis must remain exactly on the admitted physical source-runner population while benefiting from governed result, price, weight, prize, rating, characteristic, connection and comment semantics.
+
+### `view_governed_runner_records`
+
+Grain:
+
+> one governed runner record, including approved externally supplemented missing runners.
+
+Expected rows:
+
+**1,851,288**
+
+This is the normal combined runner view when the study question should include the three verified missing-runner supplementations.
+
+It contains:
+
+- all **1,851,285** source-backed runners; plus
+- **3** externally supplemented missing runners.
+
+The supplemented rows do not acquire fabricated source-record IDs or unsupported attributes.
+
+### `view_governed_horse_occurrence_assignments`
+
+Use when Notebook 19 provisional horse/pedigree occurrence identity is material to the question.
+
+Current governed identity baseline:
+
+- provisional horse occurrences: **611**;
+- transition decisions: **353**;
+- corrected transitions: **92**;
+- different-horse transitions: **261**;
+- unresolved transitions: **0**.
+
+### `view_governed_participant_label_identities`
+
+Use when accepted Notebook 22 jockey/trainer/owner label mappings are material.
+
+Current baseline:
+
+- source labels: **116,859**;
+- accepted provisional participant identities: **68**;
+- accepted label mappings: **149**;
+- participant candidates: **1,205**.
+
+Do not convert unresolved candidates into identities in a study.
+
+---
+
+## 7. Structural grains and identifiers
 
 ### `source_raceform_v1_record`
 
 Grain:
 
-> one physical row exactly as stored in Source Version 1.
+> one physical Source Version 1 record exactly as retained in the Inside Rails raw mirror.
 
-Contains all 1,851,286 physical source rows, including the retained excluded row.
-
-It preserves original raw values and source lineage. It is evidence, not a cleaned analytical table.
+Contains all **1,851,286** physical records, including the retained excluded row.
 
 ### `core_source_race_occurrence`
 
 Grain:
 
-> one admitted Source Version 1 race occurrence reconstructed from the authorised exact raw `date + course + off` grouping.
+> one admitted Source Version 1 race occurrence reconstructed from exact raw `date + course + off`.
 
-Expected population:
+Rows:
 
-`189,043` race occurrences.
-
-This is the structural race-level unit for Inside Rails Version 1.
+**189,043**
 
 ### `core_runner_participation`
 
 Grain:
 
-> one admitted runner participation linked to one source record and one source race occurrence.
+> one admitted physical source runner linked to one structural race occurrence.
 
-Expected population:
+Rows:
 
-`1,851,285` runner participations.
+**1,851,285**
 
-For race-level research questions, do not casually use runner rows as independent race observations.
+Do not use raw `race_id` as a unique Inside Rails race identifier.
 
----
-
-## 7. Identifier rules studies must respect
-
-Do not use the supplied raw `race_id` as a unique Inside Rails race identifier.
-
-The structural core uses deterministic project-owned codes.
-
-Relevant namespaces include:
+Prefer stable project-owned textual codes such as:
 
 - source version: `sv:...`;
 - source record: `rec:...`;
 - source race occurrence: `race:...`;
 - runner participation: `run:...`.
 
-Internal integer primary keys are scoped to one built database release and are not stable external references.
-
-Stable study outputs should prefer project-owned textual codes or another explicitly governed stable identifier where appropriate.
+Internal integer primary keys are release-local implementation identifiers, not durable external references.
 
 ---
 
-## 8. Raw, structural and analytical data are different layers
+## 8. Important governed semantics now integrated
 
-Studies must distinguish:
+Database v2 makes Notebook 04–22 governed work directly usable while retaining raw lineage.
 
-### Raw evidence
+Important examples:
 
-Exact third-party values and physical lineage.
+- explicit `(AW)` evidence supports only `all_weather_unspecified`; other surface values remain unresolved under that rule;
+- distance is a governed parse of the literal source notation, not independently verified official distance;
+- the lone raw starting-price value `F` remains unresolved and receives no invented odds;
+- exact Notebook 17 `B` / `BB` sex anomalies have bounded accepted corrections;
+- exact raw `rpr = 775` anomaly is analytically null as `invalid_source_value`, with no replacement rating;
+- **28** blank connection labels have verified external supplementations and **18** remain unresolved;
+- comment values are conservatively classified rather than narratively parsed;
+- participant and horse identities remain provisional where governance says they are provisional.
 
-### Structural core
-
-Governed source version, race occurrence and runner participation identities.
-
-### Governed field interpretations
-
-Canonical or interpreted values established by the source-field investigation programme and its governed references/implementations.
-
-### Study-specific derivations
-
-Calculations created to answer one study question.
-
-A study-specific derivation does not automatically belong in the database.
-
-If a study discovers a missing transformation, defect or reusable analytical structure that materially affects correctness or repeatability, pause the study and handle it through database governance as required by `docs/STUDY_RESEARCH_PLAYBOOK.md`.
+Raw source values remain recoverable. Study-facing governed values must not be described as if the source itself contained them.
 
 ---
 
-## 9. Field governance remains authoritative
+## 9. Race-time boundary
 
-The minimum structural core does not by itself make every raw field analytically safe.
+Database v2 integrates Notebook 11 advertised/scheduled start-time governance.
 
-Before using a field, consult the existing field-governance work and reusable implementation/reference outputs for that field.
+Rows:
 
-Important standing examples include:
+**189,043**
 
-- supplied `race_id` is not accepted as a unique race key;
-- result semantics require governed interpretation;
-- starting-price arithmetic has a retained unresolved raw value `F`;
-- course/jurisdiction context matters;
-- runner counts and numbers have governed semantics;
-- raw comment text is preserved without a general narrative parser.
+Current status:
 
-Do not infer meaning from a column name merely because the structural database contains it.
+- resolved: **169,465**;
+- unresolved: **19,578**;
+- pre-format-boundary races: **178,691**;
+- explicit post-boundary races: **10,352**.
+
+Methods:
+
+- `course_local_dead_of_night_rejection`: **111,871**;
+- `stable_post_boundary_course_profile`: **47,242**;
+- `explicit_post_boundary_time`: **10,352**;
+- `unresolved`: **19,578**.
+
+Boundary date:
+
+`2025-10-15`
+
+These values represent reconstructed advertised/scheduled start times, not automatically exact actual-off times.
 
 ---
 
-## 10. Study-start database checklist
+## 10. Runner-count population choice
+
+Study 01 and later field-size work must state which population is being measured.
+
+Possible concepts are deliberately distinct:
+
+1. admitted physical source runner rows;
+2. source-reported `ran`;
+3. governed source-runner coverage state;
+4. the combined governed runner view including three verified external supplementations.
+
+Do not silently substitute one for another.
+
+For a question about what the accepted physical source contains, use the source-backed population. For a question intended to use all currently governed runner evidence, consider `view_governed_runner_records` and state that the three supplementation rows are included.
+
+---
+
+## 11. Efficient analytical use
+
+Do not load all 1.85 million runner rows into pandas unless the question genuinely requires it.
+
+Preferred workflow:
+
+1. filter in SQLite;
+2. aggregate in SQLite where practical;
+3. load the smaller result into pandas;
+4. use pandas for presentation, modelling or charts.
+
+Start exploration with explicit columns and `LIMIT`, not `SELECT *` over the full runner view.
+
+---
+
+## 12. Study-start checklist
 
 Before the first analytical cell of every study, confirm:
 
 1. this document has been read;
 2. `docs/STUDY_DATA_ACCESS.md` has been read;
-3. the current database release state is known;
-4. the exact accepted database path is taken from documentation rather than memory;
-5. the study's unit of observation is declared;
-6. every required field has sufficient governance for the proposed use;
-7. source/candidate/accepted-release status is not being conflated;
-8. relevant stable identifiers and join cardinalities are understood;
-9. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work;
-10. any database enhancement discovered during the study will be escalated rather than quietly implemented as notebook-only infrastructure when correctness or reuse requires database work.
+3. the current accepted database is Database v2;
+4. the exact path is `data/processed/database/releases/inside_rails_v2.sqlite3`;
+5. the database is opened read-only;
+6. the study's unit of observation is declared;
+7. the relevant governed view/table and population are declared;
+8. every required field has sufficient governance for the proposed use;
+9. unresolved states and supplementations relevant to the question are understood;
+10. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work;
+11. any newly discovered database defect or reusable transformation is escalated rather than quietly buried inside the study notebook.
 
 ---
 
-## 11. Update rule
+## 13. Update rule
 
-This document is a living study-facing database reference.
-
-Update it whenever any of the following changes:
+Update this document whenever any of the following changes:
 
 - canonical source path;
 - candidate or accepted database filename/path;
-- release status;
+- release status or release hash;
 - database schema version;
 - study-facing table/view inventory;
 - table grain;
 - stable identifier rules;
 - analytical access conventions;
-- field-governance consequence that materially changes how studies should query the database.
+- field-governance consequences that materially change study queries.
 
 A database change is not fully integrated into the study workflow until this reference reflects it.
