@@ -65,6 +65,13 @@ INSERT INTO core_source_race_occurrence_time (
 """
 
 
+def _optional_iso_text(value: object) -> str | None:
+    """Convert the canonical CSV representation's empty strings back to null."""
+
+    text = str(value)
+    return None if text == "" else text
+
+
 def populate_governed_race_times(
     connection: sqlite3.Connection,
     *,
@@ -86,14 +93,20 @@ def populate_governed_race_times(
         raise GovernedTimeLoadError(
             f"Temporal loading requires the active building manifest; observed {manifest!r}"
         )
+
     existing = int(
-        connection.execute("SELECT COUNT(*) FROM core_source_race_occurrence_time").fetchone()[0]
+        connection.execute(
+            "SELECT COUNT(*) FROM core_source_race_occurrence_time"
+        ).fetchone()[0]
     )
     if existing:
         raise GovernedTimeLoadError(
             f"Temporal loading requires an empty target table; found {existing} rows"
         )
 
+    # Load only one row per race plus the governed course timezone. This bounded
+    # frame is the natural grain required by Notebook 11 and avoids loading the
+    # 1.85 million runner population into the temporal reconstruction.
     race_context = pd.read_sql_query(_RACE_CONTEXT_SQL, connection)
     if len(race_context) != EXPECTED_TEMPORAL_ROWS:
         raise GovernedTimeLoadError(
@@ -109,6 +122,9 @@ def populate_governed_race_times(
     if len(race_ids_by_key) != EXPECTED_TEMPORAL_ROWS:
         raise GovernedTimeLoadError("Temporal input race keys are not unique")
 
+    # Use the durable Notebook 11 pipeline rather than recreating clock-selection
+    # logic inside the database build. Its own exact-total and conversion checks
+    # must pass before any temporal record is persisted.
     canonical = build_canonical_race_times(
         race_context.drop(columns=["source_race_occurrence_id"])
     )
@@ -121,26 +137,24 @@ def populate_governed_race_times(
         race_key = (str(row.date), str(row.course), str(row.off))
         source_race_occurrence_id = race_ids_by_key.get(race_key)
         if source_race_occurrence_id is None:
-            raise GovernedTimeLoadError(f"Canonical temporal row lost race key {race_key!r}")
-
-        def optional(value: object) -> str | None:
-            text = str(value)
-            return None if text == "" else text
+            raise GovernedTimeLoadError(
+                f"Canonical temporal row lost race key {race_key!r}"
+            )
 
         insert_rows.append(
             (
                 source_race_occurrence_id,
                 governance_release_id,
-                optional(row.candidate_a_uk_naive),
-                optional(row.candidate_b_uk_naive),
-                optional(row.candidate_a_utc),
-                optional(row.candidate_b_utc),
-                optional(row.candidate_a_course_local),
-                optional(row.candidate_b_course_local),
-                optional(row.advertised_start_uk),
-                optional(row.advertised_start_utc),
-                optional(row.advertised_start_course_local),
-                optional(row.selected_branch),
+                _optional_iso_text(row.candidate_a_uk_naive),
+                _optional_iso_text(row.candidate_b_uk_naive),
+                _optional_iso_text(row.candidate_a_utc),
+                _optional_iso_text(row.candidate_b_utc),
+                _optional_iso_text(row.candidate_a_course_local),
+                _optional_iso_text(row.candidate_b_course_local),
+                _optional_iso_text(row.advertised_start_uk),
+                _optional_iso_text(row.advertised_start_utc),
+                _optional_iso_text(row.advertised_start_course_local),
+                _optional_iso_text(row.selected_branch),
                 str(row.decision_method),
                 str(row.decision_confidence),
                 str(row.temporal_resolution_status),
@@ -150,19 +164,9 @@ def populate_governed_race_times(
     connection.executemany(_INSERT_SQL, insert_rows)
     connection.commit()
 
-    observed = dict(
-        connection.execute(
-            """
-            SELECT
-                COUNT(*) AS total,
-                SUM(temporal_resolution_status = 'resolved') AS resolved,
-                SUM(temporal_resolution_status = 'unresolved') AS unresolved
-            FROM core_source_race_occurrence_time
-            """
-        ).fetchone()
-        if False
-        else ()
-    )
+    # Reconcile the persisted table rather than trusting the pre-insert frame.
+    # Any lost row, null-state drift or unexpected resolution partition makes
+    # the candidate unusable and must stop the build.
     total, resolved, unresolved = connection.execute(
         """
         SELECT
