@@ -4,7 +4,7 @@
 
 This document is the permanent re-runnable procedure for the project-level independent-validator gate required by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
 
-It exists because earlier repository gates proved that a generic loop over `scripts/validate_*.py` is unsafe and incomplete: validators do not all have the same command-line contract. Some accept no positional input because they resolve governed project paths internally, while others require the immutable Source Version 1 SQLite path. Historical Database v1 construction validators also depend on disposable artefacts that are no longer acceptance dependencies.
+It exists because earlier repository gates proved that a generic loop over `scripts/validate_*.py` is unsafe and incomplete: validators do not all have the same command-line contract. Some accept no required positional input because they resolve governed project paths internally, while others require the immutable Source Version 1 SQLite path. Historical Database v1 construction validators also depend on disposable artefacts that are no longer acceptance dependencies.
 
 The canonical runner is:
 
@@ -29,7 +29,7 @@ The runner:
 - excludes exactly three historical Database v1 construction-only validators;
 - inspects each applicable validator's `argparse.add_argument(...)` declarations using the Python AST without importing or executing the validator;
 - resolves required source-database positional inputs to the exact immutable Source Version 1 path;
-- resolves a required `reference_path`, should one exist, to the governed course-location reference;
+- resolves a required `reference_path`, should one exist in a future governed CLI, to the governed course-location reference;
 - fails before executing the gate if a validator introduces an unknown required positional argument;
 - runs with `PYTHONPATH` explicitly containing `src`;
 - runs validators in deterministic filename order;
@@ -49,27 +49,72 @@ Immutable Source Version 1:
 data/raw/form_2015-present/form_2015-present/raceform.db
 ```
 
-Governed course-location reference when a required `reference_path` is present:
+Governed course-location reference if a future required `reference_path` is introduced:
 
 ```text
 data/reference/course_locations.csv
 ```
 
-Validators with optional positional arguments keep their own repository-governed defaults; the runner does not redundantly override them.
+Validators with optional positional arguments or optional flags keep their own repository-governed defaults; the runner does not redundantly override them.
+
+## Exact current argument map
+
+The current repository contains 34 `validate_*.py` scripts. Eleven applicable validators require the immutable Source Version 1 path as a positional argument:
+
+| Validator | Required positional input |
+|---|---|
+| `validate_beaten_distances.py` | `database` → Source Version 1 |
+| `validate_course_jurisdiction.py` | `database` → Source Version 1 |
+| `validate_field_governance.py` | `database` → Source Version 1 |
+| `validate_jurisdiction_context.py` | `database` → Source Version 1 |
+| `validate_off_time.py` | `database` → Source Version 1 |
+| `validate_race_identity.py` | `database` → Source Version 1 |
+| `validate_race_results.py` | `database` → Source Version 1 |
+| `validate_race_surface.py` | `database` → Source Version 1 |
+| `validate_source_fields.py` | `database` → Source Version 1 |
+| `validate_source_profile.py` | `database` → Source Version 1 |
+| `validate_starting_price.py` | `database` → Source Version 1 |
+
+The other 20 applicable validators currently have no required positional input. They use their own governed defaults or validate self-contained governed artefacts:
+
+```text
+validate_carried_weight.py
+validate_comment_information.py
+validate_connection_identity.py
+validate_course_locations.py
+validate_course_locations_source.py
+validate_horse_pedigree_identity.py
+validate_inside_rails_v2_implementation.py
+validate_inside_rails_v2.py
+validate_inside_rails_v3.py
+validate_manual_verifications.py
+validate_participant_identity.py
+validate_prize_money.py
+validate_race_classification.py
+validate_race_distance.py
+validate_race_times.py
+validate_ratings.py
+validate_runner_characteristics.py
+validate_runner_entries.py
+validate_runner_entries_source.py
+validate_runner_record_supplementations.py
+```
+
+This mapping is executable governance, not prose only: `tests/test_applicable_validator_gate.py` requires the runner to parse the live validator CLIs and fail if an ungoverned required positional argument appears.
 
 ## Explicit exclusions
 
-Only these validators are excluded from the current release-acceptance sweep:
+Only these three validators are excluded from the current release-acceptance sweep:
 
-```text
-validate_core_structure_prototype.py
-validate_raw_mirror_candidate.py
-validate_minimum_core_candidate.py
-```
+| Validator | Reason |
+|---|---|
+| `validate_core_structure_prototype.py` | Historical Database v1 construction-only validator requiring disposed prototype artefacts. |
+| `validate_raw_mirror_candidate.py` | Historical Database v1 construction-only validator requiring the disposed raw-mirror candidate. |
+| `validate_minimum_core_candidate.py` | Historical Database v1 construction-only validator requiring the disposed minimum-core candidate. |
 
-They are historical Database v1 construction-stage validators that require disposable prototype/candidate artefacts no longer present and are not dependencies of Database v2 or v3 acceptance. Their exclusion is already part of the Database v2 release record and remains explicit rather than being silently skipped.
+They are not dependencies of Database v2 or v3 acceptance. Their exclusion is already part of the Database v2 release record and remains explicit rather than being silently skipped.
 
-Every other current `validate_*.py` script is applicable. With the present inventory this means:
+Current governed arithmetic:
 
 ```text
 34 validator scripts
@@ -79,7 +124,7 @@ Every other current `validate_*.py` script is applicable. With the present inven
 
 ## Inspection mode
 
-To inspect the exact planned commands and exclusions without executing any validator:
+To inspect the exact commands and exclusions without executing any validator:
 
 ```bash
 python scripts/run_applicable_validators.py --list
@@ -89,7 +134,7 @@ Inspection mode is the preferred diagnostic when a validator CLI changes. The ru
 
 ## Acceptance use
 
-For a database release, the normal final technical sequence is:
+For Database v3, the final technical sequence is:
 
 ```bash
 pytest -q
