@@ -55,10 +55,20 @@ Before promotion, the project must pass:
 
 1. promotion-specific focused tests;
 2. the complete repository test suite;
-3. all applicable independent validators;
+3. all applicable independent validators through the canonical governed runner;
 4. a final standalone Database v3 validator run against the exact candidate and accepted Database v2 base.
 
-Historical Database v1 construction-only validators remain outside the acceptance dependency when they require disposable v1 construction artefacts that no longer exist.
+Canonical commands:
+
+```bash
+pytest -q
+python scripts/run_applicable_validators.py
+python scripts/validate_inside_rails_v3.py
+```
+
+The validator inventory, exact positional-argument mapping and three historical Database v1 construction-only exclusions are permanently governed by `docs/APPLICABLE_VALIDATOR_GATE.md` and `scripts/run_applicable_validators.py`. Do not replace this with an ad-hoc shell loop.
+
+Historical Database v1 construction-only validators remain outside the acceptance dependency because they require disposable v1 construction artefacts that no longer exist.
 
 ## Required promotion behaviour
 
