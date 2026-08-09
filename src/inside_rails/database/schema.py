@@ -1,4 +1,4 @@
-"""Creation and connection controls for minimum-core SQLite schema version 1."""
+"""Creation and connection controls for governed Inside Rails SQLite schemas."""
 
 from __future__ import annotations
 
@@ -8,11 +8,13 @@ from typing import Any
 
 APPLICATION_ID = 1_230_130_259
 SCHEMA_VERSION = 1
+GOVERNED_INTEGRATION_SCHEMA_VERSION = 2
 MINIMUM_SQLITE_VERSION = (3, 37, 0)
 _SCHEMA_RESOURCES = (
     "schema/v001_minimum_core.sql",
     "schema/v001_minimum_core_enforcement.sql",
 )
+_GOVERNED_INTEGRATION_RESOURCE = "schema/v002_governed_integration.sql"
 
 
 def require_supported_sqlite(version: tuple[int, int, int] | None = None) -> None:
@@ -61,12 +63,13 @@ def configure_governed_connection(
         raise RuntimeError("SQLite query_only mode is not active")
 
 
-def _schema_sql() -> str:
+def _resource_sql(resource: str) -> str:
     package = files("inside_rails.database")
-    return "\n".join(
-        package.joinpath(resource).read_text(encoding="utf-8")
-        for resource in _SCHEMA_RESOURCES
-    )
+    return package.joinpath(resource).read_text(encoding="utf-8")
+
+
+def _schema_sql() -> str:
+    return "\n".join(_resource_sql(resource) for resource in _SCHEMA_RESOURCES)
 
 
 def schema_inventory(connection: sqlite3.Connection) -> list[tuple[str, str, str]]:
@@ -83,7 +86,7 @@ def schema_inventory(connection: sqlite3.Connection) -> list[tuple[str, str, str
 
 
 def create_minimum_core_schema(connection: sqlite3.Connection) -> None:
-    """Create schema version 1 in an otherwise clean SQLite database."""
+    """Create accepted minimum-core schema version 1 in a clean database."""
 
     configure_governed_connection(connection)
     existing = connection.execute(
@@ -100,3 +103,68 @@ def create_minimum_core_schema(connection: sqlite3.Connection) -> None:
         raise RuntimeError("Unexpected SQLite user_version after schema creation")
     if _pragma_scalar(connection, "foreign_keys") != 1:
         raise RuntimeError("Schema creation disabled foreign-key enforcement")
+
+
+def upgrade_minimum_core_to_governed_integration_schema(
+    connection: sqlite3.Connection,
+) -> None:
+    """Upgrade a writable candidate copy of Database v1 to schema version 2.
+
+    The accepted Database v1 release must never be passed to this function. The
+    caller is responsible for copying the exact accepted release to a separate
+    candidate path and verifying that copy before opening it writable.
+    """
+
+    configure_governed_connection(connection)
+    if connection.in_transaction:
+        raise ValueError("Database v2 schema upgrade requires no active transaction")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise ValueError("Database v2 schema upgrade requires an Inside Rails database")
+    observed_version = int(_pragma_scalar(connection, "user_version"))
+    if observed_version != SCHEMA_VERSION:
+        raise ValueError(
+            "Database v2 schema upgrade requires schema version 1; "
+            f"found {observed_version}"
+        )
+
+    # The migration rebuilds the v1 import-manifest tables. SQLite requires
+    # foreign-key enforcement to be disabled before that transactional DDL; it
+    # is re-enabled and independently checked immediately after the migration.
+    connection.execute("PRAGMA foreign_keys = OFF")
+    if _pragma_scalar(connection, "foreign_keys") != 0:
+        raise RuntimeError("Unable to disable foreign keys for Database v2 migration")
+
+    try:
+        connection.executescript(_resource_sql(_GOVERNED_INTEGRATION_RESOURCE))
+    except Exception:
+        if connection.in_transaction:
+            connection.rollback()
+        raise
+    finally:
+        connection.execute("PRAGMA foreign_keys = ON")
+
+    if _pragma_scalar(connection, "foreign_keys") != 1:
+        raise RuntimeError("Database v2 migration did not restore foreign-key enforcement")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise RuntimeError("Unexpected SQLite application_id after Database v2 migration")
+    if _pragma_scalar(connection, "user_version") != GOVERNED_INTEGRATION_SCHEMA_VERSION:
+        raise RuntimeError("Unexpected SQLite user_version after Database v2 migration")
+
+    foreign_key_rows = connection.execute("PRAGMA foreign_key_check").fetchall()
+    if foreign_key_rows:
+        raise RuntimeError(
+            "Database v2 migration produced foreign-key violations: "
+            f"{foreign_key_rows[:5]}"
+        )
+
+
+def create_governed_integration_schema(connection: sqlite3.Connection) -> None:
+    """Create the complete Database v2 physical schema in a clean database.
+
+    This helper exists primarily for focused schema tests. Production Database
+    v2 construction is expected to upgrade a verified candidate copy of the
+    accepted Database v1 release so its immutable source/core rows remain exact.
+    """
+
+    create_minimum_core_schema(connection)
+    upgrade_minimum_core_to_governed_integration_schema(connection)
