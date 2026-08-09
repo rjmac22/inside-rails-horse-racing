@@ -2,7 +2,15 @@
 
 ## Status
 
-**Canonical repair specification for the successor to accepted Database v2.**
+**Implemented, validated, accepted and promoted on 9 August 2026.**
+
+Canonical accepted Database v3 release:
+
+`data/processed/database/releases/inside_rails_v3.sqlite3`
+
+Accepted Database v3 SHA-256:
+
+`aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
 
 Database v2 remains immutable at:
 
@@ -60,15 +68,15 @@ The generated `docs/MANUAL_VERIFICATION_CANDIDATES.md` is a discovery queue only
 
 ## Missing pre-Notebook-14 verification evidence
 
-The new governed reference:
+The governed reference:
 
 `data/reference/external_verification_reconciliation.csv`
 
 contains only the reusable external checks missing from the existing 85-row manual-verification register. It does not duplicate existing Notebook 12 or Notebook 14–20 rows.
 
-Expected new rows: **19**.
+New rows: **19**.
 
-Expected Database v3 manual-verification population after insertion: **104** rows.
+Accepted Database v3 manual-verification population: **104** rows.
 
 ## Typed analytical resolutions
 
@@ -78,13 +86,25 @@ Canonical typed input:
 
 `data/reference/external_value_resolutions.csv`
 
-The physical Database v3 table stores one typed resolution per affected field/fact and links it back to the relevant manual-verification row. Resolution kinds are:
+Accepted typed resolution population: **37** rows.
+
+Physical Database v3 table:
+
+`governance_external_value_resolution`
+
+The table stores one typed resolution per affected field/fact and links it back to the relevant manual-verification row. Resolution kinds are:
 
 - `correction` — external evidence supplies a replacement analytical value;
 - `enrichment` — external evidence supplies a distinct useful fact that must not overwrite the raw source concept;
 - `invalidation` — external evidence proves the raw analytical value wrong, but no defensible numeric replacement is available.
 
-Study-facing reconciled views must prefer typed corrections where present, retain raw/v2 values alongside them, and expose resolution/provenance status.
+Study-facing reconciled views prefer typed corrections where present, retain raw/v2 values alongside them, and expose resolution/provenance status.
+
+Accepted reconciled study interfaces:
+
+- `view_reconciled_race_occurrences`;
+- `view_reconciled_source_runner_participations`;
+- `view_reconciled_runner_records`.
 
 ## Exact required analytical outcomes
 
@@ -99,7 +119,7 @@ Almendares (GB), Del Mar, 20 July 2025, 1:03, source rowid 1708860:
 - governed favourite status: `favourite`;
 - value status: externally corrected.
 
-The parser itself must continue to refuse to infer a numeric price from a bare `F`.
+The parser itself continues to refuse to infer a numeric price from a bare `F`.
 
 ### Finishing position
 
@@ -114,7 +134,7 @@ Cinnamon Carter (AUS), Morphettville, 16 May 2015, 4:38, source rowid 55516:
 - Sha Tin (HK), 25 January 2015, 8:35: official `1600m`, raw source `1m`;
 - Kyoto (JPN), 4 January 2015, 6:45: official `1600m`, raw source `1m`.
 
-Do not replace the literal source parse. Expose both concepts.
+The literal source parse remains preserved. Both concepts are exposed.
 
 ### Governed runner count
 
@@ -163,27 +183,70 @@ For the 2019 Prix de l'Arc de Triomphe, preserve the notebook's externally check
 - 4th €285,500;
 - 5th €143,000.
 
-These local-currency schedules must not overwrite the raw/source-presented prize values.
+These local-currency schedules do not overwrite the raw/source-presented prize values.
 
-## Release architecture
+## Release architecture implemented
 
-Database v3 must:
+Database v3:
 
-1. verify the exact accepted Database v2 SHA-256;
-2. copy Database v2 to a new disposable candidate;
-3. migrate only the copy to SQLite `user_version = 3`;
-4. retain all v2 source/core/governed data;
-5. add the missing manual-verification evidence;
-6. add typed external-value resolutions;
-7. expose reconciled study-facing views;
-8. create a new governance release which supersedes Database v2 only inside the v3 copy;
-9. create a fresh v3 import manifest referencing Database v2 as the prior accepted release;
-10. validate that raw/source/core rows remain unchanged from Database v2;
-11. pass focused tests, the complete repository test suite and all applicable independent validators before promotion;
-12. promote by copying/accepting the validated candidate, never by modifying Database v2.
+1. verified the exact accepted Database v2 SHA-256;
+2. copied Database v2 to a new disposable candidate;
+3. migrated only the copy to SQLite `user_version = 3`;
+4. retained all v2 source/core/governed data;
+5. added the missing manual-verification evidence;
+6. added typed external-value resolutions;
+7. exposed reconciled study-facing views;
+8. created governance release 3, superseding release 2 inside the v3 copy;
+9. created a fresh v3 import manifest referencing Database v2 as the prior accepted release;
+10. validated that raw/source/core rows remained unchanged from Database v2;
+11. passed the final complete repository suite and all applicable independent validators;
+12. promoted a separate accepted release without modifying Database v2.
+
+## Acceptance evidence
+
+Final repository suite at the promotion implementation head:
+
+`412 passed in 18.64s`
+
+Applicable independent-validator gate:
+
+`31 validators passed`
+
+Promotion repository commit:
+
+`0b535cb5bfdcb22b7693e8a26a82acfcb025529d`
+
+Accepted release:
+
+`data/processed/database/releases/inside_rails_v3.sqlite3`
+
+Accepted release SHA-256:
+
+`aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
+
+Accepted release size:
+
+`3,137,081,344 bytes`
+
+Promotion confirmed:
+
+- `release_accepted = true`;
+- `candidate_hash_unchanged = true`;
+- `prior_release_preserved = true`;
+- `quick_check = ok`;
+- foreign-key-check rows `0`;
+- validation-result rows `7`.
+
+Full release evidence is recorded in `docs/DATABASE_V3_RELEASE_ACCEPTANCE_AND_PROMOTION.md`.
 
 ## Closure condition
 
-Database v3 work is closed only when the accepted v3 release exists, its release/hash is documented, Database v2 is unchanged, study-facing documentation points to v3, and the repository state is remote-verified.
+The Database v3 repair boundary is complete:
 
-Study 01 remains paused until that boundary is reached.
+- the accepted v3 release exists;
+- its exact release path, hash and size are documented;
+- Database v2 remains immutable and preserved;
+- study-facing documentation points to Database v3 and the reconciled views;
+- the permanent applicable-validator procedure is documented and executable.
+
+Study 01 is no longer blocked by this Database v3 reconciliation repair and may resume against the accepted Database v3 release.
