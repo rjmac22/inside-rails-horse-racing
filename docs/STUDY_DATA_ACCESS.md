@@ -280,6 +280,46 @@ Examples and exact reconciliation cases are documented in `docs/STUDY_DATABASE_R
 
 ---
 
+## Verified post-release overlay rule
+
+An accepted database release remains immutable, but a later verified correction or enrichment must not be ignored merely because the next database release has not yet been built.
+
+Standing rule:
+
+> Once an external fact has been verified strongly enough for governed reuse and entered into the pending post-release reconciliation registers, reader-facing studies must use that verified value immediately through the explicit read-only study overlay whenever the affected field is material to the analysis.
+
+Current pending evidence register:
+
+`data/reference/post_v3_external_verification_candidates.csv`
+
+Current typed analytical register:
+
+`data/reference/post_v3_external_value_resolutions.csv`
+
+Reusable query helper:
+
+```python
+from inside_rails.study_overlay import build_race_overlay_query
+```
+
+The overlay must:
+
+- leave the accepted Database v3 file unchanged;
+- leave raw and Database v3 values visible for lineage;
+- join race-level resolutions using the authorised exact source identity `raw_date + raw_course + raw_off`;
+- expose a separate study-facing corrected/enriched value;
+- expose whether that value came from Database v3 or the post-v3 overlay;
+- retain the verification identifier that supports each overlaid value;
+- fail closed on duplicate or unsupported pending resolutions;
+- use raw `off` only as an internal source-identity key where required, not as the default human-facing race-time display;
+- stop applying a pending overlay once a later accepted database release natively contains the same governed resolution.
+
+Do not knowingly continue analysing a value already established as wrong simply to preserve the convenience of using an older immutable release unchanged. Immutability protects historical releases; it does not require current studies to ignore newer verified evidence.
+
+Evidence-only confirmations do not create replacement values. Unresolved or weak external observations must not be promoted into the overlay merely because they are present in a research notebook.
+
+---
+
 ## External data-source discovery rule
 
 Database v3 is the normal starting point, not an artificial ceiling on what a study is allowed to learn.
@@ -316,6 +356,7 @@ Before writing the first analytical cell of any study, confirm:
 9. the chosen race/runner population is stated;
 10. the relevant fields and identities are governed sufficiently for the proposed use;
 11. unresolved values, invalidations and external supplementations that affect the question are understood;
-12. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+12. the pending post-release resolution register has been checked and any material verified overlay is being applied;
+13. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
 Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the project documents.
