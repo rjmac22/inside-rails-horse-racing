@@ -78,9 +78,7 @@ BEGIN
 END;
 
 -- Notebook 20 decisions are intentionally limited to the three connection
--- fields reviewed in that notebook. Reject any other physical source field
--- before the broader evidence-compatibility trigger so failures identify the
--- actual governed boundary rather than reporting a generic mismatch.
+-- fields reviewed in that notebook. Reject any other physical source field.
 CREATE TRIGGER trg_connection_decision_field_insert
 BEFORE INSERT ON governance_connection_value_decision
 WHEN NOT EXISTS (
@@ -107,11 +105,18 @@ END;
 
 -- A Notebook 20 operational decision must point to the same permanent
 -- verification subject: exact source record, exact physical source field and an
--- action compatible with the operational status. This prevents a valid evidence
--- row being accidentally attached to the wrong blank field.
+-- action compatible with the operational status. The first EXISTS restricts
+-- this trigger to valid connection fields so the dedicated field-boundary
+-- trigger remains the deterministic failure for any out-of-scope field.
 CREATE TRIGGER trg_connection_decision_verification_compatible_insert
 BEFORE INSERT ON governance_connection_value_decision
-WHEN NOT EXISTS (
+WHEN EXISTS (
+    SELECT 1
+    FROM source_relation_field AS field
+    WHERE field.source_relation_field_id = NEW.source_relation_field_id
+      AND field.field_name IN ('jockey', 'trainer', 'owner')
+)
+AND NOT EXISTS (
     SELECT 1
     FROM governance_manual_verification AS verification
     JOIN source_raceform_v1_record AS source
