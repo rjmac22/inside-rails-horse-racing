@@ -575,6 +575,14 @@ They may reveal:
 - historical practices;
 - analytical assumptions that do not hold universally.
 
+Material unexpected results must also trigger an external verification check where a suitable authoritative or independent source is reasonably available. Do this before treating the observation as a genuine sporting phenomenon, using it to support a substantive explanation, or building further analysis on an unverified interpretation.
+
+Prefer the most authoritative source appropriate to the fact being checked, such as an official governing body, official result, racecourse, regulator or other primary record. The purpose is not to replace the database analysis with external research, but to distinguish real-world exceptions from source errors, missing data, processing artefacts or misunderstood semantics.
+
+If no suitable external evidence is reasonably available, record that fact and keep the unexpected result provisional or unresolved rather than silently treating it as true.
+
+Preserve the provenance of material external checks under the project's external-claim and manual-verification rules.
+
 Removal requires a defensible reason, not merely inconvenience.
 
 ---
