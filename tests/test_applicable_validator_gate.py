@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -9,9 +10,11 @@ RUNNER_PATH = ROOT / "scripts" / "run_applicable_validators.py"
 
 
 def _load_runner():
-    spec = importlib.util.spec_from_file_location("run_applicable_validators", RUNNER_PATH)
+    module_name = "run_applicable_validators"
+    spec = importlib.util.spec_from_file_location(module_name, RUNNER_PATH)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
 
