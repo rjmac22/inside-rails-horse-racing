@@ -1,54 +1,64 @@
 # Manual verification retrospective backfill
 
-## Purpose
+## Status
 
-This register records the completed retrospective review of Notebooks 00–14 for reusable manual and external verification evidence.
+**Superseded retrospective record.**
 
-A notebook is marked reviewed only when its committed notebook cells, reports, closeout records and governed reference files have been checked and every reusable verification has either:
+The original Notebooks 00–14 backfill incorrectly classified several externally checked notebook facts as non-reusable. The correction audit is governed by:
 
-- been added to `data/reference/manual_verifications.csv`;
-- been confirmed as already preserved with equivalent provenance in a more specific governed reference table; or
-- been classified as source-internal analysis that does not require an external-verification row.
+`docs/DATABASE_V3_EXTERNAL_VERIFICATION_RECONCILIATION.md`
 
-## Completed review
+and the missing durable evidence is recorded in:
 
-| Notebook | Investigation | Review result |
-|---:|---|---|
-| 00 | Project scope and methodology | Reviewed; methodology only, with no source-value manual verification. |
-| 01 | Source database structure profile | Reviewed; conclusions derive from the immutable SQLite structure and source contents, not external manual checks. |
-| 02 | Source field quality profile | Reviewed; profiling and anomaly findings are source-internal. |
-| 03 | Race identity and source-key reconstruction | Reviewed; candidate-key and duplicate screens are source-internal and no reusable external identity correction was recorded. |
-| 04 | Course jurisdiction and surface mapping | Reviewed; source-label interpretation is preserved in governed project logic/reference artifacts. No separate bounded external claim requiring a manual-verification row was recoverable. |
-| 05 | Finishing positions and non-finish outcomes | Reviewed; outcome-code findings and exception screens are source-internal. |
-| 06 | Race distance parsing | Reviewed; parsing rules and observed representations are source-internal. No separately recorded external distance correction was found. |
-| 07 | Carried weight parsing | Reviewed; parsing, range and collision findings are source-internal. No manual source-value correction was found. |
-| 08 | Starting-price parsing | Reviewed; the standalone `F` anomaly is an immutable source anomaly, not an externally verified correction. It remains governed by the starting-price validator. |
-| 09 | Jurisdiction, authority and betting-market context | Reviewed; reusable classifications are preserved in their governed project artifacts. No additional bounded manual source-value verification was recorded. |
-| 10 | Remaining source-field inventory and triage | Reviewed; field grouping and treatment decisions are governance analysis rather than external source-value verification. |
-| 11 | Off-time and temporal semantics | Reviewed; clock parsing is source-internal and timezone enrichment is governed through the course-location reference. |
-| 12 | Course location and timezone mapping | Reviewed; two manually selected Nominatim venue matches were added to the general register. Automatically validated or jurisdiction-default assignments remain in `course_locations.csv` and are not duplicated as manual rows. |
-| 13 | Prize-money semantics and availability | Reviewed; currency and availability conclusions derive from source representations and jurisdiction rules. No race-level external prize correction was recorded. |
-| 14 | Runner counts, numbers and entries | Reviewed; the five published-result checks are governed rows. Shared-number and coupled-entry analysis remained source-internal and did not justify additional external claims. |
+`data/reference/external_verification_reconciliation.csv`
 
-## Governed retrospective evidence
+Do not use the earlier seven-row retrospective result as proof that all pre-Notebook-14 external evidence was captured.
 
-The general register now contains seven rows:
+## What was wrong
 
-- Notebook 12: two manually validated course-location assignments, La Plata and Palermo;
-- Notebook 14: five published-result checks for Nantes, Ohi, Morioka, Funabashi and Ohi.
+The original review correctly preserved two Notebook 12 course-location assignments and five Notebook 14 published-result checks, but it missed reusable external evidence in Notebooks 05, 06, 08, 11 and 13.
 
-Notebook 14 includes two `source_correction_candidate` rows where the published field contradicted source `ran`. The remaining Notebook 14 rows preserve evidence of partial runner coverage without changing raw values.
+Most importantly, it incorrectly stated that Notebook 08's standalone `F` was not an externally verified correction. The committed Notebook 08 record says the opposite: Almendares (GB), source rowid 1708860, was externally verified as **5/2 favourite** in the 2025 Wickerr Stakes. The raw `F` remains immutable evidence, but the verified numeric price must be separately governed and analytically usable.
 
-## Specialist governed evidence
+## Corrected notebook dispositions
 
-`data/reference/course_locations.csv` remains the authoritative reusable course-location and timezone reference. It preserves course labels, physical venue information, coordinates, timezone, evidence notes and validation status. The general manual register supplements it only for the two rows explicitly marked as manually validated.
+| Notebook | Corrected retrospective disposition |
+|---:|---|
+| 00 | Methodology only; no source-value external correction identified. |
+| 01 | Source-structure analysis; no source-value external correction identified. |
+| 02 | Source profiling; no source-value external correction identified. |
+| 03 | Source-key analysis; no source-value external correction identified. |
+| 04 | Eight NH Flat/type conflicts were deferred for later external validation; no completed exact correction recovered by the v3 audit. |
+| 05 | **Missed:** Cinnamon Carter (AUS), Morphettville 2015-05-16 4:38, source rowid 55516, raw `pos=10`, externally verified dead heat for 12th. |
+| 06 | **Missed:** Sha Tin 2015-01-25 8:35 and Kyoto 2015-01-04 6:45 were externally verified as official 1600m races despite raw `dist='1m'`. This is official-distance enrichment, not a rewrite of the source-literal parse. |
+| 07 | No reusable external source-value verification recovered. |
+| 08 | **Missed:** Ptit Zig and Really Unique external confirmations; Lady Sabelia partial/ambiguous corroboration; and the exact Almendares `F` -> **5/2 favourite** correction. |
+| 09 | Authority/context evidence is already preserved in the specialist jurisdiction-context reference. |
+| 10 | Field-treatment governance only. |
+| 11 | **Missed:** ten externally checked advertised-time records; three also contain distinct actual-off-time evidence. The advertised-time values already agree with the canonical temporal reconstruction, but the external evidence itself must be durable. |
+| 12 | Two manually selected course-location assignments were correctly captured; the broader specialist reference remains authoritative. |
+| 13 | **Missed:** controlled external prize-schedule checks for the 2018 Pegasus World Cup and 2019 Prix de l'Arc de Triomphe. Preserve as local-currency enrichment; do not overwrite source-presented prize. |
+| 14 | Five published-result checks were correctly captured, but later v3 reconciliation additionally promotes exact contradicted runner counts where external evidence supplies the replacement value. |
 
-Other governed parser anomalies, reference mappings and source-wide findings remain in their specialist modules, tests, validators and integration documents rather than being duplicated in the manual register.
+## Corrected evidence population
 
-## Discovery tooling
+The pre-Notebook-14 correction audit adds **19** missing external-verification rows through `data/reference/external_verification_reconciliation.csv`.
 
-`scripts/extract_manual_verification_candidates.py` scans committed notebooks for candidate cells containing URLs or manual/external-verification language and writes `docs/MANUAL_VERIFICATION_CANDIDATES.md` when run locally. Its output is a review queue only; it must never create governed rows automatically.
+The existing `data/reference/manual_verifications.csv` remains the accepted 85-row Notebook 12/14–20 evidence register used by Database v2. Database v3 loads the 19 reconciliation rows in addition to those 85 rows, for an expected total of **104** manual-verification rows.
+
+Typed analytical corrections/enrichments are separately declared in:
+
+`data/reference/external_value_resolutions.csv`
+
+This separation prevents free-text evidence from having to double as machine-readable analytical values.
 
 ## Ongoing rule
 
-For every future notebook, manual or external evidence must be recorded while the source is open. Retrospective reconstruction from memory is prohibited.
+For future investigations, external evidence must be recorded while it is being used, with enough provenance to determine whether it is:
+
+- confirmation/evidence only;
+- a distinct enrichment;
+- an exact correction; or
+- proof that a raw value is wrong while the replacement remains unresolved.
+
+Raw source values are never overwritten. Exact externally established facts must nevertheless be made usable through the governed analytical layer.
