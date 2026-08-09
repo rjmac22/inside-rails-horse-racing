@@ -182,6 +182,10 @@ def test_v2_upgrade_requires_version_1_and_removes_v1_manifest_rows() -> None:
         )
         assert connection.execute("SELECT COUNT(*) FROM import_manifest").fetchone()[0] == 0
 
+        # The production upgrader deliberately requires a clean transaction
+        # boundary so it can disable foreign-key enforcement before rebuilding
+        # the v1 manifest tables. Commit fixture seeding before exercising it.
+        connection.commit()
         upgrade_minimum_core_to_governed_integration_schema(connection)
         assert connection.execute("SELECT COUNT(*) FROM import_manifest").fetchone()[0] == 0
         assert connection.execute("SELECT COUNT(*) FROM import_validation_result").fetchone()[0] == 0
