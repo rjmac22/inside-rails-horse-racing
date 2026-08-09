@@ -1203,6 +1203,32 @@ A notebook should be understandable as a research record even months later, with
 
 ---
 
+## 71. Default to the governed course-local race time
+
+When a study displays, orders or refers to a race by time, use the governed **course-local advertised/scheduled time** by default.
+
+For Database v3 race-level work, the normal field is:
+
+`advertised_start_course_local`
+
+Present it to a human as an ordinary local clock time such as `15:05` unless the date, offset or full timestamp is materially relevant to the question.
+
+Do not use raw source `off`, UK-facing time or UTC merely because those fields are convenient or already present in a dataframe.
+
+Use another representation only when the research question specifically requires it, for example:
+
+- investigating source `off` semantics or encoding;
+- comparing UK-facing and course-local scheduling;
+- timezone or daylight-saving analysis;
+- UTC reconciliation;
+- source-lineage or debugging work.
+
+Raw `off` remains preserved source evidence and must not be mistaken for the preferred study-facing race-time display.
+
+Externally reported actual-off observations are a separate concept and must not be substituted for advertised/scheduled time unless the study explicitly asks about actual off times.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
