@@ -9,6 +9,7 @@ from typing import Any
 APPLICATION_ID = 1_230_130_259
 SCHEMA_VERSION = 1
 GOVERNED_INTEGRATION_SCHEMA_VERSION = 2
+EXTERNAL_RECONCILIATION_SCHEMA_VERSION = 3
 MINIMUM_SQLITE_VERSION = (3, 37, 0)
 _SCHEMA_RESOURCES = (
     "schema/v001_minimum_core.sql",
@@ -22,6 +23,10 @@ _GOVERNED_INTEGRATION_RESOURCES = (
     "schema/v002_governed_integration_enforcement_corrections.sql",
     "schema/v002_governed_integration_views.sql",
     "schema/v002_governed_integration_view_corrections.sql",
+)
+_EXTERNAL_RECONCILIATION_RESOURCES = (
+    "schema/v003_external_verification_reconciliation.sql",
+    "schema/v003_external_verification_views.sql",
 )
 
 
@@ -116,12 +121,7 @@ def create_minimum_core_schema(connection: sqlite3.Connection) -> None:
 def upgrade_minimum_core_to_governed_integration_schema(
     connection: sqlite3.Connection,
 ) -> None:
-    """Upgrade a writable candidate copy of Database v1 to schema version 2.
-
-    The accepted Database v1 release must never be passed to this function. The
-    caller is responsible for copying the exact accepted release to a separate
-    candidate path and verifying that copy before opening it writable.
-    """
+    """Upgrade a writable candidate copy of Database v1 to schema version 2."""
 
     configure_governed_connection(connection)
     if connection.in_transaction:
@@ -135,11 +135,6 @@ def upgrade_minimum_core_to_governed_integration_schema(
             f"found {observed_version}"
         )
 
-    # The migration rebuilds the v1 import-manifest tables. SQLite requires
-    # foreign-key enforcement to be disabled before that transactional DDL; it
-    # is re-enabled and independently checked immediately after all v2 schema
-    # resources, including cross-table enforcement and transparent study-facing
-    # views, are applied.
     connection.execute("PRAGMA foreign_keys = OFF")
     if _pragma_scalar(connection, "foreign_keys") != 0:
         raise RuntimeError("Unable to disable foreign keys for Database v2 migration")
@@ -169,13 +164,66 @@ def upgrade_minimum_core_to_governed_integration_schema(
         )
 
 
-def create_governed_integration_schema(connection: sqlite3.Connection) -> None:
-    """Create the complete Database v2 physical schema in a clean database.
+def upgrade_governed_integration_to_external_reconciliation_schema(
+    connection: sqlite3.Connection,
+) -> None:
+    """Upgrade a writable copy of accepted Database v2 to schema version 3.
 
-    This helper exists primarily for focused schema tests. Production Database
-    v2 construction is expected to upgrade a verified candidate copy of the
-    accepted Database v1 release so its immutable source/core rows remain exact.
+    Only a disposable candidate copy may be passed here. The migration rebuilds
+    the import-manifest tables for v3, adds the typed reconciliation layer and
+    creates new study-facing reconciled views. Existing v2 source/core/governed
+    rows are not rewritten by the schema migration.
     """
+
+    configure_governed_connection(connection)
+    if connection.in_transaction:
+        raise ValueError("Database v3 schema upgrade requires no active transaction")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise ValueError("Database v3 schema upgrade requires an Inside Rails database")
+    observed_version = int(_pragma_scalar(connection, "user_version"))
+    if observed_version != GOVERNED_INTEGRATION_SCHEMA_VERSION:
+        raise ValueError(
+            "Database v3 schema upgrade requires schema version 2; "
+            f"found {observed_version}"
+        )
+
+    connection.execute("PRAGMA foreign_keys = OFF")
+    if _pragma_scalar(connection, "foreign_keys") != 0:
+        raise RuntimeError("Unable to disable foreign keys for Database v3 migration")
+    try:
+        for resource in _EXTERNAL_RECONCILIATION_RESOURCES:
+            connection.executescript(_resource_sql(resource))
+    except Exception:
+        if connection.in_transaction:
+            connection.rollback()
+        raise
+    finally:
+        connection.execute("PRAGMA foreign_keys = ON")
+
+    if _pragma_scalar(connection, "foreign_keys") != 1:
+        raise RuntimeError("Database v3 migration did not restore foreign-key enforcement")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise RuntimeError("Unexpected SQLite application_id after Database v3 migration")
+    if _pragma_scalar(connection, "user_version") != EXTERNAL_RECONCILIATION_SCHEMA_VERSION:
+        raise RuntimeError("Unexpected SQLite user_version after Database v3 migration")
+
+    foreign_key_rows = connection.execute("PRAGMA foreign_key_check").fetchall()
+    if foreign_key_rows:
+        raise RuntimeError(
+            "Database v3 migration produced foreign-key violations: "
+            f"{foreign_key_rows[:5]}"
+        )
+
+
+def create_governed_integration_schema(connection: sqlite3.Connection) -> None:
+    """Create the complete Database v2 physical schema in a clean database."""
 
     create_minimum_core_schema(connection)
     upgrade_minimum_core_to_governed_integration_schema(connection)
+
+
+def create_external_reconciliation_schema(connection: sqlite3.Connection) -> None:
+    """Create the complete Database v3 schema in a clean database for tests."""
+
+    create_governed_integration_schema(connection)
+    upgrade_governed_integration_to_external_reconciliation_schema(connection)
