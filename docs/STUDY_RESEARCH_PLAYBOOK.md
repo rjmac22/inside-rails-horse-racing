@@ -1170,6 +1170,31 @@ This keeps the analytical reasoning visible and helps ensure that later question
 
 ---
 
+## 70. Annotate exploratory notebooks as a durable research record
+
+Exploratory data analysis still drives the study and may eventually drive the published story. The notebook must therefore preserve enough context that a later reader can reopen it and understand what the researchers were talking about, what they were doing, and why the study changed direction.
+
+For each substantive analytical stage, use Markdown to record the research reasoning around the code and output. Where applicable, make the following explicit:
+
+- **Question** — what is being established at this point;
+- **Why this matters** — why the question is necessary for the wider study;
+- **Evidence / method** — the source, database view, population, definitions, exclusions or calculation being used;
+- **What we found** — a plain-English account of the material result, with important counts or denominators visible;
+- **Interpretation** — what the evidence reasonably supports;
+- **What this does not establish** — claims that remain unsupported or questions still unresolved;
+- **Data or definition issues** — anomalies, ambiguity, missingness, provenance questions or possible governance problems;
+- **Next question** — why the observed evidence motivates the next analytical step.
+
+These headings are a working pattern, not a requirement to repeat every heading mechanically when one or more would add no value. The requirement is that the reasoning trail remains explicit and recoverable.
+
+Preserve material dead ends, surprises and changes of direction. Do not clean the notebook so aggressively that later readers cannot tell how the evidence actually led to the eventual conclusion or publication story.
+
+Use Markdown for **research reasoning** and code comments for **implementation reasoning**. Markdown should explain what is being asked, learned and inferred; code comments should explain how the analytical step is implemented, why a safeguard exists, and what could fail.
+
+A notebook should be understandable as a research record even months later, without relying on memory or on the eventual article to reconstruct its purpose.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
