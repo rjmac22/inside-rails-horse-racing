@@ -17,6 +17,7 @@ _SCHEMA_RESOURCES = (
 _GOVERNED_INTEGRATION_RESOURCES = (
     "schema/v002_governed_integration.sql",
     "schema/v002_governed_integration_corrections.sql",
+    "schema/v002_governed_integration_participant_confidence_corrections.sql",
     "schema/v002_governed_integration_enforcement.sql",
     "schema/v002_governed_integration_enforcement_corrections.sql",
     "schema/v002_governed_integration_views.sql",
