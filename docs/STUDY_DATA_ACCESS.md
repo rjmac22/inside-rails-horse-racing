@@ -27,9 +27,14 @@ Primary local repository root:
 
 `~/Documents/inside-rails-horse-racing`
 
-Study notebooks live under:
+### Notebook location rule
 
-`studies/`
+Notebook location is determined by the purpose of the work:
+
+- database construction, source-field semantics, field governance, parsing, identity, reference-data and other database-correctness investigations belong under `notebooks/`;
+- reader-facing analytical studies that consume already-governed data belong under `studies/`.
+
+If a reader-facing study exposes an unresolved field-semantics or database-governance question, pause that line of study work and investigate it in the database notebook series under `notebooks/`. Do not create database-governance notebooks under `studies/` merely because the issue was discovered during a study.
 
 ### Canonical local Jupyter startup
 
