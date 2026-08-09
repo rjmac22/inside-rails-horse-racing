@@ -1,6 +1,6 @@
 """Read-only overlays for verified facts awaiting the next database release.
 
-Accepted Inside Rails database releases are immutable.  When later external
+Accepted Inside Rails database releases are immutable. When later external
 verification establishes an exact correction or enrichment, studies should not
 knowingly continue to use the superseded value while waiting for a new release.
 
@@ -27,6 +27,11 @@ SUPPORTED_RACE_FIELDS = {
     "advertised_start_course_local",
     "actual_off_course_local",
 }
+EXPECTED_FIELD_ACTIONS = {
+    "type": ("correction", "replace"),
+    "advertised_start_course_local": ("correction", "replace"),
+    "actual_off_course_local": ("enrichment", "enrich"),
+}
 
 _REQUIRED_COLUMNS = {
     "resolution_id",
@@ -47,9 +52,9 @@ def load_pending_race_resolutions(
 ) -> list[dict[str, str]]:
     """Load and validate typed post-release race resolutions.
 
-    The register is deliberately narrow.  Unsupported scopes or fields fail
-    closed so a study cannot silently treat an ungoverned verification as an
-    analytical correction.
+    The register is deliberately narrow. Unsupported scopes, fields or
+    correction/enrichment actions fail closed so a study cannot silently treat
+    an ungoverned verification as an analytical replacement.
     """
 
     resolution_path = Path(path).expanduser().resolve()
@@ -69,8 +74,20 @@ def load_pending_race_resolutions(
             )
         rows = [dict(row) for row in reader]
 
+    seen_resolution_ids: set[str] = set()
     seen_field_keys: set[tuple[str, str, str, str]] = set()
+
     for row in rows:
+        resolution_id = row["resolution_id"]
+        verification_id = row["verification_id"]
+        if not resolution_id or not verification_id:
+            raise ValueError(
+                "Every pending resolution requires resolution_id and verification_id"
+            )
+        if resolution_id in seen_resolution_ids:
+            raise ValueError(f"Duplicate pending resolution_id: {resolution_id}")
+        seen_resolution_ids.add(resolution_id)
+
         if row["scope"] != "race":
             raise ValueError(
                 f"Unsupported post-release resolution scope: {row['scope']!r}"
@@ -82,6 +99,17 @@ def load_pending_race_resolutions(
                 f"Unsupported post-release race field: {source_field!r}"
             )
 
+        expected_kind, expected_action = EXPECTED_FIELD_ACTIONS[source_field]
+        if (
+            row["resolution_kind"] != expected_kind
+            or row["analytical_action"] != expected_action
+        ):
+            raise ValueError(
+                "Unsupported resolution treatment for "
+                f"{source_field!r}: resolution_kind={row['resolution_kind']!r}, "
+                f"analytical_action={row['analytical_action']!r}"
+            )
+
         if not all(row[column] for column in RACE_IDENTITY_COLUMNS):
             raise ValueError(
                 "Every pending race resolution requires exact source "
@@ -90,7 +118,7 @@ def load_pending_race_resolutions(
 
         if not row["governed_text_value"]:
             raise ValueError(
-                f"Resolution {row['resolution_id']} has no governed text value"
+                f"Resolution {resolution_id} has no governed text value"
             )
 
         field_key = (
@@ -117,7 +145,7 @@ def _cte_values(
     materialised = list(rows)
     if not materialised:
         # Keep the generated query valid when a supported overlay category has
-        # no current rows.  The SELECT returns the same five text columns but
+        # no current rows. The SELECT returns the same five text columns but
         # deliberately produces zero records.
         return (
             "SELECT NULL, NULL, NULL, NULL, NULL WHERE 0",
@@ -154,11 +182,11 @@ def build_race_overlay_query(
     - ``advertised_start_course_local``.
 
     ``raw_off`` is used only as part of the authorised Source Version 1 race
-    identity for the join.  The helper does not make it the preferred display
-    time.  Studies should normally display the governed course-local time.
+    identity for the join. The helper does not make it the preferred display
+    time. Studies should normally display the governed course-local time.
 
     The returned SELECT preserves every base column and adds study-facing
-    overlay values plus explicit provenance.  No write, temporary table or
+    overlay values plus explicit provenance. No write, temporary table or
     database mutation is performed.
     """
 
