@@ -219,7 +219,7 @@ SELECT
     governed.headgear_use_suffix,
     governed.headgear_source_declared_first_time,
     governed.headgear_interpretation_status,
-    source.or AS raw_or,
+    source."or" AS raw_or,
     governed.or_governed,
     governed.or_status,
     source.rpr AS raw_rpr,
