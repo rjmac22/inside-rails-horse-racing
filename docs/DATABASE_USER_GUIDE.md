@@ -1,13 +1,15 @@
 # Inside Rails Horse-Racing Database
 
-## Practical User Guide — Database v2
+## Practical User Guide — Database v3
 
 **Guide date:** 9 August 2026  
-**Accepted database:** `data/processed/database/releases/inside_rails_v2.sqlite3`
+**Accepted database:** `data/processed/database/releases/inside_rails_v3.sqlite3`
 
 ## 1. Accepted database
 
-Database v2 is the current accepted Inside Rails SQLite research database.
+Database v3 is the current accepted Inside Rails SQLite research database.
+
+It preserves the complete Database v2 source/core/governed model and adds the bounded external-verification reconciliation required after the retrospective notebook-evidence audit.
 
 It contains:
 
@@ -17,33 +19,43 @@ It contains:
 - the governed semantic work from Notebooks 04–22;
 - governed references, evidence, bounded corrections and supplementations;
 - provisional horse/pedigree and participant identity structures;
-- transparent study-facing views.
+- `104` manual-verification rows;
+- `37` typed external-value resolutions;
+- reconciled study-facing race and runner views.
 
 Treat the accepted release as immutable and read-only.
 
 ```text
-path: data/processed/database/releases/inside_rails_v2.sqlite3
-file size: 3,137,044,480 bytes
-SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
+path: data/processed/database/releases/inside_rails_v3.sqlite3
+file size: 3,137,081,344 bytes
+SHA-256: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
 manifest status: release_accepted
 validation-result rows: 7
 physical source records retained: 1,851,286
 source-backed runner records: 1,851,285
 structural race occurrences: 189,043
+reconciled combined runner records: 1,851,288
 SQLite application_id: 1230130259
-SQLite user_version: 2
+SQLite user_version: 3
 quick_check: ok
 foreign-key check rows: 0
 ```
 
-Promotion independently recomputed all **1,851,286** raw-record fingerprints and compared **2,040,328** carried structural rows against accepted Database v1.
+Promotion compared all **1,851,286** raw rows, **189,043** structural race rows and **1,851,285** structural source-runner rows back to accepted Database v2. The candidate hash remained unchanged and Database v2 was preserved.
 
-Preserved validated v2 candidate:
+Preserved validated v3 candidate:
 
 ```text
-path: data/processed/database/candidates/inside_rails_v2_candidate.sqlite3
-SHA-256: 5fc6adaada69b7111a56021a9d67deeb62f6bb98268c69ad5c36009d337e39fe
+path: data/processed/database/candidates/inside_rails_v3_candidate.sqlite3
+SHA-256: 0389a10c8eedf9c86fb1efb39b228624f4371736f3a4ecfcd3010a2033ef873b
 status: validated
+```
+
+Retained Database v2 release:
+
+```text
+path: data/processed/database/releases/inside_rails_v2.sqlite3
+SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
 ```
 
 Retained Database v1 release:
@@ -53,7 +65,7 @@ path: data/processed/database/releases/inside_rails_v1.sqlite3
 SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
 ```
 
-Database v1 and the v2 candidate are evidence/rollback artefacts, not the normal study database.
+Older releases and candidates are evidence/rollback artefacts, not the normal study database.
 
 ## 2. Quick start
 
@@ -71,22 +83,22 @@ PYTHONPATH=src python your_script.py
 
 For notebooks, use the project `rails` alias.
 
-Open Database v2 read-only in Python:
+Open Database v3 read-only in Python:
 
 ```python
 from inside_rails.source_sqlite import connect_read_only
 
-DATABASE = "data/processed/database/releases/inside_rails_v2.sqlite3"
+DATABASE = "data/processed/database/releases/inside_rails_v3.sqlite3"
 
 with connect_read_only(DATABASE) as connection:
     race_count = connection.execute(
-        "SELECT COUNT(*) FROM view_governed_race_occurrences"
+        "SELECT COUNT(*) FROM view_reconciled_race_occurrences"
     ).fetchone()[0]
     source_runner_count = connection.execute(
-        "SELECT COUNT(*) FROM view_governed_source_runner_participations"
+        "SELECT COUNT(*) FROM view_reconciled_source_runner_participations"
     ).fetchone()[0]
     combined_runner_count = connection.execute(
-        "SELECT COUNT(*) FROM view_governed_runner_records"
+        "SELECT COUNT(*) FROM view_reconciled_runner_records"
     ).fetchone()[0]
 
 print(race_count, source_runner_count, combined_runner_count)
@@ -101,7 +113,7 @@ Expected:
 SQLite shell:
 
 ```bash
-sqlite3 -readonly data/processed/database/releases/inside_rails_v2.sqlite3
+sqlite3 -readonly data/processed/database/releases/inside_rails_v3.sqlite3
 ```
 
 Useful shell settings:
@@ -126,77 +138,51 @@ Useful shell settings:
 
 `core_runner_participation` links each admitted source-backed runner to one structural race occurrence.
 
-### Governed semantic extensions
+### Database v2 governed semantic extensions
 
-Race-level governed material:
+Database v3 retains the governed structures created in v2, including race, runner, temporal, reference, supplementation, horse/pedigree and participant-identity layers.
 
-- `core_source_race_occurrence_governed`;
-- `core_source_race_occurrence_time`.
+### Database v3 external reconciliation
 
-Runner-level governed material:
+New table:
 
-- `core_runner_participation_governed`.
+`governance_external_value_resolution`
+
+It stores typed externally supported outcomes linked to durable manual-verification evidence.
+
+Resolution kinds:
+
+- `correction` — a replacement analytical value is externally established;
+- `enrichment` — a distinct useful external fact is established without overwriting the raw source concept;
+- `invalidation` — the raw analytical value is known wrong but no defensible replacement is available.
 
 Raw values remain recoverable through source lineage.
 
-### Governed references/evidence
-
-Database v2 includes:
-
-- 395 governed course identities/timezones;
-- 16 bounded jurisdiction-context rows;
-- 37 field-treatment rows;
-- 85 manual-verification rows;
-- 46 connection blank-field decisions;
-- 3 missing-runner supplementations;
-- 16 specialist horse/pedigree decisions.
-
 ## 4. Recommended views
 
-### `view_governed_race_occurrences`
+### `view_reconciled_race_occurrences`
 
-Grain: one governed structural race occurrence.
+Grain: one reconciled structural race occurrence.
 
 Rows: **189,043**.
 
 Use for normal race-level analysis.
 
-Important columns include:
+It carries v2 governed race semantics and applies race-level v3 reconciliation where exact external evidence exists, including corrected runner counts, official-distance enrichment, age-band correction and actual-off enrichment.
 
-- `source_race_occurrence_code`;
-- `raw_date`, `raw_course`, `raw_off`;
-- `admitted_runner_count`;
-- `candidate_course_label`, `candidate_jurisdiction`;
-- `candidate_surface`;
-- governed distance fields;
-- `source_reported_ran`, `source_runner_row_count` and coverage fields;
-- race classification fields;
-- course timezone/location fields;
-- advertised-start-time fields and `temporal_resolution_status`.
+### `view_reconciled_source_runner_participations`
 
-### `view_governed_source_runner_participations`
-
-Grain: one source-backed runner participation.
+Grain: one reconciled source-backed runner participation.
 
 Rows: **1,851,285**.
 
 Use when the analytical population must match admitted physical source runner rows exactly.
 
-The view deliberately uses explicit raw/governed names such as:
+It carries raw values alongside governed/reconciled values and applies exact v3 corrections, enrichments and invalidations where supported.
 
-- `raw_date`, `raw_course`, `raw_off`;
-- `raw_horse`;
-- `raw_pos` plus governed result fields;
-- `raw_wgt` plus governed weight fields;
-- `raw_sp` plus governed starting-price fields;
-- `raw_prize` plus governed prize fields;
-- `raw_jockey`, `raw_trainer`, `raw_owner` plus governed labels;
-- raw/governed ratings and characteristics;
-- provisional horse/participant identity codes where accepted mappings exist.
+### `view_reconciled_runner_records`
 
-### `view_governed_runner_records`
-
-Grain: one governed runner record including accepted missing-runner supplementations.
+Grain: one reconciled governed runner record including accepted missing-runner supplementations.
 
 Rows: **1,851,288**.
 
@@ -205,44 +191,17 @@ This combines:
 - **1,851,285** source-backed runners; plus
 - **3** externally verified missing runners.
 
-`record_origin` makes the distinction explicit.
-
-The three supplemented runners are:
-
-- Saucats — Nantes, 18 June 2024, 2:14;
-- Tosen Thunder (JPN) — Ohi, 9 October 2025, 11:07;
-- Great Navigator (USA) — Gulfstream Park, 23 December 2023, 9:36.
+`record_origin` preserves the distinction.
 
 Unsupported supplemented-runner attributes remain null.
 
-### `view_governed_horse_occurrence_assignments`
+### Carried specialised views
 
-Use only when Notebook 19 provisional horse/pedigree occurrence identity matters.
+Use `view_governed_horse_occurrence_assignments` only when Notebook 19 provisional horse/pedigree occurrence identity matters.
 
-Baseline:
+Use `view_governed_participant_label_identities` only when accepted Notebook 22 mappings matter. Unresolved candidates remain unresolved.
 
-```text
-provisional occurrences: 611
-transition decisions: 353
-Corrected: 92
-Different horse: 261
-Unresolved: 0
-```
-
-### `view_governed_participant_label_identities`
-
-Use only when accepted Notebook 22 mappings matter.
-
-Baseline:
-
-```text
-source labels: 116,859
-participant candidates: 1,205
-accepted provisional identities: 68
-accepted label mappings: 149
-```
-
-Unresolved candidates remain unresolved.
+The older v2 `view_governed_race_occurrences`, `view_governed_source_runner_participations` and `view_governed_runner_records` remain available for lineage/comparison, but new general studies should prefer the corresponding `view_reconciled_*` views so v3 corrections are not bypassed.
 
 ## 5. Identifier rules
 
@@ -258,58 +217,82 @@ Internal integer IDs are release-local implementation identifiers.
 
 For race-level work, do not treat runner rows as independent races.
 
-## 6. Important integrated governance
+## 6. Important Database v3 reconciliation
 
-### Surface
+The governing rule is:
 
-Explicit `(AW)` evidence supports only:
+> Raw source assertions are immutable. When external evidence establishes an exact fact, the governed database exposes that fact as usable analytical data with explicit provenance. When external evidence proves a raw analytical value wrong but no defensible replacement is established, the raw value remains visible while the study-facing analytical value is invalidated rather than silently retained as correct.
 
-`all_weather_unspecified`
-
-Other surface states remain unresolved under that source-only rule.
-
-### Distance
-
-Distance fields are governed parses of literal source notation, not independently verified official distances.
+Important examples:
 
 ### Starting price
 
-Fractional/evens arithmetic and favourite-marker semantics are governed.
+Almendares (GB), Del Mar, 20 July 2025, 1:03:
 
-The lone raw value `F` remains unresolved because the source supplies a marker without a price.
+- raw `sp='F'`;
+- reconciled price `5/2`;
+- decimal odds `3.5`;
+- implied probability approximately `0.2857142857`;
+- favourite status `favourite`.
 
-### Runner sex
+The raw parser still correctly refuses to infer a numeric price from bare `F`; the numeric odds come from external evidence.
 
-Two exact bounded corrections are integrated:
+### Finishing position
 
-- Par Coeur (GER): raw `BB` → governed `gelding`;
-- La Venezolana (VEN): raw `B` → governed `filly`.
+Cinnamon Carter (AUS), Morphettville, 16 May 2015:
 
-They are exact-record corrections, not global translations.
+- raw position `10`;
+- reconciled finish position `12`;
+- externally verified dead-heat context retained.
 
-### Ratings
+### Official distance
 
-Source rowid `1619851`, raw `rpr = 775`, is governed as `invalid_source_value` with analytical RPR null. No replacement value is invented.
+Sha Tin 25 January 2015 and Kyoto 4 January 2015 retain raw `dist='1m'` while exposing externally verified official distance `1600m` as a separate enrichment.
 
-### Connections
+### Runner count
 
-Notebook 20 baseline:
+Exact externally verified race-count corrections include:
 
-```text
-raw blank connection fields: 46
-externally supplemented: 28
-preserved unresolved: 18
-```
+- Ohi 26 June 2024: raw `ran=5` → reconciled `13`;
+- Morioka 3 September 2024: raw `ran=5` → reconciled `12`;
+- Gulfstream Park 23 December 2023: raw `ran=8` → reconciled `9`.
 
-A governed connection label is not automatically a real-world participant identity.
+A corrected count does not invent missing runner identities.
 
-### Comments
+### Beaten distances
 
-Comment text is preserved and conservatively state-classified. There is no universal narrative parser.
+- Gavea 6 April 2025 position-2 runner: governed `ovr_btn=16.5`, `btn=16.5` lengths;
+- Nardo: the known-wrong numeric zero is invalidated; externally established incremental relation `head` is retained without inventing a numeric head conversion;
+- Red Fog and Cabernet Franc: known-wrong zero distances become analytical null where replacement remains unresolved.
 
-## 7. Advertised-start-time governance
+### Age/eligibility
 
-Database v2 integrates Notebook 11 temporal reconstruction.
+- Compiegne 16 May 2017: raw `5yo` → reconciled `5yo+`;
+- Ecstasy (USA), Woodbine 27 July 2024: raw age `31` → reconciled age `3`.
+
+### Actual-off time
+
+Three externally reported actual-off observations are exposed separately from the canonical advertised/scheduled start-time reconstruction. Do not use one as a synonym for the other.
+
+### Prize schedules
+
+Externally checked Pegasus 2018 USD and Arc 2019 EUR placing schedules are exposed as distinct official/local-currency enrichment. They do not overwrite raw/source-presented prize values.
+
+## 7. Carried Database v2 governance
+
+Database v3 retains the earlier integrated governance, including:
+
+- explicit `(AW)` evidence supports only `all_weather_unspecified`;
+- literal source-distance parsing remains distinct from official-distance enrichment;
+- exact Notebook 17 `B` / `BB` sex corrections;
+- exact raw `rpr = 775` anomaly analytically null as `invalid_source_value`;
+- **28** externally supplemented blank connection labels and **18** unresolved blanks;
+- conservative comment classification;
+- provisional horse and participant identity treatment.
+
+## 8. Advertised-start-time governance
+
+Database v3 carries Notebook 11 temporal reconstruction.
 
 ```text
 total races: 189,043
@@ -334,93 +317,48 @@ Format boundary:
 
 These are reconstructed advertised/scheduled start times, not automatically exact actual-off times.
 
-## 8. Query recipes
+## 9. Query recipes
 
 ### Confirm populations
 
 ```sql
 SELECT COUNT(*) AS races
-FROM view_governed_race_occurrences;
+FROM view_reconciled_race_occurrences;
 
 SELECT COUNT(*) AS source_backed_runners
-FROM view_governed_source_runner_participations;
+FROM view_reconciled_source_runner_participations;
 
 SELECT COUNT(*) AS governed_runner_records
-FROM view_governed_runner_records;
+FROM view_reconciled_runner_records;
 ```
 
-### Source-backed field-size distribution
+### Inspect race-level field sizes
+
+First inspect the view schema rather than guessing a reconciled column name:
 
 ```sql
-SELECT
-    source_runner_row_count AS runners,
-    COUNT(*) AS races
-FROM view_governed_race_occurrences
-GROUP BY source_runner_row_count
-ORDER BY source_runner_row_count;
+PRAGMA table_info(view_reconciled_race_occurrences);
 ```
 
-### Compare source runner rows with source-reported `ran`
+Then use the documented reconciled runner-count field appropriate to the study definition. Study 01 must state whether it uses the reconciled count, physical source-runner rows or another explicitly governed population.
+
+### Inspect source/reconciled runner fields
 
 ```sql
-SELECT
-    source_row_count_vs_ran_status,
-    COUNT(*) AS races
-FROM view_governed_race_occurrences
-GROUP BY source_row_count_vs_ran_status
-ORDER BY races DESC;
+PRAGMA table_info(view_reconciled_source_runner_participations);
+PRAGMA table_info(view_reconciled_runner_records);
 ```
-
-### Inspect unresolved advertised times
-
-```sql
-SELECT COUNT(*) AS unresolved_races
-FROM view_governed_race_occurrences
-WHERE temporal_resolution_status = 'unresolved';
-```
-
-Expected:
-
-`19578`
-
-### Search one raw horse label
-
-```sql
-SELECT
-    source_race_occurrence_code,
-    raw_date,
-    raw_course,
-    raw_off,
-    raw_horse,
-    finish_position,
-    outcome_code,
-    raw_sp,
-    starting_price_value_status
-FROM view_governed_source_runner_participations
-WHERE raw_horse = ?
-ORDER BY CAST(raw_date AS TEXT), CAST(raw_off AS TEXT);
-```
-
-Use a parameter from Python rather than interpolating a horse name into SQL.
 
 ### Check whether rows are source-backed or supplemented
 
 ```sql
 SELECT record_origin, COUNT(*) AS rows
-FROM view_governed_runner_records
+FROM view_reconciled_runner_records
 GROUP BY record_origin
 ORDER BY record_origin;
 ```
 
-### Inspect view columns
-
-```sql
-PRAGMA table_info(view_governed_race_occurrences);
-PRAGMA table_info(view_governed_source_runner_participations);
-PRAGMA table_info(view_governed_runner_records);
-```
-
-## 9. Efficient pandas use
+## 10. Efficient pandas use
 
 Do not load all 1.85 million source-backed runner rows into pandas for ordinary counting or grouping.
 
@@ -437,11 +375,11 @@ Example:
 import pandas as pd
 from inside_rails.source_sqlite import connect_read_only
 
-DATABASE = "data/processed/database/releases/inside_rails_v2.sqlite3"
+DATABASE = "data/processed/database/releases/inside_rails_v3.sqlite3"
 
 query = """
 SELECT candidate_jurisdiction, COUNT(*) AS races
-FROM view_governed_race_occurrences
+FROM view_reconciled_race_occurrences
 GROUP BY candidate_jurisdiction
 ORDER BY races DESC
 """
@@ -450,38 +388,40 @@ with connect_read_only(DATABASE) as connection:
     summary = pd.read_sql_query(query, connection)
 ```
 
-## 10. Safe working rules
+## 11. Safe working rules
 
 Do:
 
-- use accepted Database v2;
+- use accepted Database v3;
 - open it read-only;
+- prefer the reconciled views for new general studies;
 - state observation grain and population;
 - state whether the three supplementation rows are included;
-- distinguish raw values from governed interpretations;
+- distinguish raw values from governed/reconciled interpretations;
 - save study outputs outside the database;
 - record database path/hash and repository commit for serious results.
 
 Do not:
 
 - modify the accepted release;
-- silently fall back to Database v1, the v2 candidate or Source Version 1;
+- silently fall back to Database v2, Database v1, a candidate or Source Version 1;
 - use raw `race_id` as the project race key;
+- restore a known-wrong raw value when v3 invalidates it analytically;
 - guess unresolved values;
 - convert provisional identity candidates into accepted identities;
 - hide reusable database fixes inside a study notebook.
 
-## 11. Limitations
+## 12. Limitations
 
-- Source Version 1 covers 1 January 2015 through 27 May 2026; Database v2 is not live.
+- Source Version 1 covers 1 January 2015 through 27 May 2026; Database v3 is not live.
 - Some governed values remain unresolved by design.
 - Advertised-start-time reconstruction is not guaranteed exact actual-off time.
-- Distance parsing is source-literal, not independently verified official distance.
+- Literal distance parsing is source-derived; externally verified official-distance enrichment exists only where specifically established.
 - Horse and participant identity work remains provisional and scope-bounded.
-- Prize currencies outside governed canonical cases remain unresolved rather than guessed or converted.
+- Prize currencies/schedules outside governed cases remain unresolved rather than guessed or converted.
 - Historical relationships are not guaranteed betting edges.
 
-## 12. Troubleshooting
+## 13. Troubleshooting
 
 ### `ModuleNotFoundError: No module named 'inside_rails'`
 
@@ -495,34 +435,34 @@ For notebooks, use `rails`.
 
 Do not add notebook `sys.path` hacks.
 
-### Database v2 cannot be opened
+### Database v3 cannot be opened
 
 Check the exact documented path:
 
 ```bash
-ls -lh data/processed/database/releases/inside_rails_v2.sqlite3
+ls -lh data/processed/database/releases/inside_rails_v3.sqlite3
 ```
 
 Do not silently switch database.
 
-### Unsure about a governed view
+### Unsure about a reconciled view
 
-Inspect its columns with `PRAGMA table_info(...)` and check the relevant Notebook 04–22 governance documentation before inventing new semantics.
+Inspect its columns with `PRAGMA table_info(...)` and check `docs/STUDY_DATABASE_REFERENCE.md` plus `docs/DATABASE_V3_EXTERNAL_VERIFICATION_RECONCILIATION.md` before inventing new semantics.
 
-## 13. Recommended study workflow
+## 14. Recommended study workflow
 
 1. State the racing question in one sentence.
 2. Read `docs/STUDY_DATABASE_REFERENCE.md` and `docs/STUDY_DATA_ACCESS.md`.
-3. Use accepted Database v2 read-only.
+3. Use accepted Database v3 read-only.
 4. Declare race/runner grain and population.
-5. Select the appropriate governed view.
-6. Inspect unresolved states and supplementation consequences.
+5. Select the appropriate reconciled view.
+6. Inspect unresolved states, invalidations and supplementation consequences.
 7. Filter and aggregate in SQL.
 8. Move only the needed result into pandas.
 9. Check sample size, exceptions and market context.
 10. Save code, result, interpretation and limitations together.
 
-Database v2 should now let studies use Notebook 04–22 governance directly rather than recreating it with ad hoc joins.
+Database v3 should now let studies use the full governed Notebook 04–22 evidence chain, including exact externally resolved facts, without recreating correction logic inside study notebooks.
 
 ## Quick command card
 
@@ -530,6 +470,6 @@ Database v2 should now let studies use Notebook 04–22 governance directly rath
 source .venv/bin/activate
 PYTHONPATH=src python script.py
 rails
-sqlite3 -readonly data/processed/database/releases/inside_rails_v2.sqlite3
+sqlite3 -readonly data/processed/database/releases/inside_rails_v3.sqlite3
 git status --short --branch
 ```
