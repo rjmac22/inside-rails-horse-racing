@@ -8,11 +8,12 @@ Read it alongside:
 
 - `docs/STUDY_RESEARCH_PLAYBOOK.md`;
 - `docs/STUDY_DATABASE_REFERENCE.md`;
+- `docs/RESEARCH_DATA_SOURCE_REGISTER.md`;
 - `docs/STUDY_REVISIT_REGISTER.md`.
 
 Its purpose is to prevent repeated mistakes about source paths, database identity, release status and read/write boundaries.
 
-The fuller study-facing database structure, table grains, identifier rules and current release state are maintained in `docs/STUDY_DATABASE_REFERENCE.md` and must be read before every study.
+The fuller study-facing database structure, table grains, identifier rules and current release state are maintained in `docs/STUDY_DATABASE_REFERENCE.md` and must be read before every study. Potential local and external information sources that may become useful during a study are maintained in `docs/RESEARCH_DATA_SOURCE_REGISTER.md`.
 
 ---
 
@@ -274,20 +275,42 @@ Examples and exact reconciliation cases are documented in `docs/STUDY_DATABASE_R
 
 ---
 
+## External data-source discovery rule
+
+Database v3 is the normal starting point, not an artificial ceiling on what a study is allowed to learn.
+
+If the evidence suggests that a missing external variable, official record or independent source could materially answer, explain or test the current research question, check `docs/RESEARCH_DATA_SOURCE_REGISTER.md` and actively investigate the best current source before concluding that the information is unavailable.
+
+The assistant should perform that discovery work proactively. The user should not need to remember which historical files, official websites, APIs, weather archives, exchange feeds or specialist sources might exist.
+
+Possible outcomes are deliberately distinct:
+
+1. use a bounded external lookup/manual verification;
+2. acquire a study-specific external dataset;
+3. escalate to governed database integration because the information is correctness-critical or clearly reusable;
+4. decide not to acquire it because access, cost, licensing, quality or effort is disproportionate.
+
+Do not automatically expand the database whenever another source exists. First establish whether the study actually needs the information and whether the source supports the concept being asked about.
+
+If a study is materially limited by information that might exist outside Database v3, record the source search and resulting decision rather than simply writing that the database lacks the field.
+
+---
+
 ## Study-start check
 
 Before writing the first analytical cell of any study, confirm:
 
 1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
-2. the local Jupyter environment was started with the canonical `rails` alias;
-3. the intended analytical source is the accepted Database v3 release unless the research question explicitly requires raw source evidence;
-4. the exact path is `data/processed/database/releases/inside_rails_v3.sqlite3`;
-5. the release state is `release_accepted`;
-6. the connection is read-only;
-7. the study's observation grain is stated;
-8. the chosen race/runner population is stated;
-9. the relevant fields and identities are governed sufficiently for the proposed use;
-10. unresolved values, invalidations and external supplementations that affect the question are understood;
-11. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+2. `docs/RESEARCH_DATA_SOURCE_REGISTER.md` has been read so known external/local capabilities are not forgotten;
+3. the local Jupyter environment was started with the canonical `rails` alias;
+4. the intended analytical source is the accepted Database v3 release unless the research question explicitly requires raw source evidence;
+5. the exact path is `data/processed/database/releases/inside_rails_v3.sqlite3`;
+6. the release state is `release_accepted`;
+7. the connection is read-only;
+8. the study's observation grain is stated;
+9. the chosen race/runner population is stated;
+10. the relevant fields and identities are governed sufficiently for the proposed use;
+11. unresolved values, invalidations and external supplementations that affect the question are understood;
+12. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
 Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the project documents.
