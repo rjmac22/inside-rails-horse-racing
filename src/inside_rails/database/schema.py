@@ -14,7 +14,10 @@ _SCHEMA_RESOURCES = (
     "schema/v001_minimum_core.sql",
     "schema/v001_minimum_core_enforcement.sql",
 )
-_GOVERNED_INTEGRATION_RESOURCE = "schema/v002_governed_integration.sql"
+_GOVERNED_INTEGRATION_RESOURCES = (
+    "schema/v002_governed_integration.sql",
+    "schema/v002_governed_integration_corrections.sql",
+)
 
 
 def require_supported_sqlite(version: tuple[int, int, int] | None = None) -> None:
@@ -129,13 +132,15 @@ def upgrade_minimum_core_to_governed_integration_schema(
 
     # The migration rebuilds the v1 import-manifest tables. SQLite requires
     # foreign-key enforcement to be disabled before that transactional DDL; it
-    # is re-enabled and independently checked immediately after the migration.
+    # is re-enabled and independently checked immediately after all v2 schema
+    # resources, including pre-population contract corrections, are applied.
     connection.execute("PRAGMA foreign_keys = OFF")
     if _pragma_scalar(connection, "foreign_keys") != 0:
         raise RuntimeError("Unable to disable foreign keys for Database v2 migration")
 
     try:
-        connection.executescript(_resource_sql(_GOVERNED_INTEGRATION_RESOURCE))
+        for resource in _GOVERNED_INTEGRATION_RESOURCES:
+            connection.executescript(_resource_sql(resource))
     except Exception:
         if connection.in_transaction:
             connection.rollback()
