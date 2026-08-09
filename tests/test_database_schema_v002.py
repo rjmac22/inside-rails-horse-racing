@@ -59,6 +59,14 @@ V1_VIEWS = {
     "view_import_validation_evidence",
 }
 
+V2_VIEWS = {
+    "view_governed_race_occurrences",
+    "view_governed_horse_occurrence_assignments",
+    "view_governed_participant_label_identities",
+    "view_governed_source_runner_participations",
+    "view_governed_runner_records",
+}
+
 TIMESTAMP = "2026-08-09T00:00:00.000000Z"
 COMMIT = "1" * 40
 SHA = bytes.fromhex("aa" * 32)
@@ -120,7 +128,7 @@ def seed_minimum_governance(connection: sqlite3.Connection) -> None:
     )
 
 
-def test_v2_schema_has_exact_reconciled_table_inventory() -> None:
+def test_v2_schema_has_exact_reconciled_inventory_and_views() -> None:
     connection = connect_v2()
     try:
         tables = {
@@ -138,7 +146,7 @@ def test_v2_schema_has_exact_reconciled_table_inventory() -> None:
         }
         assert tables == V1_TABLES | V2_TABLES
         assert len(tables) == 31
-        assert views == V1_VIEWS
+        assert views == V1_VIEWS | V2_VIEWS
         assert connection.execute("PRAGMA application_id").fetchone()[0] == APPLICATION_ID
         assert (
             connection.execute("PRAGMA user_version").fetchone()[0]
@@ -146,6 +154,18 @@ def test_v2_schema_has_exact_reconciled_table_inventory() -> None:
         )
         assert connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+    finally:
+        connection.close()
+
+
+def test_v2_runner_schema_uses_notebook_13_confidence_domain() -> None:
+    connection = connect_v2()
+    try:
+        sql = connection.execute(
+            "SELECT sql FROM sqlite_schema WHERE type='table' AND name='core_runner_participation_governed'"
+        ).fetchone()[0]
+        assert "prize_confidence IN ('confirmed', 'unresolved')" in sql
+        assert "prize_confidence IN ('high', 'medium', 'low')" not in sql
     finally:
         connection.close()
 
