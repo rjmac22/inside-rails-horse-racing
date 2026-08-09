@@ -128,17 +128,18 @@ def test_overlay_preserves_database_values_and_exposes_verified_replacements(
     )
 
     sql, params = build_race_overlay_query("SELECT * FROM races", register)
-    rows = connection.execute(sql, params).fetchall()
-    columns = [description[0] for description in connection.execute(sql, params).description]
-    result = [dict(zip(columns, row, strict=True)) for row in rows]
+    cursor = connection.execute(sql, params)
+    columns = [description[0] for description in cursor.description]
+    result = [dict(zip(columns, row, strict=True)) for row in cursor.fetchall()]
+    by_course = {row["raw_course"]: row for row in result}
 
-    sandown = result[0]
+    sandown = by_course["Sandown"]
     assert sandown["race_type_raw"] == "Flat"
     assert sandown["race_type_study"] == "Chase"
     assert sandown["race_type_study_source"] == "post_v3_external_overlay"
     assert sandown["race_type_study_verification_id"] == "VER-1"
 
-    stratford = result[1]
+    stratford = by_course["Stratford"]
     assert stratford["advertised_start_course_local"] is None
     assert (
         stratford["advertised_start_course_local_study"]
@@ -153,7 +154,7 @@ def test_overlay_preserves_database_values_and_exposes_verified_replacements(
         == "2018-06-08T21:01:00+01:00"
     )
 
-    chepstow = result[2]
+    chepstow = by_course["Chepstow"]
     assert chepstow["race_type_study"] == "Flat"
     assert chepstow["race_type_study_source"] == "database_v3"
     assert (
@@ -199,4 +200,27 @@ def test_unsupported_pending_field_fails_closed(tmp_path: Path) -> None:
     )
 
     with pytest.raises(ValueError, match="Unsupported post-release race field"):
+        load_pending_race_resolutions(register)
+
+
+def test_wrong_resolution_action_for_supported_field_fails_closed(tmp_path: Path) -> None:
+    register = tmp_path / "post_v3_external_value_resolutions.csv"
+    write_resolution_csv(
+        register,
+        [
+            resolution_row(
+                resolution_id="RES-1",
+                verification_id="VER-1",
+                source_date="2015-02-13",
+                source_course="Sandown",
+                source_off="3:05",
+                source_field="type",
+                governed_text_value="Chase",
+                resolution_kind="enrichment",
+                analytical_action="enrich",
+            )
+        ],
+    )
+
+    with pytest.raises(ValueError, match="Unsupported resolution treatment"):
         load_pending_race_resolutions(register)
