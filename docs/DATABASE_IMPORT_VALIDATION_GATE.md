@@ -102,6 +102,28 @@ Notebook-specific modules and validators define the field-level rules. The futur
 
 The complete repository test suite and all applicable independent validators form the minimum project-level gate before a new ingestion implementation or governed source snapshot is accepted.
 
+## Canonical independent-validator runner
+
+The complete applicable independent-validator gate must be run with the governed repository runner documented in `docs/APPLICABLE_VALIDATOR_GATE.md`:
+
+```bash
+python scripts/run_applicable_validators.py
+```
+
+Do not reconstruct an ad-hoc shell loop from `scripts/validate_*.py` filenames. The validator CLIs do not all share the same positional-argument contract, and historical acceptance work demonstrated that a generic loop can omit required source inputs or unsafe shell options can terminate the user's interactive shell.
+
+The canonical runner owns:
+
+- deterministic validator discovery and ordering;
+- the explicit historical Database v1 construction-only exclusions;
+- required positional Source Version 1 argument routing;
+- required governed-reference routing;
+- `PYTHONPATH=src` setup;
+- fail-closed handling of unknown validator CLI contracts;
+- compact pass/fail output without modifying caller shell options.
+
+Any change to validator inventory, required positional arguments or applicability must update and test that runner before the project-level acceptance gate is considered valid.
+
 ## Evidence record
 
 Each accepted load must record:
