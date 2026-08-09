@@ -1,10 +1,10 @@
 """Build Database v2 race and source-backed runner governed extensions.
 
-The implementation deliberately streams Source Version 1 through the copied v1
-raw mirror in race order. At most one race (40 source runner rows in the current
-population) is held in memory. This avoids a multi-million-row pandas working
-set on the project's 8 GB development machine while still using the durable
-Notebook 04–21 parser implementations.
+Source Version 1 is read from the copied Database v1 raw mirror in bounded race
+batches. Each query is fully materialised before writes begin, so the builder
+never attempts to commit while a long-running SQLite read cursor is active.
+The default 500-race batch is small enough for the project's 8 GB development
+machine while avoiding 189,043 one-race SQL round trips.
 """
 
 from __future__ import annotations
@@ -51,6 +51,7 @@ from inside_rails.starting_price import StartingPriceKind, parse_starting_price
 EXPECTED_RACES = 189_043
 EXPECTED_RUNNERS = 1_851_285
 RACE_DISTANCE_PARSER_VERSION = "notebook_06_validated_components_v1"
+DEFAULT_RACE_BATCH_SIZE = 500
 
 RACE_CONSTANT_FIELDS = (
     "race_name",
@@ -96,7 +97,7 @@ SELECT
     source.jockey,
     source.trainer,
     source.prize,
-    source.or,
+    source."or",
     source.rpr,
     source.ts,
     source.comment
@@ -105,6 +106,7 @@ JOIN core_runner_participation AS runner
   ON runner.source_race_occurrence_id = race.source_race_occurrence_id
 JOIN source_raceform_v1_record AS source
   ON source.source_record_id = runner.source_record_id
+WHERE race.source_race_occurrence_id BETWEEN ? AND ?
 ORDER BY race.source_race_occurrence_id, source.source_rowid
 """
 
@@ -235,8 +237,8 @@ class GovernedPopulationError(RuntimeError):
     """Raised when source/current governance no longer matches the accepted contract."""
 
 
-def _rows_as_dicts(cursor: sqlite3.Cursor) -> Iterable[dict[str, Any]]:
-    for raw in cursor:
+def _rows_as_dicts(rows: Iterable[tuple[object, ...]]) -> Iterable[dict[str, Any]]:
+    for raw in rows:
         yield dict(zip(_SOURCE_COLUMNS, raw, strict=True))
 
 
@@ -358,8 +360,8 @@ def _ran_external_governance(
             )
         result[int(race_id)] = (external, int(verification_id))
 
-    # Great Navigator is the one accepted supplementation whose external result
-    # also proves source ran=8 is contradicted by a nine-runner published field.
+    # Great Navigator is the one accepted supplementation whose published
+    # result also proves source ran=8 is contradicted by a nine-runner field.
     supplementation = connection.execute(
         """
         SELECT source_race_occurrence_id, manual_verification_id
@@ -517,7 +519,9 @@ def _race_governed_row(
             constants["dist"],
             distance["miles"],
             distance["whole_furlongs"],
-            int(distance["has_half_furlong"]) if distance["has_half_furlong"] is not None else None,
+            int(distance["has_half_furlong"])
+            if distance["has_half_furlong"] is not None
+            else None,
             distance["total_furlongs"],
             distance["source_implied_yards"],
             distance["source_implied_metres"],
@@ -652,10 +656,10 @@ def _runner_governed_rows(
             field="owner",
             decisions=connection_decisions,
         )
-        for connection in (jockey, trainer, owner):
-            if connection[1] == "externally_supplemented":
+        for connection_value in (jockey, trainer, owner):
+            if connection_value[1] == "externally_supplemented":
                 counters["connection_supplementations"] += 1
-            elif connection[1] == "source_blank_unresolved":
+            elif connection_value[1] == "source_blank_unresolved":
                 counters["connection_unresolved"] += 1
 
         comment = classify_comment(row["comment"])
@@ -760,22 +764,42 @@ def _runner_governed_rows(
     return output, counters
 
 
+def _iter_races(
+    raw_rows: Iterable[tuple[object, ...]],
+) -> Iterable[list[dict[str, Any]]]:
+    """Yield one race at a time from one already-materialised source batch."""
+
+    current_id: int | None = None
+    current_rows: list[dict[str, Any]] = []
+    for row in _rows_as_dicts(raw_rows):
+        race_id = int(row["source_race_occurrence_id"])
+        if current_id is None:
+            current_id = race_id
+        if race_id != current_id:
+            yield current_rows
+            current_rows = []
+            current_id = race_id
+        current_rows.append(row)
+    if current_rows:
+        yield current_rows
+
+
 def populate_governed_race_and_runner_extensions(
     connection: sqlite3.Connection,
     *,
     governance_release_id: int,
-    commit_every_runner_rows: int = 50_000,
+    race_batch_size: int = DEFAULT_RACE_BATCH_SIZE,
 ) -> GovernedPopulationSummary:
     """Populate race and runner governed extensions from the copied v1 core.
 
-    The candidate is disposable and must be removed by the outer build on any
-    failure. Periodic commits bound rollback-journal growth; they do not make a
-    partial candidate acceptable because the manifest remains ``building`` and
-    final validation requires complete exact populations.
+    Each batch query is fully fetched before derived rows are written and
+    committed. A partial candidate can therefore contain committed batches after
+    a later failure, but the manifest remains ``building`` and the outer build
+    deletes the entire disposable file; partial success is never accepted.
     """
 
-    if commit_every_runner_rows <= 0:
-        raise ValueError("commit_every_runner_rows must be positive")
+    if race_batch_size <= 0:
+        raise ValueError("race_batch_size must be positive")
     manifest = connection.execute(
         "SELECT governance_release_id, build_status FROM import_manifest WHERE import_manifest_id = 1"
     ).fetchone()
@@ -800,6 +824,17 @@ def populate_governed_race_and_runner_extensions(
     connection_decisions = _connection_decisions(connection)
     ran_external = _ran_external_governance(connection)
 
+    race_ids = [
+        int(value)
+        for value, in connection.execute(
+            "SELECT source_race_occurrence_id FROM core_source_race_occurrence ORDER BY source_race_occurrence_id"
+        ).fetchall()
+    ]
+    if len(race_ids) != EXPECTED_RACES or len(race_ids) != len(set(race_ids)):
+        raise GovernedPopulationError(
+            f"Structural race ID inventory changed: {len(race_ids)} rows"
+        )
+
     race_rows = 0
     runner_rows = 0
     unresolved_distance_rows = 0
@@ -812,59 +847,64 @@ def populate_governed_race_and_runner_extensions(
         "unresolved_sp": 0,
     }
 
-    current_race_id: int | None = None
-    current_rows: list[dict[str, Any]] = []
-    runner_batch: list[tuple[object, ...]] = []
+    for start in range(0, len(race_ids), race_batch_size):
+        batch_ids = race_ids[start : start + race_batch_size]
+        first_race_id = batch_ids[0]
+        last_race_id = batch_ids[-1]
 
-    def flush_race() -> None:
-        nonlocal race_rows, runner_rows, unresolved_distance_rows, all_weather_races
-        if not current_rows:
-            return
-        race_values, candidate_jurisdiction = _race_governed_row(
-            current_rows,
-            governance_release_id=governance_release_id,
-            course_ids=course_ids,
-            jurisdiction_context_ids=jurisdiction_context_ids,
-            ran_external=ran_external,
-        )
-        connection.execute(_RACE_INSERT, race_values)
-        race_rows += 1
-        if race_values[18] == "unresolved":
-            unresolved_distance_rows += 1
-        if race_values[8] == "all_weather_unspecified":
-            all_weather_races += 1
+        # Fetch the complete bounded batch before any writes/commit. This avoids
+        # holding an active SELECT statement across a commit on the same SQLite
+        # connection while keeping memory bounded to a few thousand runner rows.
+        raw_batch = connection.execute(
+            _SOURCE_SELECT,
+            (first_race_id, last_race_id),
+        ).fetchall()
+        if not raw_batch:
+            raise GovernedPopulationError(
+                f"Race batch {first_race_id}..{last_race_id} returned no source rows"
+            )
 
-        governed_runner_rows, counters = _runner_governed_rows(
-            current_rows,
-            candidate_jurisdiction=candidate_jurisdiction,
-            governance_release_id=governance_release_id,
-            manual_ids=manual_ids,
-            connection_decisions=connection_decisions,
-        )
-        runner_batch.extend(governed_runner_rows)
-        runner_rows += len(governed_runner_rows)
-        for key, value in counters.items():
-            aggregate[key] += value
+        race_insert_rows: list[tuple[object, ...]] = []
+        runner_insert_rows: list[tuple[object, ...]] = []
+        observed_batch_ids: list[int] = []
 
-    cursor = connection.execute(_SOURCE_SELECT)
-    for row in _rows_as_dicts(cursor):
-        race_id = int(row["source_race_occurrence_id"])
-        if current_race_id is None:
-            current_race_id = race_id
-        if race_id != current_race_id:
-            flush_race()
-            current_rows = []
-            current_race_id = race_id
-            if len(runner_batch) >= commit_every_runner_rows:
-                connection.executemany(_RUNNER_INSERT, runner_batch)
-                runner_batch.clear()
-                connection.commit()
-        current_rows.append(row)
+        for source_race_rows in _iter_races(raw_batch):
+            race_values, candidate_jurisdiction = _race_governed_row(
+                source_race_rows,
+                governance_release_id=governance_release_id,
+                course_ids=course_ids,
+                jurisdiction_context_ids=jurisdiction_context_ids,
+                ran_external=ran_external,
+            )
+            race_insert_rows.append(race_values)
+            observed_batch_ids.append(int(race_values[0]))
+            race_rows += 1
+            if race_values[18] == "unresolved":
+                unresolved_distance_rows += 1
+            if race_values[8] == "all_weather_unspecified":
+                all_weather_races += 1
 
-    flush_race()
-    if runner_batch:
-        connection.executemany(_RUNNER_INSERT, runner_batch)
-        runner_batch.clear()
+            governed_runner_rows, counters = _runner_governed_rows(
+                source_race_rows,
+                candidate_jurisdiction=candidate_jurisdiction,
+                governance_release_id=governance_release_id,
+                manual_ids=manual_ids,
+                connection_decisions=connection_decisions,
+            )
+            runner_insert_rows.extend(governed_runner_rows)
+            runner_rows += len(governed_runner_rows)
+            for key, value in counters.items():
+                aggregate[key] += value
+
+        if observed_batch_ids != batch_ids:
+            raise GovernedPopulationError(
+                "Bounded source query did not return exactly the expected race IDs: "
+                f"expected {batch_ids[:3]}..{batch_ids[-3:]}, "
+                f"observed {observed_batch_ids[:3]}..{observed_batch_ids[-3:]}"
+            )
+
+        connection.executemany(_RACE_INSERT, race_insert_rows)
+        connection.executemany(_RUNNER_INSERT, runner_insert_rows)
         connection.commit()
 
     if race_rows != EXPECTED_RACES:
