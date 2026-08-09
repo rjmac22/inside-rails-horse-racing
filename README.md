@@ -28,6 +28,75 @@ source columns: 37
 
 The authorised Source Version 1 race key is exact raw `date + course + off`. The raw SQLite database remains read-only, and source queries use `rowid <> 1`.
 
+## Current accepted analytical database
+
+### Database v3 — accepted 9 August 2026
+
+Canonical study database:
+
+```text
+path: data/processed/database/releases/inside_rails_v3.sqlite3
+size: 3,137,081,344 bytes
+SHA-256: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
+manifest status: release_accepted
+validation-result rows: 7
+quick_check: ok
+foreign_key_check rows: 0
+SQLite application_id: 1230130259
+SQLite user_version: 3
+```
+
+Database v3 is the current read-only analytical source for reader-facing studies.
+
+It preserves the complete Database v2 structure and adds the external-verification reconciliation layer needed to make previously established external facts analytically usable without altering immutable raw evidence.
+
+Accepted v3 reconciliation population:
+
+```text
+manual-verification rows: 104
+typed external-value resolutions: 37
+race rows: 189,043
+source-backed runner rows: 1,851,285
+combined governed runner rows: 1,851,288
+```
+
+Preferred current study-facing views:
+
+- `view_reconciled_race_occurrences`;
+- `view_reconciled_source_runner_participations`;
+- `view_reconciled_runner_records`.
+
+Important examples now exposed through governed analytics include:
+
+- Almendares (GB): raw `sp='F'` remains raw/parser-unresolved, while external evidence supplies governed `5/2 favourite`;
+- Cinnamon Carter (AUS): governed finishing position `12` rather than raw `10`;
+- exact externally verified runner-count corrections for Ohi, Morioka and the Great Navigator race;
+- exact/invalidation treatment for the verified beaten-distance anomalies;
+- Compiegne `5yo+` and Ecstasy age `3` corrections;
+- two official 1600m distance enrichments;
+- three actual-off-time enrichments;
+- governed Pegasus 2018 and Arc 2019 prize-schedule enrichments.
+
+The parser/source layer is not rewritten to pretend those corrected facts were present in the raw data. Raw lineage remains recoverable.
+
+### Preserved earlier releases
+
+Database v2 remains immutable and retained:
+
+```text
+path: data/processed/database/releases/inside_rails_v2.sqlite3
+SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
+```
+
+Database v1 remains immutable and retained:
+
+```text
+path: data/processed/database/releases/inside_rails_v1.sqlite3
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+```
+
+They are historical release/rollback evidence, not the normal study database.
+
 ## Current status
 
 ### Source-field investigation series — Notebooks 00–21
@@ -36,14 +105,12 @@ The authorised Source Version 1 race key is exact raw `date + course + off`. The
 
 The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
 
-Retained governed limits include:
+Important distinction after the v3 reconciliation:
 
-- Notebook 08 preserves the lone unresolved starting-price value `F`;
-- Notebook 19 preserves one unresolved authority-dependent transition for `Runninsonofagun (IRE)`;
-- Notebook 20 preserves 18 unresolved connection blanks after 28 confirmed supplementations;
-- Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
+- the lone raw starting-price token `F` remains unresolved by the source parser because no numeric price is present in the raw token;
+- external evidence independently established the corresponding Almendares price as `5/2 favourite`, and Database v3 now exposes that governed correction analytically.
 
-Notebook 11 has a durable source-to-output builder and independent validator for all 189,043 source race occurrences. The accepted result contains 169,465 resolved and 19,578 unresolved canonical race-time decisions.
+Notebook 20 still preserves 18 unresolved connection blanks after 28 confirmed supplementations. Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
 
 ### Participant identity programme — consolidated Notebook 22
 
@@ -51,155 +118,77 @@ Notebook 11 has a durable source-to-output builder and independent validator for
 
 Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
 
-The owner-identity scope originally scheduled as Notebook 23 was completed inside Notebook 22, so no separate Notebook 23 is required.
+### Database release programme
 
-### Targeted cross-notebook implementation audit
+- Database v1: minimum structural core, accepted 8 August 2026;
+- Database v2: Notebook 04–22 governed integration, accepted 9 August 2026;
+- Database v3: external-verification reconciliation repair, accepted 9 August 2026.
 
-**Status: completed on 5 August 2026.**
-
-The audit repaired bounded implementation defects involving stale closeout records, provenance enforcement, missing usable outputs, exact decision closure, correction lineage, source-wide validators, an obsolete construction utility and canonical race-time regeneration.
-
-Final integrated evidence:
-
-```text
-282 passed in 1.52s
-ALL 28 VALIDATORS PASSED
-```
-
-### Minimum stable core and accepted Database v1
-
-**Status: release accepted and promoted on 8 August 2026.**
-
-The project has SQLite schema version 1 implementing the authorised minimum structural core:
-
-- a complete immutable raw mirror;
-- deterministic source, race and runner identifiers;
-- 189,043 source race occurrences;
-- 1,851,285 runner participations;
-- governance method and release records;
-- import manifest and validation-result structures;
-- STRICT tables, foreign keys, indexes and protective triggers;
-- durable fail-closed construction and cleanup;
-- complete builder readback;
-- a separate source-wide independent validator;
-- an explicit fail-closed release-acceptance and atomic-promotion boundary.
-
-Preserved validated candidate:
-
-```text
-path: data/processed/database/candidates/inside_rails_v1_candidate.sqlite3
-size: 1,730,048,000 bytes
-SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
-manifest status: built
-```
-
-Accepted Version 1 release:
-
-```text
-path: data/processed/database/releases/inside_rails_v1.sqlite3
-size: 1,730,048,000 bytes
-SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
-manifest status: release_accepted
-validation-result rows: 7
-quick_check: ok
-foreign_key_check rows: 0
-SQLite application_id: 1230130259
-SQLite user_version: 1
-candidate hash unchanged during promotion: true
-```
-
-Independent candidate validation checked:
-
-```text
-1,851,286 raw records
-68,497,582 raw values
-68,497,582 SQLite storage classes
-189,043 race codes, groupings and runner counts
-1,851,285 runner codes and source-row links
-```
-
-The bounded database gate passed:
-
-```text
-72 passed in 14.54s
-```
-
-The Phase 4 repository-wide technical gate at commit `bf1d7f7b253edaf7232351e33ada92b039ca97ba` passed:
-
-```text
-354 passed in 18.28s
-ALL 31 VALIDATORS PASSED
-```
-
-Release-management implementation then passed:
-
-```text
-focused promotion tests: 6 passed in 0.64s
-complete repository tests: 360 passed in 15.36s
-```
-
-The 31-validator Phase 4 result is prior technical evidence durably associated with the accepted release; promotion did not pretend to rerun that historical sweep.
+Database v3 supersedes v2 for normal analytical use. Prior releases remain immutable.
 
 ### Reader-facing Study 01 — field size and race predictability
 
-**Status: in progress.**
+**Status: in progress and no longer blocked by database integration.**
 
-The first reader-facing study has established the British race population and field-size distribution and has confirmed that the 21 one-runner British races are genuine walkovers rather than reconstruction errors.
+The first reader-facing study asks:
 
-A temporary diagnostic was opened after copied notebook output appeared to show `Walkover<br><br><br>`. That apparent comment-markup defect is now closed:
+> What relationship, if any, exists between field size and the predictability of British horse races?
 
-- Source Version 1 contains zero admitted comments with a literal `<` character;
-- the accepted Database v1 Hereford / Queensbury Boy value is exactly `Walkover`;
-- the apparent `<br>` markup was introduced during rendered-output / copy-paste transport;
-- no comment-cleaning transformation or database change is required.
+Established before the database pause:
 
-The durable consequence is recorded in `docs/COMMENT_INFORMATION_INTEGRATION.md`. Study work should not reopen this false comment defect without new stored-data evidence.
+- 111,634 British races before the walkover exclusion;
+- field-size mode 8 and median 9;
+- approximately 74.0% of British races have 6–12 runners;
+- approximately 89.8% have 5–14 runners;
+- 21 one-runner British races were inspected and confirmed as genuine walkovers;
+- the competitive British population is therefore 111,613 races.
 
-## Validation history
+The earlier apparent `Walkover<br><br><br>` defect was a rendered-output/copy-paste artefact, not stored database content.
 
-End of source-field series, 4 August 2026:
+Study 01 should now resume against accepted Database v3 using the reconciled study-facing views and the canonical study documentation.
 
-```text
-256 passed in 0.96s
-ALL 26 THEN-DISCOVERED VALIDATORS PASSED
-```
+## Final Database v3 acceptance evidence
 
-Final integrated implementation audit, 5 August 2026:
-
-```text
-282 passed in 1.52s
-ALL 28 VALIDATORS PASSED
-```
-
-Final bounded minimum-core gate, 6 August 2026:
+Promotion implementation head:
 
 ```text
-72 passed in 14.54s
+0b535cb5bfdcb22b7693e8a26a82acfcb025529d
 ```
 
-Final Phase 4 repository-wide technical gate, 6 August 2026:
+Focused canonical-validator-runner tests:
 
 ```text
-354 passed in 18.28s
-ALL 31 VALIDATORS PASSED
+5 passed in 0.44s
 ```
 
-Release-boundary implementation gate, 8 August 2026:
+Complete repository suite:
 
 ```text
-6 focused promotion tests passed
-360 complete repository tests passed
+412 passed in 18.64s
 ```
 
-The field-governance registers remain reconciled to:
+Applicable independent-validator gate:
 
 ```text
-closed: 34
-implemented_with_governed_anomaly: 1
-preserve: 2
+31 validators passed
 ```
 
-All 37 source fields require raw preservation and match the SQLite names, order and declared types.
+The standalone Database v3 validator then reconfirmed the exact candidate against accepted Database v2 before promotion.
+
+Promotion confirmed:
+
+```text
+release_accepted: true
+candidate_hash_unchanged: true
+prior_release_preserved: true
+quick_check: ok
+foreign_key_check rows: 0
+validation-result rows: 7
+```
+
+The exact accepted v3 release SHA-256 is:
+
+`aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
 
 ## Database admission rule
 
@@ -207,37 +196,49 @@ Every database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
 
 > No validated output, no database write. No partial success. The last known-good database remains intact.
 
-Candidate outputs must be built away from any live database, validated source-wide, persisted and read back, and accepted through a separate explicit gate. Unknown or changed cases must fail closed, remain explicitly unresolved or be quarantined; they must never be silently guessed or partially loaded.
+The complete repository suite and all applicable independent validators are part of the project-level gate. The canonical validator procedure is now permanent:
 
-Accepted Database v1 is consumed read-only from:
+```bash
+python scripts/run_applicable_validators.py
+```
 
-`data/processed/database/releases/inside_rails_v1.sqlite3`
+Do not reconstruct an ad-hoc shell loop for the validator gate.
+
+## Study database rules
+
+Before every reader-facing study, read:
+
+- `docs/STUDY_RESEARCH_PLAYBOOK.md`;
+- `docs/STUDY_DATABASE_REFERENCE.md`;
+- `docs/STUDY_DATA_ACCESS.md`;
+- `docs/STUDY_REVISIT_REGISTER.md`.
+
+The exact current database path, release identity, study-facing views and population semantics are governed by `docs/STUDY_DATABASE_REFERENCE.md` rather than memory.
+
+Normal studies must use accepted Database v3 read-only. There is no silent fallback to Database v2, Database v1, a validated candidate or Source Version 1.
 
 ## Durable project controls
 
 See:
 
-- `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT.md`;
-- `docs/RETROSPECTIVE_IMPLEMENTATION_AUDIT_PHASE_4_ADDENDUM.md`;
-- `docs/CROSS_NOTEBOOK_IMPLEMENTATION_COMPLETENESS_AUDIT.md`;
+- `docs/STUDY_RESEARCH_PLAYBOOK.md`;
+- `docs/STUDY_DATABASE_REFERENCE.md`;
+- `docs/STUDY_DATA_ACCESS.md`;
+- `docs/STUDY_REVISIT_REGISTER.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
-- `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
-- `docs/PROJECT_PLAN.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
-- `docs/COMMENT_INFORMATION_INTEGRATION.md`;
-- `docs/PHASE_4_MINIMUM_CORE_LESSONS_LEARNED.md`;
-- `docs/PHASE_4_RAW_MIRROR_CANDIDATE_EVIDENCE.md`;
-- `docs/PHASE_4_CORE_STRUCTURE_PROTOTYPE_EVIDENCE.md`;
-- `docs/PHASE_4_MINIMUM_CORE_CANDIDATE_EVIDENCE.md`;
-- `docs/PHASE_4_FINAL_REPOSITORY_GATE_EVIDENCE.md`;
-- `docs/PHASE_4_RELEASE_ACCEPTANCE_AND_PROMOTION_CONTRACT.md`;
-- `docs/PHASE_4_RELEASE_ACCEPTANCE_EVIDENCE.md`.
+- `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
+- `docs/APPLICABLE_VALIDATOR_GATE.md`;
+- `docs/DATABASE_USER_GUIDE.md`;
+- `docs/DATABASE_V3_EXTERNAL_VERIFICATION_RECONCILIATION.md`;
+- `docs/DATABASE_V3_RELEASE_ACCEPTANCE_AND_PROMOTION.md`;
+- `docs/PROJECT_PLAN.md`.
+
+Historical Phase 3/4 and Database v1/v2 evidence documents remain in the repository as historical records and should not be rewritten to pretend they described Database v3 at the time.
 
 ## Next bounded action
 
-Continue reader-facing Study 01 using the accepted Inside Rails Version 1 database as the default analytical source.
-
-The false comment-markup issue is closed. If Study 01 still requires study-facing access to already-governed race-time information, handle that as a separate bounded database/integration question using the established Notebook 11 temporal implementation rather than conflating it with comment cleaning.
+Resume reader-facing Study 01 using accepted Database v3 and its reconciled study-facing views.
 
 Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
 
@@ -245,19 +246,15 @@ Study work remains evidence-led: the question comes first, the population and gr
 
 The project follows an evidence-led investigation-to-implementation cycle:
 
-1. profile the raw source without altering it;
+1. profile the relevant governed data without altering immutable evidence;
 2. state one bounded question;
 3. test coverage, uniqueness, exceptions and failure modes;
 4. inspect material exceptions and preserve unresolved cases explicitly;
 5. separate observation, interpretation, confidence and design decision;
-6. translate the conclusion into a practical database consequence;
+6. translate any correctness-critical reusable finding into a practical database consequence;
 7. implement the rule reversibly while retaining raw values and lineage;
 8. extract stable reusable logic into `src/inside_rails/`;
 9. add focused tests and independent validation;
 10. record evidence, limitations and lessons learned;
-11. update the audit record, README and project plan;
+11. update the audit record, README and project plan where applicable;
 12. commit and verify the complete closeout.
-
-The stopping rule is:
-
-> Investigate until a defensible rule can be stated, its known exceptions identified, unresolved cases preserved without information loss, and a validation implemented that will detect failure.
