@@ -1,103 +1,121 @@
 # Inside Rails Horse-Racing Database
 
-## Practical User Guide — Database v1
+## Practical User Guide — Database v2
 
-**Guide date:** 8 August 2026  
-**Accepted database:** `data/processed/database/releases/inside_rails_v1.sqlite3`
+**Guide date:** 9 August 2026  
+**Accepted database:** `data/processed/database/releases/inside_rails_v2.sqlite3`
 
-## 1. What this database is
+## 1. What Database v2 is
 
-Database v1 is the project's accepted, validated SQLite research database for the supplied historical horse-racing source. It contains:
+Database v2 is the current accepted, validated SQLite research database for Inside Rails.
 
-- the complete retained raw source layer;
-- one reconstructed race occurrence for every authorised raw `date + course + off` group;
-- one runner participation for every admitted source record;
-- stable race, runner and source-record identifiers;
-- complete source lineage and build evidence;
-- convenient views joining race structure to all 37 raw racing fields.
+It combines:
 
-It is intended for local research, notebook analysis, evidence-backed articles and reusable query development. It is not a live racecard service, a tip generator or a guarantee that a historical pattern will remain profitable.
+- the complete retained raw Source Version 1 mirror;
+- one structural race occurrence for every authorised raw `date + course + off` group;
+- one structural runner participation for every admitted source record;
+- the governed semantic work established by Notebooks 04–22;
+- governed reference data;
+- bounded corrections and supplementations;
+- provisional horse/pedigree identity work;
+- provisional participant identity work;
+- complete source, build and release lineage;
+- transparent study-facing views.
 
-Treat the accepted release as read-only. The preserved candidate remains in the candidate directory for evidence and rollback, but normal analysis should use the accepted release path above.
+It is intended for local research, evidence-backed articles, notebook analysis and reusable query development.
+
+It is not a live racecard service, a tip generator or evidence that any historical pattern will remain profitable.
+
+Treat the accepted release as immutable and read-only.
 
 ### Accepted identity
 
 ```text
-file size: 1,730,048,000 bytes
-SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+path: data/processed/database/releases/inside_rails_v2.sqlite3
+file size: 3,137,044,480 bytes
+SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
 manifest status: release_accepted
 validation-result rows: 7
 physical source records retained: 1,851,286
-admitted runner records: 1,851,285
-reconstructed race occurrences: 189,043
-runner participations: 1,851,285
+admitted source-backed runner records: 1,851,285
+structural race occurrences: 189,043
 SQLite application_id: 1230130259
-SQLite user_version: 1
+SQLite user_version: 2
 quick_check: ok
 foreign-key check rows: 0
 ```
 
-The preserved validated candidate remains unchanged at:
+Promotion independently recomputed all **1,851,286** raw-record fingerprints and compared **2,040,328** carried structural rows against the retained accepted Database v1 release.
+
+The exact validated v2 candidate remains preserved at:
 
 ```text
-path: data/processed/database/candidates/inside_rails_v1_candidate.sqlite3
-SHA-256: 7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2
+path: data/processed/database/candidates/inside_rails_v2_candidate.sqlite3
+SHA-256: 5fc6adaada69b7111a56021a9d67deeb62f6bb98268c69ad5c36009d337e39fe
+status: validated
 ```
 
-The Phase 4 technical gate recorded **354 passing tests** and **all 31 independent validators passing**. The later release-boundary implementation passed **6 focused promotion tests** and the complete repository suite at **360 passing tests** before promotion.
+The prior accepted Database v1 remains preserved at:
+
+```text
+path: data/processed/database/releases/inside_rails_v1.sqlite3
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+```
 
 ## 2. Two-minute quick start
 
-Run from the repository root:
+From the repository root:
 
 ```bash
 cd ~/Documents/inside-rails-horse-racing
 source .venv/bin/activate
 ```
 
-The project uses a `src` layout. Prefix Python commands with `PYTHONPATH=src` unless the package has been installed into the environment.
-
-Confirm the database exists:
-
-```bash
-ls -lh data/processed/database/releases/inside_rails_v1.sqlite3
-```
-
-Open it read-only in Python:
-
-```python
-from inside_rails.source_sqlite import connect_read_only
-
-DATABASE = "data/processed/database/releases/inside_rails_v1.sqlite3"
-
-with connect_read_only(DATABASE) as connection:
-    race_count = connection.execute(
-        "SELECT COUNT(*) FROM view_core_source_race_occurrences"
-    ).fetchone()[0]
-    runner_count = connection.execute(
-        "SELECT COUNT(*) FROM view_core_runner_participations"
-    ).fetchone()[0]
-
-print(race_count, runner_count)
-```
-
-Run it with:
+The repository uses a `src` layout. For ordinary command-line Python use:
 
 ```bash
 PYTHONPATH=src python your_script.py
 ```
 
-Expected counts:
+For notebooks, use the project `rails` alias so Jupyter starts with the correct absolute `PYTHONPATH`.
 
-```text
-189043 1851285
-```
-
-Open it in the SQLite shell:
+Confirm the accepted release exists:
 
 ```bash
-sqlite3 -readonly \
-  data/processed/database/releases/inside_rails_v1.sqlite3
+ls -lh data/processed/database/releases/inside_rails_v2.sqlite3
+```
+
+Read a race count in Python:
+
+```python
+from inside_rails.source_sqlite import connect_read_only
+
+DATABASE = "data/processed/database/releases/inside_rails_v2.sqlite3"
+
+with connect_read_only(DATABASE) as connection:
+    race_count = connection.execute(
+        "SELECT COUNT(*) FROM view_governed_race_occurrences"
+    ).fetchone()[0]
+    source_runner_count = connection.execute(
+        "SELECT COUNT(*) FROM view_governed_source_runner_participations"
+    ).fetchone()[0]
+    combined_runner_count = connection.execute(
+        "SELECT COUNT(*) FROM view_governed_runner_records"
+    ).fetchone()[0]
+
+print(race_count, source_runner_count, combined_runner_count)
+```
+
+Expected:
+
+```text
+189043 1851285 1851288
+```
+
+Open the database in the SQLite shell:
+
+```bash
+sqlite3 -readonly data/processed/database/releases/inside_rails_v2.sqlite3
 ```
 
 Useful shell settings:
@@ -108,386 +126,423 @@ Useful shell settings:
 .timer on
 ```
 
-## 3. Database model in plain English
+## 3. Data layers in plain English
 
-### Retained source records
+### Raw evidence
 
-`source_raceform_v1_record` preserves every physical source record, including the one excluded header-like row at source `rowid = 1`. Original values and SQLite storage classes are retained.
+`source_raceform_v1_record` preserves every physical Source Version 1 record, including the retained excluded row.
 
-### Reconstructed races
+Raw values remain evidence. Database v2 does not rewrite the historical third-party source.
 
-`core_source_race_occurrence` contains one row per authorised race group. A race is reconstructed from the exact raw combination:
+### Structural racing core
+
+`core_source_race_occurrence` contains one authorised Source Version 1 race occurrence per exact raw:
 
 ```text
 date + course + off
 ```
 
-Use `source_race_occurrence_code` as the stable race identifier. Do not use the raw `race_id` as the primary race key.
+`core_runner_participation` links each admitted source-backed runner to exactly one structural race occurrence.
 
-### Runner participations
+### Governed semantic extensions
 
-`core_runner_participation` links each admitted raw runner record to exactly one reconstructed race. This provides a reliable one-row-per-runner-in-a-race structure without rewriting the raw racing fields.
+Database v2 adds explicit governed interpretations instead of forcing every study to rebuild them.
+
+Race-level governed material is stored in:
+
+- `core_source_race_occurrence_governed`;
+- `core_source_race_occurrence_time`.
+
+Runner-level governed material is stored in:
+
+- `core_runner_participation_governed`.
+
+Raw source values remain recoverable through lineage.
+
+### Governed references and evidence
+
+Database v2 also stores:
+
+- 395 governed course identities and timezones;
+- 16 bounded jurisdiction-context rows;
+- 37 source-field treatment rows;
+- 85 permanent manual-verification rows;
+- 46 connection blank-field decisions;
+- 3 missing-runner supplementations;
+- 16 specialist horse/pedigree decisions.
+
+### Provisional identity layers
+
+Horse/pedigree and participant identities remain deliberately provisional where the underlying notebooks did not establish a universal real-world identity system.
 
 ## 4. Recommended views
 
-| View | Grain | Best use |
-|---|---|---|
-| `view_core_runner_participations` | One admitted runner in one reconstructed race | Main analysis view. Includes race code, source lineage and all 37 raw fields. |
-| `view_core_source_race_occurrences` | One reconstructed race | Race counts, course/date filtering and actual field size. |
-| `view_source_raceform_v1_records` | One retained physical source record | Raw-source inspection, including the retained excluded record. |
-| `view_source_record_lineage` | One retained source record | Source row, status and fingerprint auditing. |
-| `view_database_release_evidence` | One database build manifest | Build counts, commits and validation flags. |
-| `view_import_validation_evidence` | One stored validation result | Builder and release validation evidence. |
+### `view_governed_race_occurrences`
 
-For most runner-level analysis, start with `view_core_runner_participations`. For race-level analysis, start with `view_core_source_race_occurrences`.
+Grain: one governed structural race occurrence.
 
-## 5. Grain and identifiers
+Rows: **189,043**.
 
-A row in `view_core_source_race_occurrences` represents one exact raw `date + course + off` group.
+Use this as the normal race-level study interface.
 
-A row in `view_core_runner_participations` represents one admitted source runner record linked to one reconstructed race.
+It brings together structural race identity with governed race semantics and timing while keeping source lineage available.
 
-Useful identifiers:
+### `view_governed_source_runner_participations`
 
-- `runner_participation_code` — stable runner-in-race identity;
-- `source_race_occurrence_code` — stable race identity;
-- `source_record_code` — stable source-row identity;
-- `source_rowid` — original SQLite row number.
+Grain: one source-backed runner participation.
 
-The raw source `race_id` is preserved as evidence but is not the authorised structural key.
+Rows: **1,851,285**.
 
-## 6. Raw field groups
+Use when the analytical population must match admitted physical source runner rows exactly.
 
-The 37 original fields are preserved as source values rather than universally cleaned analytical variables.
+### `view_governed_runner_records`
 
-**Race description:** `date`, `course`, `race_id`, `off`, `race_name`, `type`, `class`, `pattern`, `rating_band`, `age_band`, `sex_rest`, `dist`, `going`, `ran`
+Grain: one governed runner record, including the three accepted missing-runner supplementations.
 
-**Runner and result:** `num`, `pos`, `draw`, `ovr_btn`, `btn`, `horse`, `age`, `sex`, `wgt`, `hg`, `time`
+Rows: **1,851,288**.
 
-**Market and connections:** `sp`, `jockey`, `trainer`, `owner`
+This is the normal combined runner interface when the study should use all currently governed runner evidence.
 
-**Ratings and breeding:** `or`, `rpr`, `ts`, `sire`, `dam`, `damsire`
+The three supplemented runners are:
 
-**Money and narrative:** `prize`, `comment`
+- Saucats — Nantes, 18 June 2024, 2:14;
+- Tosen Thunder (JPN) — Ohi, 9 October 2025, 11:07;
+- Great Navigator (USA) — Gulfstream Park, 23 December 2023, 9:36.
 
-A column name does not guarantee one uniform type or meaning in every jurisdiction and period. Before arithmetic or grouping, inspect blanks, `typeof(column)`, distinct formats, governed parser conclusions and jurisdiction context.
+Supplemented rows do not receive invented source-record IDs or unsupported fields.
 
-## 7. Query recipes
+### `view_governed_horse_occurrence_assignments`
 
-### Confirm the population
+Use when Notebook 19 provisional horse/pedigree occurrence identity is material.
+
+Current baseline:
+
+```text
+provisional horse occurrences: 611
+transition decisions: 353
+Corrected: 92
+Different horse: 261
+Unresolved: 0
+```
+
+### `view_governed_participant_label_identities`
+
+Use when accepted Notebook 22 participant mappings are material.
+
+Current baseline:
+
+```text
+source labels: 116,859
+accepted provisional identities: 68
+accepted label mappings: 149
+candidate relationships: 1,205
+```
+
+Unresolved participant candidates remain unresolved.
+
+## 5. Grain and identifier rules
+
+Do not use the raw supplied `race_id` as a unique Inside Rails race identifier.
+
+Prefer project-owned stable textual codes such as:
+
+- `source_record_code`;
+- `source_race_occurrence_code`;
+- `runner_participation_code`.
+
+Internal integer IDs are scoped to one built database release and should not be treated as stable external references.
+
+For race-level analysis, do not count runner rows as independent races.
+
+For runner-count work, distinguish:
+
+- admitted physical source runner rows;
+- raw source-reported `ran`;
+- governed source coverage status;
+- combined governed runner records including external supplementations.
+
+## 6. Important integrated governance
+
+Database v2 integrates the Notebook 04–22 decisions instead of merely exposing raw fields.
+
+### Surface
+
+An explicit `(AW)` course marker supports the bounded value:
+
+`all_weather_unspecified`
+
+Other surfaces remain unresolved under that source-only rule unless another governed field supplies context.
+
+### Distance
+
+Distance is a governed parse of the literal source notation.
+
+Do not describe it as independently verified official distance.
+
+### Starting price
+
+Fractional/evens arithmetic and marker semantics are governed.
+
+The lone raw value:
+
+`F`
+
+remains unresolved because a favourite marker alone does not supply a price.
+
+No odds are invented for it.
+
+### Runner sex
+
+Two exact Notebook 17 source anomalies have bounded accepted corrections:
+
+- Par Coeur (GER): raw `BB` → governed `gelding`;
+- La Venezolana (VEN): raw `B` → governed `filly`.
+
+These are exact-record corrections, not global code translations.
+
+### Ratings
+
+The exact raw RPR anomaly:
+
+```text
+source rowid 1619851
+raw rpr = 775
+```
+
+is governed as `invalid_source_value` with analytical RPR null.
+
+No replacement rating is invented.
+
+### Connections
+
+Notebook 20 provides:
+
+```text
+raw blank connection fields: 46
+externally supplemented: 28
+preserved unresolved: 18
+```
+
+A supplemented jockey/trainer/owner label is still a governed label, not automatically a real-world participant identity.
+
+### Comments
+
+Comment text is preserved and conservatively state-classified.
+
+Database v2 does not contain a universal narrative parser.
+
+## 7. Advertised start-time governance
+
+Database v2 integrates Notebook 11 race-time reconstruction.
+
+Current baseline:
+
+```text
+total races: 189,043
+resolved: 169,465
+unresolved: 19,578
+pre-boundary races: 178,691
+explicit post-boundary races: 10,352
+```
+
+Decision methods:
+
+```text
+course_local_dead_of_night_rejection: 111,871
+stable_post_boundary_course_profile: 47,242
+explicit_post_boundary_time: 10,352
+unresolved: 19,578
+```
+
+Format boundary:
+
+`2025-10-15`
+
+These values represent reconstructed advertised/scheduled start time, not automatically exact actual-off time.
+
+## 8. Query recipes
+
+### Confirm the study-facing populations
 
 ```sql
 SELECT COUNT(*) AS races
-FROM view_core_source_race_occurrences;
+FROM view_governed_race_occurrences;
 
-SELECT COUNT(*) AS runners
-FROM view_core_runner_participations;
+SELECT COUNT(*) AS source_backed_runners
+FROM view_governed_source_runner_participations;
+
+SELECT COUNT(*) AS governed_runner_records
+FROM view_governed_runner_records;
 ```
 
-### Recent reconstructed races at a course
+### Field-size distribution from source-backed physical rows
+
+Use the race-level governed interface rather than grouping raw runner rows yourself:
 
 ```sql
 SELECT
-    source_race_occurrence_code,
-    raw_date,
-    raw_course,
-    raw_off,
-    admitted_runner_count
-FROM view_core_source_race_occurrences
-WHERE raw_course = 'Ascot'
-ORDER BY CAST(raw_date AS TEXT) DESC, CAST(raw_off AS TEXT) DESC
-LIMIT 20;
+    source_runner_row_count AS runners,
+    COUNT(*) AS races
+FROM view_governed_race_occurrences
+GROUP BY source_runner_row_count
+ORDER BY source_runner_row_count;
 ```
 
-Course labels are raw source labels. Inspect distinct labels before assuming spelling and jurisdiction are canonical.
+Before using this result in a study, confirm the exact column name with `PRAGMA table_info(view_governed_race_occurrences)` if the query is being developed interactively. The semantic decision is more important than memorising a view column name.
 
-### Every runner in one race
+### Inspect a view schema
 
 ```sql
-SELECT
-    num,
-    horse,
-    pos,
-    sp,
-    jockey,
-    trainer,
-    "or",
-    rpr,
-    ts
-FROM view_core_runner_participations
-WHERE source_race_occurrence_code = ?
-ORDER BY
-    CASE
-        WHEN typeof(num) IN ('integer', 'real') THEN CAST(num AS REAL)
-        ELSE 9999
-    END,
-    source_rowid;
+PRAGMA table_info(view_governed_race_occurrences);
+PRAGMA table_info(view_governed_runner_records);
 ```
 
-### A horse's recorded history
+### Search one horse label without claiming universal horse identity
 
 ```sql
-SELECT
-    source_race_occurrence_code,
-    date,
-    course,
-    off,
-    race_name,
-    pos,
-    sp,
-    jockey,
-    trainer,
-    "or",
-    rpr,
-    ts
-FROM view_core_runner_participations
+SELECT *
+FROM view_governed_source_runner_participations
 WHERE horse = ?
-ORDER BY CAST(date AS TEXT) DESC, CAST(off AS TEXT) DESC;
+ORDER BY date, off;
 ```
 
-Use a parameter rather than inserting a horse name directly into SQL.
+Use a parameter in Python rather than interpolating names into SQL.
 
-### Races by year
+### Inspect unresolved advertised times
 
 ```sql
-SELECT
-    substr(CAST(raw_date AS TEXT), 1, 4) AS year,
-    COUNT(*) AS races
-FROM view_core_source_race_occurrences
-GROUP BY year
-ORDER BY year;
+SELECT COUNT(*)
+FROM view_governed_race_occurrences
+WHERE temporal_resolution_status = 'unresolved';
 ```
 
-### Actual field-size distribution
+Expected count:
 
-```sql
-SELECT
-    admitted_runner_count AS runners,
-    COUNT(*) AS races
-FROM view_core_source_race_occurrences
-GROUP BY admitted_runner_count
-ORDER BY admitted_runner_count;
-```
+`19578`
 
-Use `admitted_runner_count` rather than trusting raw `ran` when the question is how many admitted source runners the reconstructed race actually contains.
+## 9. Using pandas efficiently
 
-### Raw trainer-label win rates
+Do not load all 1.85 million runner rows into pandas for ordinary counting or grouping.
 
-```sql
-SELECT
-    trainer,
-    COUNT(*) AS runs,
-    SUM(CASE WHEN CAST(pos AS TEXT) = '1' THEN 1 ELSE 0 END) AS wins,
-    ROUND(
-        100.0 * SUM(CASE WHEN CAST(pos AS TEXT) = '1' THEN 1 ELSE 0 END)
-        / COUNT(*),
-        1
-    ) AS win_percentage
-FROM view_core_runner_participations
-WHERE trainer IS NOT NULL
-  AND trim(CAST(trainer AS TEXT)) <> ''
-GROUP BY trainer
-HAVING COUNT(*) >= 100
-ORDER BY win_percentage DESC, runs DESC
-LIMIT 50;
-```
+Preferred pattern:
 
-This groups exact raw trainer labels. Do not present it as fully identity-resolved trainer statistics without checking variants and transitions.
+1. filter in SQL;
+2. aggregate in SQL where practical;
+3. load only the result into pandas;
+4. use pandas for presentation, modelling or charts.
 
-### Inspect storage types
-
-```sql
-SELECT
-    typeof(prize) AS storage_type,
-    COUNT(*) AS rows,
-    COUNT(DISTINCT prize) AS distinct_values
-FROM view_core_runner_participations
-GROUP BY typeof(prize)
-ORDER BY rows DESC;
-```
-
-### Find source-marked favourites
-
-```sql
-SELECT
-    source_race_occurrence_code,
-    date,
-    course,
-    horse,
-    pos,
-    sp
-FROM view_core_runner_participations
-WHERE typeof(sp) = 'text'
-  AND substr(upper(trim(sp)), -1, 1) IN ('F', 'J', 'C')
-LIMIT 100;
-```
-
-Use the tested starting-price parser before odds arithmetic.
-
-## 8. Using pandas efficiently
-
-Do not load all 1.85 million runner rows into pandas unless the analysis genuinely requires it. Filter and aggregate in SQLite first.
+Example:
 
 ```python
 import pandas as pd
 from inside_rails.source_sqlite import connect_read_only
 
+DATABASE = "data/processed/database/releases/inside_rails_v2.sqlite3"
+
 query = """
-SELECT
-    course,
-    COUNT(*) AS runner_rows,
-    SUM(CASE WHEN CAST(pos AS TEXT) = '1' THEN 1 ELSE 0 END) AS wins
-FROM view_core_runner_participations
-WHERE CAST(date AS TEXT) >= '2024-01-01'
-GROUP BY course
-ORDER BY runner_rows DESC
+SELECT candidate_jurisdiction, COUNT(*) AS races
+FROM view_governed_race_occurrences
+GROUP BY candidate_jurisdiction
+ORDER BY races DESC
 """
 
 with connect_read_only(DATABASE) as connection:
-    course_summary = pd.read_sql_query(query, connection)
+    summary = pd.read_sql_query(query, connection)
 ```
 
-Recommended pattern:
-
-1. filter in SQL;
-2. aggregate in SQL where possible;
-3. load only the result into pandas;
-4. use pandas for presentation, modelling or charts.
-
-## 9. Tested Python helpers
-
-The database deliberately preserves raw values. Use reusable project modules for interpretations already investigated in notebooks.
-
-```python
-from inside_rails.starting_price import parse_starting_price
-
-parsed = parse_starting_price('5/2F')
-print(parsed.fractional_odds)
-print(parsed.implied_probability)
-print(parsed.favourite_status)
-```
-
-The starting-price parser handles fractional prices and evens, recognises attached `F`, `J` and `C` markers, preserves missing values and refuses to invent a price for the lone raw value `F`.
-
-General rule: reuse tested logic under `src/inside_rails/` rather than writing a quick parser inside every notebook.
-
-## 10. Performance guidance
+## 10. Safe working rules
 
 Do:
 
-- select only the columns you need;
-- filter early;
-- aggregate in SQL;
-- use `LIMIT` while exploring;
-- save stable queries once the population is correct;
-- inspect `EXPLAIN QUERY PLAN` when a query is unexpectedly slow.
+- use the accepted Database v2 release;
+- open it read-only;
+- state the observation grain;
+- state whether supplementations are included;
+- use governed views where appropriate;
+- retain raw/governed distinction in reporting;
+- save study outputs outside the database;
+- record database path/hash and repository commit for serious results.
 
-Avoid:
+Do not:
 
-- `SELECT *` across the complete runner view;
-- loading the whole database into pandas for simple counts;
-- repeated one-off parsing where reusable logic exists;
-- joining on raw labels when a stable identifier is available;
-- using raw `race_id` as the race key.
+- modify the accepted release;
+- silently fall back to Database v1 or Source Version 1;
+- use the validated candidate for normal studies;
+- use raw `race_id` as the project race key;
+- turn unresolved values into guessed values;
+- turn provisional identity candidates into accepted identities;
+- create notebook-local infrastructure for a reusable database defect without escalating it.
 
-## 11. Safe working rules
+## 11. Current limitations
 
-Treat database v1 as read-only. Use `connect_read_only` or `sqlite3 -readonly`.
+- Source Version 1 covers 1 January 2015 through 27 May 2026; Database v2 is not a live feed.
+- Some governed values remain unresolved by design.
+- Race-time reconstruction is advertised/scheduled time, not guaranteed exact actual-off time.
+- Distance parsing is source-literal, not independently verified official distance.
+- Horse and participant identity work remains provisional and role/scope bounded.
+- Prize currencies outside the governed canonical cases remain unresolved rather than converted by guesswork.
+- Raw labels and narrative text remain available because not every source field should be aggressively normalised.
+- Historical statistical relationships are not guaranteed betting edges.
 
-Do not use the database itself as a scratchpad for temporary tables, manual corrections or notebook outputs.
-
-Save analysis outputs separately under a clearly named `data/processed/` or report/output folder.
-
-For a serious result, record:
-
-- database path and SHA-256;
-- repository commit;
-- exact SQL or Python code;
-- population filters and exclusions;
-- output row counts;
-- interpretation and limitations.
-
-## 12. Important limitations
-
-- The source covers 1 January 2015 to 27 May 2026; it is not a live feed.
-- Database v1 is the minimum core, not every governed enrichment as convenient columns.
-- Horse, jockey, trainer and owner values remain raw labels and may not be stable identities.
-- Mixed text, integer, real, null and blank values are deliberately preserved.
-- Prize money, classifications, distance, going and timing conventions vary by jurisdiction.
-- Raw implied probability includes bookmaker margin and is not automatically fair probability.
-- Historical patterns are not guaranteed betting edges.
-
-## 13. Troubleshooting
+## 12. Troubleshooting
 
 ### `ModuleNotFoundError: No module named 'inside_rails'`
+
+For command-line Python:
 
 ```bash
 PYTHONPATH=src python your_script.py
 ```
 
-For Jupyter:
+For notebooks, start Jupyter with the project `rails` alias.
+
+Do not add `sys.path` hacks to notebooks.
+
+### Unable to open Database v2
+
+Check:
 
 ```bash
-PYTHONPATH=src jupyter lab
+ls -lh data/processed/database/releases/inside_rails_v2.sqlite3
 ```
 
-### Unable to open the database
+Do not silently switch to another database.
 
-Check the working directory, exact accepted-release path, file existence and read permission.
+### Unsure which columns a governed view exposes
 
-Do not silently fall back to the candidate or raw source.
-
-### A column behaves strangely
+Use:
 
 ```sql
-SELECT typeof(sp), sp, COUNT(*)
-FROM view_core_runner_participations
-GROUP BY typeof(sp), sp
-ORDER BY COUNT(*) DESC
-LIMIT 50;
+PRAGMA table_info(view_governed_race_occurrences);
+PRAGMA table_info(view_governed_source_runner_participations);
+PRAGMA table_info(view_governed_runner_records);
 ```
 
-### A grouping looks suspicious
+### A field still looks strange
 
-Check for raw-label variants, use of `race_id`, unparsed formats or mixed jurisdictions.
+Check the relevant Notebook 04–22 governance documentation and reusable implementation before inventing a new parser.
 
-## 14. Recommended analysis workflow
+## 13. Recommended study workflow
 
 1. State the racing question in one sentence.
-2. Define the race and runner population before calculating anything.
-3. Choose the correct grain.
-4. Inspect raw formats, blanks and storage classes.
-5. Use stable race codes and source lineage.
-6. Apply tested parsers or governed reference data where required.
-7. Aggregate in SQL before moving results into pandas.
-8. Check sample sizes and exceptions.
-9. Compare outcomes with prices rather than only counting winners.
-10. Save the code, result and limitations together.
+2. Read `docs/STUDY_DATABASE_REFERENCE.md` and `docs/STUDY_DATA_ACCESS.md`.
+3. Use the accepted Database v2 release read-only.
+4. Declare race/runner grain and population.
+5. Select the appropriate governed view.
+6. Inspect unresolved states and supplementation consequences.
+7. Filter and aggregate in SQL.
+8. Move only the needed result into pandas.
+9. Check sample size, exceptions and market context.
+10. Save the code, result, interpretation and limitations together.
 
-A stronger question than “which horses won most often?” is:
-
-> Under a precisely defined population, did the outcome occur more or less often than the market price implied after accounting for bookmaker margin?
-
-## 15. Useful first projects
-
-- favourite performance by field size, race type and surface;
-- market-normalised value by price band;
-- course and configuration effects;
-- going compared with prior weather reports;
-- draw effects under tightly defined course/distance conditions;
-- trainer or jockey patterns after identity review;
-- class movements and rating changes;
-- received racing claims tested source-wide;
-- data-quality errors that could mislead a punter reading free racecard data at face value.
-
-The strongest Inside Rails pieces combine a familiar claim, a clearly defined population, transparent code, enough data to measure the effect, honest limits and a plain-English conclusion.
+The database should make studies faster because the project no longer needs to rediscover Notebook 04–22 governance every time a familiar racing question is asked.
 
 ## Quick command card
 
 ```bash
 source .venv/bin/activate
 PYTHONPATH=src python script.py
-PYTHONPATH=src jupyter lab
-sqlite3 -readonly data/processed/database/releases/inside_rails_v1.sqlite3
-git status --short
+rails
+sqlite3 -readonly data/processed/database/releases/inside_rails_v2.sqlite3
+git status --short --branch
 ```
