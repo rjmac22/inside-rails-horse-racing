@@ -10,8 +10,10 @@ BEGIN IMMEDIATE;
 DROP INDEX IF EXISTS ix_core_runner_participation_governed_result;
 DROP INDEX IF EXISTS ix_core_runner_participation_governed_sp;
 
-ALTER TABLE core_runner_participation_governed
-    RENAME TO core_runner_participation_governed_pre_contract_fix;
+-- The table has just been created by the preceding v2 migration resource and
+-- cannot contain governed runner rows yet. Dropping/recreating it avoids SQLite
+-- rename-side effects on the already-created import acceptance trigger.
+DROP TABLE core_runner_participation_governed;
 
 CREATE TABLE core_runner_participation_governed (
     runner_participation_id INTEGER PRIMARY KEY,
@@ -154,8 +156,6 @@ CREATE TABLE core_runner_participation_governed (
     FOREIGN KEY(owner_connection_value_decision_id) REFERENCES governance_connection_value_decision(connection_value_decision_id)
         ON UPDATE RESTRICT ON DELETE RESTRICT
 ) STRICT;
-
-DROP TABLE core_runner_participation_governed_pre_contract_fix;
 
 CREATE INDEX ix_core_runner_participation_governed_result
     ON core_runner_participation_governed(result_kind, finish_position);
