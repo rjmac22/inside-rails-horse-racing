@@ -16,13 +16,13 @@ The fuller study-facing database structure, table grains, identifier rules and c
 
 ---
 
-## Repository and branch
+## Repository and local study environment
 
 Repository:
 
 `rjmac22/inside-rails-horse-racing`
 
-Working repository root on the primary local development machine:
+Primary local repository root:
 
 `~/Documents/inside-rails-horse-racing`
 
@@ -32,111 +32,208 @@ Study notebooks live under:
 
 ### Canonical local Jupyter startup
 
-On the primary local development machine, start the Inside Rails Jupyter environment from the shell with:
+On the primary local development machine, start the Inside Rails Jupyter environment with:
 
 ```bash
 rails
 ```
 
-The `rails` shell alias is part of the project working environment and must resolve to:
+The alias must resolve to:
 
 ```bash
 cd /home/rob/Documents/inside-rails-horse-racing && source .venv/bin/activate && PYTHONPATH=/home/rob/Documents/inside-rails-horse-racing/src jupyter lab
 ```
 
-This launch contract matters because the repository uses a `src` layout. The `PYTHONPATH` value is deliberately absolute so kernels started for notebooks under `studies/` or `notebooks/` resolve the project package from the repository `src` directory rather than from a notebook-relative `src` path.
+The repository uses a `src` layout. The absolute `PYTHONPATH` is intentional so kernels started under either `studies/` or `notebooks/` resolve the project package correctly.
 
-Starting Jupyter without the absolute project `PYTHONPATH` can cause imports such as:
-
-```python
-from inside_rails.source_sqlite import connect_read_only
-```
-
-to fail with `ModuleNotFoundError` even though the project code is present.
-
-For normal local study work, use `rails` rather than manually reconstructing the repository path, virtual-environment activation and `PYTHONPATH` command each session. If `rails` stops resolving to the command above, repair the alias before continuing notebook work rather than adding notebook-local `sys.path` workarounds.
+Do not add notebook-local `sys.path` hacks if imports fail. Repair the launch environment instead.
 
 ---
 
 ## Immutable third-party source
 
-The original third-party SQLite source retains its original filename for lineage:
+Original filename:
 
 `raceform.db`
 
-Canonical local Source Version 1 path:
+Canonical Source Version 1 path:
 
 `data/raw/form_2015-present/form_2015-present/raceform.db`
 
-This file is source evidence, not the Inside Rails database.
+This file is source evidence, not the Inside Rails analytical database.
 
 Standing rules:
 
 - open it read-only;
 - do not rename or modify it;
-- all source-data queries use `rowid <> 1`;
+- source-data admission uses `rowid <> 1`;
 - preserve the accepted Source Version 1 identity and existing field-governance decisions;
 - authorised Source Version 1 race identity is exact raw `date + course + off`.
 
-The original `raceform.db` filename may appear in source-lineage documentation, but it must not be used as the name of an Inside Rails-built analytical database.
+Normal reader-facing studies should not query Source Version 1 directly when the required governed data is already integrated into Database v2.
+
+Use the raw source only when the research question explicitly concerns source evidence, source anomalies or a validation/reconciliation step.
 
 ---
 
-## Inside Rails database naming
+## Current Inside Rails study database
 
-Inside Rails-generated databases use project-owned names.
+### Accepted Database v2
 
-The approved naming convention is:
+Database v2 was release-accepted and promoted on **9 August 2026**.
 
-- validated candidate: `inside_rails_v1_candidate.sqlite3`;
-- accepted/promoted Version 1 database: `inside_rails_v1.sqlite3`.
+Canonical path:
 
-The name `raceform` must not be used for an Inside Rails-generated database.
+`data/processed/database/releases/inside_rails_v2.sqlite3`
 
-This distinction is intentional:
+SHA-256:
 
-- `raceform.db` means immutable third-party source evidence;
-- `inside_rails_v1_candidate.sqlite3` means the preserved validated pre-release candidate;
-- `inside_rails_v1.sqlite3` means the accepted Inside Rails Version 1 database.
+`80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe`
 
-A future schema or release version should follow the same project-owned naming pattern rather than inheriting a source-provider filename.
+Release identity:
 
-Canonical local candidate path:
+- manifest status: `release_accepted`;
+- SQLite `application_id`: `1230130259`;
+- SQLite `user_version`: `2`;
+- `PRAGMA quick_check`: `ok`;
+- foreign-key-check rows: `0`;
+- validation-result rows: `7`.
 
-`data/processed/database/candidates/inside_rails_v1_candidate.sqlite3`
+Promotion preserved:
 
-Canonical accepted-release path:
+- the exact validated Database v2 candidate;
+- the accepted Database v1 release.
+
+Reader-facing studies should use this Database v2 release by default and consume it read-only.
+
+### Preserved Database v2 candidate
+
+Path:
+
+`data/processed/database/candidates/inside_rails_v2_candidate.sqlite3`
+
+SHA-256:
+
+`5fc6adaada69b7111a56021a9d67deeb62f6bb98268c69ad5c36009d337e39fe`
+
+Status:
+
+`validated`
+
+This is pre-release evidence, not the normal study database.
+
+### Retained Database v1
+
+Path:
 
 `data/processed/database/releases/inside_rails_v1.sqlite3`
 
-Accepted-release SHA-256:
+SHA-256:
 
 `2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`
 
-The preserved candidate remains unchanged at SHA-256:
-
-`7dd61b51904b324a83c4ceb28486c716226c8de7d37952a713e90ae3a81f65a2`
+Database v1 is retained for rollback and historical reproducibility. It is no longer the default reader-facing study database.
 
 ---
 
-## Release status rule
+## Database-selection rule
 
-Inside Rails Version 1 was release-accepted and promoted on 8 August 2026.
+The normal analytical source is the exact accepted Database v2 release path above.
 
-Current status:
+There is **no fallback** from Database v2 to:
 
-- accepted release exists at the canonical release path;
-- import manifest status is `release_accepted`;
-- release validation result count is 7;
-- SQLite `quick_check` returned `ok`;
-- foreign-key check returned zero rows;
-- candidate hash remained unchanged during promotion.
+- the Database v2 candidate;
+- Database v1;
+- Source Version 1.
 
-Reader-facing studies should use the accepted release by default and open it read-only.
+If Database v2 is absent or fails an identity check, fail closed rather than silently changing the data source.
 
-There is no fallback from the accepted release path to the candidate or raw source. If the accepted release is absent or its identity cannot be verified when verification is required, fail closed rather than silently changing data source.
+The project does not currently use an implemented `active_database.json` resolver for studies. Take the release path from the canonical study documentation rather than guessing or inventing an active alias.
 
-The candidate remains evidence and rollback material. It is not the normal study database.
+---
+
+## Read-only access
+
+Use the project read-only connection helper:
+
+```python
+from inside_rails.source_sqlite import connect_read_only
+
+DATABASE = "data/processed/database/releases/inside_rails_v2.sqlite3"
+
+with connect_read_only(DATABASE) as connection:
+    rows = connection.execute(
+        "SELECT COUNT(*) FROM view_governed_race_occurrences"
+    ).fetchone()[0]
+
+print(rows)
+```
+
+Expected result:
+
+```text
+189043
+```
+
+For shell inspection:
+
+```bash
+sqlite3 -readonly data/processed/database/releases/inside_rails_v2.sqlite3
+```
+
+Do not use the accepted release as a notebook scratch database. Persist study-specific outputs elsewhere.
+
+---
+
+## Preferred analytical interfaces
+
+### Race-level work
+
+Prefer:
+
+`view_governed_race_occurrences`
+
+Expected rows:
+
+`189043`
+
+### Exact source-backed runner work
+
+Prefer:
+
+`view_governed_source_runner_participations`
+
+Expected rows:
+
+`1851285`
+
+### Combined governed runner work
+
+Prefer:
+
+`view_governed_runner_records`
+
+Expected rows:
+
+`1851288`
+
+This combined view includes the three explicitly verified missing-runner supplementations. State that fact when it affects the study population.
+
+### Horse/pedigree identity work
+
+Use:
+
+`view_governed_horse_occurrence_assignments`
+
+only when provisional Notebook 19 identity governance is relevant.
+
+### Participant identity work
+
+Use:
+
+`view_governed_participant_label_identities`
+
+only when accepted Notebook 22 mappings are relevant. Unresolved candidates remain unresolved.
 
 ---
 
@@ -145,12 +242,15 @@ The candidate remains evidence and rollback material. It is not the normal study
 Before writing the first analytical cell of any study, confirm:
 
 1. `docs/STUDY_DATABASE_REFERENCE.md` has been read;
-2. the local Jupyter environment was started with the canonical `rails` alias so the absolute project `PYTHONPATH` is active;
-3. the accepted Version 1 database is the intended study source unless the question explicitly requires raw/source evidence;
-4. the exact canonical path is `data/processed/database/releases/inside_rails_v1.sqlite3`;
+2. the local Jupyter environment was started with the canonical `rails` alias;
+3. the intended analytical source is the accepted Database v2 release unless the research question explicitly requires raw source evidence;
+4. the exact path is `data/processed/database/releases/inside_rails_v2.sqlite3`;
 5. the release state is `release_accepted`;
-6. the connection is read-only and query-only where applicable;
-7. relevant fields and identities are already governed;
-8. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+6. the connection is read-only;
+7. the study's observation grain is stated;
+8. the chosen race/runner population is stated;
+9. the relevant fields and identities are governed sufficiently for the proposed use;
+10. unresolved values and external supplementations that affect the question are understood;
+11. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
-Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the study documents.
+Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the project documents.
