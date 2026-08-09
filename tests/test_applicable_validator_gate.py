@@ -7,6 +7,19 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "scripts" / "run_applicable_validators.py"
+EXPECTED_SOURCE_POSITIONAL_VALIDATORS = {
+    "validate_beaten_distances.py",
+    "validate_course_jurisdiction.py",
+    "validate_field_governance.py",
+    "validate_jurisdiction_context.py",
+    "validate_off_time.py",
+    "validate_race_identity.py",
+    "validate_race_results.py",
+    "validate_race_surface.py",
+    "validate_source_fields.py",
+    "validate_source_profile.py",
+    "validate_starting_price.py",
+}
 
 
 def _load_runner():
@@ -32,6 +45,23 @@ def test_validator_inventory_and_exclusions_are_exact() -> None:
         "validate_minimum_core_candidate.py",
     }
     assert {plan.script.name for plan in plans}.isdisjoint(runner.EXCLUDED_VALIDATORS)
+
+
+def test_exact_required_source_positional_map_is_preserved() -> None:
+    runner = _load_runner()
+    plans = runner.build_validator_plan()
+    required_source = {
+        plan.script.name
+        for plan in plans
+        if plan.required_positionals
+    }
+
+    assert required_source == EXPECTED_SOURCE_POSITIONAL_VALIDATORS
+    for plan in plans:
+        if plan.script.name in EXPECTED_SOURCE_POSITIONAL_VALIDATORS:
+            assert plan.required_positionals == ("database",)
+        else:
+            assert plan.required_positionals == ()
 
 
 def test_every_required_positional_is_governed_before_execution() -> None:
