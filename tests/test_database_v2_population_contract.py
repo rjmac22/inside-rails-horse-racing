@@ -6,6 +6,8 @@ import sqlite3
 from inside_rails.database.governed_integration_population import (
     _RACE_INSERT,
     _RUNNER_INSERT,
+    _SOURCE_COLUMNS,
+    _SOURCE_SELECT,
 )
 from inside_rails.database.schema import create_governed_integration_schema
 
@@ -40,6 +42,15 @@ def test_runner_population_insert_matches_v2_runner_extension_width() -> None:
         )
     finally:
         connection.close()
+
+
+def test_runner_population_source_projection_includes_all_connection_fields() -> None:
+    # Runner governance reads jockey, trainer and owner values from each projected
+    # source row. Keep both the SQL projection and positional column mapping under
+    # test so a future edit cannot silently drop one and fail only during a full build.
+    for field in ("jockey", "trainer", "owner"):
+        assert f"source.{field}" in _SOURCE_SELECT
+        assert field in _SOURCE_COLUMNS
 
 
 def test_v2_study_facing_views_compile_against_empty_schema() -> None:
