@@ -242,7 +242,7 @@ Notebook:
 
 `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb`
 
-**Status: analytically complete; closeout validation pending.**
+**Status: fully closed on 10 August 2026.**
 
 Bounded question:
 
@@ -267,6 +267,18 @@ The study also exposed a race-type reliability question. That was handled in the
 
 Fresh-kernel execution of the main study notebook passed on 10 August 2026 under the documented project environment.
 
+The manual-verification register validator passed after adding the two BHA governance evidence records:
+
+```text
+87 governed rows
+confirmed: 58
+contradicted: 10
+partially_confirmed: 1
+unresolved: 18
+```
+
+The canonical tracked manual-verification test is updated to the 87-row register and both Study 01 verification IDs. A stale 85-row assertion exists only in the user's separate uncommitted `data/tests/` directory-move WIP and is not a Study 01 defect.
+
 Closeout details:
 
 `docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
@@ -274,8 +286,6 @@ Closeout details:
 Reader-study status register:
 
 `docs/STUDY_CLOSEOUT_REGISTER.md`
-
-Remaining closeout gate: focused validation of the general manual-verification register after adding the two BHA governance evidence records. Once the exact local test and validator results are recorded, Study 01 can be marked fully closed.
 
 ### Great Britain Study 02 — types of British racing
 
@@ -320,6 +330,6 @@ The project should not assume that the present study-document set is permanently
 
 ## Next bounded action
 
-Complete the focused Great Britain Study 01 closeout validation, then open Great Britain Study 02 on the types of British racing.
+Begin Great Britain Study 02 on the types of British racing.
 
 No further Database v3 rebuild is required by Study 01. Any new correctness-critical defect discovered by Study 02 should be escalated through the existing study-overlay/database-governance process rather than repaired silently inside the reader notebook.
