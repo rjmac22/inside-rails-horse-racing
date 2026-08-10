@@ -1,0 +1,51 @@
+verification_sample_id,raw_date,candidate_course_label,local_off_time,race_type_raw,verified_race_type,primary_evidence_url
+GBRT-001,2015-02-07,Newbury,14:25,Chase,Chase,https://www.racingpost.com/results/36/newbury/2015-02-07/617407
+GBRT-002,2015-02-19,Sedgefield,16:45,Chase,Chase,https://www.horseracing.net/results/sedgefield/19-02-15
+GBRT-003,2015-03-13,Cheltenham,15:20,Chase,Chase,https://www.racingpost.com/results/11/cheltenham/2015-03-13/598093
+GBRT-004,2015-05-14,Fontwell,18:15,Chase,Chase,https://www.horseracing.net/results/fontwell/14-05-15
+GBRT-005,2015-10-05,Market Rasen,15:50,Chase,Chase,https://www.horseracing.net/results/market-rasen/05-10-15
+GBRT-006,2015-10-22,Ludlow,16:45,Chase,Chase,https://www.horseracing.net/results/ludlow/22-10-15
+GBRT-007,2015-12-05,Chepstow,13:25,Chase,Chase,https://www.horseracing.net/results/chepstow/05-12-15
+GBRT-008,2016-04-02,Uttoxeter,16:55,Chase,Chase,https://www.horseracing.net/results/uttoxeter/02-04-16
+GBRT-009,2016-04-04,Wincanton,16:40,Chase,Chase,https://www.horseracing.net/results/wincanton/04-04-16
+GBRT-010,2016-12-13,Catterick,13:20,Chase,Chase,https://www.horseracing.net/results/catterick/13-12-16
+GBRT-011,2017-03-16,Towcester,15:55,Chase,Chase,https://www.horseracing.net/results/towcester/16-03-17
+GBRT-012,2017-04-23,Stratford,14:00,Chase,Chase,https://www.horseracing.net/results/stratford/23-04-17
+GBRT-013,2017-05-18,Perth,16:45,Chase,Chase,https://www.horseracing.net/results/perth/18-05-17
+GBRT-014,2018-02-03,Musselburgh,13:30,Chase,Chase,https://www.horseracing.net/results/musselburgh/03-02-18
+GBRT-015,2018-02-05,Southwell,14:30,Chase,Chase,https://www.horseracing.net/results/southwell/05-02-18
+GBRT-016,2018-09-06,Sedgefield,15:00,Chase,Chase,https://www.horseracing.net/results/sedgefield/06-09-18
+GBRT-017,2019-01-14,Ffos Las,14:35,Chase,Chase,https://www.horseracing.net/results/ffos-las/14-01-19
+GBRT-018,2019-03-16,Uttoxeter,16:45,Chase,Chase,https://www.horseracing.net/results/uttoxeter/16-03-19
+GBRT-019,2019-09-24,Warwick,15:50,Chase,Chase,https://www.horseracing.net/results/warwick/24-09-19
+GBRT-020,2019-11-04,Plumpton,14:10,Chase,Chase,https://www.horseracing.net/results/plumpton/04-11-19
+GBRT-021,2019-12-15,Carlisle,12:20,Chase,Chase,https://www.horseracing.net/results/carlisle/15-12-19
+GBRT-022,2020-02-13,Leicester,16:00,Chase,Chase,https://www.horseracing.net/results/leicester/13-02-20
+GBRT-023,2020-10-18,Kempton,13:45,Chase,Chase,https://www.horseracing.net/results/kempton/18-10-20
+GBRT-024,2021-02-17,Wetherby,15:12,Chase,Chase,https://www.horseracing.net/results/wetherby/17-02-21
+GBRT-025,2021-02-22,Carlisle,14:40,Chase,Chase,https://www.horseracing.net/results/carlisle/22-02-21
+GBRT-026,2021-12-20,Lingfield,14:30,Chase,Chase,https://www.horseracing.net/results/lingfield/20-12-21
+GBRT-027,2021-12-20,Musselburgh,13:15,Chase,Chase,https://www.horseracing.net/results/musselburgh/20-12-21
+GBRT-028,2022-01-26,Catterick,14:10,Chase,Chase,https://www.horseracing.net/results/catterick/26-01-22
+GBRT-029,2022-02-01,Newcastle,15:00,Chase,Chase,https://www.horseracing.net/results/newcastle/01-02-22
+GBRT-030,2022-03-08,Sandown,15:30,Chase,Chase,https://www.horseracing.net/results/sandown/08-03-22
+GBRT-031,2022-03-15,Sedgefield,15:10,Chase,Chase,https://www.horseracing.net/results/sedgefield/15-03-22
+GBRT-032,2022-03-31,Warwick,16:25,Chase,Chase,https://www.horseracing.net/results/warwick/31-03-22
+GBRT-033,2022-04-08,Sedgefield,16:00,Chase,Chase,https://www.horseracing.net/results/sedgefield/08-04-22
+GBRT-034,2022-11-03,Newbury,15:42,Chase,Chase,https://www.horseracing.net/results/newbury/03-11-22
+GBRT-035,2023-02-12,Exeter,15:00,Chase,Chase,https://www.horseracing.net/results/exeter/12-02-23
+GBRT-036,2023-02-21,Market Rasen,16:15,Chase,Chase,https://www.horseracing.net/results/market-rasen/21-02-23
+GBRT-037,2023-03-14,Sedgefield,15:50,Chase,Chase,https://www.horseracing.net/results/sedgefield/14-03-23
+GBRT-038,2023-03-20,Southwell,14:35,Chase,Chase,https://www.horseracing.net/results/southwell/20-03-23
+GBRT-039,2023-05-28,Kelso,16:40,Chase,Chase,https://www.horseracing.net/results/kelso/28-05-23
+GBRT-040,2024-03-27,Hereford,15:10,Chase,Chase,https://www.horseracing.net/results/hereford/27-03-24
+GBRT-041,2024-11-12,Lingfield,15:20,Chase,Chase,https://www.racingpost.com/results/31/lingfield/2024-11-12/879007
+GBRT-042,2024-11-23,Huntingdon,13:58,Chase,Chase,https://www.horseracing.net/results/huntingdon/23-11-24
+GBRT-043,2025-03-24,Wincanton,16:30,Chase,Chase,https://www.horseracing.net/results/wincanton/24-03-25
+GBRT-044,2025-04-11,Huntingdon,18:38,Chase,Chase,https://www.horseracing.net/results/huntingdon/11-04-25
+GBRT-045,2025-05-02,Cheltenham,UNRESOLVED,Chase,Chase,https://www.horseracing.net/results/cheltenham/02-05-25
+GBRT-046,2025-05-28,Newton Abbot,15:48,Chase,Chase,https://www.horseracing.net/results/newton-abbot/28-05-25
+GBRT-047,2025-07-21,Cartmel,15:45,Chase,Chase,https://www.horseracing.net/results/cartmel/21-07-25
+GBRT-048,2025-12-26,Aintree,14:15,Chase,Chase,https://www.horseracing.net/results/aintree/26-12-25
+GBRT-049,2026-02-15,Musselburgh,16:20,Chase,Chase,https://www.horseracing.net/results/musselburgh/15-02-26
+GBRT-050,2026-02-16,Carlisle,13:35,Chase,Chase,https://www.horseracing.net/results/carlisle/16-02-26
