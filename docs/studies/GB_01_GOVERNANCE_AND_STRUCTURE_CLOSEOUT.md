@@ -121,11 +121,31 @@ The notebook does not introduce a parser, canonical transformation, reusable cla
 
 The supporting overlay already has focused tests in `tests/test_study_overlay.py`, including failure behaviour for duplicate resolutions, unsupported fields and invalid resolution treatment, plus a guard that the default register contains all 25 verified race-type corrections. The focused overlay test run performed during the supporting investigation passed five tests.
 
+The two Study 01 BHA evidence rows extend the existing general manual-verification register. The independent register validator passed after their addition. A local pytest run against an uncommitted `data/tests/` directory-move copy produced 10 passes and one stale-baseline failure because that WIP copy still expected 85 rows. The canonical tracked test `tests/test_manual_verifications.py` has been updated to the current 87-row register and checks both Study 01 verification IDs. The stale moved copy is separate repository-reorganisation WIP rather than a Study 01 defect.
+
 ## Independent-validator decision
 
 **No new independent source-wide validator is required for the main study.**
 
 The study creates no new source-wide transformation or governed reference that needs a production admission gate. Its population and descriptive outputs are regenerated directly from the accepted read-only database and the already-governed study overlay.
+
+The existing manual-verification validator was rerun after adding the two BHA evidence records and passed:
+
+```text
+Manual-verification register passed: 87 governed rows.
+Verification statuses:
+  confirmed: 58
+  contradicted: 10
+  partially_confirmed: 1
+  unresolved: 18
+Database actions:
+  evidence_only: 15
+  label_equivalence: 2
+  preserve_raw_unresolved: 19
+  reference_enrichment: 8
+  source_correction_candidate: 12
+  source_supplementation: 31
+```
 
 This decision must not be read as a general exemption for reader-facing studies. A future study that creates a reusable governed transformation or reference must still add independent validation under the normal closeout rules.
 
@@ -192,6 +212,8 @@ Open a separate bounded study of the **types of British racing** before moving o
 
 ## Closeout status
 
+**Fully closed — 10 August 2026.**
+
 Analytical work: complete.
 
 Fresh-kernel reproducibility: passed.
@@ -204,12 +226,14 @@ Main-study new unit tests: not applicable.
 
 Main-study new independent validator: not applicable.
 
+Existing manual-verification validator: passed with 87 governed rows after Study 01 evidence capture.
+
 Database migration: not applicable.
 
 Reader-facing report: recorded above.
 
 Lessons learned: recorded above.
 
-README / project plan / audit register: must be updated to point to this closeout and the next bounded study.
+Reader-study closeout register, README and project plan: updated to point to this closeout and Great Britain Study 02.
 
-Local validation still required before the notebook is labelled **fully closed**: rerun the applicable manual-verification/register validation after the two Study 01 BHA evidence rows, and record the result. Until that final check is recorded, the precise status is **analytically complete, closeout pending local validation**.
+The separate uncommitted test/SQL directory reorganisation remains outside this study boundary and must not be conflated with Study 01 closure.
