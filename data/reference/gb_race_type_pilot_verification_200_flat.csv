@@ -1,0 +1,51 @@
+verification_sample_id,raw_date,candidate_course_label,local_off_time,race_type_raw,verified_race_type,primary_evidence_url
+GBRT-051,2015-04-01,Chelmsford (AW),16:30,Flat,Flat,https://www.horseracing.net/results/chelmsford/01-04-15
+GBRT-052,2015-06-05,Epsom,15:10,Flat,Flat,https://www.horseracing.net/results/epsom/05-06-15
+GBRT-053,2015-08-10,Wolverhampton (AW),14:15,Flat,Flat,https://www.horseracing.net/results/wolverhampton/10-08-15
+GBRT-054,2016-05-11,York,14:40,Flat,Flat,https://www.yorkracecourse.co.uk/raceday-details.html?id=131&meet=66
+GBRT-055,2016-06-12,Salisbury,14:15,Flat,Flat,https://www.horseracing.net/results/salisbury/12-06-16
+GBRT-056,2016-08-19,Sandown,14:20,Flat,Flat,https://www.horseracing.net/results/sandown/19-08-16
+GBRT-057,2016-08-29,Epsom,15:15,Flat,Flat,https://www.horseracing.net/results/epsom/29-08-16
+GBRT-058,2017-04-15,Brighton,UNRESOLVED,Flat,Flat,https://www.horseracing.net/results/brighton/15-04-17
+GBRT-059,2017-04-25,Wolverhampton (AW),18:00,Flat,Flat,https://www.horseracing.net/results/wolverhampton/25-04-17
+GBRT-060,2017-05-19,Newcastle (AW),19:20,Flat,Flat,https://www.horseracing.net/results/newcastle/19-05-17
+GBRT-061,2017-07-18,Bath,16:30,Flat,Flat,https://www.horseracing.net/results/bath/18-07-17
+GBRT-062,2017-07-21,Hamilton,UNRESOLVED,Flat,Flat,https://thehorsesmouth.co.uk/races/7151-john-smiths-scottish-stewards-cup-handicap
+GBRT-063,2017-08-19,Doncaster,13:25,Flat,Flat,https://www.horseracing.net/results/doncaster/19-08-17
+GBRT-064,2017-08-28,Southwell (AW),16:15,Flat,Flat,https://www.horseracing.net/results/southwell/28-08-17
+GBRT-065,2017-09-05,Kempton (AW),20:20,Flat,Flat,https://www.horseracing.net/results/kempton/05-09-17
+GBRT-066,2017-12-06,Lingfield (AW),12:40,Flat,Flat,https://www.racingpost.com/racecards/2017-12-06/
+GBRT-067,2018-04-18,Kempton (AW),17:45,Flat,Flat,https://www.horseracing.net/results/kempton/18-04-18
+GBRT-068,2018-08-13,Ripon,13:50,Flat,Flat,https://www.horseracing.net/results/ripon/13-08-18
+GBRT-069,2018-08-17,Nottingham,14:35,Flat,Flat,https://www.horseracing.net/results/nottingham/17-08-18
+GBRT-070,2018-09-22,Wolverhampton (AW),17:45,Flat,Flat,https://www.horseracing.net/results/wolverhampton/22-09-18
+GBRT-071,2019-05-22,Kempton (AW),18:25,Flat,Flat,https://www.horseracing.net/results/kempton/22-05-19
+GBRT-072,2019-06-01,Doncaster,15:05,Flat,Flat,https://www.horseracing.net/results/doncaster/01-06-19
+GBRT-073,2019-08-25,Goodwood,16:10,Flat,Flat,https://www.horseracing.net/results/goodwood/25-08-19
+GBRT-074,2019-10-05,Wolverhampton (AW),19:30,Flat,Flat,https://www.horseracing.net/results/wolverhampton/05-10-19
+GBRT-075,2020-07-30,Musselburgh,UNRESOLVED,Flat,Flat,https://www.horseracing.net/results/musselburgh/30-07-20
+GBRT-076,2020-08-22,Chelmsford (AW),17:25,Flat,Flat,https://www.sportinglife.com/racing/results/2020-08-22/chelmsford-city/584759/broomfield-handicap
+GBRT-077,2021-05-14,York,15:10,Flat,Flat,https://www.horseracing.net/results/york/14-05-21
+GBRT-078,2021-05-24,Brighton,14:40,Flat,Flat,https://www.horseracing.net/results/brighton/24-05-21
+GBRT-079,2021-07-26,Windsor,20:25,Flat,Flat,https://www.horseracing.net/results/windsor/26-07-21
+GBRT-080,2021-09-10,Sandown,13:00,Flat,Flat,https://www.horseracing.net/results/sandown/10-09-21
+GBRT-081,2022-05-09,Catterick,14:30,Flat,Flat,https://www.horseracing.net/results/catterick/09-05-22
+GBRT-082,2022-06-03,Doncaster,17:33,Flat,Flat,https://www.horseracing.net/results/doncaster/03-06-22
+GBRT-083,2022-06-03,Doncaster,20:26,Flat,Flat,https://www.horseracing.net/results/doncaster/03-06-22
+GBRT-084,2022-07-26,Beverley,15:45,Flat,Flat,https://www.horseracing.net/results/beverley/26-07-22
+GBRT-085,2023-03-25,Wolverhampton (AW),18:30,Flat,Flat,https://www.horseracing.net/results/wolverhampton/25-03-23
+GBRT-086,2023-06-20,Brighton,UNRESOLVED,Flat,Flat,https://www.horseracing.net/results/brighton/20-06-23
+GBRT-087,2023-06-20,Brighton,UNRESOLVED,Flat,Flat,https://www.horseracing.net/results/brighton/20-06-23
+GBRT-088,2023-08-02,Goodwood,14:25,Flat,Flat,https://www.horseracing.net/results/goodwood/02-08-23
+GBRT-089,2023-10-09,Wolverhampton (AW),20:30,Flat,Flat,https://www.horseracing.net/results/wolverhampton/09-10-23
+GBRT-090,2023-10-18,Nottingham,17:25,Flat,Flat,https://www.horseracing.net/results/nottingham/18-10-23
+GBRT-091,2024-01-03,Kempton (AW),16:55,Flat,Flat,https://www.horseracing.net/results/kempton/03-01-24
+GBRT-092,2024-01-16,Wolverhampton (AW),15:40,Flat,Flat,https://thehorsesmouth.co.uk/races/89347-win-ps2-000-000-with-betmgms-golden-goals-handicap
+GBRT-093,2024-05-27,Leicester,16:15,Flat,Flat,https://www.horseracing.net/results/leicester/27-05-24
+GBRT-094,2024-07-19,Newmarket (July),UNRESOLVED,Flat,Flat,https://www.horseracing.net/results/newmarket/19-07-24
+GBRT-095,2024-07-24,Leicester,18:45,Flat,Flat,https://www.horseracing.net/results/leicester/24-07-24
+GBRT-096,2025-06-23,Chepstow,15:45,Flat,Flat,https://www.horseracing.net/results/chepstow/23-06-25
+GBRT-097,2025-08-07,Chepstow,20:00,Flat,Flat,https://www.horseracing.net/results/chepstow/07-08-25
+GBRT-098,2025-09-22,Leicester,15:18,Flat,Flat,https://www.horseracing.net/results/leicester/22-09-25
+GBRT-099,2026-03-11,Newcastle (AW),20:00,Flat,Flat,https://www.horseracing.net/results/newcastle/11-03-26
+GBRT-100,2026-04-20,Newcastle (AW),19:00,Flat,Flat,https://www.horseracing.net/results/newcastle/20-04-26
