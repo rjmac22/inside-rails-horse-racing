@@ -40,7 +40,7 @@ def test_governed_register_loads_current_backfill() -> None:
     rows = load_manual_verifications(REGISTER)
     ids = {row.verification_id for row in rows}
 
-    assert len(rows) == 85
+    assert len(rows) == 87
     assert len(ids) == len(rows)
     assert {row.governing_notebook for row in rows} == {
         "12",
@@ -51,6 +51,7 @@ def test_governed_register_loads_current_backfill() -> None:
         "18",
         "19",
         "20",
+        "studies/jurisdictions/great_britain/01_governance_and_structure.ipynb",
     }
     assert {
         "NB12-COURSE-0001",
@@ -69,6 +70,8 @@ def test_governed_register_loads_current_backfill() -> None:
         "NB19-HORSE-0003",
         "NB20-CONNECTION-0001",
         "NB20-CONNECTION-0046",
+        "ST01-GOV-0001",
+        "ST01-GOV-0002",
     } <= ids
 
     notebook_20_rows = [
@@ -77,6 +80,13 @@ def test_governed_register_loads_current_backfill() -> None:
     assert len(notebook_20_rows) == 46
     assert sum(row.verification_status == "confirmed" for row in notebook_20_rows) == 28
     assert sum(row.verification_status == "unresolved" for row in notebook_20_rows) == 18
+
+    study_01_governance_rows = [
+        row for row in rows if row.verification_id.startswith("ST01-GOV-")
+    ]
+    assert len(study_01_governance_rows) == 2
+    assert all(row.verification_status == "confirmed" for row in study_01_governance_rows)
+    assert all(row.database_action == "evidence_only" for row in study_01_governance_rows)
 
 
 def test_valid_row_passes() -> None:
