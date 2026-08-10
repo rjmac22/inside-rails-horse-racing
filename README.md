@@ -128,7 +128,7 @@ Database v3 supersedes v2 for normal analytical use. Prior releases remain immut
 
 ### Great Britain Study 01 — governance and structure
 
-**Status: analytically complete; closeout validation pending.**
+**Status: fully closed.**
 
 Notebook:
 
@@ -156,6 +156,8 @@ The study triggered a separate governed investigation of `race_type_raw`. That i
 
 Fresh-kernel execution of the study notebook passed on 10 August 2026 using the documented repository `PYTHONPATH` environment.
 
+The manual-verification register validator also passed after the two BHA governance evidence records were added: 87 governed rows, with the full status/action partition recorded in the closeout document.
+
 Closeout record:
 
 `docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
@@ -164,7 +166,7 @@ Study closeout register:
 
 `docs/STUDY_CLOSEOUT_REGISTER.md`
 
-The only remaining closeout gate is focused validation of the manual-verification register after adding the two BHA governance evidence records. Until that exact local evidence is recorded, the study is not labelled fully closed.
+The canonical tracked manual-verification test has been updated to the 87-row register and the two Study 01 verification IDs. A stale 85-row assertion remains only in the user's separate uncommitted `data/tests/` directory-move WIP; it is not a Study 01 defect.
 
 ### Earlier field-size study draft
 
@@ -262,7 +264,7 @@ Historical Phase 3/4 and Database v1/v2 evidence documents remain in the reposit
 
 ## Next bounded action
 
-Finish the focused Great Britain Study 01 closeout validation, then begin Great Britain Study 02:
+Begin Great Britain Study 02:
 
 > **What kinds of racing make up British horse racing?**
 
