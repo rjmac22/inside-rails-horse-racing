@@ -341,6 +341,38 @@ If a study is materially limited by information that might exist outside Databas
 
 ---
 
+## External verification provenance rule
+
+An external verification is not complete unless another researcher can see exactly where the supporting evidence came from.
+
+Standing rule:
+
+> **No source locator = not verified.**
+
+Every material external verification used in a study, database-correctness investigation, manual verification register, reconciliation decision or validation sample must preserve enough provenance to reconstruct the check.
+
+At minimum record:
+
+- the subject or record being verified;
+- the field, claim or question being checked;
+- the external source or publisher;
+- a specific, reconstructible evidence locator — normally the exact result/page URL, document identifier, official record reference or equivalent stable locator;
+- the externally supported value or conclusion;
+- a short evidence note explaining what the source establishes;
+- the access date where the source is liable to change or where the existing provenance standard requires it.
+
+Where verification is performed row by row, the evidence locator must be recorded **per verified row**. A generic homepage, search-results page, source name without a locator, or statement such as "checked externally" is not sufficient provenance.
+
+Prefer a race-specific or record-specific page over a generic date/meeting page when one is available. A broader meeting/date page may be used when it contains the exact result being verified and the row remains unambiguous, but the ledger must still retain that locator.
+
+If the external source is ambiguous, inaccessible, or does not actually establish the fact being checked, do not mark the record verified. Use another source or leave the result provisional/unresolved.
+
+This rule applies equally to evidence that confirms the database and evidence that contradicts it. Confirmations used to support a reliability claim require the same provenance standard as corrections.
+
+Do not populate a verification result from the database value itself and then label it externally verified. The external evidence must independently support the recorded conclusion.
+
+---
+
 ## Study-start check
 
 Before writing the first analytical cell of any study, confirm:
@@ -357,6 +389,7 @@ Before writing the first analytical cell of any study, confirm:
 10. the relevant fields and identities are governed sufficiently for the proposed use;
 11. unresolved values, invalidations and external supplementations that affect the question are understood;
 12. the pending post-release resolution register has been checked and any material verified overlay is being applied;
-13. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
+13. any external verification already relied on by the study has reconstructible provenance under the external verification provenance rule;
+14. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work.
 
 Do not reconstruct paths, database names, table grains, release status or the Jupyter launch command from memory when they are recorded in the project documents.
