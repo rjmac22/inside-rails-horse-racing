@@ -224,3 +224,27 @@ def test_wrong_resolution_action_for_supported_field_fails_closed(tmp_path: Path
 
     with pytest.raises(ValueError, match="Unsupported resolution treatment"):
         load_pending_race_resolutions(register)
+
+
+def test_default_pending_register_contains_all_verified_race_type_corrections() -> None:
+    """Guard the governed post-v3 register used by reader-facing studies."""
+
+    rows = load_pending_race_resolutions()
+    type_rows = [row for row in rows if row["source_field"] == "type"]
+    advertised_rows = [
+        row
+        for row in rows
+        if row["source_field"] == "advertised_start_course_local"
+    ]
+    actual_rows = [
+        row for row in rows if row["source_field"] == "actual_off_course_local"
+    ]
+
+    # The GB race-type reliability investigation established 25 exact
+    # corrections. Three Stratford advertised-time resolutions and three
+    # separate actual-off enrichments remain alongside them.
+    assert len(rows) == 31
+    assert len(type_rows) == 25
+    assert len(advertised_rows) == 3
+    assert len(actual_rows) == 3
+    assert len({row["verification_id"] for row in type_rows}) == 25
