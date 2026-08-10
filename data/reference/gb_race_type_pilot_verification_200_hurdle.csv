@@ -1,0 +1,51 @@
+verification_sample_id,raw_date,candidate_course_label,local_off_time,race_type_raw,verified_race_type,primary_evidence_url
+GBRT-101,2015-07-15,Uttoxeter,15:20,Hurdle,Hurdle,https://www.horseracing.net/results/uttoxeter/15-07-15
+GBRT-102,2015-11-14,Wetherby,12:20,Hurdle,Hurdle,https://www.horseracing.net/results/wetherby/14-11-15
+GBRT-103,2015-12-01,Southwell,14:20,Hurdle,Hurdle,https://www.horseracing.net/results/southwell/01-12-15
+GBRT-104,2016-03-13,Kelso,16:40,Hurdle,Hurdle,https://www.horseracing.net/results/kelso/13-03-16
+GBRT-105,2016-07-10,Southwell,17:30,Hurdle,Hurdle,https://www.horseracing.net/results/southwell/10-07-16
+GBRT-106,2016-07-18,Cartmel,17:25,Hurdle,Hurdle,https://www.horseracing.net/results/cartmel/18-07-16
+GBRT-107,2016-11-09,Bangor-on-Dee,15:30,Hurdle,Hurdle,https://www.horseracing.net/results/bangor-on-dee/09-11-16
+GBRT-108,2016-11-11,Newcastle,14:15,Hurdle,Hurdle,https://www.horseracing.net/results/newcastle/11-11-16
+GBRT-109,2016-11-26,Newcastle,12:05,Hurdle,Hurdle,https://www.horseracing.net/results/newcastle/26-11-16
+GBRT-110,2017-01-16,Ayr,13:10,Hurdle,Hurdle,https://www.horseracing.net/results/ayr/16-01-17
+GBRT-111,2017-02-26,Southwell,16:10,Hurdle,Hurdle,https://www.horseracing.net/results/southwell/26-02-17
+GBRT-112,2017-04-03,Ludlow,14:00,Hurdle,Hurdle,https://www.horseracing.net/results/ludlow/03-04-17
+GBRT-113,2017-09-11,Perth,15:05,Hurdle,Hurdle,https://www.horseracing.net/results/perth/11-09-17
+GBRT-114,2017-10-21,Market Rasen,14:50,Hurdle,Hurdle,https://www.horseracing.net/results/market-rasen/21-10-17
+GBRT-115,2017-10-24,Exeter,14:20,Hurdle,Hurdle,https://www.horseracing.net/results/exeter/24-10-17
+GBRT-116,2017-12-06,Ludlow,13:30,Hurdle,Hurdle,https://www.horseracing.net/results/ludlow/06-12-17
+GBRT-117,2017-12-21,Towcester,13:25,Hurdle,Hurdle,https://thehorsesmouth.co.uk/races/12582-totepool-caroline-beesley-memorial-handicap-hurdle
+GBRT-118,2018-03-11,Market Rasen,16:10,Hurdle,Hurdle,https://www.horseracing.net/results/market-rasen/11-03-18
+GBRT-119,2018-03-21,Haydock,15:50,Hurdle,Hurdle,https://www.horseracing.net/results/haydock/21-03-18
+GBRT-120,2018-05-26,Cartmel,14:05,Hurdle,Hurdle,https://www.horseracing.net/results/cartmel/26-05-18
+GBRT-121,2018-07-01,Uttoxeter,14:35,Hurdle,Hurdle,https://www.horseracing.net/results/uttoxeter/01-07-18
+GBRT-122,2018-07-09,Worcester,15:25,Hurdle,Hurdle,https://www.horseracing.net/results/worcester/09-07-18
+GBRT-123,2018-10-08,Stratford,15:20,Hurdle,Hurdle,https://www.horseracing.net/results/stratford/08-10-18
+GBRT-124,2019-10-09,Ludlow,12:15,Hurdle,Hurdle,https://www.horseracing.net/results/ludlow/09-10-19
+GBRT-125,2019-10-21,Plumpton,16:10,Hurdle,Hurdle,https://www.horseracing.net/results/plumpton/21-10-19
+GBRT-126,2019-12-26,Market Rasen,15:25,Hurdle,Hurdle,https://www.horseracing.net/results/market-rasen/26-12-19
+GBRT-127,2020-01-01,Musselburgh,14:50,Hurdle,Hurdle,https://www.horseracing.net/results/musselburgh/01-01-20
+GBRT-128,2020-08-23,Cartmel,12:45,Hurdle,Hurdle,https://www.horseracing.net/results/cartmel/23-08-20
+GBRT-129,2020-10-13,Huntingdon,14:00,Hurdle,Hurdle,https://www.horseracing.net/results/huntingdon/13-10-20
+GBRT-130,2020-12-10,Newcastle,14:25,Hurdle,Hurdle,https://www.horseracing.net/results/newcastle/10-12-20
+GBRT-131,2021-02-22,Southwell,15:20,Hurdle,Hurdle,https://www.horseracing.net/results/southwell/22-02-21
+GBRT-132,2021-05-24,Ludlow,13:15,Hurdle,Hurdle,https://www.horseracing.net/results/ludlow/24-05-21
+GBRT-133,2021-06-03,Uttoxeter,16:40,Hurdle,Hurdle,https://www.horseracing.net/results/uttoxeter/03-06-21
+GBRT-134,2021-11-12,Worcester,15:50,Hurdle,Hurdle,https://www.horseracing.net/results/worcester/12-11-21
+GBRT-135,2022-04-14,Cheltenham,14:40,Hurdle,Hurdle,https://www.horseracing.net/results/cheltenham/14-04-22
+GBRT-136,2022-10-22,Kelso,17:10,Hurdle,Hurdle,https://www.horseracing.net/results/kelso/22-10-22
+GBRT-137,2023-05-22,Ffos Las,15:50,Hurdle,Hurdle,https://www.horseracing.net/results/ffos-las/22-05-23
+GBRT-138,2023-11-18,Uttoxeter,15:22,Hurdle,Hurdle,https://www.horseracing.net/results/uttoxeter/18-11-23
+GBRT-139,2024-02-25,Hereford,16:40,Hurdle,Hurdle,https://www.horseracing.net/results/hereford/25-02-24
+GBRT-140,2024-03-20,Market Rasen,14:30,Hurdle,Hurdle,https://www.horseracing.net/results/market-rasen/20-03-24
+GBRT-141,2024-04-12,Fakenham,15:43,Hurdle,Hurdle,https://www.horseracing.net/results/fakenham/12-04-24
+GBRT-142,2024-08-17,Market Rasen,UNRESOLVED,Hurdle,Hurdle,https://www.horseracing.net/results/market-rasen/17-08-24
+GBRT-143,2024-11-03,Huntingdon,13:33,Hurdle,Hurdle,https://www.horseracing.net/results/huntingdon/03-11-24
+GBRT-144,2024-11-05,Warwick,14:25,Hurdle,Hurdle,https://www.horseracing.net/results/warwick/05-11-24
+GBRT-145,2025-02-19,Ludlow,14:30,Hurdle,Hurdle,https://www.horseracing.net/results/ludlow/19-02-25
+GBRT-146,2025-03-12,Cheltenham,14:40,Hurdle,Hurdle,https://www.horseracing.net/results/cheltenham/12-03-25
+GBRT-147,2026-01-24,Uttoxeter,13:22,Hurdle,Hurdle,https://www.horseracing.net/results/uttoxeter/24-01-26
+GBRT-148,2026-03-26,Warwick,15:58,Hurdle,Hurdle,https://www.horseracing.net/results/warwick/26-03-26
+GBRT-149,2026-04-17,Ayr,13:45,Hurdle,Hurdle,https://www.horseracing.net/results/ayr/17-04-26
+GBRT-150,2026-05-14,Perth,16:18,Hurdle,Hurdle,https://www.horseracing.net/results/perth/14-05-26
