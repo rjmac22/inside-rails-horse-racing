@@ -15,12 +15,12 @@ For each substantive investigation:
 3. separate profiling evidence from interpretation;
 4. avoid irreversible cleaning decisions inside exploratory work;
 5. extract stable reusable plumbing only after it works;
-6. add focused unit tests including failure behaviour;
-7. validate extracted code and governed references independently;
+6. add focused unit tests including failure behaviour where reusable governed implementation is created;
+7. validate extracted code and governed references independently where applicable;
 8. document the database consequence where one exists;
 9. produce a concise reader-facing report where applicable;
 10. record decisions, uncertainty and lessons learned;
-11. update the audit record, project plan and README when the project state changes;
+11. update the appropriate closeout register, project plan and README when the project state changes;
 12. commit and verify the complete closeout.
 
 The full notebook procedure is in `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
@@ -31,6 +31,10 @@ For reader-facing studies, the mandatory pre-study references are:
 - `docs/STUDY_DATABASE_REFERENCE.md`;
 - `docs/STUDY_DATA_ACCESS.md`;
 - `docs/STUDY_REVISIT_REGISTER.md`.
+
+Reader-study closure state is tracked in:
+
+`docs/STUDY_CLOSEOUT_REGISTER.md`
 
 ## Immutable Source Version 1
 
@@ -228,30 +232,72 @@ Governing documents:
 - `docs/DATABASE_V3_RELEASE_ACCEPTANCE_AND_PROMOTION.md`;
 - `docs/APPLICABLE_VALIDATOR_GATE.md`.
 
-## Phase 5 — Analytical products and writing
+## Phase 5 — Reader-facing analytical studies
 
 **Status: in progress using accepted Database v3.**
 
-### Study 01 — field size and race predictability
+### Great Britain Study 01 — governance and structure
 
-Research question:
+Notebook:
 
-> What relationship, if any, exists between field size and the predictability of British horse races?
+`studies/jurisdictions/great_britain/01_governance_and_structure.ipynb`
 
-Established before the database pause:
+**Status: analytically complete; closeout validation pending.**
 
-- 111,634 British races before the walkover exclusion;
-- field-size mode 8 and median 9;
-- approximately 74.0% of British races have 6–12 runners;
-- approximately 89.8% have 5–14 runners;
-- 21 one-runner British races were confirmed as genuine walkovers;
-- competitive British population: **111,613** races.
+Bounded question:
 
-The false `Walkover<br><br><br>` diagnostic is closed: Source Version 1 and the accepted database contain `Walkover`; the apparent markup was introduced during rendered-output/copy-paste transport.
+> How is British racing organised at the level needed to describe the observed national racing programme coherently?
 
-The database integration blocker is also closed. Study 01 should resume read-only against Database v3 using the reconciled views documented in `docs/STUDY_DATABASE_REFERENCE.md` and `docs/STUDY_DATA_ACCESS.md`.
+The study established an explicit analytical `raw_date + candidate_course_label` course-date meeting definition and then described meeting size, national racing-day scale, weekday structure and seasonal structure.
 
-The immediate study programme remains question-led rather than schema-led. A study-specific derivation does not automatically belong in the database; only reusable or correctness-critical infrastructure should trigger a database-governance escalation.
+Key results:
+
+- Great Britain races: **111,634**;
+- analytical course-date meetings: **15,865**;
+- median / most common meeting size: **7 races**;
+- meetings with 6–8 races: **94.8%**;
+- British racing days: **4,016**;
+- median racing day: **4 meetings and 28 races**;
+- Saturday median in complete non-2020 years: **5 meetings / 38 races**;
+- Sunday median: **2 meetings / 14 races**;
+- May is the busiest month by mean races per racing day in every complete non-2020 year from 2015 to 2025;
+- 2020 is a clear structural exception, while 2026 is partial through 27 May.
+
+The study also exposed a race-type reliability question. That was handled in the separate governed support notebook `notebooks/race_type_raw_semantics.ipynb` rather than through an ad-hoc study repair. Twenty-five exact Great Britain race-type errors were externally verified; a separate stratified pilot of 200 additional races produced 200 agreements and zero disagreements. Known corrections are applied through the read-only post-v3 study overlay; Database v3 remains unchanged.
+
+Fresh-kernel execution of the main study notebook passed on 10 August 2026 under the documented project environment.
+
+Closeout details:
+
+`docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
+
+Reader-study status register:
+
+`docs/STUDY_CLOSEOUT_REGISTER.md`
+
+Remaining closeout gate: focused validation of the general manual-verification register after adding the two BHA governance evidence records. Once the exact local test and validator results are recorded, Study 01 can be marked fully closed.
+
+### Great Britain Study 02 — types of British racing
+
+**Status: next planned bounded study.**
+
+Proposed question:
+
+> What kinds of racing make up British horse racing?
+
+The study should first establish the authoritative conceptual structure — Flat racing versus Jump/National Hunt racing, and the place of Hurdle, Chase and National Hunt Flat races within that structure — before using the governed study-facing race classifications for descriptive counts or seasonality.
+
+The existing `race_type_study` overlay is the appropriate analytical interface for known verified post-v3 race-type corrections. It should not be described as proof that every unsampled classification has been independently verified.
+
+### Later Great Britain study — racecourses
+
+The racecourse question follows after racing types, not inside Study 01 or Study 02.
+
+Before counting or comparing racecourses, establish what a **racecourse/course/physical venue** means officially and in the Inside Rails data. `candidate_course_label` was sufficient for the Study 01 analytical meeting grouping but has not been established as a reader-facing definition of one physical racecourse.
+
+### Earlier field-size study draft
+
+`studies/01_field_size_and_race_predictability.ipynb` remains unfinished exploratory WIP outside the active Great Britain sequence. Preserve it, but do not treat its earlier numbering as the current Study 01 status.
 
 ## Current study-start rule
 
@@ -268,14 +314,12 @@ Before beginning or resuming a study:
 9. escalate any new correctness-critical database defect out of the study;
 10. record the exact database release and repository commit at study closeout.
 
-As of 9 August 2026, the current accepted study database is **Database v3**.
+As of 10 August 2026, the current accepted study database is **Database v3**.
+
+The project should not assume that the present study-document set is permanently optimal. After approximately three to five fully closed reader-facing studies, review which pre-study and closeout documents materially prevented mistakes or preserved necessary context. Consolidate into leaner study-start/study-closeout guidance only if the completed-study evidence supports doing so.
 
 ## Next bounded action
 
-Resume Study 01 against:
+Complete the focused Great Britain Study 01 closeout validation, then open Great Britain Study 02 on the types of British racing.
 
-`data/processed/database/releases/inside_rails_v3.sqlite3`
-
-Use the v3 reconciled interfaces rather than the superseded v1/v2 study interfaces wherever the relevant fields are exposed.
-
-No further database work is planned before Study 01 resumes unless the study discovers a new correctness-critical defect.
+No further Database v3 rebuild is required by Study 01. Any new correctness-critical defect discovered by Study 02 should be escalated through the existing study-overlay/database-governance process rather than repaired silently inside the reader notebook.
