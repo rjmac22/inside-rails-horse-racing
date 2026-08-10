@@ -1,0 +1,51 @@
+verification_sample_id,raw_date,candidate_course_label,local_off_time,race_type_raw,verified_race_type,primary_evidence_url
+GBRT-151,2015-01-10,Wetherby,15:55,NH Flat,NH Flat,https://www.horseracing.net/results/wetherby/10-01-15
+GBRT-152,2015-02-17,Taunton,17:20,NH Flat,NH Flat,https://www.horseracing.net/results/taunton/17-02-15
+GBRT-153,2015-03-24,Southwell,17:25,NH Flat,NH Flat,https://www.horseracing.net/results/southwell/24-03-15
+GBRT-154,2015-03-27,Wetherby,16:30,NH Flat,NH Flat,https://www.horseracing.net/results/wetherby/27-03-15
+GBRT-155,2015-04-17,Fontwell,16:20,NH Flat,NH Flat,https://www.horseracing.net/results/fontwell/17-04-15
+GBRT-156,2015-05-12,Wincanton,17:05,NH Flat,NH Flat,https://www.horseracing.net/results/wincanton/12-05-15
+GBRT-157,2016-01-12,Ludlow,16:00,NH Flat,NH Flat,https://www.horseracing.net/results/ludlow/12-01-16
+GBRT-158,2016-06-22,Worcester,UNRESOLVED,NH Flat,NH Flat,https://www.horseracing.net/results/worcester/22-06-16
+GBRT-159,2017-02-02,Wincanton,16:45,NH Flat,NH Flat,https://www.horseracing.net/results/wincanton/02-02-17
+GBRT-160,2017-02-10,Kempton,16:50,NH Flat,NH Flat,https://www.horseracing.net/results/kempton/10-02-17
+GBRT-161,2017-02-15,Towcester,16:40,NH Flat,NH Flat,https://thehorsesmouth.co.uk/races/1209-haygain-hay-steamers-clean-healthy-forage-standard-open-nh-flat-race
+GBRT-162,2017-02-26,Fontwell,17:00,NH Flat,NH Flat,https://www.horseracing.net/results/fontwell/26-02-17
+GBRT-163,2017-03-12,Warwick,17:30,NH Flat,NH Flat,https://www.horseracing.net/results/warwick/12-03-17
+GBRT-164,2017-04-09,Market Rasen,17:15,NH Flat,NH Flat,https://www.horseracing.net/results/market-rasen/09-04-17
+GBRT-165,2017-04-25,Ludlow,17:10,NH Flat,NH Flat,https://www.horseracing.net/results/ludlow/25-04-17
+GBRT-166,2018-02-04,Musselburgh,16:20,NH Flat,NH Flat,https://www.horseracing.net/results/musselburgh/04-02-18
+GBRT-167,2018-02-16,Fakenham,16:55,NH Flat,NH Flat,https://www.horseracing.net/results/fakenham/16-02-18
+GBRT-168,2018-03-26,Market Rasen,17:20,NH Flat,NH Flat,https://www.horseracing.net/results/market-rasen/26-03-18
+GBRT-169,2018-05-08,Exeter,20:20,NH Flat,NH Flat,https://www.horseracing.net/results/exeter/08-05-18
+GBRT-170,2018-10-31,Fakenham,16:00,NH Flat,NH Flat,https://www.horseracing.net/results/fakenham/31-10-18
+GBRT-171,2018-11-27,Lingfield (AW),12:30,NH Flat,NH Flat,https://www.horseracing.net/results/lingfield/27-11-18
+GBRT-172,2018-12-03,Musselburgh,15:15,NH Flat,NH Flat,https://www.horseracing.net/results/musselburgh/03-12-18
+GBRT-173,2019-01-01,Cheltenham,15:50,NH Flat,NH Flat,https://www.horseracing.net/results/cheltenham/01-01-19
+GBRT-174,2019-01-01,Exeter,16:05,NH Flat,NH Flat,https://www.horseracing.net/results/exeter/01-01-19
+GBRT-175,2019-03-07,Wincanton,17:30,NH Flat,NH Flat,https://www.horseracing.net/results/wincanton/07-03-19
+GBRT-176,2019-10-10,Worcester,15:20,NH Flat,NH Flat,https://www.horseracing.net/results/worcester/10-10-19
+GBRT-177,2020-01-03,Musselburgh,15:35,NH Flat,NH Flat,https://www.horseracing.net/results/musselburgh/03-01-20
+GBRT-178,2021-03-14,Warwick,17:22,NH Flat,NH Flat,https://www.horseracing.net/results/warwick/14-03-21
+GBRT-179,2021-04-13,Newton Abbot,16:35,NH Flat,NH Flat,https://www.horseracing.net/results/newton-abbot/13-04-21
+GBRT-180,2021-05-05,Kelso,16:35,NH Flat,NH Flat,https://www.racingpost.com/results/27/kelso/2021-05-05/781595
+GBRT-181,2021-10-24,Aintree,17:20,NH Flat,NH Flat,https://www.racingpost.com/results/32/aintree/2021-10-24/793611
+GBRT-182,2021-11-24,Hereford,15:40,NH Flat,NH Flat,https://www.horseracing.net/results/hereford/24-11-21
+GBRT-183,2021-11-24,Wetherby,15:20,NH Flat,NH Flat,https://www.horseracing.net/results/wetherby/24-11-21
+GBRT-184,2022-01-15,Warwick,16:05,NH Flat,NH Flat,https://www.horseracing.net/results/warwick/15-01-22
+GBRT-185,2022-03-26,Kelso,16:21,NH Flat,NH Flat,https://www.horseracing.net/results/kelso/26-03-22
+GBRT-186,2022-05-18,Southwell,UNRESOLVED,NH Flat,NH Flat,https://www.horseracing.net/results/southwell/18-05-22
+GBRT-187,2022-06-10,Newton Abbot,20:36,NH Flat,NH Flat,https://www.racingpost.com/results/39/newton-abbot/2022-06-10/812362
+GBRT-188,2022-09-18,Plumpton,16:50,NH Flat,NH Flat,https://www.horseracing.net/results/plumpton/18-09-22
+GBRT-189,2022-11-05,Kelso,15:55,NH Flat,NH Flat,https://www.racingpost.com/results/27/kelso/2022-11-05/822729
+GBRT-190,2022-11-13,Cheltenham,16:00,NH Flat,NH Flat,https://www.racingpost.com/results/11/cheltenham/2022-11-13/823851
+GBRT-191,2023-01-28,Doncaster,16:25,NH Flat,NH Flat,https://www.horseracing.net/results/doncaster/28-01-23
+GBRT-192,2023-03-17,Doncaster,17:15,NH Flat,NH Flat,https://www.racingpost.com/results/15/doncaster/2023-03-17/833485
+GBRT-193,2023-04-22,Bangor-on-Dee,16:30,NH Flat,NH Flat,https://www.racingpost.com/results/4/bangor-on-dee/2023-04-22/835939
+GBRT-194,2023-11-09,Ludlow,16:20,NH Flat,NH Flat,https://www.racingpost.com/results/34/ludlow/2023-11-09/851790
+GBRT-195,2024-01-15,Hereford,16:10,NH Flat,NH Flat,https://www.racingpost.com/results/24/hereford/2024-01-15/857211
+GBRT-196,2024-03-02,Newbury,16:40,NH Flat,NH Flat,https://www.racingpost.com/results/36/newbury/2024-03-02/860142
+GBRT-197,2024-04-04,Southwell,15:05,NH Flat,NH Flat,https://www.racingpost.com/results/61/southwell/2024-04-04/862221/
+GBRT-198,2025-01-19,Windsor,16:10,NH Flat,NH Flat,https://www.horseracing.net/results/windsor/19-01-25
+GBRT-199,2025-10-26,Aintree,16:05,NH Flat,NH Flat,https://www.racingpost.com/results/32/aintree/2025-10-26/904386
+GBRT-200,2025-11-27,Taunton,15:52,NH Flat,NH Flat,https://www.racingpost.com/racecards/73/taunton/2025-11-27/906565/at-a-glance
