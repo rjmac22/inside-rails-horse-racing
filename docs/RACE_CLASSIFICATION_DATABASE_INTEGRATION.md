@@ -165,6 +165,74 @@ Where a reconciliation is applied, store at least:
 Evidence-only and unresolved verification records must not silently alter source
 values.
 
+## Great Britain `race_type_raw` reliability follow-up
+
+A Great Britain structure study exposed 25 apparent mixed Flat/National Hunt
+course-date meetings. That anomaly triggered a bounded database correctness
+investigation of `race_type_raw` rather than allowing the study to interpret the
+25 meetings at face value.
+
+The full Great Britain Database v3 population contains **111,634 races** and
+exactly four non-null `race_type_raw` values:
+
+- `Flat`: **70,218**;
+- `Hurdle`: **22,645**;
+- `Chase`: **15,671**;
+- `NH Flat`: **3,100**.
+
+The anomaly investigation and subsequent full-population lexical contradiction
+search externally established **25 incorrect Great Britain race-type
+assignments**. The confirmed correction directions are:
+
+- `Flat -> NH Flat`: 8;
+- `Chase -> Hurdle`: 8;
+- `Flat -> Chase`: 4;
+- `Chase -> Flat`: 2;
+- `Flat -> Hurdle`: 1;
+- `Chase -> NH Flat`: 1;
+- `Hurdle -> Flat`: 1.
+
+The errors are real but patterned edge cases rather than evidence that the field
+is generally corrupt. Race-title wording is useful for finding candidates but
+is not an authorised parser: the contradiction search produced genuine errors
+and lexical false positives, and three known errors were not detectable because
+the misleading title wording reinforced the wrong stored type.
+
+A fixed-seed stratified independent pilot then selected **200 Great Britain
+races**, 50 from each stored race type, without using title wording or anomaly
+status in selection. External result evidence agreed with `race_type_raw` for
+all **200/200** sampled races and produced **0 disagreements**.
+
+The durable pilot evidence is split by stratum so every sampled row retains a
+reconstructible external evidence locator:
+
+- `data/reference/gb_race_type_pilot_verification_200_chase.csv`;
+- `data/reference/gb_race_type_pilot_verification_200_flat.csv`;
+- `data/reference/gb_race_type_pilot_verification_200_hurdle.csv`;
+- `data/reference/gb_race_type_pilot_verification_200_nh_flat.csv`.
+
+This supports the bounded conclusion:
+
+> For Great Britain, `race_type_raw` is generally reliable for descriptive
+> analytical use but is not error-free. Known externally verified corrections
+> must be reconciled, and anomaly-sensitive analyses must retain an explicit
+> review step because a single wrong race type can materially change a
+> meeting-level conclusion.
+
+The pilot does **not** establish a zero population error rate and must not be
+used to publish a precise residual accuracy percentage. A much larger sample
+would be required to estimate a very low residual error rate tightly.
+
+The 25 post-v3 corrections are preserved with row-level provenance in:
+
+- `data/reference/post_v3_external_verification_candidates.csv`;
+- `data/reference/post_v3_external_value_resolutions.csv`.
+
+Database v3 remains immutable. Until a later accepted release absorbs these
+resolutions, studies material to race type must use the approved post-v3
+read-only overlay so the contradicted raw values are not knowingly analysed as
+current truth.
+
 ## Analytical safeguards
 
 The integrated fields support:
