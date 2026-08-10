@@ -1244,7 +1244,9 @@ The two activities should remain conceptually separate even when a study exposes
 Before beginning a new study, read at minimum:
 
 - `docs/STUDY_RESEARCH_PLAYBOOK.md`;
-- the relevant existing field-governance and database documentation for fields used by the study;
+- `docs/STUDY_DATABASE_REFERENCE.md` — the canonical accepted-database release, schema and study-facing view reference; do not guess database paths, table names, view names, grains or release state from memory;
+- `docs/STUDY_DATA_ACCESS.md` — the canonical read-only study connection and access rules;
+- the relevant existing field-governance documentation for fields used by the study;
 - `docs/STUDY_REVISIT_REGISTER.md` for any unresolved dependency or known impact relevant to the proposed work.
 
-The current database release state must also be checked before selecting the study's analytical data source. A validated candidate must not be silently treated as an accepted live release.
+The current database release state and study-facing interfaces must be taken from `docs/STUDY_DATABASE_REFERENCE.md` before the first analytical cell is written. A validated candidate must not be silently treated as an accepted live release, and study code must not invent or infer database paths, tables, views or schema when the reference documents them.
