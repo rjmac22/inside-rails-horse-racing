@@ -126,26 +126,49 @@ Notebook 22 established a conservative identity layer for jockey, trainer and ow
 
 Database v3 supersedes v2 for normal analytical use. Prior releases remain immutable.
 
-### Reader-facing Study 01 — field size and race predictability
+### Great Britain Study 01 — governance and structure
 
-**Status: in progress and no longer blocked by database integration.**
+**Status: analytically complete; closeout validation pending.**
 
-The first reader-facing study asks:
+Notebook:
 
-> What relationship, if any, exists between field size and the predictability of British horse races?
+`studies/jurisdictions/great_britain/01_governance_and_structure.ipynb`
 
-Established before the database pause:
+The study describes how the observed British racing programme is organised without treating convenient database fields as official sporting definitions.
 
-- 111,634 British races before the walkover exclusion;
-- field-size mode 8 and median 9;
-- approximately 74.0% of British races have 6–12 runners;
-- approximately 89.8% have 5–14 runners;
-- 21 one-runner British races were inspected and confirmed as genuine walkovers;
-- the competitive British population is therefore 111,613 races.
+For the study, a **course-date meeting** is the explicit analytical grouping `raw_date + candidate_course_label`. It is not presented as a BHA definition of a meeting or fixture and does not establish a reader-facing definition of a physical racecourse.
 
-The earlier apparent `Walkover<br><br><br>` defect was a rendered-output/copy-paste artefact, not stored database content.
+Main descriptive evidence:
 
-Study 01 should now resume against accepted Database v3 using the reconciled study-facing views and the canonical study documentation.
+- 111,634 Great Britain races from 1 January 2015 through 27 May 2026;
+- 15,865 analytical course-date meetings;
+- seven races is both the most common and median meeting size;
+- 94.8% of meetings contain six to eight races;
+- 4,016 British racing days;
+- median national racing day: four course-date meetings and 28 races;
+- Saturday carries the largest programme in complete non-2020 years, with a median five meetings and 38 races;
+- Sunday is materially smaller, with a median two meetings and 14 races;
+- May is the busiest month by mean races per racing day in every complete non-2020 year from 2015 to 2025;
+- 2020 is a clear structural exception; no causal explanation is assigned without separately governed evidence;
+- 2026 is partial through 27 May and is not treated as a complete annual comparison.
+
+The study triggered a separate governed investigation of `race_type_raw`. That investigation found 25 externally verified incorrect Great Britain race-type assignments, while an independent stratified pilot of 200 additional races produced 200 external agreements and zero disagreements. Known corrections are exposed read-only through the post-v3 study overlay; accepted Database v3 remains unchanged.
+
+Fresh-kernel execution of the study notebook passed on 10 August 2026 using the documented repository `PYTHONPATH` environment.
+
+Closeout record:
+
+`docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
+
+Study closeout register:
+
+`docs/STUDY_CLOSEOUT_REGISTER.md`
+
+The only remaining closeout gate is focused validation of the manual-verification register after adding the two BHA governance evidence records. Until that exact local evidence is recorded, the study is not labelled fully closed.
+
+### Earlier field-size study draft
+
+`studies/01_field_size_and_race_predictability.ipynb` remains separate unfinished exploratory WIP. It is not the active Great Britain study sequence and has not been deleted or retrospectively relabelled as complete.
 
 ## Final Database v3 acceptance evidence
 
@@ -225,6 +248,7 @@ See:
 - `docs/STUDY_DATABASE_REFERENCE.md`;
 - `docs/STUDY_DATA_ACCESS.md`;
 - `docs/STUDY_REVISIT_REGISTER.md`;
+- `docs/STUDY_CLOSEOUT_REGISTER.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
 - `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
@@ -238,9 +262,13 @@ Historical Phase 3/4 and Database v1/v2 evidence documents remain in the reposit
 
 ## Next bounded action
 
-Resume reader-facing Study 01 using accepted Database v3 and its reconciled study-facing views.
+Finish the focused Great Britain Study 01 closeout validation, then begin Great Britain Study 02:
 
-Study work remains evidence-led: the question comes first, the population and grain are declared, governed field interpretations are respected, and unexpected or null results are valid outcomes.
+> **What kinds of racing make up British horse racing?**
+
+Study 02 should establish the authoritative Flat/Jump structure before using the governed study-facing race-type classifications for descriptive analysis.
+
+The separate question of what counts as a British racecourse remains a later bounded study because course identity and physical-venue semantics have not yet been established as interchangeable concepts.
 
 ## Working method
 
@@ -254,7 +282,7 @@ The project follows an evidence-led investigation-to-implementation cycle:
 6. translate any correctness-critical reusable finding into a practical database consequence;
 7. implement the rule reversibly while retaining raw values and lineage;
 8. extract stable reusable logic into `src/inside_rails/`;
-9. add focused tests and independent validation;
+9. add focused tests and independent validation where a reusable governed rule exists;
 10. record evidence, limitations and lessons learned;
-11. update the audit record, README and project plan where applicable;
+11. update the appropriate closeout register, README and project plan;
 12. commit and verify the complete closeout.
