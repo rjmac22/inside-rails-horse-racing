@@ -269,6 +269,10 @@ def _insert_v4_governance_and_manifest(
             created_at_utc,
         ),
     )
+    # Preserve the one-accepted-release invariant while creating the successor.
+    # The temporary superseded backlink mirrors the proven v2 -> v3 handover:
+    # create the successor without making it accepted, point the prior accepted
+    # release forward to it, then atomically promote the successor.
     connection.execute(
         """
         INSERT INTO governance_release (
@@ -276,7 +280,7 @@ def _insert_v4_governance_and_manifest(
             governance_method_id, release_status, accepted_date, repository_commit,
             population_predicate, release_description, superseded_by_release_id,
             created_at_utc
-        ) VALUES (?, ?, ?, ?, 'accepted', ?, ?, 'rowid <> 1', ?, NULL, ?)
+        ) VALUES (?, ?, ?, ?, 'superseded', ?, ?, 'rowid <> 1', ?, ?, ?)
         """,
         (
             next_release_id,
@@ -288,6 +292,7 @@ def _insert_v4_governance_and_manifest(
             created_at_utc[:10],
             repository_commit,
             "Database v4 governed British racecourse/course identity reference release.",
+            base.v3_governance_release_id,
             created_at_utc,
         ),
     )
@@ -301,6 +306,16 @@ def _insert_v4_governance_and_manifest(
     )
     if connection.execute("SELECT changes()").fetchone()[0] != 1:
         raise RuntimeError("Unable to supersede Database v3 governance release in v4 copy")
+    connection.execute(
+        """
+        UPDATE governance_release
+        SET release_status='accepted', superseded_by_release_id=NULL
+        WHERE governance_release_id=? AND release_status='superseded'
+        """,
+        (next_release_id,),
+    )
+    if connection.execute("SELECT changes()").fetchone()[0] != 1:
+        raise RuntimeError("Unable to accept Database v4 governance release")
 
     next_evidence_id = int(
         connection.execute(
