@@ -8,7 +8,7 @@ from inside_rails.comment_information import (
     is_comment_analytically_available,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_empty_string_is_preserved_source_absence() -> None:
