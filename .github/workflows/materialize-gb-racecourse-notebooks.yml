@@ -24,6 +24,10 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Reconstruct corrected research payload
+        run: |
+          cat .github/racecourse_materialize_payload/* > studies/jurisdictions/great_britain/racecourses/_racecourse_research_payload.b64
+
       - name: Materialize standalone notebooks
         run: python scripts/materialize_gb_racecourse_notebooks.py
 
@@ -31,6 +35,7 @@ jobs:
         run: |
           rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_notebook_support.py
           rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_research_payload.b64
+          rm -rf .github/racecourse_materialize_payload
           rm -f scripts/materialize_gb_racecourse_notebooks.py
           rm -f .github/workflows/materialize-gb-racecourse-notebooks.yml
 
