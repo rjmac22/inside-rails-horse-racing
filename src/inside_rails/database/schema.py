@@ -10,6 +10,7 @@ APPLICATION_ID = 1_230_130_259
 SCHEMA_VERSION = 1
 GOVERNED_INTEGRATION_SCHEMA_VERSION = 2
 EXTERNAL_RECONCILIATION_SCHEMA_VERSION = 3
+RACECOURSE_IDENTITY_SCHEMA_VERSION = 4
 MINIMUM_SQLITE_VERSION = (3, 37, 0)
 _SCHEMA_RESOURCES = (
     "schema/v001_minimum_core.sql",
@@ -27,6 +28,9 @@ _GOVERNED_INTEGRATION_RESOURCES = (
 _EXTERNAL_RECONCILIATION_RESOURCES = (
     "schema/v003_external_verification_reconciliation.sql",
     "schema/v003_external_verification_views.sql",
+)
+_RACECOURSE_IDENTITY_RESOURCES = (
+    "schema/v004_racecourse_identity.sql",
 )
 
 
@@ -215,6 +219,51 @@ def upgrade_governed_integration_to_external_reconciliation_schema(
         )
 
 
+def upgrade_external_reconciliation_to_racecourse_identity_schema(
+    connection: sqlite3.Connection,
+) -> None:
+    """Upgrade a writable copy of accepted Database v3 to schema version 4."""
+
+    configure_governed_connection(connection)
+    if connection.in_transaction:
+        raise ValueError("Database v4 schema upgrade requires no active transaction")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise ValueError("Database v4 schema upgrade requires an Inside Rails database")
+    observed_version = int(_pragma_scalar(connection, "user_version"))
+    if observed_version != EXTERNAL_RECONCILIATION_SCHEMA_VERSION:
+        raise ValueError(
+            "Database v4 schema upgrade requires schema version 3; "
+            f"found {observed_version}"
+        )
+
+    connection.execute("PRAGMA foreign_keys = OFF")
+    if _pragma_scalar(connection, "foreign_keys") != 0:
+        raise RuntimeError("Unable to disable foreign keys for Database v4 migration")
+    try:
+        for resource in _RACECOURSE_IDENTITY_RESOURCES:
+            connection.executescript(_resource_sql(resource))
+    except Exception:
+        if connection.in_transaction:
+            connection.rollback()
+        raise
+    finally:
+        connection.execute("PRAGMA foreign_keys = ON")
+
+    if _pragma_scalar(connection, "foreign_keys") != 1:
+        raise RuntimeError("Database v4 migration did not restore foreign-key enforcement")
+    if _pragma_scalar(connection, "application_id") != APPLICATION_ID:
+        raise RuntimeError("Unexpected SQLite application_id after Database v4 migration")
+    if _pragma_scalar(connection, "user_version") != RACECOURSE_IDENTITY_SCHEMA_VERSION:
+        raise RuntimeError("Unexpected SQLite user_version after Database v4 migration")
+
+    foreign_key_rows = connection.execute("PRAGMA foreign_key_check").fetchall()
+    if foreign_key_rows:
+        raise RuntimeError(
+            "Database v4 migration produced foreign-key violations: "
+            f"{foreign_key_rows[:5]}"
+        )
+
+
 def create_governed_integration_schema(connection: sqlite3.Connection) -> None:
     """Create the complete Database v2 physical schema in a clean database."""
 
@@ -227,3 +276,10 @@ def create_external_reconciliation_schema(connection: sqlite3.Connection) -> Non
 
     create_governed_integration_schema(connection)
     upgrade_governed_integration_to_external_reconciliation_schema(connection)
+
+
+def create_racecourse_identity_schema(connection: sqlite3.Connection) -> None:
+    """Create the complete Database v4 schema in a clean database for tests."""
+
+    create_external_reconciliation_schema(connection)
+    upgrade_external_reconciliation_to_racecourse_identity_schema(connection)
