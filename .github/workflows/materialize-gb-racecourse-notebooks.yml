@@ -1,0 +1,69 @@
+name: Materialize GB racecourse notebooks
+
+on:
+  pull_request:
+    branches:
+      - study/gb-04-race-meetings-fixtures
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.head_ref == 'agent/materialize-gb-racecourse-notebooks'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Materialize standalone notebooks
+        run: python scripts/materialize_gb_racecourse_notebooks.py
+
+      - name: Remove temporary repair machinery and old shared wrapper files
+        run: |
+          rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_notebook_support.py
+          rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_research_payload.b64
+          rm -f scripts/materialize_gb_racecourse_notebooks.py
+          rm -f .github/workflows/materialize-gb-racecourse-notebooks.yml
+
+      - name: Validate notebook source structure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('studies/jurisdictions/great_britain/racecourses')
+          notebooks = sorted(root.glob('*.ipynb'))
+          assert len(notebooks) == 60, len(notebooks)
+          generated = [p for p in notebooks if p.name not in {'aintree.ipynb', 'ascot.ipynb'}]
+          assert len(generated) == 58, len(generated)
+          forbidden = ('_racecourse_notebook_support', '_racecourse_research_payload', 'base64', 'gzip', 'exec(')
+          for path in generated:
+              text = path.read_text()
+              data = json.loads(text)
+              assert data['nbformat'] == 4
+              assert len(data['cells']) >= 25, (path, len(data['cells']))
+              for token in forbidden:
+                  assert token not in text, (path, token)
+          print('Validated 60 notebooks; 58 generated notebooks are standalone and readable.')
+          PY
+
+      - name: Commit materialized notebooks
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+          else
+            git commit -m 'Materialize GB racecourse evidence notebooks'
+            git push origin HEAD:${{ github.head_ref }}
+          fi
