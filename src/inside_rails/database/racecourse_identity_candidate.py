@@ -27,15 +27,6 @@ from inside_rails.database.racecourse_identity_reference import (
     Study03ReferenceSummary,
     load_study03_racecourse_identity,
 )
-from inside_rails.database.racecourse_identity_source_v1 import (
-    EXPLICIT_SOURCE_LABEL_METHOD,
-    NEWMARKET_JULY_RACECOURSE,
-    NEWMARKET_JULY_SOURCE_LABEL,
-    NEWMARKET_ROWLEY_RACECOURSE,
-    NEWMARKET_ROWLEY_SOURCE_LABEL,
-    SOURCE_LABEL_CONVENTION_METHOD,
-    apply_source_v1_racecourse_resolution,
-)
 from inside_rails.database.raw_mirror_prototype import sha256_file
 from inside_rails.database.schema import (
     APPLICATION_ID,
@@ -77,7 +68,7 @@ V4_EVIDENCE = (
     (
         "repository_artifact",
         RACECOURSE_DIRECTORY,
-        "Sixty completed per-racecourse evidence notebooks used as the governed reference source.",
+        "Sixty-one completed per-racecourse evidence notebooks used as the governed reference source.",
     ),
     (
         "document",
@@ -91,9 +82,9 @@ BUILDER_VALIDATION_ROWS = (
         "persisted_readback",
         "database-v4-racecourse-identity-builder",
         "1",
-        "Study 03 reference tables read back at 60 notebooks, 65 source mappings, "
-        "61 Source Version 1 racecourse identities, 90 inventory rows, 86 stable course "
-        "identities and 7 unresolved questions.",
+        "Study 03 reference tables read back at 61 notebooks, 65 source mappings, "
+        "61 racecourse identities, 90 inventory rows, 86 stable course identities and "
+        "7 unresolved questions.",
     ),
     (
         "sqlite_integrity",
@@ -112,9 +103,9 @@ BUILDER_VALIDATION_ROWS = (
         "database-v4-racecourse-identity-builder",
         "1",
         "Study 03 source-label mappings reconcile exactly to the existing Great Britain "
-        "reference_course population; Source Version 1 resolves Newmarket (July) to the "
-        "July Course by explicit label and plain Newmarket to the Rowley Mile by the "
-        "documented source-label convention; no race occurrence is assigned to a physical "
+        "reference_course population; Study 03 resolves Newmarket (July) to the July "
+        "Course by explicit label and plain Newmarket to the Rowley Mile by the documented "
+        "Source Version 1 label convention; no race occurrence is assigned to a physical "
         "track below racecourse level.",
     ),
 )
@@ -281,10 +272,6 @@ def _insert_v4_governance_and_manifest(
             created_at_utc,
         ),
     )
-    # Preserve the one-accepted-release invariant while creating the successor.
-    # The temporary superseded backlink mirrors the proven v2 -> v3 handover:
-    # create the successor without making it accepted, point the prior accepted
-    # release forward to it, then atomically promote the successor.
     connection.execute(
         """
         INSERT INTO governance_release (
@@ -394,7 +381,7 @@ def _finish_builder_stage(
     *,
     completed_at_utc: str,
 ) -> tuple[str, int]:
-    expected_counts = (60, 65, 61, 90, 86, 7)
+    expected_counts = (61, 65, 61, 90, 86, 7)
     observed_counts = (
         int(connection.execute(
             "SELECT COUNT(*) FROM governance_study03_racecourse_notebook"
@@ -448,28 +435,17 @@ def _finish_builder_stage(
         """
         SELECT candidate_course_label, racecourse_name, racecourse_resolution_method
         FROM view_gb_racecourse_identity_reference
-        WHERE candidate_course_label IN (?, ?)
-        ORDER BY CASE candidate_course_label WHEN ? THEN 1 ELSE 2 END
-        """,
-        (
-            NEWMARKET_ROWLEY_SOURCE_LABEL,
-            NEWMARKET_JULY_SOURCE_LABEL,
-            NEWMARKET_ROWLEY_SOURCE_LABEL,
-        ),
+        WHERE candidate_course_label IN ('Newmarket', 'Newmarket (July)')
+        ORDER BY CASE candidate_course_label WHEN 'Newmarket' THEN 1 ELSE 2 END
+        """
     ).fetchall()
     if newmarket_rows != [
-        (
-            NEWMARKET_ROWLEY_SOURCE_LABEL,
-            NEWMARKET_ROWLEY_RACECOURSE,
-            SOURCE_LABEL_CONVENTION_METHOD,
-        ),
-        (
-            NEWMARKET_JULY_SOURCE_LABEL,
-            NEWMARKET_JULY_RACECOURSE,
-            EXPLICIT_SOURCE_LABEL_METHOD,
-        ),
+        ("Newmarket", "Newmarket — Rowley Mile", "source_label_convention"),
+        ("Newmarket (July)", "Newmarket — July Course", "explicit_source_label"),
     ]:
-        raise RuntimeError(f"Database v4 Newmarket racecourse resolution changed: {newmarket_rows!r}")
+        raise RuntimeError(
+            f"Database v4 Newmarket racecourse resolution changed: {newmarket_rows!r}"
+        )
 
     gb_race_count = int(
         connection.execute(
@@ -486,7 +462,10 @@ def _finish_builder_stage(
         FROM view_gb_reconciled_race_occurrences_with_racecourse
         """
     ).fetchone()
-    if (int(racecourse_view_count), int(distinct_race_count)) != (gb_race_count, gb_race_count):
+    if (int(racecourse_view_count), int(distinct_race_count)) != (
+        gb_race_count,
+        gb_race_count,
+    ):
         raise RuntimeError(
             "Database v4 race-to-racecourse study view does not preserve one row per GB race: "
             f"source={gb_race_count}, view={racecourse_view_count}, distinct={distinct_race_count}"
@@ -630,11 +609,6 @@ def build_racecourse_identity_candidate(
                 root,
                 governance_release_id=release_id,
             )
-            reference_summary = apply_source_v1_racecourse_resolution(
-                connection,
-                reference_summary,
-                governance_release_id=release_id,
-            )
             connection.commit()
             completed_at, _ = timestamp(None)
             final_status, validation_count = _finish_builder_stage(
@@ -654,12 +628,17 @@ def build_racecourse_identity_candidate(
         )
         with connect_read_only(output) as connection:
             configure_governed_connection(connection, query_only=True)
-            if int(connection.execute("PRAGMA user_version").fetchone()[0]) != RACECOURSE_IDENTITY_SCHEMA_VERSION:
+            if (
+                int(connection.execute("PRAGMA user_version").fetchone()[0])
+                != RACECOURSE_IDENTITY_SCHEMA_VERSION
+            ):
                 raise RuntimeError("Database v4 candidate user_version changed after build")
             if str(connection.execute("PRAGMA quick_check").fetchone()[0]) != "ok":
                 raise RuntimeError("Database v4 candidate failed final read-only quick_check")
             if connection.execute("PRAGMA foreign_key_check").fetchall():
-                raise RuntimeError("Database v4 candidate failed final read-only foreign_key_check")
+                raise RuntimeError(
+                    "Database v4 candidate failed final read-only foreign_key_check"
+                )
     except Exception:
         remove_output(output)
         raise
