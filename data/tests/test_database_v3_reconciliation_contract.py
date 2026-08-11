@@ -12,7 +12,7 @@ from inside_rails.database.external_reconciliation_candidate import (
     EXPECTED_BASE_RELEASE_SHA256,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def _rows(relative_path: str) -> list[dict[str, str]]:
