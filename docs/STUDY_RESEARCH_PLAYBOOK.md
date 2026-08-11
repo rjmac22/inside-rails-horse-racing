@@ -1250,3 +1250,27 @@ Before beginning a new study, read at minimum:
 - `docs/STUDY_REVISIT_REGISTER.md` for any unresolved dependency or known impact relevant to the proposed work.
 
 The current database release state and study-facing interfaces must be taken from `docs/STUDY_DATABASE_REFERENCE.md` before the first analytical cell is written. A validated candidate must not be silently treated as an accepted live release, and study code must not invent or infer database paths, tables, views or schema when the reference documents them.
+
+---
+
+## 72. Human judgement before automation
+
+Studies must distinguish between **conceptual work** and **mechanical work**.
+
+Do not automate a research step merely because it can be automated. Early investigation should remain deliberate while terminology, definitions, source meaning, exceptions and analytical rules are still being established.
+
+A task is ready to delegate heavily to AI or automate when:
+
+- the concept being measured is sufficiently well defined;
+- important exceptions and edge cases have been identified;
+- the rule can be stated explicitly;
+- suitable validation checks or tests exist;
+- repeating the work would add little further understanding.
+
+At that point, prefer automation over manual repetition.
+
+AI should actively flag this transition. When a study reaches the point where remaining work is primarily mechanical, ChatGPT should say so and recommend delegation or automation rather than continuing a needlessly manual workflow.
+
+Conversely, where automation would require unresolved assumptions or conceal important judgement, ChatGPT should flag that the work is **not yet safe to delegate**.
+
+> **Principle:** think carefully; automate repetition. Human understanding should establish what the system means before automation scales the implementation.
