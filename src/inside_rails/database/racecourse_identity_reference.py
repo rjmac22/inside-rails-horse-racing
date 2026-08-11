@@ -12,14 +12,14 @@ import sqlite3
 import unicodedata
 from typing import Any
 
-EXPECTED_NOTEBOOK_COUNT = 60
+EXPECTED_NOTEBOOK_COUNT = 61
 EXPECTED_SOURCE_LABEL_COUNT = 65
-EXPECTED_RACECOURSE_IDENTITY_COUNT = 60
+EXPECTED_RACECOURSE_IDENTITY_COUNT = 61
 EXPECTED_COURSE_INVENTORY_COUNT = 90
 EXPECTED_STABLE_COURSE_IDENTITY_COUNT = 86
 EXPECTED_UNRESOLVED_COUNT = 7
 
-STUDY03_EVIDENCE_COMMIT = "5bb1b18482ddf59b3bdac7fc8545b675a9757df0"
+STUDY03_EVIDENCE_COMMIT = "01c93aeff7f0a4ab7a22f6c37ad41656f7746e3b"
 STUDY03_NOTEBOOK = (
     "studies/jurisdictions/great_britain/"
     "03_british_racecourse_and_course_identity.ipynb"
@@ -36,6 +36,15 @@ RESOLVED_STABLE_COLLAPSES = {
     ("Windsor", "2025/26 Jump Figure-of-Eight Configuration"): "Windsor Turf Course",
 }
 
+_NEWMARKET_EXPECTED = {
+    "Newmarket": ("Newmarket — Rowley Mile", "source_label_convention"),
+    "Newmarket (July)": ("Newmarket — July Course", "explicit_source_label"),
+}
+_ALLOWED_RESOLUTION_METHODS = {
+    "study03_identity_direct",
+    "explicit_source_label",
+    "source_label_convention",
+}
 _SLUG_NON_ALNUM = re.compile(r"[^a-z0-9]+")
 
 
@@ -58,7 +67,12 @@ def _slug(value: str) -> str:
     return slug
 
 
-def _dataframe_literal_rows(notebook_path: Path, variable_name: str, *, required: bool) -> list[dict[str, Any]]:
+def _dataframe_literal_rows(
+    notebook_path: Path,
+    variable_name: str,
+    *,
+    required: bool,
+) -> list[dict[str, Any]]:
     """Read one static ``pd.DataFrame`` assignment without executing notebook code."""
     notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
     for cell in notebook.get("cells", []):
@@ -79,7 +93,8 @@ def _dataframe_literal_rows(notebook_path: Path, variable_name: str, *, required
                 targets = [node.target]
                 value = node.value
             if value is None or not any(
-                isinstance(target, ast.Name) and target.id == variable_name for target in targets
+                isinstance(target, ast.Name) and target.id == variable_name
+                for target in targets
             ):
                 continue
             if not (
@@ -103,20 +118,27 @@ def _dataframe_literal_rows(notebook_path: Path, variable_name: str, *, required
                     return []
                 if all(isinstance(row, dict) for row in data):
                     return [dict(row) for row in data]
-                if columns is not None and all(isinstance(row, (list, tuple)) for row in data):
+                if columns is not None and all(
+                    isinstance(row, (list, tuple)) for row in data
+                ):
                     if any(len(row) != len(columns) for row in data):
                         raise RuntimeError(
                             f"{variable_name!r} in {notebook_path.name} has a row/column mismatch"
                         )
                     return [dict(zip(columns, row, strict=True)) for row in data]
-            if isinstance(data, dict) and all(isinstance(values, list) for values in data.values()):
+            if isinstance(data, dict) and all(
+                isinstance(values, list) for values in data.values()
+            ):
                 lengths = {len(values) for values in data.values()}
                 if len(lengths) != 1:
                     raise RuntimeError(
                         f"{variable_name!r} in {notebook_path.name} has unequal column lengths"
                     )
                 count = next(iter(lengths), 0)
-                return [{key: values[index] for key, values in data.items()} for index in range(count)]
+                return [
+                    {key: values[index] for key, values in data.items()}
+                    for index in range(count)
+                ]
             raise RuntimeError(
                 f"{variable_name!r} in {notebook_path.name} uses an unsupported DataFrame literal"
             )
@@ -165,7 +187,9 @@ def collect_study03_reference(project_root: str | Path) -> tuple[
         source_rows = _dataframe_literal_rows(
             notebook_path, "source_label_mapping", required=True
         )
-        inventory_rows = _dataframe_literal_rows(notebook_path, "course_inventory", required=True)
+        inventory_rows = _dataframe_literal_rows(
+            notebook_path, "course_inventory", required=True
+        )
         unresolved_rows = _dataframe_literal_rows(
             notebook_path, "unresolved_questions", required=False
         )
@@ -200,25 +224,48 @@ def _validate_reference_population(
             f"Study 03 source-label mapping count changed: expected {EXPECTED_SOURCE_LABEL_COUNT}, "
             f"observed {len(mappings)}"
         )
+
     mapping_keys: set[tuple[str, str]] = set()
     racecourses: set[str] = set()
+    newmarket_observed: dict[str, tuple[str, str]] = {}
     for row in mappings:
         notebook = str(row["source_notebook"])
-        jurisdiction = _clean_text(row.get("jurisdiction"), field="jurisdiction", notebook=notebook)
+        jurisdiction = _clean_text(
+            row.get("jurisdiction"), field="jurisdiction", notebook=notebook
+        )
         if jurisdiction != "Great Britain":
-            raise RuntimeError(f"{notebook}: unexpected Study 03 jurisdiction {jurisdiction!r}")
+            raise RuntimeError(
+                f"{notebook}: unexpected Study 03 jurisdiction {jurisdiction!r}"
+            )
         label = _clean_text(
-            row.get("candidate_course_label"), field="candidate_course_label", notebook=notebook
+            row.get("candidate_course_label"),
+            field="candidate_course_label",
+            notebook=notebook,
         )
         racecourse = _clean_text(
-            row.get("racecourse_identity"), field="racecourse_identity", notebook=notebook
+            row.get("racecourse_identity"),
+            field="racecourse_identity",
+            notebook=notebook,
         )
+        method = str(
+            row.get("racecourse_resolution_method") or "study03_identity_direct"
+        ).strip()
+        if method not in _ALLOWED_RESOLUTION_METHODS:
+            raise RuntimeError(
+                f"{notebook}: unsupported racecourse resolution method {method!r}"
+            )
         key = (label, jurisdiction)
         if key in mapping_keys:
             raise RuntimeError(f"Duplicate Study 03 source mapping {key!r}")
         mapping_keys.add(key)
         racecourses.add(racecourse)
+        if label in _NEWMARKET_EXPECTED:
+            newmarket_observed[label] = (racecourse, method)
 
+    if newmarket_observed != _NEWMARKET_EXPECTED:
+        raise RuntimeError(
+            f"Study 03 Newmarket source-label resolution changed: {newmarket_observed!r}"
+        )
     if len(racecourses) != EXPECTED_RACECOURSE_IDENTITY_COUNT:
         raise RuntimeError(
             "Study 03 racecourse identity count changed: "
@@ -235,12 +282,18 @@ def _validate_reference_population(
     for row in inventory:
         notebook = str(row["source_notebook"])
         racecourse = _clean_text(
-            row.get("racecourse_identity"), field="racecourse_identity", notebook=notebook
+            row.get("racecourse_identity"),
+            field="racecourse_identity",
+            notebook=notebook,
         )
         if racecourse not in racecourses:
-            raise RuntimeError(f"{notebook}: inventory racecourse {racecourse!r} has no source mapping")
+            raise RuntimeError(
+                f"{notebook}: inventory racecourse {racecourse!r} has no source mapping"
+            )
         raw_name = _clean_text(
-            row.get("course_or_track_name"), field="course_or_track_name", notebook=notebook
+            row.get("course_or_track_name"),
+            field="course_or_track_name",
+            notebook=notebook,
         )
         stable_name = RESOLVED_STABLE_COLLAPSES.get((racecourse, raw_name), raw_name)
         row["stable_course_identity"] = stable_name
@@ -268,7 +321,9 @@ def load_study03_racecourse_identity(
     *,
     governance_release_id: int,
 ) -> Study03ReferenceSummary:
-    notebook_rows, mappings, inventory, unresolved = collect_study03_reference(project_root)
+    notebook_rows, mappings, inventory, unresolved = collect_study03_reference(
+        project_root
+    )
 
     existing = {
         (str(label), str(jurisdiction)): int(reference_course_id)
@@ -281,7 +336,8 @@ def load_study03_racecourse_identity(
         )
     }
     expected_keys = {
-        (str(row["candidate_course_label"]).strip(), "Great Britain") for row in mappings
+        (str(row["candidate_course_label"]).strip(), "Great Britain")
+        for row in mappings
     }
     missing = sorted(expected_keys - set(existing))
     extra = sorted(set(existing) - expected_keys)
@@ -292,7 +348,9 @@ def load_study03_racecourse_identity(
         )
 
     notebook_id_by_path: dict[str, int] = {}
-    for notebook_id, row in enumerate(sorted(notebook_rows, key=lambda item: item["source_notebook"]), start=1):
+    for notebook_id, row in enumerate(
+        sorted(notebook_rows, key=lambda item: item["source_notebook"]), start=1
+    ):
         notebook_id_by_path[str(row["source_notebook"])] = notebook_id
         connection.execute(
             """
@@ -310,7 +368,9 @@ def load_study03_racecourse_identity(
             ),
         )
 
-    racecourse_names = sorted({str(row["racecourse_identity"]).strip() for row in mappings})
+    racecourse_names = sorted(
+        {str(row["racecourse_identity"]).strip() for row in mappings}
+    )
     racecourse_id_by_name: dict[str, int] = {}
     racecourse_code_seen: set[str] = set()
     for racecourse_id, racecourse_name in enumerate(racecourse_names, start=1):
@@ -324,13 +384,12 @@ def load_study03_racecourse_identity(
             INSERT INTO reference_racecourse_identity (
                 racecourse_identity_id, racecourse_identity_code, racecourse_name,
                 jurisdiction, identity_kind, governance_release_id
-            ) VALUES (?, ?, ?, 'Great Britain', ?, ?)
+            ) VALUES (?, ?, ?, 'Great Britain', 'venue', ?)
             """,
             (
                 racecourse_id,
                 code,
                 racecourse_name,
-                "analytical_grouping" if racecourse_name == "Newmarket" else "venue",
                 governance_release_id,
             ),
         )
@@ -338,17 +397,30 @@ def load_study03_racecourse_identity(
     for row in sorted(mappings, key=lambda item: str(item["candidate_course_label"])):
         label = str(row["candidate_course_label"]).strip()
         racecourse_name = str(row["racecourse_identity"]).strip()
+        grouping_name = str(
+            row.get("study03_grouping_name") or racecourse_name
+        ).strip()
+        resolution_method = str(
+            row.get("racecourse_resolution_method") or "study03_identity_direct"
+        ).strip()
+        resolution_evidence = str(
+            row.get("racecourse_resolution_evidence") or row["source_notebook"]
+        ).strip()
         connection.execute(
             """
             INSERT INTO reference_course_racecourse_map (
                 reference_course_id, racecourse_identity_id, racecourse_notebook_id,
-                governance_release_id
-            ) VALUES (?, ?, ?, ?)
+                study03_grouping_name, racecourse_resolution_method,
+                racecourse_resolution_evidence, governance_release_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 existing[(label, "Great Britain")],
                 racecourse_id_by_name[racecourse_name],
                 notebook_id_by_path[str(row["source_notebook"])],
+                grouping_name,
+                resolution_method,
+                resolution_evidence,
                 governance_release_id,
             ),
         )
@@ -387,7 +459,11 @@ def load_study03_racecourse_identity(
         )
 
     inventory_sorted = sorted(
-        inventory, key=lambda row: (str(row["source_notebook"]), int(row["source_row_number"]))
+        inventory,
+        key=lambda row: (
+            str(row["source_notebook"]),
+            int(row["source_row_number"]),
+        ),
     )
     for inventory_id, row in enumerate(inventory_sorted, start=1):
         racecourse_name = str(row["racecourse_identity"]).strip()
@@ -395,7 +471,8 @@ def load_study03_racecourse_identity(
         payload = {
             key: value
             for key, value in row.items()
-            if key not in {"source_notebook", "source_row_number", "stable_course_identity"}
+            if key
+            not in {"source_notebook", "source_row_number", "stable_course_identity"}
         }
         connection.execute(
             """
@@ -418,7 +495,11 @@ def load_study03_racecourse_identity(
         )
 
     unresolved_sorted = sorted(
-        unresolved, key=lambda row: (str(row["source_notebook"]), int(row["source_row_number"]))
+        unresolved,
+        key=lambda row: (
+            str(row["source_notebook"]),
+            int(row["source_row_number"]),
+        ),
     )
     for unresolved_id, row in enumerate(unresolved_sorted, start=1):
         racecourse_name = str(row.get("racecourse_identity") or "").strip()
@@ -462,12 +543,36 @@ def load_study03_racecourse_identity(
         )
 
     counts = (
-        int(connection.execute("SELECT COUNT(*) FROM governance_study03_racecourse_notebook").fetchone()[0]),
-        int(connection.execute("SELECT COUNT(*) FROM reference_course_racecourse_map").fetchone()[0]),
-        int(connection.execute("SELECT COUNT(*) FROM reference_racecourse_identity").fetchone()[0]),
-        int(connection.execute("SELECT COUNT(*) FROM reference_racecourse_course_inventory").fetchone()[0]),
-        int(connection.execute("SELECT COUNT(*) FROM reference_racecourse_course_identity").fetchone()[0]),
-        int(connection.execute("SELECT COUNT(*) FROM governance_racecourse_unresolved_question").fetchone()[0]),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM governance_study03_racecourse_notebook"
+            ).fetchone()[0]
+        ),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM reference_course_racecourse_map"
+            ).fetchone()[0]
+        ),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM reference_racecourse_identity"
+            ).fetchone()[0]
+        ),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM reference_racecourse_course_inventory"
+            ).fetchone()[0]
+        ),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM reference_racecourse_course_identity"
+            ).fetchone()[0]
+        ),
+        int(
+            connection.execute(
+                "SELECT COUNT(*) FROM governance_racecourse_unresolved_question"
+            ).fetchone()[0]
+        ),
     )
     expected = (
         EXPECTED_NOTEBOOK_COUNT,
