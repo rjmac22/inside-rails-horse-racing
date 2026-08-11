@@ -25,7 +25,7 @@ python scripts/run_applicable_validators.py
 The runner:
 
 - discovers the sorted `scripts/validate_*.py` inventory;
-- requires the governed inventory count to remain exactly 34 until deliberately reviewed;
+- requires the governed inventory count to remain exactly 35 until deliberately reviewed;
 - excludes exactly three historical Database v1 construction-only validators;
 - inspects each applicable validator's `argparse.add_argument(...)` declarations using the Python AST without importing or executing the validator;
 - resolves required source-database positional inputs to the exact immutable Source Version 1 path;
@@ -59,7 +59,7 @@ Validators with optional positional arguments or optional flags keep their own r
 
 ## Exact current argument map
 
-The current repository contains 34 `validate_*.py` scripts. Eleven applicable validators require the immutable Source Version 1 path as a positional argument:
+The current repository contains 35 `validate_*.py` scripts. Eleven applicable validators require the immutable Source Version 1 path as a positional argument:
 
 | Validator | Required positional input |
 |---|---|
@@ -75,7 +75,7 @@ The current repository contains 34 `validate_*.py` scripts. Eleven applicable va
 | `validate_source_profile.py` | `database` → Source Version 1 |
 | `validate_starting_price.py` | `database` → Source Version 1 |
 
-The other 20 applicable validators currently have no required positional input. They use their own governed defaults or validate self-contained governed artefacts:
+The other 21 applicable validators currently have no required positional input. They use their own governed defaults or validate self-contained governed artefacts:
 
 ```text
 validate_carried_weight.py
@@ -87,6 +87,7 @@ validate_horse_pedigree_identity.py
 validate_inside_rails_v2_implementation.py
 validate_inside_rails_v2.py
 validate_inside_rails_v3.py
+validate_inside_rails_v4.py
 validate_manual_verifications.py
 validate_participant_identity.py
 validate_prize_money.py
@@ -100,7 +101,7 @@ validate_runner_entries_source.py
 validate_runner_record_supplementations.py
 ```
 
-This mapping is executable governance, not prose only: `tests/test_applicable_validator_gate.py` requires the runner to parse the live validator CLIs and fail if an ungoverned required positional argument appears.
+This mapping is executable governance, not prose only: `data/tests/test_applicable_validator_gate.py` requires the runner to parse the live validator CLIs and fail if an ungoverned required positional argument appears.
 
 ## Explicit exclusions
 
@@ -112,14 +113,14 @@ Only these three validators are excluded from the current release-acceptance swe
 | `validate_raw_mirror_candidate.py` | Historical Database v1 construction-only validator requiring the disposed raw-mirror candidate. |
 | `validate_minimum_core_candidate.py` | Historical Database v1 construction-only validator requiring the disposed minimum-core candidate. |
 
-They are not dependencies of Database v2 or v3 acceptance. Their exclusion is already part of the Database v2 release record and remains explicit rather than being silently skipped.
+They are not dependencies of Database v2, v3 or v4 acceptance. Their exclusion is already part of the Database v2 release record and remains explicit rather than being silently skipped.
 
 Current governed arithmetic:
 
 ```text
-34 validator scripts
+35 validator scripts
 - 3 historical construction-only exclusions
-= 31 applicable independent validators
+= 32 applicable independent validators
 ```
 
 ## Inspection mode
@@ -134,7 +135,7 @@ Inspection mode is the preferred diagnostic when a validator CLI changes. The ru
 
 ## Acceptance use
 
-For Database v3, the final technical sequence is:
+For Database v3, the final technical sequence was:
 
 ```bash
 pytest -q
@@ -142,7 +143,15 @@ python scripts/run_applicable_validators.py
 python scripts/validate_inside_rails_v3.py
 ```
 
-The final standalone Database v3 validator is intentionally repeated after the complete sweep at the release boundary so the exact candidate is explicitly revalidated immediately before promotion.
+For the Database v4 candidate, the corresponding release-boundary sequence is:
+
+```bash
+pytest -q
+python scripts/run_applicable_validators.py
+python scripts/validate_inside_rails_v4.py
+```
+
+The final standalone version-specific validator is intentionally repeated after the complete sweep at the release boundary so the exact candidate is explicitly revalidated immediately before any promotion step. A successful validator run does not itself promote or modify the candidate.
 
 For future database versions, replace only that final version-specific standalone validation command after the successor release contract defines it. Do not change the project-wide validator runner merely because the accepted database version changes.
 
@@ -156,7 +165,9 @@ The Phase 4 final repository gate on 6 August 2026 exposed three harness errors 
 
 Those were harness defects, not validator defects. The final corrected Phase 4 sweep passed all 31 then-current validators. The same class of mistake recurred during the Database v3 acceptance work on 9 August 2026 when a generic filename loop again invoked `validate_beaten_distances.py` without its required database argument.
 
-The repository now treats the runner itself as governed implementation, with focused tests, so this procedure does not need to be rediscovered in a later study or release.
+Database v4 deliberately increased the governed inventory from 34 to 35 scripts and the applicable set from 31 to 32 by adding `validate_inside_rails_v4.py`. The runner, its focused test and this document were updated together so the inventory change is explicit rather than silently absorbed.
+
+The repository treats the runner itself as governed implementation, with focused tests, so this procedure does not need to be rediscovered in a later study or release.
 
 ## Change rule
 
