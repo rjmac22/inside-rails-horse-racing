@@ -36,8 +36,8 @@ SOURCE_VERSION_1 = (
 )
 COURSE_LOCATION_REFERENCE = ROOT / "data" / "reference" / "course_locations.csv"
 
-EXPECTED_VALIDATOR_COUNT = 34
-EXPECTED_APPLICABLE_COUNT = 31
+EXPECTED_VALIDATOR_COUNT = 35
+EXPECTED_APPLICABLE_COUNT = 32
 
 EXCLUDED_VALIDATORS = {
     "validate_core_structure_prototype.py": (
