@@ -782,6 +782,52 @@ Record material details such as:
 
 Follow the project's manual-verification and provenance rules where external evidence affects governed data or a bounded analytical decision.
 
+### Capture sources as the research happens
+
+External-source provenance must be recorded **at the point the source is used**, not reconstructed from memory during study closeout.
+
+Whenever an external source materially supports:
+
+- a factual statement;
+- an interpretation of source data;
+- an entity or characteristic definition;
+- a historical or temporal boundary;
+- a manual verification;
+- a governed or potentially governable value;
+- an analytical decision;
+
+add it to the study's source/provenance register during that analytical step.
+
+Record enough information to recover both the source and what it supports. Where applicable include:
+
+- the finding, claim, field or decision supported;
+- source authority or publisher;
+- source title;
+- stable URL or locator;
+- publication date where relevant;
+- access date;
+- a concise evidence note;
+- validity dates where the evidence is temporal;
+- verification or confidence status.
+
+Do not leave a source only in chat, browser history, notebook prose or an isolated code comment.
+
+If the source is also a reusable project data source, ensure it is represented appropriately in `docs/RESEARCH_DATA_SOURCE_REGISTER.md` under the project's data-source rules.
+
+### Reconcile sources before study closeout
+
+Every study notebook that uses external evidence must finish with a **Sources / provenance** section.
+
+Before declaring the study complete:
+
+1. reconcile that section with the study source/provenance register;
+2. check that every material externally supported notebook finding has a corresponding provenance record;
+3. check that every externally derived governed or manual value has evidence at the level of the characteristic actually asserted;
+4. retain unresolved or weakly supported claims as unresolved rather than silently omitting their provenance problem;
+5. ensure important sources discovered during exploratory work have not been lost simply because the analytical direction later changed.
+
+The final source section is a presentation and completeness check. It is **not a substitute for recording provenance during the research itself**.
+
 ---
 
 ## 45. Use internal claim-strength labels
