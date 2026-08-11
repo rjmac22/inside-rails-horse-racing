@@ -70,8 +70,8 @@ Potential impact could change the principal conclusion, invalidate the populatio
 
 | revisit_id | study_id | study_path | trigger_date | trigger_type | trigger_summary | affected_evidence | severity | publication_impact_possible | status | resolution_summary | resolved_date | resolving_commit_or_artifact |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-
-No study revisit entries have been recorded yet.
+| REV-001 | GB-01 | `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb` | 2026-08-11 | later semantic study | Study 03 established that `candidate_course_label`, racecourse identity and physical course/track identity are distinct concepts. | Course-date grouping and wording around venue/course identity. | low | no | reviewed_no_change | Study 01 had already rejected the defective `physical_venue_name` grouping and adopted `raw_date + candidate_course_label` only as an analytical course/configuration-date grouping. It explicitly left Kempton/Kempton (AW)-style physical identity to a later study. Study 03 therefore clarifies the semantics but does not change the Study 01 analytical result. | 2026-08-11 | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` |
+| REV-002 | GB-02 | `studies/jurisdictions/great_britain/02_types_of_british_racing.ipynb` | 2026-08-11 | later semantic study | Study 03 established that `candidate_course_label`, racecourse identity and physical course/track identity are distinct concepts. | Meeting-composition analysis grouped by `raw_date + candidate_course_label`. | low | no | reviewed_no_change | Study 02 explicitly reused the Study 01 analytical course-date definition and stated that it was not a definition of a physical venue or official BHA fixture. Its Flat/Jump meeting-composition result therefore remains an analysis of source-label/date programmes and does not require rerunning. | 2026-08-11 | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` |
 
 ---
 
