@@ -28,6 +28,10 @@ jobs:
         run: |
           cat .github/racecourse_materialize_payload/* > studies/jurisdictions/great_britain/racecourses/_racecourse_research_payload.b64
 
+      - name: Disable obsolete second patch pass
+        run: |
+          sed -i 's/^    records=normalize_records(records)$/    # corrected payload is already normalized and patched/' scripts/materialize_gb_racecourse_notebooks.py
+
       - name: Materialize standalone notebooks
         run: python scripts/materialize_gb_racecourse_notebooks.py
 
