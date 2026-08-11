@@ -1,0 +1,36 @@
+name: Build GB racecourse notebooks
+
+on:
+  push:
+    paths:
+      - '.github/racecourse_notebook_payload/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.event.head_commit.message == 'Trigger GB racecourse notebook generation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct validated notebooks
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .github/racecourse_notebook_payload/part-* | base64 -d > /tmp/racecourse_notebooks.tgz
+          echo '70bf6396e27984c0b47ec09e4b9ae60e14624e3475659df4212fc2d7eacc8612  /tmp/racecourse_notebooks.tgz' | sha256sum -c -
+          mkdir -p studies/jurisdictions/great_britain/racecourses
+          tar -xzf /tmp/racecourse_notebooks.tgz -C studies/jurisdictions/great_britain/racecourses
+          rm -rf .github/racecourse_notebook_payload
+      - name: Commit generated notebooks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add studies/jurisdictions/great_britain/racecourses .github/racecourse_notebook_payload
+          git commit -m 'Generate complete GB racecourse notebook set'
+          git push
