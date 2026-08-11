@@ -114,7 +114,18 @@ CREATE TABLE reference_course_racecourse_map (
     reference_course_id INTEGER PRIMARY KEY,
     racecourse_identity_id INTEGER NOT NULL,
     racecourse_notebook_id INTEGER NOT NULL,
+    study03_grouping_name TEXT NOT NULL DEFAULT 'pending_build_resolution',
+    racecourse_resolution_method TEXT NOT NULL DEFAULT 'pending_build_resolution',
+    racecourse_resolution_evidence TEXT NOT NULL DEFAULT 'pending_build_resolution',
     governance_release_id INTEGER NOT NULL,
+    CHECK(length(trim(study03_grouping_name)) > 0),
+    CHECK(racecourse_resolution_method IN (
+        'pending_build_resolution',
+        'study03_identity_direct',
+        'explicit_source_label',
+        'source_label_convention'
+    )),
+    CHECK(length(trim(racecourse_resolution_evidence)) > 0),
     FOREIGN KEY(reference_course_id) REFERENCES reference_course(reference_course_id)
         ON UPDATE RESTRICT ON DELETE RESTRICT,
     FOREIGN KEY(racecourse_identity_id) REFERENCES reference_racecourse_identity(racecourse_identity_id)
@@ -250,6 +261,9 @@ SELECT
     racecourse.racecourse_identity_code,
     racecourse.racecourse_name,
     racecourse.identity_kind,
+    map.study03_grouping_name,
+    map.racecourse_resolution_method,
+    map.racecourse_resolution_evidence,
     notebook.source_notebook,
     hex(notebook.notebook_sha256) AS notebook_sha256_hex
 FROM reference_course AS course
@@ -282,6 +296,26 @@ GROUP BY
     course.course_identity_id,
     course.course_identity_code,
     course.course_name;
+
+CREATE VIEW view_gb_reconciled_race_occurrences_with_racecourse AS
+SELECT
+    race.*,
+    racecourse.racecourse_identity_id,
+    racecourse.racecourse_identity_code,
+    racecourse.racecourse_name AS governed_racecourse_name,
+    racecourse.identity_kind AS racecourse_identity_kind,
+    map.study03_grouping_name,
+    map.racecourse_resolution_method,
+    map.racecourse_resolution_evidence
+FROM view_reconciled_race_occurrences AS race
+JOIN reference_course AS course
+  ON course.candidate_course_label = race.candidate_course_label
+ AND course.candidate_jurisdiction = race.candidate_jurisdiction
+JOIN reference_course_racecourse_map AS map
+  ON map.reference_course_id = course.reference_course_id
+JOIN reference_racecourse_identity AS racecourse
+  ON racecourse.racecourse_identity_id = map.racecourse_identity_id
+WHERE race.candidate_jurisdiction = 'Great Britain';
 
 PRAGMA user_version = 4;
 
