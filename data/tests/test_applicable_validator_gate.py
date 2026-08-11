@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 RUNNER_PATH = ROOT / "scripts" / "run_applicable_validators.py"
 EXPECTED_SOURCE_POSITIONAL_VALIDATORS = {
     "validate_beaten_distances.py",
