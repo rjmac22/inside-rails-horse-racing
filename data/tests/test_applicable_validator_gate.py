@@ -37,8 +37,8 @@ def test_validator_inventory_and_exclusions_are_exact() -> None:
     scripts = runner.discover_validator_scripts()
     plans = runner.build_validator_plan()
 
-    assert len(scripts) == runner.EXPECTED_VALIDATOR_COUNT == 34
-    assert len(plans) == runner.EXPECTED_APPLICABLE_COUNT == 31
+    assert len(scripts) == runner.EXPECTED_VALIDATOR_COUNT == 35
+    assert len(plans) == runner.EXPECTED_APPLICABLE_COUNT == 32
     assert set(runner.EXCLUDED_VALIDATORS) == {
         "validate_core_structure_prototype.py",
         "validate_raw_mirror_candidate.py",
@@ -92,8 +92,9 @@ def test_beaten_distance_validator_receives_source_version_1() -> None:
     assert Path(plan.command[-1]) == runner.SOURCE_VERSION_1
 
 
-def test_v3_validator_remains_in_applicable_gate() -> None:
+def test_versioned_database_validators_remain_in_applicable_gate() -> None:
     runner = _load_runner()
     plans = {plan.script.name for plan in runner.build_validator_plan()}
 
     assert "validate_inside_rails_v3.py" in plans
+    assert "validate_inside_rails_v4.py" in plans
