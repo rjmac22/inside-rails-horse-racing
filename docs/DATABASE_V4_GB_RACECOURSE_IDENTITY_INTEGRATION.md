@@ -195,6 +195,44 @@ The canonical build:
 
 A failure removes the disposable output and leaves Database v3 untouched.
 
+## Independent Database v4 validation
+
+The standalone independent validator is:
+
+```bash
+python scripts/validate_inside_rails_v4.py
+```
+
+It is deliberately separate from the builder and Study 03 loader. In particular, it reconstructs the expected reference population directly from the frozen Git snapshot at `01c93aeff7f0a4ab7a22f6c37ad41656f7746e3b` rather than importing the loader's expected rows.
+
+The validator checks, read-only:
+
+- exact accepted Database v3 hash and size before and after validation;
+- Database v4 application/schema headers, manifest population and governance lineage;
+- the exact 61 frozen racecourse notebook paths and SHA-256 values;
+- all 65 source-label → racecourse mappings and their resolution provenance;
+- all 61 racecourse identities and stable codes;
+- all 86 stable course/track identities;
+- all 90 inventory rows, including canonical JSON payloads;
+- all seven unresolved governance rows, including canonical JSON payloads;
+- governance-release ownership of every v4 reference/governance row;
+- exact preservation of the v3 raw mirror, structural race core, structural runner core and `reference_course` population by streaming ordered comparison;
+- exact GB source-label distribution into the racecourse-facing view;
+- one row per each of the 111,634 GB race occurrences, with no missing or extra race IDs;
+- the expected 1,503 plain-Newmarket Rowley Mile races and 1,438 `Newmarket (July)` July Course races;
+- absence of a race-occurrence → physical-course identity join;
+- `PRAGMA quick_check` and `PRAGMA foreign_key_check`.
+
+The validator never writes the candidate or accepted Database v3.
+
+Database v4 also increases the governed applicable-validator inventory from 31 to 32. The canonical project-wide sweep remains:
+
+```bash
+python scripts/run_applicable_validators.py
+```
+
+and now includes `validate_inside_rails_v4.py` as an applicable no-positional-input validator.
+
 ## Acceptance boundary
 
 A successful build stops at:
@@ -205,4 +243,6 @@ and reports:
 
 `release_accepted = false`
 
-This is intentional. Independent source-wide validation and the complete project acceptance gate are still required before Database v4 can be promoted.
+This is intentional. A successful standalone v4 validation is evidence only; it does not mutate or promote the candidate.
+
+Before Database v4 can be promoted, the repository still requires the complete test suite, the complete 32-validator applicable gate, a final standalone v4 validation at the release boundary, and an explicit promotion/acceptance implementation. Database v3 remains the accepted study database until those gates pass and promotion is deliberately performed.
