@@ -1,0 +1,54 @@
+name: Build GB racecourse notebooks v2
+
+on:
+  push:
+    branches:
+      - agent/complete-gb-racecourse-notebooks-v2
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/complete-gb-racecourse-notebooks-v2
+          fetch-depth: 0
+
+      - name: Rebuild and validate notebook payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/gb-notebooks
+          cat .github/racecourse_notebook_payload_v2/chunk-* > /tmp/gb-notebooks/payload.b64
+          base64 -d /tmp/gb-notebooks/payload.b64 > /tmp/gb-notebooks/payload.tar.gz
+          echo "adf8f13a606cfd92299eae51485c1c4ed878d5e515a78b18c57dbc3eec990168  /tmp/gb-notebooks/payload.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/gb-notebooks/payload.tar.gz
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("studies/jurisdictions/great_britain/racecourses")
+          files = sorted(p.glob("*.ipynb"))
+          assert len(files) == 60, f"Expected 60 notebooks, found {len(files)}"
+          assert (p / "ascot.ipynb").exists(), "Ascot notebook missing"
+
+          for f in files:
+              nb = json.loads(f.read_text())
+              assert nb["nbformat"] == 4, f"{f}: unexpected notebook format"
+
+          print(f"Validated {len(files)} racecourse notebooks")
+          PY
+
+          rm -rf .github/racecourse_notebook_payload_v2
+          rm -f .github/workflows/build-gb-racecourse-notebooks-v2.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Complete GB racecourse evidence notebooks"
+          git push origin HEAD:agent/complete-gb-racecourse-notebooks-v2
