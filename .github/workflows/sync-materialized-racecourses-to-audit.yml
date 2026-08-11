@@ -24,6 +24,8 @@ jobs:
         run: |
           git fetch origin study/gb-04-race-meetings-fixtures
           git checkout origin/study/gb-04-race-meetings-fixtures -- studies/jurisdictions/great_britain/racecourses
+          rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_notebook_support.py
+          rm -f studies/jurisdictions/great_britain/racecourses/_racecourse_research_payload.b64
           rm -f .github/workflows/sync-materialized-racecourses-to-audit.yml
 
       - name: Validate copied library
