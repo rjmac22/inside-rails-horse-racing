@@ -27,6 +27,15 @@ from inside_rails.database.racecourse_identity_reference import (
     Study03ReferenceSummary,
     load_study03_racecourse_identity,
 )
+from inside_rails.database.racecourse_identity_source_v1 import (
+    EXPLICIT_SOURCE_LABEL_METHOD,
+    NEWMARKET_JULY_RACECOURSE,
+    NEWMARKET_JULY_SOURCE_LABEL,
+    NEWMARKET_ROWLEY_RACECOURSE,
+    NEWMARKET_ROWLEY_SOURCE_LABEL,
+    SOURCE_LABEL_CONVENTION_METHOD,
+    apply_source_v1_racecourse_resolution,
+)
 from inside_rails.database.raw_mirror_prototype import sha256_file
 from inside_rails.database.schema import (
     APPLICATION_ID,
@@ -83,8 +92,8 @@ BUILDER_VALIDATION_ROWS = (
         "database-v4-racecourse-identity-builder",
         "1",
         "Study 03 reference tables read back at 60 notebooks, 65 source mappings, "
-        "60 racecourse identities, 90 inventory rows, 86 stable course identities and "
-        "7 unresolved questions.",
+        "61 Source Version 1 racecourse identities, 90 inventory rows, 86 stable course "
+        "identities and 7 unresolved questions.",
     ),
     (
         "sqlite_integrity",
@@ -103,7 +112,10 @@ BUILDER_VALIDATION_ROWS = (
         "database-v4-racecourse-identity-builder",
         "1",
         "Study 03 source-label mappings reconcile exactly to the existing Great Britain "
-        "reference_course population; no race occurrence was assigned to a physical track.",
+        "reference_course population; Source Version 1 resolves Newmarket (July) to the "
+        "July Course by explicit label and plain Newmarket to the Rowley Mile by the "
+        "documented source-label convention; no race occurrence is assigned to a physical "
+        "track below racecourse level.",
     ),
 )
 
@@ -382,7 +394,7 @@ def _finish_builder_stage(
     *,
     completed_at_utc: str,
 ) -> tuple[str, int]:
-    expected_counts = (60, 65, 60, 90, 86, 7)
+    expected_counts = (60, 65, 61, 90, 86, 7)
     observed_counts = (
         int(connection.execute(
             "SELECT COUNT(*) FROM governance_study03_racecourse_notebook"
@@ -415,6 +427,70 @@ def _finish_builder_stage(
         "SELECT COUNT(*) FROM view_gb_course_track_identities"
     ).fetchone()[0]) != 86:
         raise RuntimeError("Database v4 stable course identity view count changed")
+
+    pending_resolution_rows = int(
+        connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM reference_course_racecourse_map
+            WHERE study03_grouping_name='pending_build_resolution'
+               OR racecourse_resolution_method='pending_build_resolution'
+               OR racecourse_resolution_evidence='pending_build_resolution'
+            """
+        ).fetchone()[0]
+    )
+    if pending_resolution_rows != 0:
+        raise RuntimeError(
+            f"Database v4 left {pending_resolution_rows} racecourse mappings unresolved by builder"
+        )
+
+    newmarket_rows = connection.execute(
+        """
+        SELECT candidate_course_label, racecourse_name, racecourse_resolution_method
+        FROM view_gb_racecourse_identity_reference
+        WHERE candidate_course_label IN (?, ?)
+        ORDER BY CASE candidate_course_label WHEN ? THEN 1 ELSE 2 END
+        """,
+        (
+            NEWMARKET_ROWLEY_SOURCE_LABEL,
+            NEWMARKET_JULY_SOURCE_LABEL,
+            NEWMARKET_ROWLEY_SOURCE_LABEL,
+        ),
+    ).fetchall()
+    if newmarket_rows != [
+        (
+            NEWMARKET_ROWLEY_SOURCE_LABEL,
+            NEWMARKET_ROWLEY_RACECOURSE,
+            SOURCE_LABEL_CONVENTION_METHOD,
+        ),
+        (
+            NEWMARKET_JULY_SOURCE_LABEL,
+            NEWMARKET_JULY_RACECOURSE,
+            EXPLICIT_SOURCE_LABEL_METHOD,
+        ),
+    ]:
+        raise RuntimeError(f"Database v4 Newmarket racecourse resolution changed: {newmarket_rows!r}")
+
+    gb_race_count = int(
+        connection.execute(
+            """
+            SELECT COUNT(*)
+            FROM view_reconciled_race_occurrences
+            WHERE candidate_jurisdiction='Great Britain'
+            """
+        ).fetchone()[0]
+    )
+    racecourse_view_count, distinct_race_count = connection.execute(
+        """
+        SELECT COUNT(*), COUNT(DISTINCT source_race_occurrence_id)
+        FROM view_gb_reconciled_race_occurrences_with_racecourse
+        """
+    ).fetchone()
+    if (int(racecourse_view_count), int(distinct_race_count)) != (gb_race_count, gb_race_count):
+        raise RuntimeError(
+            "Database v4 race-to-racecourse study view does not preserve one row per GB race: "
+            f"source={gb_race_count}, view={racecourse_view_count}, distinct={distinct_race_count}"
+        )
 
     quick = str(connection.execute("PRAGMA quick_check").fetchone()[0])
     if quick != "ok":
@@ -552,6 +628,11 @@ def build_racecourse_identity_candidate(
             reference_summary: Study03ReferenceSummary = load_study03_racecourse_identity(
                 connection,
                 root,
+                governance_release_id=release_id,
+            )
+            reference_summary = apply_source_v1_racecourse_resolution(
+                connection,
+                reference_summary,
                 governance_release_id=release_id,
             )
             connection.commit()
