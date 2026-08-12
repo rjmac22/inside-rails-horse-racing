@@ -1,0 +1,112 @@
+{
+  "audit": "Great Britain race-population completeness",
+  "scope": "bounded official BHA static source documents for 2026",
+  "generated_at_utc": "2026-08-12T18:57:23.168138+00:00",
+  "project_note": "These are raw external evidence artifacts. The original fixture list is planning evidence, not the completed-race completeness denominator.",
+  "sources": [
+    {
+      "filename": "2026_Fixture_List.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Fixture_List.pdf",
+      "source_page": "https://www.britishhorseracing.com/press_releases/bha-publishes-2026-fixture-list/",
+      "evidence_role": "original published 2026 fixture plan",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 236759,
+      "sha256": "2f7fbc1094f254d6ebf3ac85cb5582d23669aa9c7f7e3f831fb70bd0ddfa7a52",
+      "retrieved_at_utc": "2026-08-12T18:57:22.430116+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Fixture_List.pdf"
+    },
+    {
+      "filename": "2026_Fixture_List.xlsx",
+      "url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Fixture_List.xlsx",
+      "source_page": "https://www.britishhorseracing.com/press_releases/bha-publishes-2026-fixture-list/",
+      "evidence_role": "machine-readable original published 2026 fixture plan",
+      "format": "xlsx",
+      "status": "downloaded",
+      "bytes": 106229,
+      "sha256": "615a1d387874d9dd03c16afcf55f79e4cdb3e04586a96801f4f65e7d495941e8",
+      "retrieved_at_utc": "2026-08-12T18:57:22.504832+00:00",
+      "response_content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Fixture_List.xlsx"
+    },
+    {
+      "filename": "2026_Headline_Measures.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Headline_Measures.pdf",
+      "source_page": "https://www.britishhorseracing.com/press_releases/bha-publishes-2026-fixture-list/",
+      "evidence_role": "published context for the original 2026 fixture list",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 248527,
+      "sha256": "426e7f246492129601b5afd2d8e3f5ce391ea966224a4720861696bf0f6fcd23",
+      "retrieved_at_utc": "2026-08-12T18:57:22.599439+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Fixture_List/2026_Headline_Measures.pdf"
+    },
+    {
+      "filename": "January26.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/January26.pdf",
+      "source_page": "https://www.britishhorseracing.com/regulation/reports-and-statistics/racing-statistics/",
+      "evidence_role": "official BHA January 2026 racing data pack",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 498074,
+      "sha256": "516be8ab62481046cd0a0fa611f69c0008cc0c81f8995d3bf202621ac0d88672",
+      "retrieved_at_utc": "2026-08-12T18:57:22.723822+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/January26.pdf"
+    },
+    {
+      "filename": "February26.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/February26.pdf",
+      "source_page": "https://www.britishhorseracing.com/regulation/reports-and-statistics/racing-statistics/",
+      "evidence_role": "official BHA February 2026 racing data pack",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 513724,
+      "sha256": "66e67e9d87fe5c6949194b2d108f89ec9a00adddfee3984ea16932a21595450c",
+      "retrieved_at_utc": "2026-08-12T18:57:22.818940+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/February26.pdf"
+    },
+    {
+      "filename": "March26.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/March26.pdf",
+      "source_page": "https://www.britishhorseracing.com/regulation/reports-and-statistics/racing-statistics/",
+      "evidence_role": "official BHA March 2026 racing data pack",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 512142,
+      "sha256": "3e8a3ae9b9da4026cd959ab8e2520a241228fe010968d6b469ba819a2f2378d4",
+      "retrieved_at_utc": "2026-08-12T18:57:22.937021+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/March26.pdf"
+    },
+    {
+      "filename": "April26.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/April26.pdf",
+      "source_page": "https://www.britishhorseracing.com/regulation/reports-and-statistics/racing-statistics/",
+      "evidence_role": "official BHA April 2026 racing data pack",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 512671,
+      "sha256": "b8457800c96283055134ffc1fa6d1817f84df103de3345f0c4f9fe140de95b11",
+      "retrieved_at_utc": "2026-08-12T18:57:23.060096+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/April26.pdf"
+    },
+    {
+      "filename": "May26.pdf",
+      "url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/May26.pdf",
+      "source_page": "https://www.britishhorseracing.com/regulation/reports-and-statistics/racing-statistics/",
+      "evidence_role": "official BHA May 2026 racing data pack",
+      "format": "pdf",
+      "status": "downloaded",
+      "bytes": 513450,
+      "sha256": "f43c6710f161ff3e50a22c3eb6e9253c613d0467732b88f8f44ba6c537d6ceb6",
+      "retrieved_at_utc": "2026-08-12T18:57:23.168103+00:00",
+      "response_content_type": "application/pdf",
+      "response_final_url": "https://media.britishhorseracing.com/bha/Racing_Statistics/Racing_Data_Packs_By_Month_2026/May26.pdf"
+    }
+  ]
+}
