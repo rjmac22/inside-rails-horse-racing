@@ -4,7 +4,7 @@
 
 This is the canonical database reference for reader-facing Inside Rails studies.
 
-Read this document before beginning every study, alongside:
+Read it before beginning every study, alongside:
 
 - `docs/STUDY_RESEARCH_PLAYBOOK.md`;
 - `docs/STUDY_DATA_ACCESS.md`;
@@ -12,7 +12,7 @@ Read this document before beginning every study, alongside:
 
 Its purpose is to stop study notebooks from rediscovering or guessing database names, paths, release state, table grain, identifiers, source-admission rules or safe analytical interfaces.
 
-When the database schema, release status, canonical paths or study-facing analytical structures change, update this document as part of that database work.
+When the accepted release, schema or study-facing structures change, this document must change with them.
 
 ---
 
@@ -29,7 +29,6 @@ Canonical local path:
 Role:
 
 - immutable third-party source evidence;
-- never an Inside Rails database name;
 - opened read-only;
 - never renamed or modified because its original identity is part of lineage.
 
@@ -59,113 +58,123 @@ Source Version 1 SHA-256:
 
 ## 2. Current accepted Inside Rails database
 
-### Database v3 — current study database
+### Database v4 — current study database
 
-Accepted and promoted on **9 August 2026**.
+Accepted and promoted on **12 August 2026**.
 
 Canonical release path:
 
-`data/processed/database/releases/inside_rails_v3.sqlite3`
+`data/processed/database/releases/inside_rails_v4.sqlite3`
 
 Accepted release SHA-256:
 
-`aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
+`45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7`
 
 Release size:
 
-`3,137,081,344 bytes`
+`3,137,249,280 bytes`
 
 SQLite identity:
 
 - `application_id`: **1230130259**;
-- `user_version`: **3**;
+- `user_version`: **4**;
 - manifest status: **`release_accepted`**;
 - validation-result rows: **7**;
 - `PRAGMA quick_check`: **`ok`**;
 - `PRAGMA foreign_key_check`: **0 rows**.
 
-Promotion verification:
-
-- all **1,851,286** raw-record rows were compared back to accepted Database v2;
-- **189,043** structural race rows were compared back to Database v2;
-- **1,851,285** structural source-runner rows were compared back to Database v2;
-- candidate hash remained unchanged during promotion;
-- accepted Database v2 remained unchanged and available for rollback.
-
 Promotion implementation commit:
 
-`0b535cb5bfdcb22b7693e8a26a82acfcb025529d`
+`27b8ac8aba3b22809c4da4f603b2302e47e9fa6d`
 
-Reader-facing studies should use Database v3 read-only by default.
+Reader-facing studies must use Database v4 read-only by default.
 
-There is no silent fallback to Database v2, Database v1, the validated candidate or the raw third-party source if Database v3 is missing.
+There is no silent fallback to Database v3, Database v2, Database v1, the v4 candidate or Source Version 1 if Database v4 is missing.
 
-### Preserved validated Database v3 candidate
+### Preserved Database v4 candidate
 
 Path:
 
-`data/processed/database/candidates/inside_rails_v3_candidate.sqlite3`
+`data/processed/database/candidates/inside_rails_v4_candidate.sqlite3`
 
 SHA-256:
 
-`0389a10c8eedf9c86fb1efb39b228624f4371736f3a4ecfcd3010a2033ef873b`
+`04e027d09cd323df5b0a6ae97c6660018a1aa2576bacf8a12d546d2c4217e06e`
 
 Manifest status:
 
-`validated`
+`built`
 
 The candidate is immutable pre-release evidence. Normal studies must not use it as the analytical database.
 
-### Retained Database v2 release
+### Retained earlier releases
 
-Path:
+Database v3:
 
-`data/processed/database/releases/inside_rails_v2.sqlite3`
+```text
+path: data/processed/database/releases/inside_rails_v3.sqlite3
+SHA-256: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
+user_version: 3
+```
 
-SHA-256:
+Database v2:
 
-`80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe`
+```text
+path: data/processed/database/releases/inside_rails_v2.sqlite3
+SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
+user_version: 2
+```
 
-Database v2 remains retained as the prior accepted release and rollback material. It is no longer the default study database.
+Database v1:
 
-### Retained Database v1 release
+```text
+path: data/processed/database/releases/inside_rails_v1.sqlite3
+SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
+user_version: 1
+```
 
-Path:
-
-`data/processed/database/releases/inside_rails_v1.sqlite3`
-
-SHA-256:
-
-`2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934`
-
-Database v1 remains historical accepted-release evidence and is not the default study database.
+They remain immutable historical release/rollback evidence, not the normal study database.
 
 ---
 
-## 3. Release evidence boundary
+## 3. Database v4 acceptance boundary
 
-Database v3 was accepted only after:
+Database v4 was accepted only after the final promotion-code state passed:
 
-- the exact Database v3 candidate had been built from a verified copy of accepted Database v2;
-- standalone independent v3 candidate validation passed;
-- focused promotion-boundary tests passed;
-- the complete repository suite passed at the final promotion implementation head: **412 passed in 18.64s**;
-- the canonical applicable independent-validator sweep passed: **31 validators**;
-- the standalone Database v3 validator was rerun immediately before promotion;
-- the release staging copy was independently validated again after acceptance evidence was written;
-- promotion proved the candidate hash was unchanged and Database v2 was preserved.
+```text
+focused v4/release tests: 13 passed in 1.11s
+complete repository suite: 435 passed in 15.47s
+applicable independent-validator gate: 32 validators passed
+final standalone Database v4 validator: passed
+```
 
-The accepted database contains seven required import-validation records and must now be treated as immutable.
+The final standalone validator reconfirmed the exact v4 candidate immediately before promotion, including:
 
-The permanent applicable-validator procedure is documented in `docs/APPLICABLE_VALIDATOR_GATE.md` and executed by `scripts/run_applicable_validators.py`.
+- candidate SHA-256 `04e027d09cd323df5b0a6ae97c6660018a1aa2576bacf8a12d546d2c4217e06e`;
+- 1,851,286 raw records compared against accepted v3;
+- 189,043 structural race rows compared;
+- 1,851,285 structural runner rows compared;
+- 395 `reference_course` rows compared;
+- `quick_check=ok`;
+- zero foreign-key errors.
+
+Promotion then independently validated staging and the published release, proved the candidate hash remained unchanged, and proved accepted v3 remained unchanged.
+
+Published v4 SHA-256:
+
+`45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7`
+
+Full release record:
+
+`docs/DATABASE_V4_RELEASE_ACCEPTANCE_AND_PROMOTION.md`
 
 ---
 
 ## 4. Current consumer contract
 
-The current study-facing consumer contract is the exact immutable Database v3 release path documented above.
+The study-facing consumer contract is the exact immutable Database v4 release path documented above.
 
-Do not invent or infer an `active_database.json` file, symbolic link or mutable `inside_rails.db` alias. Until an active-release resolver is deliberately implemented and documented, studies must take the accepted release path from this file rather than reconstructing it from memory.
+Do not invent or infer an `active_database.json` file, symbolic link or mutable `inside_rails.db` alias. Until an active-release resolver is deliberately implemented and documented, studies take the accepted release path from this file.
 
 Normal accepted-release connections must be read-only and should enforce:
 
@@ -177,37 +186,59 @@ PRAGMA trusted_schema = OFF;
 
 ---
 
-## 5. Database v3 physical model
+## 5. What Database v4 contains
 
-Database v3 is a bounded successor to Database v2. It preserves the complete Database v2 source/core/governed model and adds one typed external-verification reconciliation table.
+Database v4 is a bounded successor to Database v3.
 
-Database v3 contains **32 physical tables**:
+It preserves the full v3 source/core/governed/external-reconciliation layer and adds the corrected completed Great Britain Study 03 racecourse/course identity layer.
 
-- **31** carried through from Database v2;
-- **1** new Database v3 reconciliation table.
+### Carried Database v3 reconciliation layer
 
-New Database v3 table:
-
-- `governance_external_value_resolution`
-
-Current reconciliation evidence populations:
+Important current baselines remain:
 
 - manual-verification rows: **104**;
-- typed external-value resolutions: **37**.
+- typed external-value resolutions: **37**;
+- source race occurrences: **189,043**;
+- source-backed runner rows: **1,851,285**;
+- combined governed runner rows: **1,851,288**.
 
-The typed resolution kinds are:
+The typed resolution kinds remain:
 
 - `correction`;
 - `enrichment`;
 - `invalidation`.
 
-Raw Source Version 1 values and Database v2 governed values remain retained alongside the new reconciled analytical values.
+Raw Source Version 1 values remain visible alongside governed/reconciled analytical values.
+
+### New Database v4 Study 03 layer
+
+Current national Study 03 baseline:
+
+- racecourse evidence notebooks: **61**;
+- Great Britain source-label mappings: **65**;
+- governed racecourse identities: **61**;
+- course/track inventory rows: **90**;
+- stable course/track identities: **86**;
+- unresolved governance rows: **7**.
+
+The corrected Newmarket identities are separate racecourses:
+
+- `Newmarket` → `Newmarket — Rowley Mile`;
+- `Newmarket (July)` → `Newmarket — July Course`.
+
+There is no synthetic combined Newmarket analytical racecourse identity in v4.
+
+The Study 03 modelling rule is:
+
+> `racecourse -> course/track -> time-bounded characteristics`
+
+A British racecourse is a venue and is not necessarily a single racing course.
+
+Database v4 deliberately does **not** assign every race occurrence to one physical course/track. Source Version 1 often does not identify which peer track, route, configuration, rail position or temporary layout was used, so v4 stops at the governed racecourse identity where the evidence stops.
 
 ---
 
 ## 6. Recommended study-facing views
-
-For normal analytical work prefer the Database v3 reconciled views rather than rebuilding external-correction joins in every notebook.
 
 ### `view_reconciled_race_occurrences`
 
@@ -219,14 +250,61 @@ Expected rows:
 
 **189,043**
 
-Use this as the normal race-level analytical interface.
+Use this as the normal general race-level analytical interface when racecourse identity is not required.
 
-It carries the Database v2 governed race semantics and additionally exposes externally reconciled race-level facts where established, including:
+It carries governed runner counts, distance/age-band corrections and enrichments, actual-off enrichments and the rest of the accepted v3 reconciliation layer.
 
-- corrected governed runner count where exact external evidence exists;
-- externally verified official metric distance where available, without overwriting the literal source-distance parse;
-- exact corrected age-band condition where established;
-- externally reported actual-off text where available, kept distinct from advertised/scheduled time.
+### `view_gb_reconciled_race_occurrences_with_racecourse`
+
+Grain:
+
+> one reconciled Great Britain race occurrence with governed racecourse identity.
+
+Expected rows:
+
+**111,634**
+
+Distinct race IDs:
+
+**111,634**
+
+This is the Study 04-facing race-level interface.
+
+It adds:
+
+- `racecourse_identity_id`;
+- `racecourse_identity_code`;
+- `governed_racecourse_name`;
+- `racecourse_identity_kind`;
+- `study03_grouping_name`;
+- `racecourse_resolution_method`;
+- `racecourse_resolution_evidence`.
+
+It must not be interpreted as assigning a physical course/track below racecourse level.
+
+### `view_gb_racecourse_identity_reference`
+
+Grain:
+
+> one Great Britain Source Version 1 course label mapped to one governed racecourse identity.
+
+Expected rows:
+
+**65**
+
+Use this when the source-label-to-racecourse bridge itself is material.
+
+### `view_gb_course_track_identities`
+
+Grain:
+
+> one stable Study 03 course/track identity.
+
+Expected rows:
+
+**86**
+
+Use this to describe the constituent course/track reference layer, not to infer which track a race used.
 
 ### `view_reconciled_source_runner_participations`
 
@@ -238,18 +316,7 @@ Expected rows:
 
 **1,851,285**
 
-Use when the analysis must remain exactly on the admitted physical source-runner population while applying governed v2 semantics plus typed Database v3 external corrections, enrichments and invalidations.
-
-Important v3 behaviour includes:
-
-- corrected finishing position where externally established;
-- corrected starting-price numerator/denominator, decimal odds, implied probability and favourite status where externally established;
-- known-wrong beaten-distance numeric values becoming analytical null where no defensible numeric replacement exists;
-- externally established text-only distance relation retained without inventing a numeric conversion;
-- corrected runner age where externally established;
-- externally established official local prize amount/currency as a distinct enrichment where available.
-
-Raw source fields remain visible for lineage.
+Use when the analysis must remain exactly on the admitted physical source-runner population while applying governed corrections/enrichments/invalidations.
 
 ### `view_reconciled_runner_records`
 
@@ -261,30 +328,13 @@ Expected rows:
 
 **1,851,288**
 
-This is the normal combined runner view when the study question should include the three verified missing-runner supplementations.
+This contains all **1,851,285** source-backed runners plus **3** externally supplemented missing runners.
 
-It contains:
+### Carried governed identity views
 
-- all **1,851,285** source-backed runners; plus
-- **3** externally supplemented missing runners.
+Use `view_governed_horse_occurrence_assignments` when Notebook 19 provisional horse/pedigree identity is material.
 
-The supplemented rows do not acquire fabricated source-record IDs or unsupported attributes.
-
-### Carried Database v2 governed views
-
-Database v3 still contains the Database v2 governed views for lineage, comparison and specialised use, including:
-
-- `view_governed_race_occurrences`;
-- `view_governed_source_runner_participations`;
-- `view_governed_runner_records`;
-- `view_governed_horse_occurrence_assignments`;
-- `view_governed_participant_label_identities`.
-
-For new general studies, prefer the `view_reconciled_*` interfaces so exact externally resolved facts are not accidentally ignored.
-
-Use `view_governed_horse_occurrence_assignments` when Notebook 19 provisional horse/pedigree occurrence identity is material to the question.
-
-Current governed identity baseline:
+Current baseline:
 
 - provisional horse occurrences: **611**;
 - transition decisions: **353**;
@@ -313,7 +363,9 @@ Grain:
 
 > one physical Source Version 1 record exactly as retained in the Inside Rails raw mirror.
 
-Contains all **1,851,286** physical records, including the retained excluded row.
+Rows:
+
+**1,851,286**
 
 ### `core_source_race_occurrence`
 
@@ -337,57 +389,53 @@ Rows:
 
 Do not use raw `race_id` as a unique Inside Rails race identifier.
 
-Prefer stable project-owned textual codes such as:
+Prefer project-owned textual codes such as:
 
 - source version: `sv:...`;
 - source record: `rec:...`;
 - source race occurrence: `race:...`;
-- runner participation: `run:...`.
+- runner participation: `run:...`;
+- racecourse identity: `rc:gb:...`;
+- stable course/track identity: `trk:gb:...`.
 
 Internal integer primary keys are release-local implementation identifiers, not durable external references.
 
 ---
 
-## 8. Important governed semantics now integrated
+## 8. Important governed semantics carried into v4
 
-Database v3 carries Database v2 Notebook 04–22 governance and reconciles the externally established facts found during the retrospective evidence audit.
+Database v4 preserves Database v3's central rule:
 
-The governing rule is:
+> Raw source assertions remain immutable. When external evidence establishes an exact fact, the study-facing database exposes that fact as usable analytical data with provenance. When external evidence proves a raw analytical value wrong but does not establish a defensible replacement, the raw value remains visible but the analytical value is not silently left usable as if correct.
 
-> Raw source assertions remain immutable. When external evidence establishes an exact fact, the study-facing database exposes that fact as usable analytical data with provenance. When external evidence proves a raw analytical value wrong but does not establish a defensible replacement, the raw value remains visible but the study-facing analytical value is not silently left usable as if correct.
+Examples carried into v4 include:
 
-Important examples include:
+- Almendares raw `sp='F'` with reconciled analytical SP **5/2 favourite**;
+- Cinnamon Carter raw finish `10` with reconciled finish position **12**;
+- official **1600m** enrichments for the verified Sha Tin and Kyoto cases;
+- exact externally verified runner-count corrections for Ohi, Morioka and Gulfstream Park;
+- governed beaten-distance correction/invalidation cases;
+- Compiegne `5yo+` and Ecstasy age `3`;
+- three actual-off-time enrichments;
+- Pegasus 2018 and Arc 2019 official/local-currency prize enrichments.
 
-- Almendares (GB), Del Mar 20 July 2025: raw `sp='F'`; reconciled analytical SP **5/2 favourite**;
-- Cinnamon Carter (AUS), Morphettville 16 May 2015: raw position `10`; reconciled finish position **12**, with dead-heat context;
-- Sha Tin 25 January 2015 and Kyoto 4 January 2015: raw distance `1m`; external official distance **1600m** exposed separately;
-- Ohi 26 June 2024: raw `ran=5`; reconciled externally verified runner count **13**;
-- Morioka 3 September 2024: raw `ran=5`; reconciled externally verified runner count **12**;
-- Gulfstream Park 23 December 2023: raw `ran=8`; reconciled externally verified runner count **9**;
-- Gavea 6 April 2025 position-2 runner: externally established beaten distances **16.5** lengths;
-- Nardo, Red Fog and Cabernet Franc: known-wrong zero beaten-distance values are not left analytically usable; unresolved numeric replacements remain null where evidence does not establish one;
-- Compiegne 16 May 2017: raw age band `5yo`; reconciled condition **5yo+**;
-- Ecstasy (USA), Woodbine 27 July 2024: raw age `31`; reconciled age **3**;
-- three externally reported actual-off observations are exposed as enrichments, distinct from advertised/scheduled time;
-- externally checked Pegasus 2018 USD and Arc 2019 EUR prize schedules are exposed as distinct official/local-currency enrichment rather than overwriting source-presented prize values.
+Database v2 integrations also remain in force, including:
 
-Database v2 integrations remain in force, including:
-
-- explicit `(AW)` evidence supports only `all_weather_unspecified`; other surface values remain unresolved under that source-only rule;
+- explicit `(AW)` evidence supports only `all_weather_unspecified` under the source-only surface rule;
 - literal source-distance parsing remains distinct from official distance enrichment;
-- exact Notebook 17 `B` / `BB` sex anomalies have bounded accepted corrections;
-- exact raw `rpr = 775` anomaly is analytically null as `invalid_source_value`, with no replacement rating;
-- **28** blank connection labels have verified external supplementations and **18** remain unresolved;
-- comment values are conservatively classified rather than narratively parsed;
-- participant and horse identities remain provisional where governance says they are provisional.
+- exact Notebook 17 `B` / `BB` sex corrections;
+- exact raw `rpr = 775` anomaly treated as analytically invalid without inventing a replacement;
+- **28** blank connection labels externally supplemented and **18** preserved unresolved;
+- conservative comment classification;
+- provisional participant and horse identities where governance remains provisional.
 
-Raw source values remain recoverable. Reconciled study-facing values must not be described as if the source itself contained them.
+Raw values remain recoverable. Reconciled values must not be described as if the source itself contained them.
 
 ---
 
 ## 9. Race-time boundary
 
-Database v3 carries Notebook 11 advertised/scheduled start-time governance from Database v2 and adds separately typed actual-off enrichment for three externally observed cases.
+Database v4 carries the accepted advertised/scheduled start-time governance and the distinct actual-off enrichments.
 
 Advertised/scheduled rows:
 
@@ -400,13 +448,6 @@ Current advertised/scheduled status:
 - pre-format-boundary races: **178,691**;
 - explicit post-boundary races: **10,352**.
 
-Methods:
-
-- `course_local_dead_of_night_rejection`: **111,871**;
-- `stable_post_boundary_course_profile`: **47,242**;
-- `explicit_post_boundary_time`: **10,352**;
-- `unresolved`: **19,578**.
-
 Boundary date:
 
 `2025-10-15`
@@ -417,9 +458,9 @@ Advertised/scheduled values and externally reported actual-off observations are 
 
 ## 10. Runner-count population choice
 
-Study 01 and later field-size work must state which population is being measured.
+A study must state which population is being measured.
 
-Possible concepts are deliberately distinct:
+Distinct concepts include:
 
 1. admitted physical source runner rows;
 2. raw/source-reported `ran`;
@@ -431,13 +472,34 @@ Do not silently substitute one for another.
 
 For a race-level field-size question intended to use the best currently governed evidence, prefer `view_reconciled_race_occurrences` and its reconciled runner-count field rather than raw `ran` alone.
 
-For a question about what the accepted physical source contains, use the source-backed population and state that choice explicitly.
-
 For a runner-level question intended to include all currently governed runner evidence, consider `view_reconciled_runner_records` and state that the three supplementation rows are included.
 
 ---
 
-## 11. Efficient analytical use
+## 11. Pending post-release overlay
+
+Database v4 does not automatically integrate every governed resolution created after Database v3.
+
+The historical pending registers remain:
+
+- `data/reference/post_v3_external_verification_candidates.csv`;
+- `data/reference/post_v3_external_value_resolutions.csv`.
+
+Their filenames reflect when the register was created, not the current accepted release number.
+
+Before applying a pending resolution, check whether the specific fact is already native to Database v4. Apply the read-only overlay only where the accepted release does not yet contain that governed resolution.
+
+Reusable helper:
+
+```python
+from inside_rails.study_overlay import build_race_overlay_query
+```
+
+Do not knowingly analyse a value already established as wrong merely because the accepted release is immutable.
+
+---
+
+## 12. Efficient analytical use
 
 Do not load all 1.85 million runner rows into pandas unless the question genuinely requires it.
 
@@ -452,25 +514,28 @@ Start exploration with explicit columns and `LIMIT`, not `SELECT *` over the ful
 
 ---
 
-## 12. Study-start checklist
+## 13. Study-start checklist
 
 Before the first analytical cell of every study, confirm:
 
 1. this document has been read;
 2. `docs/STUDY_DATA_ACCESS.md` has been read;
-3. the current accepted database is Database v3;
-4. the exact path is `data/processed/database/releases/inside_rails_v3.sqlite3`;
+3. the current accepted database is Database v4;
+4. the exact path is `data/processed/database/releases/inside_rails_v4.sqlite3`;
 5. the database is opened read-only;
 6. the study's unit of observation is declared;
 7. the relevant reconciled/governed view and population are declared;
-8. every required field has sufficient governance for the proposed use;
+8. every required field/identity has sufficient governance for the proposed use;
 9. unresolved states, invalidations and supplementations relevant to the question are understood;
-10. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work;
-11. any newly discovered database defect or reusable transformation is escalated rather than quietly buried inside the study notebook.
+10. the pending post-release resolution register has been checked where material;
+11. no unresolved entry in `docs/STUDY_REVISIT_REGISTER.md` blocks the work;
+12. any newly discovered database defect or reusable transformation is escalated rather than quietly buried inside the study notebook.
+
+For Study 04 specifically, start from `view_gb_reconciled_race_occurrences_with_racecourse`; do **not** assume `date + racecourse = meeting/fixture` until Study 04 establishes the sporting concept and its analytical representation.
 
 ---
 
-## 13. Update rule
+## 14. Update rule
 
 Update this document whenever any of the following changes:
 
