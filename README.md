@@ -4,17 +4,17 @@ A notebook-led data-engineering, database-design and racing-research project usi
 
 ## Project aim
 
-Build a documented, reproducible and professionally structured analytical database from third-party racing data. Source data is preserved unchanged, transformations are tested, and important design decisions are explained and evidenced.
+Build a documented, reproducible analytical database from third-party racing data, then use that governed foundation for evidence-led racing studies and reader-facing work.
 
-The wider purpose is to establish what racing data means, test claims responsibly, preserve uncertainty, create reusable analytical infrastructure and produce readable work.
+Source evidence remains immutable. Governed corrections, enrichments and identity decisions are layered on top with explicit provenance and validation.
 
-## Data source
+## Immutable Source Version 1
 
-Kaggle: *Horse Racing Results UK/Ireland 2015–2025* by deltaromeo.
+Original source file:
 
-The raw files are excluded from Git because of size, licensing and reproducibility considerations. The supplied `raceform.db` has broader geographical and date coverage than the title suggests, including substantial international racing and records through 27 May 2026.
+`data/raw/form_2015-present/form_2015-present/raceform.db`
 
-Accepted Source Version 1 identity:
+Accepted identity:
 
 ```text
 SHA-256: 77b5dbbbfdee69d4d92a582655344e1e5ba29ca4646a5999c383de8161eeeaa7
@@ -26,107 +26,154 @@ source race occurrences: 189,043
 source columns: 37
 ```
 
-The authorised Source Version 1 race key is exact raw `date + course + off`. The raw SQLite database remains read-only, and source queries use `rowid <> 1`.
+Source Version 1 is always read-only. The admitted source population uses `rowid <> 1`. The authorised Source Version 1 race identity is exact raw `date + course + off`.
 
 ## Current accepted analytical database
 
-### Database v3 — accepted 9 August 2026
+### Database v4 — accepted 12 August 2026
 
 Canonical study database:
 
 ```text
-path: data/processed/database/releases/inside_rails_v3.sqlite3
-size: 3,137,081,344 bytes
-SHA-256: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
+path: data/processed/database/releases/inside_rails_v4.sqlite3
+size: 3,137,249,280 bytes
+SHA-256: 45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7
 manifest status: release_accepted
 validation-result rows: 7
 quick_check: ok
 foreign_key_check rows: 0
 SQLite application_id: 1230130259
-SQLite user_version: 3
+SQLite user_version: 4
 ```
 
-Database v3 is the current read-only analytical source for reader-facing studies.
+Database v4 is the current read-only analytical source for reader-facing studies.
 
-It preserves the complete Database v2 structure and adds the external-verification reconciliation layer needed to make previously established external facts analytically usable without altering immutable raw evidence.
+It preserves the complete Database v3 reconciliation layer and adds the corrected completed Great Britain Study 03 racecourse/course identity model.
 
-Accepted v3 reconciliation population:
+Study 03 population integrated in v4:
 
 ```text
-manual-verification rows: 104
-typed external-value resolutions: 37
-race rows: 189,043
-source-backed runner rows: 1,851,285
-combined governed runner rows: 1,851,288
+racecourse evidence notebooks: 61
+Great Britain source-label mappings: 65
+governed racecourses: 61
+course/track inventory rows: 90
+stable course/track identities: 86
+unresolved governance rows: 7
+Great Britain race rows: 111,634
 ```
 
-Preferred current study-facing views:
+The corrected Newmarket model contains two separate racecourses:
 
-- `view_reconciled_race_occurrences`;
-- `view_reconciled_source_runner_participations`;
-- `view_reconciled_runner_records`.
+- `Newmarket — Rowley Mile`;
+- `Newmarket — July Course`.
 
-Important examples now exposed through governed analytics include:
+There is no synthetic combined Newmarket racecourse identity in v4.
 
-- Almendares (GB): raw `sp='F'` remains raw/parser-unresolved, while external evidence supplies governed `5/2 favourite`;
-- Cinnamon Carter (AUS): governed finishing position `12` rather than raw `10`;
-- exact externally verified runner-count corrections for Ohi, Morioka and the Great Navigator race;
-- exact/invalidation treatment for the verified beaten-distance anomalies;
-- Compiegne `5yo+` and Ecstasy age `3` corrections;
-- two official 1600m distance enrichments;
-- three actual-off-time enrichments;
-- governed Pegasus 2018 and Arc 2019 prize-schedule enrichments.
+Database v4 deliberately does not fabricate a physical-track assignment for each race. The Study 03 modelling conclusion is:
 
-The parser/source layer is not rewritten to pretend those corrected facts were present in the raw data. Raw lineage remains recoverable.
+> `racecourse -> course/track -> time-bounded characteristics`
 
-### Preserved earlier releases
+A British racecourse is a venue and is not necessarily a single racing course.
 
-Database v2 remains immutable and retained:
+### Recommended current study interfaces
+
+General race-level work:
+
+- `view_reconciled_race_occurrences` — 189,043 races.
+
+Great Britain racecourse-aware race work:
+
+- `view_gb_reconciled_race_occurrences_with_racecourse` — 111,634 GB races, one row per race occurrence.
+
+Racecourse/course reference work:
+
+- `view_gb_racecourse_identity_reference` — 65 source-label mappings;
+- `view_gb_course_track_identities` — 86 stable course/track identities.
+
+Runner work:
+
+- `view_reconciled_source_runner_participations` — 1,851,285 source-backed runners;
+- `view_reconciled_runner_records` — 1,851,288 combined governed runners including three verified supplementations.
+
+Exact usage rules are governed by `docs/STUDY_DATABASE_REFERENCE.md` and `docs/STUDY_DATA_ACCESS.md`.
+
+## Preserved earlier releases
+
+Database v3:
+
+```text
+path: data/processed/database/releases/inside_rails_v3.sqlite3
+SHA-256: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
+```
+
+Database v2:
 
 ```text
 path: data/processed/database/releases/inside_rails_v2.sqlite3
 SHA-256: 80b41071254fb9d9a78392e019fd386c6319938282494046fb917d29e3257abe
 ```
 
-Database v1 remains immutable and retained:
+Database v1:
 
 ```text
 path: data/processed/database/releases/inside_rails_v1.sqlite3
 SHA-256: 2b9ffff749dc4337b0372814ccf8efb38dd262b1f25449af400de0cb353c8934
 ```
 
-They are historical release/rollback evidence, not the normal study database.
+They remain immutable historical release/rollback evidence, not the normal study database.
 
-## Current status
+The exact v4 candidate is also retained as immutable pre-release evidence:
 
-### Source-field investigation series — Notebooks 00–21
+```text
+path: data/processed/database/candidates/inside_rails_v4_candidate.sqlite3
+SHA-256: 04e027d09cd323df5b0a6ae97c6660018a1aa2576bacf8a12d546d2c4217e06e
+manifest status: built
+```
 
-**Status: fully closed.**
-
-The series established source immutability, lineage, race and runner reconstruction, jurisdiction and surface context, result semantics, race-distance and carried-weight parsing, bounded starting-price arithmetic, temporal reconstruction, course timezone mapping, prize-money semantics, runner counts and numbers, beaten-distance semantics, race classification, runner characteristics, ratings, horse and pedigree identity, connection-field governance, and conservative comment-field governance.
-
-Important distinction after the v3 reconciliation:
-
-- the lone raw starting-price token `F` remains unresolved by the source parser because no numeric price is present in the raw token;
-- external evidence independently established the corresponding Almendares price as `5/2 favourite`, and Database v3 now exposes that governed correction analytically.
-
-Notebook 20 still preserves 18 unresolved connection blanks after 28 confirmed supplementations. Notebook 21 preserves exact comment text and does not authorise a general narrative parser.
-
-### Participant identity programme — consolidated Notebook 22
-
-**Status: fully closed.**
-
-Notebook 22 established a conservative identity layer for jockey, trainer and owner labels while preserving raw source values, row lineage and unresolved relationships.
-
-### Database release programme
+## Database release programme
 
 - Database v1: minimum structural core, accepted 8 August 2026;
 - Database v2: Notebook 04–22 governed integration, accepted 9 August 2026;
-- Database v3: external-verification reconciliation repair, accepted 9 August 2026.
+- Database v3: external-verification reconciliation, accepted 9 August 2026;
+- Database v4: corrected Great Britain Study 03 racecourse/course identity integration, accepted 12 August 2026.
 
-Database v3 supersedes v2 for normal analytical use. Prior releases remain immutable.
+### Final Database v4 acceptance evidence
 
-### Great Britain Study 01 — governance and structure
+Promotion implementation commit:
+
+`27b8ac8aba3b22809c4da4f603b2302e47e9fa6d`
+
+Final release-boundary evidence:
+
+```text
+focused v4/release tests: 13 passed in 1.11s
+complete repository suite: 435 passed in 15.47s
+applicable independent validators: 32 passed
+standalone Database v4 validator: passed
+promotion: release_accepted=true
+candidate hash unchanged: true
+prior v3 preserved: true
+quick_check: ok
+foreign_key_check rows: 0
+```
+
+Accepted v4 SHA-256:
+
+`45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7`
+
+Full release record:
+
+`docs/DATABASE_V4_RELEASE_ACCEPTANCE_AND_PROMOTION.md`
+
+## Completed database/source investigation programme
+
+The source-field investigation series and participant-identity programme are closed. They established source immutability, structural race/runner identity, jurisdiction/surface context, results, distance, weight, starting price, temporal handling, prize money, runner counts, beaten distance, race classification, runner characteristics, ratings, horse/pedigree identity, connection governance, conservative comment handling and participant-label identity.
+
+Database v3 made externally verified corrections/enrichments analytically usable without rewriting raw evidence. Database v4 carries all of that work forward unchanged.
+
+## Great Britain reader-study programme
+
+### Study 01 — governance and structure
 
 **Status: fully closed.**
 
@@ -134,86 +181,42 @@ Notebook:
 
 `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb`
 
-The study describes how the observed British racing programme is organised without treating convenient database fields as official sporting definitions.
+It established the scale/calendar structure of the observed British racing programme and used an explicitly analytical course-date grouping without claiming that grouping was the official definition of a meeting or racecourse.
 
-For the study, a **course-date meeting** is the explicit analytical grouping `raw_date + candidate_course_label`. It is not presented as a BHA definition of a meeting or fixture and does not establish a reader-facing definition of a physical racecourse.
+### Study 02 — types of British racing
 
-Main descriptive evidence:
+**Status: completed before Study 03.**
 
-- 111,634 Great Britain races from 1 January 2015 through 27 May 2026;
-- 15,865 analytical course-date meetings;
-- seven races is both the most common and median meeting size;
-- 94.8% of meetings contain six to eight races;
-- 4,016 British racing days;
-- median national racing day: four course-date meetings and 28 races;
-- Saturday carries the largest programme in complete non-2020 years, with a median five meetings and 38 races;
-- Sunday is materially smaller, with a median two meetings and 14 races;
-- May is the busiest month by mean races per racing day in every complete non-2020 year from 2015 to 2025;
-- 2020 is a clear structural exception; no causal explanation is assigned without separately governed evidence;
-- 2026 is partial through 27 May and is not treated as a complete annual comparison.
+Notebook:
 
-The study triggered a separate governed investigation of `race_type_raw`. That investigation found 25 externally verified incorrect Great Britain race-type assignments, while an independent stratified pilot of 200 additional races produced 200 external agreements and zero disagreements. Known corrections are exposed read-only through the post-v3 study overlay; accepted Database v3 remains unchanged.
+`studies/jurisdictions/great_britain/02_types_of_british_racing.ipynb`
 
-Fresh-kernel execution of the study notebook passed on 10 August 2026 using the documented repository `PYTHONPATH` environment.
+The study establishes the authoritative Flat/Jump structure before using governed analytical race-type classifications. Known verified post-v3 race-type corrections remain handled through the governed read-only study overlay where they are not yet native to the accepted database.
 
-The manual-verification register validator also passed after the two BHA governance evidence records were added: 87 governed rows, with the full status/action partition recorded in the closeout document.
+### Study 03 — what is a British racecourse?
 
-Closeout record:
+**Status: completed and integrated into Database v4.**
 
-`docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
+National notebook:
 
-Study closeout register:
+`studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb`
 
-`docs/STUDY_CLOSEOUT_REGISTER.md`
+Evidence base:
 
-The canonical tracked manual-verification test has been updated to the 87-row register and the two Study 01 verification IDs. A stale 85-row assertion remains only in the user's separate uncommitted `data/tests/` directory-move WIP; it is not a Study 01 defect.
+- 61 per-racecourse notebooks under `studies/jurisdictions/great_britain/racecourses/`;
+- corrected frozen evidence commit `01c93aeff7f0a4ab7a22f6c37ad41656f7746e3b`.
 
-### Earlier field-size study draft
+Study 03 established the distinction between source labels, actual racecourse identity, constituent course/track identity and time-bounded course characteristics. Seven governance questions remain explicitly unresolved rather than guessed.
 
-`studies/01_field_size_and_race_predictability.ipynb` remains separate unfinished exploratory WIP. It is not the active Great Britain study sequence and has not been deleted or retrospectively relabelled as complete.
+### Study 04 — what is a race meeting/fixture?
 
-## Final Database v3 acceptance evidence
+**Status: next bounded study.**
 
-Promotion implementation head:
+Study 04 should start from the accepted v4 racecourse-aware interface:
 
-```text
-0b535cb5bfdcb22b7693e8a26a82acfcb025529d
-```
+`view_gb_reconciled_race_occurrences_with_racecourse`
 
-Focused canonical-validator-runner tests:
-
-```text
-5 passed in 0.44s
-```
-
-Complete repository suite:
-
-```text
-412 passed in 18.64s
-```
-
-Applicable independent-validator gate:
-
-```text
-31 validators passed
-```
-
-The standalone Database v3 validator then reconfirmed the exact candidate against accepted Database v2 before promotion.
-
-Promotion confirmed:
-
-```text
-release_accepted: true
-candidate_hash_unchanged: true
-prior_release_preserved: true
-quick_check: ok
-foreign_key_check rows: 0
-validation-result rows: 7
-```
-
-The exact accepted v3 release SHA-256 is:
-
-`aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
+Do not assume `date + racecourse = meeting/fixture` before the study establishes the sporting terminology and the smallest defensible analytical representation.
 
 ## Database admission rule
 
@@ -221,7 +224,7 @@ Every database load is governed by `docs/DATABASE_IMPORT_VALIDATION_GATE.md`.
 
 > No validated output, no database write. No partial success. The last known-good database remains intact.
 
-The complete repository suite and all applicable independent validators are part of the project-level gate. The canonical validator procedure is now permanent:
+The permanent canonical independent-validator runner is:
 
 ```bash
 python scripts/run_applicable_validators.py
@@ -238,13 +241,11 @@ Before every reader-facing study, read:
 - `docs/STUDY_DATA_ACCESS.md`;
 - `docs/STUDY_REVISIT_REGISTER.md`.
 
-The exact current database path, release identity, study-facing views and population semantics are governed by `docs/STUDY_DATABASE_REFERENCE.md` rather than memory.
-
-Normal studies must use accepted Database v3 read-only. There is no silent fallback to Database v2, Database v1, a validated candidate or Source Version 1.
+Normal studies must use accepted Database v4 read-only. There is no silent fallback to an older release, a candidate or Source Version 1.
 
 ## Durable project controls
 
-See:
+Core current controls:
 
 - `docs/STUDY_RESEARCH_PLAYBOOK.md`;
 - `docs/STUDY_DATABASE_REFERENCE.md`;
@@ -256,35 +257,36 @@ See:
 - `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
 - `docs/APPLICABLE_VALIDATOR_GATE.md`;
 - `docs/DATABASE_USER_GUIDE.md`;
-- `docs/DATABASE_V3_EXTERNAL_VERIFICATION_RECONCILIATION.md`;
-- `docs/DATABASE_V3_RELEASE_ACCEPTANCE_AND_PROMOTION.md`;
+- `docs/DATABASE_V4_GB_RACECOURSE_IDENTITY_INTEGRATION.md`;
+- `docs/DATABASE_V4_RELEASE_ACCEPTANCE_AND_PROMOTION.md`;
 - `docs/PROJECT_PLAN.md`.
 
-Historical Phase 3/4 and Database v1/v2 evidence documents remain in the repository as historical records and should not be rewritten to pretend they described Database v3 at the time.
+Historical v1/v2/v3 evidence documents remain historical records and should not be rewritten to pretend they described v4 at the time.
+
+## Release-process lesson
+
+Database v4 required one-off infrastructure work that should not be repeated for every future study: complete pytest discovery was fixed, historical validators were made reproducible, the canonical validator gate was established, and a fail-closed promotion pattern was implemented.
+
+Future database releases should reuse that infrastructure so the normal path is mechanical: freeze evidence, build candidate, validate, run the final test/validator gates once, promote, perform cheap readback checks, update the current-release docs.
 
 ## Next bounded action
 
-Begin Great Britain Study 02:
+Begin Great Britain Study 04:
 
-> **What kinds of racing make up British horse racing?**
-
-Study 02 should establish the authoritative Flat/Jump structure before using the governed study-facing race-type classifications for descriptive analysis.
-
-The separate question of what counts as a British racecourse remains a later bounded study because course identity and physical-venue semantics have not yet been established as interchangeable concepts.
+> **What is a race meeting/fixture?**
 
 ## Working method
 
 The project follows an evidence-led investigation-to-implementation cycle:
 
-1. profile the relevant governed data without altering immutable evidence;
-2. state one bounded question;
+1. state one bounded question;
+2. profile the relevant governed data without altering immutable evidence;
 3. test coverage, uniqueness, exceptions and failure modes;
-4. inspect material exceptions and preserve unresolved cases explicitly;
+4. preserve unresolved cases explicitly;
 5. separate observation, interpretation, confidence and design decision;
-6. translate any correctness-critical reusable finding into a practical database consequence;
-7. implement the rule reversibly while retaining raw values and lineage;
-8. extract stable reusable logic into `src/inside_rails/`;
-9. add focused tests and independent validation where a reusable governed rule exists;
-10. record evidence, limitations and lessons learned;
-11. update the appropriate closeout register, README and project plan;
-12. commit and verify the complete closeout.
+6. implement only correctness-critical reusable findings;
+7. retain raw values and lineage;
+8. add focused tests/independent validation where warranted;
+9. record evidence, limitations and lessons learned;
+10. update current project/release state only when it materially changes;
+11. commit and verify the closeout.
