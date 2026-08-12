@@ -206,15 +206,25 @@ A British racecourse is a venue and is not necessarily a single racing course.
 
 ### Study 04 — what is a race meeting/fixture?
 
-**Status: next bounded study.**
+**Status: fully closed.**
 
-Study 04 should establish the sporting terminology before deciding how a race occurrence belongs to a meeting/fixture.
+Notebook:
 
-Start from accepted Database v4 using:
+`studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`
 
-`view_gb_reconciled_race_occurrences_with_racecourse`
+Closeout:
 
-Do **not** assume `date + racecourse = meeting/fixture` merely because that grouping is convenient. Study 01's `raw_date + candidate_course_label` grouping was explicitly analytical and does not settle the official concept.
+`docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md`
+
+Study 04 established that fixture and meeting are not reliably the same technical unit.
+
+A BHA fixture is the more precise administrative scheduling object. Meeting is context-dependent and may refer to one fixture/day or to a wider multi-day event.
+
+Database v4 cannot reconstruct persistent BHA fixture identity from completed results alone, so no fixture, meeting or session entity was implemented.
+
+The accepted realised-racing grouping is the explicitly analytical **source racecourse-date group**.
+
+Study 04 also identified BHA fixture/results evidence as a potentially high-value external source for validating Great Britain race-population completeness.
 
 ## Current study-start rule
 
@@ -259,8 +269,10 @@ After roughly three to five fully closed reader-facing studies, review the study
 
 ## Next bounded action
 
-Begin Great Britain Study 04:
+Audit Great Britain race-population completeness:
 
-> **What is a race meeting/fixture?**
+**Are any Great Britain races that officially produced results missing from Source Version 1 / Database v4?**
 
-The database foundation required for that study is now accepted.
+The audit should use authoritative completed-race evidence as an independent population reference.
+
+A scheduled fixture that does not appear in Source Version 1 is not by itself a defect: abandonment, cancellation, transfer and race-programme changes must be separated from genuine missing completed races.
