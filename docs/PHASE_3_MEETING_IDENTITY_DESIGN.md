@@ -1,5 +1,27 @@
 # Phase 3 Meeting Identity Design
 
+## Study 04 supersession — 12 August 2026
+
+Great Britain Study 04 tested this provisional meeting model against authoritative BHA terminology and boundary cases.
+
+The earlier design was correct to state that `date + course` is only grouping evidence and not a natural meeting key.
+
+However, Study 04 establishes that the proposed persistent **source meeting occurrence**, source-race-to-meeting assignment and meeting-session layer should **not** be implemented from completed race results alone.
+
+The accepted current distinction is:
+
+- **BHA fixture** — administrative scheduling object requiring fixture-level evidence;
+- **meeting** — contextual racing term that may refer to one fixture/day or a wider multi-day event;
+- **source racecourse-date group** — descriptive analytical grouping of realised races sharing one source date and governed racecourse identity.
+
+Database v4 therefore gains no fixture, meeting or session identity from Study 04.
+
+A genuine BHA fixture layer is deferred until a specific analytical requirement justifies acquiring and governing authoritative fixture-level evidence.
+
+See `studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb` and `docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md`.
+
+---
+
 ## Purpose
 
 This document records the accepted conceptual design for meeting identity within Phase 3.
