@@ -210,13 +210,25 @@ Study 03 established the distinction between source labels, actual racecourse id
 
 ### Study 04 — what is a race meeting/fixture?
 
-**Status: next bounded study.**
+**Status: fully closed.**
 
-Study 04 should start from the accepted v4 racecourse-aware interface:
+Notebook:
 
-`view_gb_reconciled_race_occurrences_with_racecourse`
+`studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`
 
-Do not assume `date + racecourse = meeting/fixture` before the study establishes the sporting terminology and the smallest defensible analytical representation.
+Closeout:
+
+`docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md`
+
+Study 04 established that a BHA **fixture** is an administrative scheduling object whose venue, date, times and programme may change, while **meeting** is context-dependent and can refer either to one fixture/day or to a wider multi-day event.
+
+Database v4 completed results do not contain enough administrative history to reconstruct persistent BHA fixture identity reliably.
+
+For realised source analysis, use the explicitly descriptive **source racecourse-date group** rather than claiming `date + racecourse` is a verified fixture or meeting.
+
+No fixture, meeting or session entity was added to Database v4.
+
+Study 04 also identified a more valuable use for BHA fixture/results evidence: an external completeness audit of the Great Britain race population.
 
 ## Database admission rule
 
@@ -271,9 +283,11 @@ Future database releases should reuse that infrastructure so the normal path is 
 
 ## Next bounded action
 
-Begin Great Britain Study 04:
+Audit Great Britain race-population completeness:
 
-> **What is a race meeting/fixture?**
+**Are any Great Britain races that officially produced results missing from Source Version 1 / Database v4?**
+
+This follows directly from Study 04's discovery that authoritative BHA fixture/results evidence can provide an external population check without requiring a full administrative fixture layer.
 
 ## Working method
 

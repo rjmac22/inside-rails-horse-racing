@@ -40,7 +40,7 @@ def test_governed_register_loads_current_backfill() -> None:
     rows = load_manual_verifications(REGISTER)
     ids = {row.verification_id for row in rows}
 
-    assert len(rows) == 87
+    assert len(rows) == 93
     assert len(ids) == len(rows)
     assert {row.governing_notebook for row in rows} == {
         "12",
@@ -52,6 +52,7 @@ def test_governed_register_loads_current_backfill() -> None:
         "19",
         "20",
         "studies/jurisdictions/great_britain/01_governance_and_structure.ipynb",
+        "studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb",
     }
     assert {
         "NB12-COURSE-0001",
@@ -72,6 +73,8 @@ def test_governed_register_loads_current_backfill() -> None:
         "NB20-CONNECTION-0046",
         "ST01-GOV-0001",
         "ST01-GOV-0002",
+        "ST04-FIXTURE-0001",
+        "ST04-FIXTURE-0006",
     } <= ids
 
     notebook_20_rows = [
@@ -87,6 +90,14 @@ def test_governed_register_loads_current_backfill() -> None:
     assert len(study_01_governance_rows) == 2
     assert all(row.verification_status == "confirmed" for row in study_01_governance_rows)
     assert all(row.database_action == "evidence_only" for row in study_01_governance_rows)
+
+    study_04_fixture_rows = [
+        row for row in rows if row.verification_id.startswith("ST04-FIXTURE-")
+    ]
+    assert len(study_04_fixture_rows) == 6
+    assert all(row.verification_status == "confirmed" for row in study_04_fixture_rows)
+    assert all(row.confidence == "high" for row in study_04_fixture_rows)
+    assert all(row.database_action == "evidence_only" for row in study_04_fixture_rows)
 
 
 def test_valid_row_passes() -> None:

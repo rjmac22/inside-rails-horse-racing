@@ -18,7 +18,8 @@ This register records the concise closure state of reader-facing studies. Detail
 |---|---|---|---|---|
 | Great Britain 01 — Governance and structure | `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb` | established programme/calendar structure; course-date meeting remained explicitly analytical | `fully_closed` | completed |
 | Great Britain 02 — Types of British racing | `studies/jurisdictions/great_britain/02_types_of_british_racing.ipynb`; `docs/studies/GB_02_TYPES_OF_BRITISH_RACING_HANDOVER.md` | authoritative Flat/Jump conceptual structure; governed broad race-type analysis | `fully_closed` | completed |
-| Great Britain 03 — British racecourse/course identity | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` plus 61 racecourse notebooks | 61 racecourse identities, 65 source mappings, 86 stable course/track identities; integrated into accepted Database v4 | `fully_closed` | begin Study 04 |
+| Great Britain 03 — British racecourse/course identity | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` plus 61 racecourse notebooks | 61 racecourse identities, 65 source mappings, 86 stable course/track identities; integrated into accepted Database v4 | `fully_closed` | completed |
+| Great Britain 04 — Race meetings and fixtures | `studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`; `docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md` | fixture/meeting semantics established; source racecourse-date group retained as analytical only; no fixture entity implemented | `fully_closed` | audit GB race-population completeness |
 
 ## Great Britain Study 01
 
@@ -98,12 +99,32 @@ Full release record:
 
 `docs/DATABASE_V4_RELEASE_ACCEPTANCE_AND_PROMOTION.md`
 
-## Next planned reader study
+## Great Britain Study 04
 
-Great Britain Study 04 — **What is a race meeting/fixture?**
+National notebook:
 
-Start from accepted Database v4 using:
+`studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`
 
-`view_gb_reconciled_race_occurrences_with_racecourse`
+Closeout record:
 
-Do not assume `date + racecourse = meeting/fixture` before the study establishes the sporting concept and the smallest defensible analytical representation.
+`docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md`
+
+Study 04 established that **fixture** is the more precise BHA administrative scheduling object, while **meeting** is context-dependent and may refer either to one fixture/day or to a wider multi-day event.
+
+Database v4 cannot reconstruct persistent BHA fixture identity from completed race results alone.
+
+The accepted source-level analytical term is **source racecourse-date group**.
+
+No meeting, fixture or session entity was added to Database v4.
+
+Fresh-kernel execution passed on 12 August 2026.
+
+Six Study 04 BHA evidence claims are governed in the manual-verification register. The focused manual-verification test passed with 11 tests and the independent register validator passed with 93 governed rows.
+
+## Next bounded investigation
+
+Audit Great Britain race-population completeness:
+
+**Are any Great Britain races that officially produced results missing from Source Version 1 / Database v4?**
+
+Use authoritative completed-race evidence as the external population reference. Do not mistake a scheduled but abandoned or cancelled fixture for a missing source race.
