@@ -12,6 +12,15 @@
 !/data/external/.gitkeep
 !/db/.gitkeep
 
+# Bounded authoritative external evidence retained for reproducibility
+!/data/external/bha/
+!/data/external/bha/gb_race_population_completeness/
+!/data/external/bha/gb_race_population_completeness/2026/
+!/data/external/bha/gb_race_population_completeness/2026/*.pdf
+!/data/external/bha/gb_race_population_completeness/2026/*.xlsx
+!/data/external/bha/gb_race_population_completeness/2026/*.json
+!/data/external/bha/gb_race_population_completeness/2026/*.md
+
 # Database and large data files
 *.sqlite
 *.sqlite3
