@@ -2,11 +2,34 @@
 
 ## Status
 
-**Promotion implementation prepared; Database v4 is not yet release-accepted.**
+**Database v4 was release-accepted on 12 August 2026.**
 
-Database v3 remains the current accepted, immutable study database until the final gates below pass and the owner deliberately executes the v4 promotion command.
+It is now the current immutable Inside Rails study database.
 
-The exact Database v4 candidate already built and independently validated is:
+Canonical release:
+
+`data/processed/database/releases/inside_rails_v4.sqlite3`
+
+Accepted release SHA-256:
+
+`45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7`
+
+Accepted release size:
+
+`3,137,249,280 bytes`
+
+SQLite / manifest state:
+
+- `application_id`: `1230130259`;
+- `user_version`: `4`;
+- manifest status: `release_accepted`;
+- validation-result rows: `7`;
+- `PRAGMA quick_check`: `ok`;
+- `PRAGMA foreign_key_check`: `0` rows.
+
+## Exact promoted candidate
+
+The accepted release was promoted from the exact candidate:
 
 `data/processed/database/candidates/inside_rails_v4_candidate.sqlite3`
 
@@ -22,150 +45,156 @@ Candidate manifest code:
 
 `imp:20260811T215904471424Z:80905d2d`
 
-Database release code carried by the candidate:
+Database release code:
 
 `db:20260811T215904471424Z:928240a8`
 
-The candidate remains intentionally at:
-
-`import_manifest.build_status = 'built'`
-
-It must remain byte-for-byte unchanged during promotion.
+The candidate remained byte-for-byte unchanged during promotion and retains its pre-release `built` state as immutable evidence.
 
 ## Immutable prior release
 
-Database v4 is based on the accepted Database v3 release:
+Database v4 was built from and promoted against accepted Database v3:
 
 `data/processed/database/releases/inside_rails_v3.sqlite3`
 
-Required Database v3 SHA-256:
+Database v3 SHA-256 before and after promotion:
 
 `aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0`
 
-Required size:
+Database v3 size:
 
 `3,137,081,344 bytes`
 
-Required prior database release code:
+A separate read-only pre-v4-promotion backup was also created locally and verified byte-for-byte against the accepted v3 hash before promotion.
 
-`db:20260809T132557790891Z:84258cbc`
+Database v3 remains retained as an immutable historical release and rollback point.
 
-Promotion must prove Database v3 is unchanged before, during and after publication.
+## Study 03 population integrated by v4
 
-## Candidate evidence already established
+Database v4 integrates the corrected completed Great Britain Study 03 racecourse/course identity model:
 
-Before the promotion implementation was added, the v4 candidate passed:
-
-- independent reconstruction of the frozen Study 03 evidence;
-- exact preservation checks against Database v3;
-- `PRAGMA quick_check = ok`;
-- zero foreign-key-check rows;
-- 61 notebook records;
-- 65 source-label mappings;
-- 61 governed racecourses;
+- 61 Study 03 racecourse notebooks;
+- 65 Great Britain source-label mappings;
+- 61 governed racecourse identities;
 - 90 course/track inventory rows;
 - 86 stable course/track identities;
-- seven unresolved governance rows;
-- exactly 111,634 GB race rows and 111,634 distinct GB race IDs;
-- the exact Newmarket Rowley Mile / July Course mapping and race counts.
+- 7 unresolved governance rows;
+- 111,634 Great Britain race rows;
+- 111,634 distinct Great Britain race IDs.
 
-The complete repository suite also reached 429 passing tests, and the canonical applicable-validator runner passed all 32 applicable independent validators.
+The release preserves the corrected Newmarket split:
 
-Those results establish the candidate itself. Because the repository changes when the promotion implementation and its tests are added, they are **not by themselves the final release gate**. The final gate must be rerun at the promotion implementation commit.
+- `Newmarket` → `Newmarket — Rowley Mile`;
+- `Newmarket (July)` → `Newmarket — July Course`.
 
-## Release-boundary evidence model
+Database v4 does not fabricate race-occurrence → physical-track assignment. Study 03 establishes racecourse-level identity and a reusable course/track reference layer while preserving unresolved lower-level assignment questions.
 
-The built v4 candidate contains four builder-stage validation records:
+## Release-boundary implementation
 
-1. `persisted_readback`;
-2. `sqlite_integrity`;
-3. `foreign_key_validation`;
-4. `post_load_validation`.
+Promotion implementation commit:
 
-Unlike Database v3, Database v4 deliberately left independent source-wide validation outside the builder and therefore stopped at `built` rather than `validated`.
+`27b8ac8aba3b22809c4da4f603b2302e47e9fa6d`
 
-The release staging copy adds exactly three acceptance records:
-
-5. `source_wide_validation`;
-6. `focused_unit_tests`;
-7. `project_acceptance_gate`.
-
-Only the staging copy may then advance to:
-
-`import_manifest.build_status = 'release_accepted'`
-
-The original candidate remains `built` and unchanged.
-
-## Fail-closed promotion implementation
-
-The implementation is:
+Implementation:
 
 - `src/inside_rails/database/release_v4.py`;
 - `scripts/promote_inside_rails_v4.py`;
 - `data/tests/test_database_v4_release_promotion.py`.
 
-It is required to:
+The promotion path is fail-closed. It binds promotion to the exact candidate identity, verifies immutable v3, copies to a private staging database, writes acceptance evidence only to staging, independently validates staging, publishes without overwriting an existing release, makes the release read-only, then re-reads and independently validates the published release. Candidate and prior-release hashes are rechecked during and after promotion.
 
-1. bind promotion to the exact candidate SHA-256, build/reference commit, manifest code and database release code above;
-2. verify the accepted Database v3 hash and size;
-3. independently validate the exact v4 candidate before any release write;
-4. refuse candidate/release/base path aliasing;
-5. refuse to overwrite an existing release or stale release sidecar;
-6. copy the candidate to a private staging path;
-7. write the three release-boundary evidence rows only to staging;
-8. attach this release contract to governance release 4;
-9. advance only staging from `built` to `release_accepted`;
-10. run integrity, foreign-key and independent v4 validation against staging;
-11. prove candidate and v3 hashes remain unchanged;
-12. publish without overwriting an existing release;
-13. make the published release read-only;
-14. re-read, re-hash and independently revalidate the published release;
-15. remove staging and any newly published release if promotion fails.
+## Final acceptance evidence
 
-Canonical output path:
+Focused v4/release tests at the final promotion-code state:
 
-`data/processed/database/releases/inside_rails_v4.sqlite3`
-
-## Final gate before promotion
-
-Because the promotion implementation changes the repository after the earlier candidate gate, run the following sequence from the repository root after pulling the final implementation commit:
-
-```bash
-pytest -q \
-  data/tests/test_database_v4_release_promotion.py \
-  tests/test_racecourse_identity_database.py \
-  tests/test_racecourse_identity_governance_handover.py \
-  data/tests/test_racecourse_identity_validator.py
-
-pytest -q
-
-python scripts/run_applicable_validators.py
-
-python scripts/validate_inside_rails_v4.py
+```text
+13 passed in 1.11s
 ```
 
-All four commands must pass at the same repository state.
+Complete repository suite at the same state:
 
-Only then run:
-
-```bash
-python scripts/promote_inside_rails_v4.py
+```text
+435 passed in 15.47s
 ```
 
-The promotion command itself independently validates the exact candidate again before staging and validates both staging and the published release. It does not modify the candidate or Database v3.
+Canonical applicable independent-validator gate:
 
-## Post-promotion closeout
+```text
+Applicable validator sweep PASSED: 32 validators
+```
 
-After a successful promotion, this document must be updated with:
+Final standalone v4 validation immediately before promotion returned:
 
-- promotion implementation commit;
-- observed focused-test result;
-- observed complete repository-test result;
-- observed 32-validator result;
-- final standalone v4 validator result;
-- published v4 SHA-256 and size;
-- confirmation that the candidate hash remained unchanged;
-- confirmation that Database v3 remained unchanged;
-- final `release_accepted` status.
+```text
+candidate_sha256_hex: 04e027d09cd323df5b0a6ae97c6660018a1aa2576bacf8a12d546d2c4217e06e
+manifest_status: built
+quick_check: ok
+foreign_key_check_rows: 0
+notebook_rows: 61
+source_label_rows: 65
+racecourse_rows: 61
+inventory_rows: 90
+stable_course_rows: 86
+unresolved_rows: 7
+gb_race_rows: 111634
+gb_distinct_race_rows: 111634
+raw_record_rows_compared: 1851286
+structural_race_rows_compared: 189043
+structural_runner_rows_compared: 1851285
+reference_course_rows_compared: 395
+```
 
-Only after that release exists and is independently verified should study-facing database defaults be moved from Database v3 to Database v4.
+Promotion then returned:
+
+```text
+release_accepted: true
+manifest_status: release_accepted
+release_validator_manifest_status: release_accepted
+candidate_hash_unchanged: true
+prior_release_preserved: true
+quick_check: ok
+foreign_key_check_rows: 0
+validation_result_count: 7
+```
+
+Published release SHA-256:
+
+`45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7`
+
+A final filesystem readback confirmed both accepted releases are read-only and have the expected hashes:
+
+```text
+v3: aa64991d0b2ae437539b38f799e57eb45450969a863caa54b9eea0d8f969dac0
+v4: 45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7
+```
+
+## Study database consequence
+
+Database v4 supersedes Database v3 for normal reader-facing analytical work.
+
+Normal studies must now use the exact accepted v4 release read-only. Database v3, v2 and v1 remain immutable historical releases; the v4 candidate remains immutable pre-release evidence.
+
+The new Study 04-facing racecourse interface is:
+
+`view_gb_reconciled_race_occurrences_with_racecourse`
+
+It preserves one row per Great Britain race occurrence while adding governed racecourse identity. The existing reconciled race/runner views remain available unchanged for questions that do not require racecourse identity.
+
+## Process lesson for v5+
+
+Database v4 required substantial one-off release infrastructure work: full pytest discovery was corrected, historical validators were made reproducible, the canonical applicable-validator gate was established, an independent v4 validator was added, and a fail-closed v4 promotion implementation was created.
+
+Future releases should reuse this infrastructure rather than reconstructing it. The intended normal sequence is:
+
+1. freeze completed study evidence;
+2. build the smallest governed candidate;
+3. add/update its independent validator;
+4. run focused tests;
+5. run the complete repository suite once at the final implementation state;
+6. run the canonical applicable-validator sweep once;
+7. run the new-version standalone validator once at the release boundary;
+8. promote through the established fail-closed release pattern;
+9. perform cheap post-publication identity/readback checks;
+10. update study-facing release documentation.
+
+The project should make future database releases routine rather than rebuilding release governance for every study.
