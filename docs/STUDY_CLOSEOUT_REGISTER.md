@@ -2,58 +2,108 @@
 
 ## Purpose
 
-This register is the reader-study successor to the database-focused retrospective implementation audit for tracking study closure state.
-
-It records whether a reader-facing study is analytically complete, reproducible, externally evidenced where required, and fully closed under `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`.
-
-The register does not replace the detailed closeout record for each study. It provides the concise project-level status needed by the README and project plan.
+This register records the concise closure state of reader-facing studies. Detailed evidence remains in the study notebooks, handovers/closeout documents and database release records.
 
 ## Status vocabulary
 
 - `in_progress` — analytical work is active;
 - `analytically_complete` — the bounded question has been answered, but closeout work remains;
-- `closeout_validation_pending` — analytical and documentation closeout is complete but required validation evidence has not yet been recorded;
-- `fully_closed` — every applicable closeout item is complete and validation evidence is recorded;
+- `closeout_validation_pending` — analytical/documentation closeout is complete but required validation evidence is not yet recorded;
+- `fully_closed` — every applicable closeout item is complete and the resulting reusable state is recorded;
 - `revisit_required` — a later finding materially affects a previously closed study and the revisit register governs the next action.
 
 ## Studies
 
-| Study | Notebook | Analytical status | Reproducibility | External evidence | Implementation / validator consequence | Closeout status | Next action |
-|---|---|---|---|---|---|---|---|
-| Great Britain 01 — Governance and structure | `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb` | complete | fresh-kernel execution passed 2026-08-10 | captured: `ST01-GOV-0001`, `ST01-GOV-0002`; race-type specialist evidence retained separately | no new main-study production transform or validator; existing study overlay used for governed post-v3 corrections | `fully_closed` | begin Great Britain Study 02 — types of British racing |
+| Study | Notebook / evidence | Main reusable consequence | Closeout status | Next action |
+|---|---|---|---|---|
+| Great Britain 01 — Governance and structure | `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb` | established programme/calendar structure; course-date meeting remained explicitly analytical | `fully_closed` | completed |
+| Great Britain 02 — Types of British racing | `studies/jurisdictions/great_britain/02_types_of_british_racing.ipynb`; `docs/studies/GB_02_TYPES_OF_BRITISH_RACING_HANDOVER.md` | authoritative Flat/Jump conceptual structure; governed broad race-type analysis | `fully_closed` | completed |
+| Great Britain 03 — British racecourse/course identity | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` plus 61 racecourse notebooks | 61 racecourse identities, 65 source mappings, 86 stable course/track identities; integrated into accepted Database v4 | `fully_closed` | begin Study 04 |
 
-## Great Britain Study 01 validation evidence
+## Great Britain Study 01
 
-Fresh-kernel notebook execution passed on 10 August 2026 using the documented repository `PYTHONPATH` environment.
-
-The governed manual-verification register validator was rerun after adding the two Study 01 BHA evidence records and passed:
-
-```text
-Manual-verification register passed: 87 governed rows.
-Verification statuses:
-  confirmed: 58
-  contradicted: 10
-  partially_confirmed: 1
-  unresolved: 18
-Database actions:
-  evidence_only: 15
-  label_equivalence: 2
-  preserve_raw_unresolved: 19
-  reference_enrichment: 8
-  source_correction_candidate: 12
-  source_supplementation: 31
-```
-
-A focused local pytest run against the user's uncommitted `data/tests/` directory-move copy collected 11 tests and produced 10 passes plus one stale-baseline failure because that WIP copy still expected 85 register rows. The canonical tracked test `tests/test_manual_verifications.py` has been updated to the current 87-row register and explicitly checks `ST01-GOV-0001` and `ST01-GOV-0002`. The stale moved copy belongs to the separate repository-reorganisation WIP and is not treated as a Study 01 analytical or governance defect.
-
-## Governing closeout record
-
-Great Britain Study 01:
+Governing closeout record:
 
 `docs/studies/GB_01_GOVERNANCE_AND_STRUCTURE_CLOSEOUT.md`
 
+Fresh-kernel execution passed on 10 August 2026. The governed manual-verification register passed at the Study 01 boundary with 87 rows.
+
+Study 01 deliberately did **not** settle the official meaning of racecourse or meeting. Its `raw_date + candidate_course_label` grouping was an analytical device for describing programme structure.
+
+## Great Britain Study 02
+
+Handover / study-start record:
+
+`docs/studies/GB_02_TYPES_OF_BRITISH_RACING_HANDOVER.md`
+
+Study 02 established the authoritative conceptual relationship between Flat racing and Jump/National Hunt racing before using the governed analytical broad race-type values.
+
+Known verified broad race-type corrections remain governed through the read-only post-release overlay where they are not native to the accepted database.
+
+## Great Britain Study 03
+
+National notebook:
+
+`studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb`
+
+Evidence base:
+
+- 61 per-racecourse notebooks under `studies/jurisdictions/great_britain/racecourses/`;
+- corrected frozen evidence commit `01c93aeff7f0a4ab7a22f6c37ad41656f7746e3b`.
+
+Final governed baseline:
+
+```text
+racecourse notebooks: 61
+GB source-label mappings: 65
+governed racecourse identities: 61
+course/track inventory rows: 90
+stable course/track identities: 86
+unresolved governance rows: 7
+```
+
+Study 03 established the modelling distinction:
+
+> `racecourse -> course/track -> time-bounded characteristics`
+
+The Newmarket correction is explicit:
+
+- plain `Newmarket` → `Newmarket — Rowley Mile`;
+- `Newmarket (July)` → `Newmarket — July Course`.
+
+There is no synthetic combined Newmarket racecourse identity.
+
+Study 03 was integrated into accepted Database v4 on 12 August 2026.
+
+Accepted v4 release:
+
+```text
+path: data/processed/database/releases/inside_rails_v4.sqlite3
+SHA-256: 45ad0c3d81d457385d655d9c47b030c5815c638e477281a9be8aabf164eecff7
+manifest status: release_accepted
+user_version: 4
+```
+
+Final release-boundary evidence:
+
+```text
+focused tests: 13 passed in 1.11s
+complete repository suite: 435 passed in 15.47s
+applicable independent validators: 32 passed
+standalone v4 validator: passed
+promotion: release_accepted=true
+```
+
+Full release record:
+
+`docs/DATABASE_V4_RELEASE_ACCEPTANCE_AND_PROMOTION.md`
+
 ## Next planned reader study
 
-Great Britain Study 02 — **Types of British racing**.
+Great Britain Study 04 — **What is a race meeting/fixture?**
 
-The study should establish the authoritative Flat/Jump structure before using governed analytical race-type values. Racecourse identity and physical-venue semantics remain a later bounded study.
+Start from accepted Database v4 using:
+
+`view_gb_reconciled_race_occurrences_with_racecourse`
+
+Do not assume `date + racecourse = meeting/fixture` before the study establishes the sporting concept and the smallest defensible analytical representation.
