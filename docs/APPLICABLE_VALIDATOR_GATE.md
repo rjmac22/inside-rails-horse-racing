@@ -103,6 +103,29 @@ validate_runner_record_supplementations.py
 
 This mapping is executable governance, not prose only: `data/tests/test_applicable_validator_gate.py` requires the runner to parse the live validator CLIs and fail if an ungoverned required positional argument appears.
 
+## Historical version-specific reference binding
+
+Historical database validators must validate a release against the evidence snapshot that actually governed that release. They must not silently reinterpret an older database against later mutable reference additions.
+
+Database v2 was built and accepted from repository/reference commit:
+
+```text
+68ac0364c4af2a104ea76c8765fd0e220aaf8e84
+```
+
+`validate_inside_rails_v2.py` therefore replays the following four reference files from that exact Git commit into a temporary read-only validation root before invoking the independent v2 validator:
+
+```text
+data/reference/manual_verifications.csv
+data/reference/connection_identity_repairs.csv
+data/reference/runner_record_supplementations.csv
+data/reference/horse_pedigree_identity_governance.csv
+```
+
+That historical snapshot contains the 85 manual-verification rows recorded in the Database v2 release contract. Later additions to the working-tree reference files are valid inputs to later database versions, but they must not retroactively change the v2 validation baseline.
+
+`data/tests/test_inside_rails_v2_historical_validator.py` fails closed if the historical commit, file set or 85-row v2 baseline changes or becomes unavailable.
+
 ## Explicit exclusions
 
 Only these three validators are excluded from the current release-acceptance sweep:
@@ -166,6 +189,8 @@ The Phase 4 final repository gate on 6 August 2026 exposed three harness errors 
 Those were harness defects, not validator defects. The final corrected Phase 4 sweep passed all 31 then-current validators. The same class of mistake recurred during the Database v3 acceptance work on 9 August 2026 when a generic filename loop again invoked `validate_beaten_distances.py` without its required database argument.
 
 Database v4 deliberately increased the governed inventory from 34 to 35 scripts and the applicable set from 31 to 32 by adding `validate_inside_rails_v4.py`. The runner, its focused test and this document were updated together so the inventory change is explicit rather than silently absorbed.
+
+During the Database v4 acceptance sweep, historical Database v2 validation exposed another permanent lesson: a historical release validator must not read mutable present-day reference files when later releases legitimately extend those references. The v2 validator is now explicitly bound to its accepted build/reference commit.
 
 The repository treats the runner itself as governed implementation, with focused tests, so this procedure does not need to be rediscovered in a later study or release.
 
