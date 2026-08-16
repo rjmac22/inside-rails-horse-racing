@@ -6,16 +6,24 @@ This register records data and evidence that Inside Rails can already use, may a
 
 It is **not** a promise to integrate every source into the database. Its purpose is to prevent a study from being artificially limited by whatever happens to be in the current accepted database.
 
-The standing rule is:
+This register must be read together with:
+
+`docs/PRIMARY_SOURCE_FIRST_RESEARCH_RULE.md`
+
+The standing source-authority rule is:
+
+> For a question about what a racing jurisdiction is, means, permits, requires, schedules, classifies or officially records, establish the concept from the best available primary official source before using Inside Rails or another third-party dataset to define it.
+
+The standing source-discovery rule remains:
 
 > If a study raises a question that could be materially answered, checked or strengthened with information outside the current accepted database, actively identify and verify the best available source before concluding that the information is unavailable.
 
-The assistant should do this source discovery and verification as part of the research workflow rather than relying on the user to remember that another dataset or website exists.
+The assistant should do source discovery and verification as part of the research workflow rather than relying on the user to remember that another dataset, API or website exists.
 
 A newly discovered source can be used in three different ways:
 
 1. **bounded lookup / manual verification** — use a small amount of external evidence to check a specific fact;
-2. **study-specific external dataset** — obtain data needed for one research question without automatically changing the core database;
+2. **study-specific external dataset/API use** — obtain or call data needed for one research question without automatically changing the core database;
 3. **governed database integration** — escalate only when the source or transformation is correctness-critical or clearly reusable across studies.
 
 Raw third-party data must remain separate from governed analytical interpretations. Access to a source does not by itself establish that its fields are reliable, equivalent to Inside Rails concepts, or licensed for bulk republication.
@@ -56,30 +64,37 @@ Status: `accepted_database`
 
 Canonical release:
 
-`data/processed/database/releases/inside_rails_v3.sqlite3`
+`data/processed/database/releases/inside_rails_v4.sqlite3`
 
-Preferred study-facing interfaces:
+Database v4 was accepted and promoted on **12 August 2026**.
+
+Preferred study-facing interfaces include:
 
 - `view_reconciled_race_occurrences`;
+- `view_gb_reconciled_race_occurrences_with_racecourse` for GB racecourse-aware race work;
 - `view_reconciled_source_runner_participations`;
 - `view_reconciled_runner_records`.
 
 Current governed coverage includes, among other things:
 
 - race and runner structural identity;
-- course and jurisdiction context;
+- course/jurisdiction and GB racecourse identity context;
 - race type/classification and surface governance;
-- source-literal distance interpretation plus the bounded official-distance enrichments already established;
+- source-literal distance interpretation plus bounded official-distance enrichments;
 - carried weight;
-- starting-price arithmetic and favourite status, including the externally reconciled Almendares case;
-- advertised/scheduled time governance and the currently integrated actual-off enrichments;
-- prize semantics plus the currently integrated external prize-schedule enrichments;
+- starting-price arithmetic and favourite status;
+- advertised/scheduled time governance and integrated actual-off enrichments;
+- prize semantics and integrated external prize-schedule enrichments;
 - runner counts, results and beaten-distance governance;
 - age/sex and other runner characteristics;
 - ratings semantics;
 - comments;
 - bounded horse/pedigree and participant-identity governance;
 - bounded external corrections, invalidations and supplementations.
+
+Important boundary:
+
+> The accepted Inside Rails database is an analytical representation, not the authority that defines what British racing concepts mean.
 
 Always check `docs/STUDY_DATABASE_REFERENCE.md` for the current accepted release and exact field/view contract before using these concepts.
 
@@ -109,30 +124,80 @@ Before a study uses any of them:
 5. profile the fields needed by the study;
 6. determine whether a bounded study-specific use is enough or whether governed integration is justified.
 
-Do not merge them with Database v3 solely because names or dates appear to match.
+Do not merge them with Database v4 solely because names or dates appear to match.
 
 ---
 
-## 3. British Horseracing Authority — official racing reference data
+## 3. British Horseracing Authority — primary official British racing evidence
 
-Status: `public_external` / `manual_reference`
+Status: `public_external` / `manual_reference` / study-specific structured data
 
-Availability checked: **9 August 2026**.
+Availability checked: **16 August 2026**.
 
-Official BHA resources currently include:
+For questions about what British racing means, permits, requires, schedules, classifies or officially records, BHA material is normally the primary starting point.
 
-### Results
-
-BHA publishes British racing results through its results service.
+### Rules, General Instructions and official guidance
 
 Potential study uses:
 
-- result cross-checks;
-- fixture/race occurrence verification;
-- race-level contextual verification;
-- targeted checking of source anomalies.
+- sporting and administrative terminology;
+- race conditions and eligibility;
+- weights, penalties and allowances;
+- handicapping;
+- race programming;
+- fixture administration;
+- race-type and classification semantics.
 
-Locator:
+Entry point:
+
+`https://www.britishhorseracing.com/regulation/rules-guides/`
+
+### BHA Results service and structured API
+
+The public BHA Results frontend uses a structured backend currently available at:
+
+`https://api09.horseracing.software`
+
+Observed useful endpoint patterns include:
+
+- fixture data: `/bha/v1/fixtures/`
+- races in a fixture: `/bha/v1/fixtures/{fixtureYear}/{fixtureId}/races`
+- race detail: `/bha/v1/races/{yearOfRace}/{raceId}/{divisionSequence}`
+- result detail: the corresponding race path with `/results`
+
+Observed race-list/detail fields include, among others:
+
+- `raceId`;
+- `fixtureId`;
+- `divisionSequence`;
+- `raceDate`;
+- `raceTime`;
+- `raceName`;
+- `raceCriteriaRaceType`;
+- `raceClass`;
+- `ratingBand`;
+- `ageLimit`;
+- `sexLimit`;
+- distance fields;
+- going;
+- prize amount;
+- runner/result availability.
+
+Potential study uses:
+
+- official fixture/race occurrence verification;
+- official structured representation of race conditions;
+- result reconciliation;
+- historical race examples;
+- direct comparison of BHA concepts with Inside Rails/source fields.
+
+Important boundary:
+
+An official API field is strong primary structured evidence but is not self-interpreting. Establish the governing concept from BHA rules/terminology where necessary, then use the structured field to see how that concept is represented in actual official records.
+
+The API should not automatically be bulk-ingested into a new database merely because it exists. Historical depth, stability, identifiers, access behaviour and source terms should be established for the particular use.
+
+BHA Results entry point:
 
 `https://www.britishhorseracing.com/racing/results/`
 
@@ -296,7 +361,7 @@ Reanalysis/model data is not direct on-course observation. For a strong claim ab
 
 Status: `verify_when_needed`
 
-Database v3 contains international racing. If a material anomaly or study question concerns a non-British jurisdiction, first look for the relevant official racing authority or racecourse operator rather than assuming a British commercial racing website is the best authority.
+Database v4 contains international racing. If a material anomaly or study question concerns a non-British jurisdiction, first look for the relevant official racing authority or racecourse operator rather than assuming a British commercial racing website is the best authority.
 
 Possible information includes:
 
@@ -327,9 +392,12 @@ Potential uses:
 - historical reporting;
 - specialist pedigree or form context;
 - comments, race narratives or sectional context not available from an official authority;
-- triangulation when official archives are incomplete.
+- triangulation when official archives are incomplete;
+- investigation of how a commercial publication represents an official concept.
 
 Standing rule:
+
+> Commercial/third-party presentation must not define an official racing concept when suitable primary evidence exists.
 
 Do not assume that because information is visible on a website it can be bulk scraped, republished or incorporated into a commercial analytical database. Check access terms, licensing and technical feasibility before systematic collection.
 
@@ -377,24 +445,25 @@ The study should not collect all of these automatically. The evidence from the p
 
 ## 9. Study-time source discovery rule
 
-Before writing "the data cannot tell us" or abandoning an explanatory question because Database v3 lacks a field, perform this bounded check:
+Before writing "the data cannot tell us" or abandoning an explanatory question because Database v4 lacks a field, perform this bounded check:
 
 1. identify the exact missing information;
-2. check this register for an already-known source;
-3. inspect known local-but-unintegrated products if relevant;
-4. search current official/authoritative sources for the missing information;
-5. establish access, historical coverage, grain, fields and terms;
-6. estimate whether acquisition effort is proportionate to the importance of the question;
-7. choose bounded lookup, study-specific acquisition, governed integration, or deliberate non-acquisition;
-8. document the decision in the study when it materially limits the conclusion.
+2. check the primary-source-first rule and identify the authority for the concept;
+3. check this register for an already-known source;
+4. inspect known local-but-unintegrated products if relevant;
+5. search current official/authoritative sources for the missing information;
+6. establish access, historical coverage, grain, fields and terms;
+7. estimate whether acquisition effort is proportionate to the importance of the question;
+8. choose bounded lookup, study-specific acquisition/API use, governed integration, or deliberate non-acquisition;
+9. document the decision in the study when it materially limits the conclusion.
 
-The assistant should perform steps 2–6 proactively when the study reaches such a boundary.
+The assistant should perform the source-identification and verification steps proactively when the study reaches such a boundary.
 
 ---
 
 ## 10. Database-escalation rule
 
-External information does **not** automatically belong in Database v4.
+External information does **not** automatically belong in Database v4 or require Database v5.
 
 Escalate out of the study only when one of these is true:
 
@@ -414,11 +483,12 @@ This register is intentionally a living capability map.
 Update it when:
 
 - a new local source product is discovered;
-- a study identifies a useful external source worth remembering;
+- a study identifies a useful external source or API worth remembering;
 - an access route disappears or changes materially;
 - a paid source is acquired;
 - a previously study-specific source becomes a governed database input;
 - a source proves unreliable or unsuitable;
-- a new class of information becomes relevant to the research programme.
+- a new class of information becomes relevant to the research programme;
+- the accepted Inside Rails database release changes.
 
 Availability statements should include a check date where practical because websites, APIs, pricing and access conditions change.
