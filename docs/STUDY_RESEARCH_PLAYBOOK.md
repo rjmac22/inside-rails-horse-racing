@@ -1198,101 +1198,38 @@ Where a code cell changes the study population or implements a material analytic
 
 ---
 
-## 69. Interpret each analytical output before moving on
+## 69. Define the sport from authoritative jurisdiction sources before interpreting local data
 
-Do not move directly from one analytical output to the next question.
+When a study concerns the meaning, structure or official administration of racing within a jurisdiction, establish the concept from the relevant governing authority or other primary official source wherever suitable evidence exists.
 
-After each substantive analytical result:
+Do not allow a local database field, commercial source label or convenient analytical representation to define the sport merely because it is already available.
 
-1. inspect the output before writing further analysis;
-2. add a concise notebook explanation of what the result establishes;
-3. state what the result does **not** yet establish where that distinction matters;
-4. keep important denominators, sample sizes, anomalies and uncertainty visible;
-5. decide whether a chart or other visual would materially improve understanding;
-6. if a visual is useful, create the simplest appropriate visual before moving on;
-7. only then decide what analytical question follows from the evidence.
+Use the following hierarchy where practicable:
 
-Do not accumulate a sequence of unexplained tables and charts and reconstruct the narrative retrospectively at the end of the study.
+1. **authoritative conceptual evidence** — use rules, official guidance, programme material and other primary jurisdiction sources to establish what the sporting or administrative concept means;
+2. **authoritative structured data** — where the authority exposes suitable structured fixture, race, runner or result data, use it to establish how the official concept is represented in practice and to validate local analytical representations;
+3. **governed Inside Rails data** — use the accepted analytical database as the project's current representation, while treating agreement with authoritative evidence as validation rather than assuming the database is itself the authority;
+4. **secondary or commercial sources** — use where official evidence is unavailable, incomplete or unsuitable, with the weaker source boundary stated explicitly.
 
-A chart is not mandatory after every table. Use one when it makes the distribution, comparison, trend or relationship materially easier to understand. Where a small table or prose communicates the evidence better, do not create a chart merely for decoration.
+For Great Britain, the British Horseracing Authority is the default conceptual authority for BHA-governed racing. Where suitable BHA structured data exists, compare Inside Rails against that official representation rather than inferring BHA concepts from Source Version 1 or Database v4 alone.
 
-The notebook should therefore preserve the research rhythm:
+A disagreement between authoritative external evidence and Inside Rails must be investigated rather than silently resolved in favour of either source. Possible explanations include:
 
-> question -> analysis -> result -> explanation -> appropriate visual -> next question
+- a source-data error;
+- a semantic misunderstanding;
+- a transformation or governance defect;
+- different observation or publication times;
+- a programme change between stages;
+- incomplete historical coverage;
+- superficially similar fields representing different concepts.
 
-This keeps the analytical reasoning visible and helps ensure that later questions respond to the evidence rather than to a predetermined story.
+Authoritative access does **not** imply automatic ingestion into the core database. Use external official data at the smallest appropriate level:
 
----
+1. conceptual authority;
+2. bounded verification;
+3. study-specific comparison data;
+4. governed database integration only when correctness or meaningful reuse justifies it.
 
-## 70. Annotate exploratory notebooks as a durable research record
-
-Exploratory data analysis still drives the study and may eventually drive the published story. The notebook must therefore preserve enough context that a later reader can reopen it and understand what the researchers were talking about, what they were doing, and why the study changed direction.
-
-For each substantive analytical stage, use Markdown to record the research reasoning around the code and output. Where applicable, make the following explicit:
-
-- **Question** — what is being established at this point;
-- **Why this matters** — why the question is necessary for the wider study;
-- **Evidence / method** — the source, database view, population, definitions, exclusions or calculation being used;
-- **What we found** — a plain-English account of the material result, with important counts or denominators visible;
-- **Interpretation** — what the evidence reasonably supports;
-- **What this does not establish** — claims that remain unsupported or questions still unresolved;
-- **Data or definition issues** — anomalies, ambiguity, missingness, provenance questions or possible governance problems;
-- **Next question** — why the observed evidence motivates the next analytical step.
-
-These headings are a working pattern, not a requirement to repeat every heading mechanically when one or more would add no value. The requirement is that the reasoning trail remains explicit and recoverable.
-
-Preserve material dead ends, surprises and changes of direction. Do not clean the notebook so aggressively that later readers cannot tell how the evidence actually led to the eventual conclusion or publication story.
-
-Use Markdown for **research reasoning** and code comments for **implementation reasoning**. Markdown should explain what is being asked, learned and inferred; code comments should explain how the analytical step is implemented, why a safeguard exists, and what could fail.
-
-A notebook should be understandable as a research record even months later, without relying on memory or on the eventual article to reconstruct its purpose.
+The purpose of this rule is to prevent the project from reverse-engineering a sport from imperfect downstream data when the governing jurisdiction already publishes the relevant definition or official representation.
 
 ---
-
-## 71. Default to the governed course-local race time
-
-When a study displays, orders or refers to a race by time, use the governed **course-local advertised/scheduled time** by default.
-
-For Database v3 race-level work, the normal field is:
-
-`advertised_start_course_local`
-
-Present it to a human as an ordinary local clock time such as `15:05` unless the date, offset or full timestamp is materially relevant to the question.
-
-Do not use raw source `off`, UK-facing time or UTC merely because those fields are convenient or already present in a dataframe.
-
-Use another representation only when the research question specifically requires it, for example:
-
-- investigating source `off` semantics or encoding;
-- comparing UK-facing and course-local scheduling;
-- timezone or daylight-saving analysis;
-- UTC reconciliation;
-- source-lineage or debugging work.
-
-Raw `off` remains preserved source evidence and must not be mistaken for the preferred study-facing race-time display.
-
-Externally reported actual-off observations are a separate concept and must not be substituted for advertised/scheduled time unless the study explicitly asks about actual off times.
-
----
-
-## Current study-series rules
-
-Study notebooks live separately from database-construction notebooks under:
-
-`studies/`
-
-The database notebooks establish what the source means and what transformations are governed.
-
-The study notebooks use those governed foundations to investigate racing questions.
-
-The two activities should remain conceptually separate even when a study exposes a new data-governance question.
-
-Before beginning a new study, read at minimum:
-
-- `docs/STUDY_RESEARCH_PLAYBOOK.md`;
-- `docs/STUDY_DATABASE_REFERENCE.md` — the canonical accepted-database release, schema and study-facing view reference; do not guess database paths, table names, view names, grains or release state from memory;
-- `docs/STUDY_DATA_ACCESS.md` — the canonical read-only study connection and access rules;
-- the relevant existing field-governance documentation for fields used by the study;
-- `docs/STUDY_REVISIT_REGISTER.md` for any unresolved dependency or known impact relevant to the proposed work.
-
-The current database release state and study-facing interfaces must be taken from `docs/STUDY_DATABASE_REFERENCE.md` before the first analytical cell is written. A validated candidate must not be silently treated as an accepted live release, and study code must not invent or infer database paths, tables, views or schema when the reference documents them.
