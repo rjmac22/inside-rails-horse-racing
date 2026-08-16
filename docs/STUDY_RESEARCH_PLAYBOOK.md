@@ -6,6 +6,8 @@ This document records the reusable research rules, analytical standards, workflo
 
 It applies to reader-facing analytical studies rather than source-field and database-construction investigations.
 
+The proportional research-orchestration rule in Section 72 is also a general project operating rule and may be applied to source, database and feasibility investigations when it offers a materially better method.
+
 Read this document before beginning every new study.
 
 Update it when a completed study reveals a genuinely reusable lesson, mistake, safeguard or better way of working. Do not add study-specific findings that have no broader methodological value.
@@ -1272,6 +1274,92 @@ Use another representation only when the research question specifically requires
 Raw `off` remains preserved source evidence and must not be mistaken for the preferred study-facing race-time display.
 
 Externally reported actual-off observations are a separate concept and must not be substituted for advertised/scheduled time unless the study explicitly asks about actual off times.
+
+---
+
+## 72. Escalate to orchestrated research when it is the better method
+
+Do not assume every research question is best handled as one linear conversation or one analyst working through a predetermined sequence.
+
+For bounded questions with an obvious method, continue using the normal evidence-led cycle.
+
+When a question has several plausible approaches, high uncertainty, material source risk, a large search space, or an important conclusion that deserves independent challenge, consider moving up one level and treating the work as a small research programme rather than a single task.
+
+A useful default research-cell pattern is:
+
+- **Scout** — identify plausible approaches, likely data requirements, known blockers and cheap ways to test feasibility;
+- **Investigator** — pursue the most promising approach and build the substantive evidence;
+- **Adversary** — try to disprove the emerging conclusion, expose hidden assumptions, test alternative definitions and identify failure modes;
+- **Verifier** — independently check the surviving claims, calculations, provenance, reproducibility and source interpretation;
+- **Editor** — turn accepted evidence into a clear research record or publication output without strengthening the claim beyond what the evidence supports.
+
+These are roles, not a requirement for five literal agents. One person or model can perform more than one role if independence is not materially compromised.
+
+### Search broadly before spending deeply
+
+When several approaches are plausible, prefer cheap exploratory probes before committing substantial analytical, coding or external-research effort.
+
+A useful sequence is:
+
+1. define the real research question;
+2. generate several materially different approaches;
+3. run lightweight feasibility or falsification checks on each;
+4. discard approaches that fail quickly, recording the reason where reusable;
+5. concentrate deeper work on the surviving path or paths.
+
+The aim is not maximum parallelism. The aim is to avoid investing heavily in the first plausible method simply because it appeared first.
+
+### Give the research system the question, not only chores
+
+Where the problem is genuinely exploratory, state the substantive question and the evidence standard before specifying every intermediate step.
+
+Allow the research process to identify necessary sub-questions, tests and competing explanations while keeping the playbook's governance, provenance and stopping rules intact.
+
+Human direction remains responsible for:
+
+- choosing which questions are worth investigating;
+- deciding how much research effort the question merits;
+- approving material changes in scope;
+- judging whether the surviving evidence is strong enough to matter.
+
+### Require evidence packets, not confident summaries
+
+An orchestrated research pass should return enough evidence for another researcher to audit it.
+
+Where applicable preserve:
+
+- the approach tested;
+- population and source boundary;
+- commands, queries or notebook outputs used;
+- important counts and denominators;
+- assumptions and definitions;
+- failed checks and rejected explanations;
+- provenance for external evidence;
+- unresolved weaknesses;
+- what would falsify or materially weaken the conclusion.
+
+A conclusion that cannot be independently interrogated is not stronger merely because several agents participated in producing it.
+
+### Keep orchestration proportional
+
+Do not create extra agents, branches, notebooks or review steps for their own sake.
+
+Use the smallest research structure that materially improves one or more of:
+
+- coverage of plausible approaches;
+- independence of criticism;
+- speed of eliminating dead ends;
+- confidence in an important result;
+- auditability;
+- protection against source, semantic or confirmation errors.
+
+For straightforward work, the normal single-threaded analytical cycle remains preferable.
+
+For consequential, ambiguous or high-search-space questions, proactively ask:
+
+> Is there now a better way to organise the research than continuing one step at a time?
+
+If yes, propose the better structure before simply doing more of the same.
 
 ---
 
