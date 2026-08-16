@@ -1233,3 +1233,40 @@ Authoritative access does **not** imply automatic ingestion into the core databa
 The purpose of this rule is to prevent the project from reverse-engineering a sport from imperfect downstream data when the governing jurisdiction already publishes the relevant definition or official representation.
 
 ---
+
+## 70. Record substantive findings as the research happens
+
+The study notebook is the working research record. It does not need to read like a finished article, but it must preserve what the study actually established while the evidence and reasoning are still fresh.
+
+Use the practical rhythm:
+
+> question -> evidence or analysis -> inspect output -> record finding -> next question
+
+After a substantive result is established, add a short markdown finding or evidence note before moving on. Record enough to recover:
+
+- what question was tested;
+- what evidence or population was used;
+- what the result showed;
+- what the result establishes;
+- what it does **not** establish;
+- material qualifications, exceptions or unresolved points;
+- source/provenance pointers where external evidence was used;
+- the next question raised by the result where relevant.
+
+Do not leave a substantive finding only in:
+
+- chat;
+- raw cell output;
+- browser history;
+- an isolated code comment;
+- memory.
+
+Also record useful negative evidence, rejected explanations, surprising exceptions and unresolved questions when they materially narrow the interpretation or could save future work.
+
+Exploratory notebooks may therefore be repetitive or untidy. That is acceptable. Study closeout can consolidate duplicated notes, remove purely technical repair noise and improve structure, but it must preserve the material analytical path and evidence needed to understand how the conclusions were reached.
+
+Publication is a separate editorial stage. The eventual article should be rewritten from the research record rather than requiring the exploratory notebook itself to read like publishable prose.
+
+The priority during active research is **capture first, polish later**.
+
+---
