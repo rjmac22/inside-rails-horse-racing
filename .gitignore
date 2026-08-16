@@ -65,3 +65,5 @@ Thumbs.db
 # Curated project reference data
 !/data/reference/
 !/data/reference/*.csv
+
+.env.local
