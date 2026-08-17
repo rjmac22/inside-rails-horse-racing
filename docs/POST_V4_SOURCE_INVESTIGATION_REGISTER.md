@@ -14,7 +14,8 @@ Database v4 remains immutable until a separate candidate build, validation and r
 |---|---|---|---|---|
 | Notebook 26 — Great Britain race-population completeness | `notebooks/26_gb_race_population_completeness.ipynb` | `fully_closed` | Source Version 1 / Database v4 is materially incomplete for GB racing in 2020; whole fixtures are absent from SV1 rather than lost during v4 construction | use BHA official evidence to establish a trustworthy realised-race population rule before repair design |
 | Notebook 27 — BHA official-source feasibility | `notebooks/27_bha_official_source_feasibility.ipynb`; `reports/notebook_27_bha_official_source_feasibility.md` | `fully_closed_feasibility_inventory` | BHA public estate contains multiple useful official source families; no single feed/schema/database-adoption decision was authorised | historical-depth investigation completed in Notebook 28 |
-| Notebook 28 — BHA historical race-data depth | `notebooks/28_bha_historical_race_data_depth.ipynb`; `reports/notebook_28_bha_historical_race_data_depth.md`; `docs/notebooks/NOTEBOOK_28_BHA_HISTORICAL_RACE_DATA_DEPTH_CLOSEOUT.md` | `fully_closed` | fixture discovery observed around 1995; sampled fixture-detail/race-list lower edge 1999→2000; race/result resources demonstrated from 2000; fixture-search `resultsAvailable` not a completed-racing semantic contract | validate the candidate **race-level** realised-race predicate across addressable GB races 2015-present |
+| Notebook 28 — BHA historical race-data depth | `notebooks/28_bha_historical_race_data_depth.ipynb`; `reports/notebook_28_bha_historical_race_data_depth.md`; `docs/notebooks/NOTEBOOK_28_BHA_HISTORICAL_RACE_DATA_DEPTH_CLOSEOUT.md` | `fully_closed` | fixture discovery observed around 1995; sampled fixture-detail/race-list lower edge 1999→2000; race/result resources demonstrated from 2000; fixture-search `resultsAvailable` not a completed-racing semantic contract | Notebook 29: establish and contradiction-test candidate **race-level** realised-race signals before any population-wide crawl |
+| Notebook 29 — BHA race-level execution state | `notebooks/29_bha_race_execution_state.ipynb` (generated/executed by `scripts/run_notebook_29_bha_race_execution_state.py`) | `prepared_awaiting_autonomous_execution` | pending — tests race-level `abandonedReasonCode` / `winnersDetails` against dedicated result-resource presence at individual-race grain | run the bounded controls + stratified contradiction sample; audit the executed notebook; only then decide whether a population-wide Notebook 30 is justified |
 
 ## Notebook 26 — population completeness
 
@@ -74,18 +75,41 @@ Therefore the next population question must be asked at **race grain**:
 
 Fixture-level abandonment remains important for explaining whole-fixture state, but it must not automatically replace the race-level test when deciding whether one particular programmed race went ahead.
 
-The exact combination of race-level abandonment/result/winner/runner evidence has not yet been validated across the complete addressable GB population.
+The exact combination of race-level abandonment/result/winner/runner evidence has not yet been validated.
+
+## Notebook 29 — race-level execution-state semantics
+
+Notebook 29 deliberately separates **semantic rule discovery** from **population-wide validation**.
+
+Bounded question:
+
+> **What BHA race-level evidence reliably distinguishes a programmed Great Britain race that produced an official result from a programmed race that did not?**
+
+The dedicated BHA race-results resource is the validation target. Candidate signals are measured separately on the fixture-races record and the individual race-detail record:
+
+- `abandonedReasonCode == 0`;
+- non-empty `winnersDetails`;
+- the combination of those two signals.
+
+The notebook first uses controlled completed and non-realised/programme-change cases, then challenges the candidates using at most one ordinary fixture per year from 2015–2026. It also searches the sampled evidence for fixtures containing both realised and non-realised races rather than relying on fixture-level status to infer individual race state.
+
+This is intentionally **not** an all-history crawl. A candidate with zero contradictions earns only the right to be tested population-wide in a later bounded investigation.
 
 ## Current next bounded investigation
 
-Validate:
+Run and audit Notebook 29.
 
-> **Does the BHA race-level execution/result state (`abandonedReasonCode` plus official winner/result/runner evidence) provide a complete and stable realised-race predicate across all addressable Great Britain races in 2015-present?**
+If one or more race-level candidates survive the controlled and stratified contradiction tests, open a separate Notebook 30 to ask:
+
+> **Does the surviving race-level realised-race predicate remain complete and stable across all addressable Great Britain races in 2015-present?**
+
+If no candidate survives, do not scale acquisition. Investigate the contradiction classes first.
 
 Required discipline:
 
 - start from individual race objects/results, not fixture-search `resultsAvailable`;
-- include completed races and known non-realised/abandoned race cases;
+- include completed races and known non-realised/programme-change controls;
 - use fixture status only as administrative/contextual evidence;
-- test coverage and exceptions before adopting a rule;
+- distinguish race-list programme state from race-detail/result state;
+- test semantics cheaply before population-wide validation;
 - do not design Database v5 until the realised-race predicate is governed.
