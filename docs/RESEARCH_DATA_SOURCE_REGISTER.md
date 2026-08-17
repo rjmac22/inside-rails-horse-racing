@@ -56,11 +56,12 @@ Status: `accepted_database`
 
 Canonical release:
 
-`data/processed/database/releases/inside_rails_v3.sqlite3`
+`data/processed/database/releases/inside_rails_v4.sqlite3`
 
 Preferred study-facing interfaces:
 
 - `view_reconciled_race_occurrences`;
+- `view_gb_reconciled_race_occurrences_with_racecourse` for governed GB racecourse-aware race work;
 - `view_reconciled_source_runner_participations`;
 - `view_reconciled_runner_records`.
 
@@ -68,18 +69,25 @@ Current governed coverage includes, among other things:
 
 - race and runner structural identity;
 - course and jurisdiction context;
+- the accepted Great Britain racecourse/course identity layer from Study 03;
 - race type/classification and surface governance;
-- source-literal distance interpretation plus the bounded official-distance enrichments already established;
+- source-literal distance interpretation plus bounded official-distance enrichments already established;
 - carried weight;
-- starting-price arithmetic and favourite status, including the externally reconciled Almendares case;
-- advertised/scheduled time governance and the currently integrated actual-off enrichments;
-- prize semantics plus the currently integrated external prize-schedule enrichments;
+- starting-price arithmetic and favourite status, including externally reconciled cases;
+- advertised/scheduled time governance and currently integrated actual-off enrichments;
+- prize semantics plus currently integrated external prize-schedule enrichments;
 - runner counts, results and beaten-distance governance;
 - age/sex and other runner characteristics;
 - ratings semantics;
 - comments;
 - bounded horse/pedigree and participant-identity governance;
 - bounded external corrections, invalidations and supplementations.
+
+Important current limitation established by Notebook 26:
+
+> Database v4 inherits a material Great Britain race-population omission from immutable Source Version 1 in parts of 2020.
+
+Do not treat Database v4 as a complete official GB historical population merely because it is the accepted analytical release.
 
 Always check `docs/STUDY_DATABASE_REFERENCE.md` for the current accepted release and exact field/view contract before using these concepts.
 
@@ -109,28 +117,94 @@ Before a study uses any of them:
 5. profile the fields needed by the study;
 6. determine whether a bounded study-specific use is enough or whether governed integration is justified.
 
-Do not merge them with Database v3 solely because names or dates appear to match.
+Do not merge them with Database v4 solely because names or dates appear to match.
 
 ---
 
-## 3. British Horseracing Authority — official racing reference data
+## 3. British Horseracing Authority — official racing information
 
 Status: `public_external` / `manual_reference`
 
-Availability checked: **9 August 2026**.
+Availability and capability rechecked: **17 August 2026**.
 
-Official BHA resources currently include:
+### Structured fixture/race/result service
+
+The BHA public results frontend uses a structured service observed at:
+
+`https://api09.horseracing.software/bha/v1`
+
+The reusable Inside Rails client is:
+
+`src/inside_rails/bha_api.py`
+
+Demonstrated route families include:
+
+- fixture search;
+- fixture detail;
+- fixture going;
+- fixture officials;
+- fixture race lists;
+- individual race detail;
+- race entries/nominations/balloted/trans resources;
+- official race results and runner-level result material.
+
+The service is used by the current public BHA frontend. Inside Rails does **not** treat it as a formally documented permanent public API contract.
+
+A controlled 27 May 2026 pilot reconciled **34 BHA races to 34 Database v4 GB races**.
+
+### Historical depth
+
+Notebook 28 established source-family-specific historical depth rather than one start date:
+
+- fixture discovery is populated on the controlled 8 April 1995 racing date;
+- the controlled 9 April 1994 query is empty despite independent evidence of racing at Aintree that day;
+- sampled 1999 fixture-detail and fixture-race-list resources return HTTP 404;
+- sampled 2000 fixture-detail/race-list/race-detail/result/runner resources are populated;
+- the direct pre-2000 race-detail/result endpoint boundary remains unresolved because pre-2000 race references are not addressable through the public race-list chain.
+
+Do not simplify this to “the API starts in 1995” or “results start in 2000”.
+
+Governing historical-depth report:
+
+`reports/notebook_28_bha_historical_race_data_depth.md`
+
+### Completed-race semantic boundary
+
+Fixture-search `resultsAvailable=true` is **not** a safe completed-racing predicate.
+
+Notebook 28 recovered Worcester on 25 September 2020 through `resultsAvailable=true`, while fixture detail reported:
+
+- `resultsAvailable=0`;
+- `abandonedReasonCode=1`;
+- `goingText = "ABANDONED - Abandoned (72 Hours Before)"`.
+
+The fixture race list still retained one programmed race.
+
+Notebook 26 had already demonstrated that the **individual race object** exposes race-level execution/result evidence including:
+
+- `abandonedReasonCode`;
+- `winnersDetails`;
+- result runner/winner material.
+
+The current working hierarchy is therefore:
+
+> **race list = programmed race; race-level state/result = candidate realised-race evidence; fixture state = administrative context.**
+
+The exact race-level realised-race predicate is not yet governed population-wide. The next source-correctness investigation must validate the candidate race-level combination across completed and non-realised GB race cases before it can drive a population repair.
+
+Full source-use contract:
+
+`docs/BHA_STRUCTURED_SOURCE_USAGE.md`
 
 ### Results
 
-BHA publishes British racing results through its results service.
-
-Potential study uses:
+Public BHA results remain useful for:
 
 - result cross-checks;
-- fixture/race occurrence verification;
+- race occurrence verification;
 - race-level contextual verification;
-- targeted checking of source anomalies.
+- targeted checking of source anomalies;
+- official realised-race evidence, subject to the race-level validation above.
 
 Locator:
 
@@ -138,7 +212,7 @@ Locator:
 
 ### Official ratings database
 
-BHA publishes current official handicap ratings and states that the database is updated weekly on Tuesday morning. The site currently permits export of the full ratings list, weekly rating changes and latest performance figures to Excel free of charge.
+BHA publishes current official handicap ratings and states that the database is updated weekly. The site permits export of ratings information through its current public interface.
 
 Potential study uses:
 
@@ -151,36 +225,37 @@ Locator:
 
 `https://www.britishhorseracing.com/regulation/official-ratings/ratings-database/`
 
-### Horse search / breeding and performance information
+### Horse / participant / performance information
 
-BHA provides a horse search covering breeding, performance information and statistics for horses in Britain.
+Notebook 27 demonstrated or confirmed official BHA information families covering horses, ratings history, performances, training history, jockeys, trainers, championships and related participant information.
+
+Potential study uses include bounded identity checks, official-rating context and historical participant research.
+
+Do not assume a displayed current value is historical race-date truth without testing the temporal semantics of the specific resource.
+
+### Going, weather, watering and operational information
+
+Notebook 27 demonstrated fixture-going material that can include condition history, GoingStick observations, weather, watering, track associations and timetable material.
+
+Potential study use:
+
+- future going/weather investigations;
+- operational context around racecourses;
+- validation of declared conditions through time.
+
+Preserve observation time and fixture/track associations rather than flattening this to one current-going field.
+
+### Stewards and regulatory information
+
+BHA Stewards Reports and other regulatory resources can contain race/runner incidents, veterinary notes, non-runners, rail/going information, fines and enquiries.
 
 Potential study uses:
 
-- bounded horse identity checks;
-- breeding/context verification;
-- official-rating context;
-- manual verification of ambiguous source labels.
+- bounded incident verification;
+- explanations of unusual results;
+- official regulatory context.
 
-Locator:
-
-`https://www.britishhorseracing.com/racing/horses/`
-
-### BHA performance figures
-
-BHA states that it calculates a performance figure for every horse in every race and retains performance figures for each run of a horse's career.
-
-Potential study uses:
-
-- methodological comparison with source ratings;
-- contextual validation of performance trends;
-- research questions about official handicapping/performance assessment.
-
-Exact bulk accessibility must be checked when a study requires historical performance-figure data.
-
-Locator:
-
-`https://www.britishhorseracing.com/regulation/performance-figures/`
+Publication/retrieval timestamps require care; an old report's displayed “Published” date may not be the original historical publication date.
 
 ---
 
@@ -296,7 +371,7 @@ Reanalysis/model data is not direct on-course observation. For a strong claim ab
 
 Status: `verify_when_needed`
 
-Database v3 contains international racing. If a material anomaly or study question concerns a non-British jurisdiction, first look for the relevant official racing authority or racecourse operator rather than assuming a British commercial racing website is the best authority.
+Database v4 contains international racing. If a material anomaly or study question concerns a non-British jurisdiction, first look for the relevant official racing authority or racecourse operator rather than assuming a British commercial racing website is the best authority.
 
 Possible information includes:
 
@@ -377,7 +452,7 @@ The study should not collect all of these automatically. The evidence from the p
 
 ## 9. Study-time source discovery rule
 
-Before writing "the data cannot tell us" or abandoning an explanatory question because Database v3 lacks a field, perform this bounded check:
+Before writing "the data cannot tell us" or abandoning an explanatory question because Database v4 lacks a field, perform this bounded check:
 
 1. identify the exact missing information;
 2. check this register for an already-known source;
@@ -394,7 +469,7 @@ The assistant should perform steps 2–6 proactively when the study reaches such
 
 ## 10. Database-escalation rule
 
-External information does **not** automatically belong in Database v4.
+External information does **not** automatically belong in Database v4 or a future Database v5.
 
 Escalate out of the study only when one of these is true:
 
@@ -404,6 +479,8 @@ Escalate out of the study only when one of these is true:
 - reproducibility would be materially weakened if each study had to reacquire/reinterpret the same data independently.
 
 Otherwise keep the acquisition study-specific and preserve its provenance with the study outputs.
+
+A known correctness defect is not itself permission to repair the database. First establish the authoritative replacement population/rule, identity mapping and validation gate.
 
 ---
 
