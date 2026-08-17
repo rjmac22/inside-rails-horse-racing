@@ -609,6 +609,8 @@ sampled_candidates = contradiction_table(sampled_df)
 
 comparable = sampled_df.loc[sampled_df["official_result_produced"].notna()].copy()
 comparable["official_result_produced"] = comparable["official_result_produced"].astype(bool)
+realised_comparisons = int(comparable["official_result_produced"].sum())
+nonrealised_comparisons = int(len(comparable) - realised_comparisons)
 
 candidate_columns = [
     "list_abandonment_rule",
@@ -654,6 +656,8 @@ winner_disagreement_all = comparable.loc[
 
 print("Sampled race rows:", len(sampled_df))
 print("Addressable result comparisons:", len(comparable))
+print("Realised comparisons:", realised_comparisons)
+print("Non-realised comparisons:", nonrealised_comparisons)
 print("Fixtures containing both realised and non-realised races:", len(mixed_fixtures_df))
 print("Races conflicting with at least one candidate:", len(conflicts_df))
 print()
@@ -756,6 +760,8 @@ method_summary = {
     "realised_race_target": "dedicated BHA race-results resource has result rows",
     "sampled_races": int(len(sampled_df)),
     "addressable_result_comparisons": int(len(comparable)),
+    "realised_result_comparisons": realised_comparisons,
+    "nonrealised_result_comparisons": nonrealised_comparisons,
     "mixed_fixture_count": int(len(mixed_fixtures_df)),
     "race_list_detail_abandonment_disagreements": int(len(abandonment_disagreement_all)),
     "race_list_detail_winner_disagreements": int(len(winner_disagreement_all)),
@@ -779,7 +785,7 @@ for name, path in paths.items():
 
 The final conclusion is generated from the observed contradiction counts. The runner promotes the rendered Markdown into the final notebook cell.
 
-A zero-contradiction candidate is described only as **supported for population-wide validation**. It is not promoted to a governed population rule until that later validation has actually happened.
+A zero-contradiction candidate is described only as **supported for population-wide validation** if the sample contains both realised and addressable non-realised races. Without negative evidence it remains merely uncontradicted and cannot be promoted.
 """
         ),
         code(
@@ -789,10 +795,17 @@ rows = sampled_candidates.set_index("candidate").to_dict(orient="index")
 
 def candidate_sentence(key, label):
     row = rows[key]
+    if row["contradictions"] == 0 and nonrealised_comparisons == 0:
+        return (
+            f"- **{label}: not contradicted but insufficient** — 0 contradictions across "
+            f"{row['races_tested']} addressable sampled races, but no addressable "
+            "non-realised race was available to test false positives."
+        )
     if row["contradictions"] == 0:
         return (
-            f"- **{label}: supported** — 0 contradictions across "
-            f"{row['races_tested']} addressable sampled races."
+            f"- **{label}: supported for population-wide validation** — 0 contradictions across "
+            f"{row['races_tested']} addressable sampled races, including "
+            f"{nonrealised_comparisons} non-realised comparisons."
         )
     return (
         f"- **{label}: contradicted** — {row['contradictions']} contradictions "
@@ -805,7 +818,14 @@ supported = sampled_candidates.loc[
     sampled_candidates["contradictions"] == 0, "candidate"
 ].tolist()
 
-if supported:
+if nonrealised_comparisons == 0:
+    next_action = (
+        "The sample contains no addressable non-realised race with which to challenge "
+        "false positives. Do not scale acquisition. The next bounded problem is to "
+        "locate or reconstruct an official BHA race-level non-realised control that "
+        "remains addressable in the structured estate."
+    )
+elif supported:
     next_action = (
         "At least one race-level candidate survived the controlled and stratified tests. "
         "The next bounded problem is population-wide validation across all addressable "
@@ -826,6 +846,8 @@ conclusion = "\n".join(
         "",
         f"- Sampled race rows: **{len(sampled_df)}**.",
         f"- Addressable dedicated-result comparisons: **{len(comparable)}**.",
+        f"- Realised comparisons: **{realised_comparisons}**.",
+        f"- Non-realised comparisons: **{nonrealised_comparisons}**.",
         f"- Mixed realised/non-realised fixtures observed: **{len(mixed_fixtures_df)}**.",
         f"- Race-list/detail abandonment disagreements: **{len(abandonment_disagreement_all)}**.",
         f"- Race-list/detail winner-count disagreements: **{len(winner_disagreement_all)}**.",
