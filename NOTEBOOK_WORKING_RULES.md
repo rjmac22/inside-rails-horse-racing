@@ -269,3 +269,46 @@ The assistant must not rush ahead, dump large blocks of code, provide uncommente
 The user may override any procedural rule for a specific step.
 
 A one-off override does not permanently change these rules unless the user explicitly says that it does.
+
+## 25. Autonomous Governed Notebook Mode
+
+The user has permanently authorised an autonomous notebook workflow for bounded Inside Rails research problems. When the assistant can define the investigation safely in advance, this section takes precedence over the interactive execution requirements in Sections 2, 19 and 23.
+
+The purpose is to preserve the reasoning and evidential chain **inside the notebook** while avoiding use of the user as a manual cell-by-cell execution loop.
+
+### Default autonomous workflow
+
+For each bounded problem, the assistant should:
+
+1. state one precise research/correctness question;
+2. inspect the relevant repository docs, prior notebooks, reusable modules and governed evidence itself;
+3. design the smallest investigation capable of answering the question;
+4. generate a self-contained notebook containing the method, assumptions, controls, evidence hierarchy, limitations and decision logic in Markdown;
+5. ensure every code cell is commented for a future reader, including what it reads, requests, derives and writes;
+6. reuse governed project modules rather than reimplement stable plumbing in notebook cells;
+7. cache all external requests and preserve raw/derived/provenance states under the normal caching rules;
+8. include positive controls, contradiction tests and fail-closed handling before scaling the investigation;
+9. compile-check all generated Python code and round-trip the notebook before any live external requests are made;
+10. provide an autonomous local runner when live access or the user's local data/environment is required;
+11. have the runner save partial notebook outputs if execution fails rather than discard debugging evidence;
+12. derive the final notebook conclusion from the executed evidence rather than pre-writing the expected answer;
+13. ask the user only to run the finished bounded investigation, normally with one command;
+14. after execution, inspect the committed/pushed executed notebook directly, audit whether its conclusion is supported, and repair/refine it if necessary;
+15. perform the normal notebook closeout only after the executed evidence has passed that audit.
+
+### Scope discipline
+
+Autonomous mode does not authorise an indiscriminate bulk crawl merely because the runner can perform one. Begin with the cheapest useful controls and contradiction tests. Escalate to source-wide or population-wide validation only when the earlier notebook has established the rule that the larger validation is meant to test.
+
+When one problem reveals a materially different next question, close the answered notebook and open a new bounded notebook rather than allowing one notebook to grow indefinitely.
+
+### When to use interactive one-cell mode
+
+Return to the one-cell workflow when:
+
+- the next method genuinely depends on human interpretation of an unforeseen result;
+- external ambiguity cannot be handled safely by explicit classification logic;
+- a write/destructive decision needs separate approval;
+- automation would hide a material conceptual choice rather than merely execute an already governed method.
+
+Interactive mode remains available as an investigative tool; it is no longer the default execution mechanism for a bounded problem that can be specified safely in advance.
