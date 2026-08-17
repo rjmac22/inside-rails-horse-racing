@@ -184,6 +184,14 @@ Preserve raw source labels, raw dates and times, raw API queries and responses, 
 
 Raw, normalized, inferred, and manually reviewed fields must remain conceptually separate.
 
+### `raw_off` usage boundary
+
+Source Version 1 `off`, and the database field `raw_off` that preserves that source value, may be used for technical checks, database validation, provenance, source identity, record reconciliation and other non-analytical integrity work.
+
+They must not be used as analytical variables or as evidence for substantive racing conclusions. If a study needs a race-time concept, it must use a separately governed field whose semantics are appropriate to the question, such as an authorised scheduled/advertised or actual-off concept.
+
+Using `raw_off` as part of an authorised source identity or technical reconciliation key does not make it an analytically governed race-time field.
+
 ## 17. Validation Before Saving
 
 Before writing a reusable reference file:
