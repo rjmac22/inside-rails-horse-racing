@@ -4,6 +4,10 @@
 
 This register records the concise closure state of reader-facing studies. Detailed evidence remains in the study notebooks, handovers/closeout documents and database release records.
 
+Source/correctness investigations opened after Database v4 are tracked separately in:
+
+`docs/POST_V4_SOURCE_INVESTIGATION_REGISTER.md`
+
 ## Status vocabulary
 
 - `in_progress` — analytical work is active;
@@ -19,7 +23,7 @@ This register records the concise closure state of reader-facing studies. Detail
 | Great Britain 01 — Governance and structure | `studies/jurisdictions/great_britain/01_governance_and_structure.ipynb` | established programme/calendar structure; course-date meeting remained explicitly analytical | `fully_closed` | completed |
 | Great Britain 02 — Types of British racing | `studies/jurisdictions/great_britain/02_types_of_british_racing.ipynb`; `docs/studies/GB_02_TYPES_OF_BRITISH_RACING_HANDOVER.md` | authoritative Flat/Jump conceptual structure; governed broad race-type analysis | `fully_closed` | completed |
 | Great Britain 03 — British racecourse/course identity | `studies/jurisdictions/great_britain/03_british_racecourse_and_course_identity.ipynb` plus 61 racecourse notebooks | 61 racecourse identities, 65 source mappings, 86 stable course/track identities; integrated into accepted Database v4 | `fully_closed` | completed |
-| Great Britain 04 — Race meetings and fixtures | `studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`; `docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md` | fixture/meeting semantics established; source racecourse-date group retained as analytical only; no fixture entity implemented | `fully_closed` | audit GB race-population completeness |
+| Great Britain 04 — Race meetings and fixtures | `studies/jurisdictions/great_britain/04_race_meetings_and_fixtures.ipynb`; `docs/studies/GB_04_RACE_MEETINGS_AND_FIXTURES_CLOSEOUT.md` | fixture/meeting semantics established; source racecourse-date group retained as analytical only; no fixture entity implemented | `fully_closed` | completed; downstream population audit moved to post-v4 source investigations |
 
 ## Great Britain Study 01
 
@@ -121,10 +125,18 @@ Fresh-kernel execution passed on 12 August 2026.
 
 Six Study 04 BHA evidence claims are governed in the manual-verification register. The focused manual-verification test passed with 11 tests and the independent register validator passed with 93 governed rows.
 
-## Next bounded investigation
+Study 04's downstream race-population audit has now been completed as Notebook 26 and is governed in the post-v4 source-investigation register rather than this reader-study register.
 
-Audit Great Britain race-population completeness:
+## Current programme boundary
 
-**Are any Great Britain races that officially produced results missing from Source Version 1 / Database v4?**
+Great Britain Study 05 is not advanced through a population assumption while the official realised-race population rule remains under source validation.
 
-Use authoritative completed-race evidence as the external population reference. Do not mistake a scheduled but abandoned or cancelled fixture for a missing source race.
+The current source/correctness action is governed by:
+
+`docs/POST_V4_SOURCE_INVESTIGATION_REGISTER.md`
+
+Next bounded question:
+
+> **Does the BHA race-level execution/result state (`abandonedReasonCode` plus official winner/result/runner evidence) provide a complete and stable realised-race predicate across all addressable Great Britain races in 2015-present?**
+
+This is deliberately a race-level source-validation question. Fixture status is administrative context; fixture race lists are programme evidence; fixture-search `resultsAvailable=true` is not the completed-racing predicate.
