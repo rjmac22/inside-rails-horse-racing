@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document records the source-capability and semantic boundaries established by Notebooks 26–28 for the structured service used by the British Horseracing Authority public frontend.
+This document records the source-capability and semantic boundaries established by Notebooks 26–29 for the structured service used by the British Horseracing Authority public frontend.
 
 It is a source-usage contract for future Inside Rails research. It is **not** a Database v5 design, an API-stability guarantee, or permission to treat every returned field as a governed racing concept.
 
@@ -48,17 +48,15 @@ The direct pre-2000 endpoint boundary is **unresolved** because pre-2000 fixture
 
 Do not rewrite this as “results start in 2000”.
 
-## `resultsAvailable` is not a governed completed-racing flag
-
-The fixture-search parameter/field name must not be interpreted naively.
+## Fixture-search `resultsAvailable` is not a completed-racing flag
 
 Notebook 28 established the decisive fixture-level counterexample at Worcester on 25 September 2020:
 
-- the Worcester fixture was recovered through a fixture search using `resultsAvailable=true`;
+- the Worcester fixture was recoverable through a fixture search using `resultsAvailable=true`;
 - fixture detail returned HTTP 200 with `resultsAvailable=0`;
 - fixture detail returned `abandonedReasonCode=1`;
 - fixture detail returned `goingText = "ABANDONED - Abandoned (72 Hours Before)"`;
-- the fixture race-list resource returned HTTP 200 and retained one programmed race.
+- the fixture-races resource returned HTTP 200 and retained one programmed race.
 
 Therefore:
 
@@ -66,23 +64,46 @@ Therefore:
 
 The query parameter is a transport/query behaviour observed in the BHA frontend estate, not an Inside Rails semantic contract.
 
-## Race-level execution evidence is the relevant next layer
+## Race-level execution semantics established by Notebook 29
 
-Notebook 26 had already established an important distinction that must not be lost when using the Worcester fixture example.
+Notebook 29 followed the Worcester programme evidence to individual-race grain.
 
-The **individual BHA race-detail object** exposes race-level execution/result evidence, including:
+The retained programmed race was addressable as:
 
-- `abandonedReasonCode`;
-- `winnersDetails`;
-- result-runner/result-winner group material inspected in the controlled race-detail work.
+`2020:8816:0`
 
-The completed 27 May 2026 34-race pilot used those individual race objects; the inspected completed races carried zero race-level abandonment code and populated winner/result evidence.
+Its evidence was:
 
-This means the correct conceptual hierarchy is not “fixture status decides whether every listed race ran”. Instead:
+- fixture-race-list `abandonedReasonCode = 0`;
+- fixture-race-list `winnersDetails` empty;
+- race-detail `abandonedReasonCode = 0`;
+- race-detail `resultsAvailable = 0`;
+- race-detail `winnersDetails` absent/not useful;
+- dedicated race-results resource HTTP 404.
 
-> **race list = programmed race; race-level state/result = candidate evidence that the individual race was realised; fixture state = administrative context.**
+This proves:
 
-The exact race-level realised-race predicate is **not yet governed population-wide**. A later validation must establish how race-level `abandonedReasonCode`, result/winner material and runner results behave across completed, abandoned and other non-realised race cases before one combination is adopted as a universal rule.
+> **race-level `abandonedReasonCode == 0` is not a realised-race predicate.**
+
+A zero code means only that the race record does not carry a non-zero abandonment reason in that field. It does not prove that the programmed race produced an official result.
+
+### Candidate signals surviving Notebook 29
+
+Against 34 realised controls plus the Worcester non-realised control:
+
+- fixture-race-list `winnersDetails` non-empty: **0 contradictions**;
+- race-detail `resultsAvailable == 1`: **0 contradictions**;
+- fixture-race-list `abandonedReasonCode == 0`: **1 false-positive**;
+- race-detail `abandonedReasonCode == 0`: **1 false-positive**;
+- race-detail `winnersDetails` non-empty: **34 false-negatives**.
+
+The smallest promising operational candidate is therefore:
+
+> **non-empty `winnersDetails` on the fixture-races record**
+
+Race-detail `resultsAvailable == 1` is a useful corroborating candidate, but it requires an additional request for each race.
+
+Neither candidate is yet authorised as a universal historical predicate. Notebook 30 must validate population-wide behaviour across the exact Source Version 1 date span before that decision is made.
 
 ## Programme state, race state and realised racing are separate
 
@@ -90,35 +111,47 @@ Future work must preserve at least these distinctions:
 
 1. **fixture discovery/programme evidence** — the fixture appears in the BHA fixture surface;
 2. **fixture administrative state** — fixture-level abandonment/status/detail evidence;
-3. **race programme evidence** — an individual race appears in the fixture race-list resource;
-4. **race-level execution state** — the individual race object carries race-specific state such as `abandonedReasonCode` and result/winner metadata;
-5. **official result evidence** — the individual race/result resources contain official result material;
+3. **race programme evidence** — an individual race appears in the fixture-races resource;
+4. **race-level state** — fields attached to the individual race record, which must be interpreted by resource family;
+5. **official result evidence** — the dedicated race-results resource contains official result rows;
 6. **runner-level result evidence** — official result runner rows are present.
 
-A programmed race can remain visible even when its fixture was abandoned. Race-list presence alone therefore does not prove that a race took place. Conversely, fixture-level status should not be substituted for the race-level evidence when the question is whether one particular programmed race went ahead.
+A programmed race can remain visible even when its fixture was abandoned. Race-list presence alone therefore does not prove that a race took place. Conversely, fixture-level status should not be substituted for the race-level evidence when the question is whether one particular programmed race produced an official result.
+
+## Resource-family warning
+
+The same apparent concept can behave differently on different BHA resources.
+
+Notebook 29 demonstrated this directly for `winnersDetails`:
+
+- on the **fixture-races** record, non-empty `winnersDetails` agreed with the 34 realised controls and was empty for Worcester;
+- on **race detail**, `winnersDetails` was absent/not useful on the 34 realised controls and therefore must not be used as a completed-race signal.
+
+Field name alone is not a semantic contract. Always bind an interpretation to the exact resource family that was validated.
 
 ## Population work
 
 For race-population completeness or reconstruction:
 
 - do not use fixture discovery alone as the completed-race denominator;
-- do not use `resultsAvailable=true` as a completed-racing predicate;
-- start from the **individual race object and its official result evidence** when deciding whether a programmed race was realised;
-- treat race-level `abandonedReasonCode`, winner/result material and runner results as the candidate execution evidence to be validated population-wide;
-- use fixture detail/status as administrative context, especially for whole-fixture abandonment, rather than automatically using it as the primary race-level execution decision;
-- use race-list evidence to establish what was programmed, not what necessarily happened;
+- do not use fixture-search `resultsAvailable=true` as a completed-racing predicate;
+- do not use race-level `abandonedReasonCode == 0` as a completed-racing predicate;
+- use fixture-races as programme evidence and preserve every programmed race before classification;
+- treat fixture-race-list non-empty `winnersDetails` as the **candidate** low-cost realised-race signal pending Notebook 30 validation;
+- use race-detail `resultsAvailable` and the dedicated race-results endpoint to challenge candidate-negative, anomalous and sampled candidate-positive rows;
+- treat race-detail `winnersDetails` as **not authorised** for result-presence classification;
 - preserve BHA fixture/race identifiers as external provenance until a separate identity-governance decision is made;
 - test continuity for the exact period and source family required rather than assuming that a populated older and newer sample proves complete history between them.
 
 ## Database consequence
 
-Notebook 28 authorises **no Database v5 change**.
+Notebooks 28–29 authorise **no Database v5 change**.
 
 Database v4 remains the accepted immutable analytical release. The findings justify source-governed future acquisition/reconciliation work, not automatic import.
 
 If a later investigation proposes a database population repair or new official-source layer, it must separately establish:
 
-- the exact race-level completed/realised predicate;
+- the final realised-race population predicate;
 - historical coverage and continuity over the required period;
 - identity/reconciliation rules;
 - update behaviour;
@@ -128,21 +161,23 @@ If a later investigation proposes a database population repair or new official-s
 
 ## Provenance
 
-Primary historical-depth investigation:
+Historical-depth investigation:
 
 `notebooks/28_bha_historical_race_data_depth.ipynb`
 
-The race-level execution fields were already inspected in:
+Race-level execution semantics:
 
-`notebooks/26_gb_race_population_completeness.ipynb`
+`notebooks/29_bha_race_execution_state.ipynb`
 
-Reader report:
+Reports:
 
-`reports/notebook_28_bha_historical_race_data_depth.md`
+- `reports/notebook_28_bha_historical_race_data_depth.md`
+- `reports/notebook_29_bha_race_execution_state.md`
 
-Closeout:
+Closeouts:
 
-`docs/notebooks/NOTEBOOK_28_BHA_HISTORICAL_RACE_DATA_DEPTH_CLOSEOUT.md`
+- `docs/notebooks/NOTEBOOK_28_BHA_HISTORICAL_RACE_DATA_DEPTH_CLOSEOUT.md`
+- `docs/notebooks/NOTEBOOK_29_BHA_RACE_EXECUTION_STATE_CLOSEOUT.md`
 
 External controls used for the bounded 1994 and 2020 context are preserved in:
 
