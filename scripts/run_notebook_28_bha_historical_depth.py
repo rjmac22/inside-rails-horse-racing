@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import runpy
 import shutil
@@ -9,10 +10,36 @@ import nbformat
 from nbclient import NotebookClient
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = REPO_ROOT / "src"
 BUILDER = REPO_ROOT / "scripts" / "build_notebook_28_bha_historical_depth.py"
 NOTEBOOK = REPO_ROOT / "notebooks" / "28_bha_historical_race_data_depth.ipynb"
 CACHE_DIR = REPO_ROOT / "data" / "cache" / "bha_historical_race_data_depth"
 BACKUP = CACHE_DIR / "notebook_28_pre_autonomous_backup.ipynb"
+
+
+def _prepare_repo_pythonpath() -> None:
+    """Expose this src-layout repository to both the runner and spawned kernel.
+
+    Pytest already gets ``src`` from ``pyproject.toml``. A standalone Jupyter kernel
+    does not inherit pytest's pythonpath setting, so Notebook 28 needs the same repo
+    package root supplied explicitly before nbclient launches the kernel.
+    """
+    src_text = str(SRC_DIR)
+
+    if src_text not in sys.path:
+        sys.path.insert(0, src_text)
+
+    existing = os.environ.get("PYTHONPATH", "")
+    existing_parts = [part for part in existing.split(os.pathsep) if part]
+    if src_text not in existing_parts:
+        os.environ["PYTHONPATH"] = os.pathsep.join([src_text, *existing_parts])
+
+    # Parent-process preflight: fail before notebook execution if repository imports
+    # are still not resolvable for any unexpected environment reason.
+    from inside_rails.bha_api import ACCESS_PROFILE
+
+    print(f"Repository src path: {SRC_DIR}")
+    print(f"BHA client import preflight: PASS ({ACCESS_PROFILE})")
 
 
 def _build_checked_notebook():
@@ -105,6 +132,8 @@ def _promote_generated_conclusion(notebook) -> None:
 
 
 def main() -> None:
+    _prepare_repo_pythonpath()
+
     notebook = _build_checked_notebook()
     _write_checked_notebook(notebook)
 
