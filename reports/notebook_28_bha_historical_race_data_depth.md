@@ -12,7 +12,7 @@ The current fixture-search surface is demonstrably populated on a controlled Bri
 
 A second, more important semantic finding is that the fixture-search `resultsAvailable` parameter must **not** be treated as a completed-racing flag. An abandoned Worcester fixture on 25 September 2020 was recovered through a `resultsAvailable=true` fixture query even though its own fixture detail reported `resultsAvailable=0`, `abandonedReasonCode=1` and `ABANDONED - Abandoned (72 Hours Before)`. Its race-list resource still retained one programmed race.
 
-Therefore fixture discovery, administrative state, programmed races and actually realised official results must remain separate evidence layers.
+Notebook 26 had already inspected the **individual race object**, where the BHA exposes race-level `abandonedReasonCode`, `winnersDetails` and result-group material. That makes race-level state/result evidence—not fixture status—the correct candidate layer for deciding whether one particular programmed race went ahead. Fixture state remains administrative context, especially where a whole fixture was abandoned.
 
 No Database v5 design or import decision follows automatically from this investigation.
 
@@ -77,7 +77,7 @@ The apparent gap was therefore **not demonstrated as a historical archive hole**
 
 ## `resultsAvailable` semantic trap
 
-The decisive source-internal counterexample is Worcester on 25 September 2020.
+The decisive fixture-level counterexample is Worcester on 25 September 2020.
 
 The fixture was recovered through `resultsAvailable=true`, but fixture detail returned:
 
@@ -96,6 +96,24 @@ Therefore:
 
 This is a transport/query behaviour, not a governed racing concept.
 
+## Race-level execution state
+
+For the question **“did this individual programmed race actually go ahead?”**, fixture-level abandonment is not the most precise source layer.
+
+Notebook 26's controlled individual-race inspection exposed race-level fields including:
+
+- `abandonedReasonCode`;
+- `winnersDetails`;
+- result-runner/result-winner group material.
+
+The completed 27 May 2026 34-race pilot inspected individual race objects and found zero race-level abandonment codes with populated winner/result evidence across the completed sample.
+
+The correct working hierarchy is therefore:
+
+> **race list = programmed race; race-level state/result = candidate evidence that the race was realised; fixture state = administrative context.**
+
+This does **not** yet authorise one universal race-level predicate. The candidate combination of race-level abandonment state plus winner/result/runner evidence still needs population-wide validation across completed and non-realised GB races.
+
 ## Interpretation
 
 The BHA structured estate should be treated as a set of related source families rather than one homogeneous historical feed.
@@ -105,10 +123,11 @@ At minimum, future race-population work must distinguish:
 1. fixture discovery/programme evidence;
 2. fixture administrative/status evidence;
 3. race-programme evidence;
-4. realised official result evidence;
-5. runner-level result evidence.
+4. race-level execution state;
+5. official result evidence;
+6. runner-level result evidence.
 
-The existence of an object at an earlier layer does not prove the existence or meaning of a later one.
+The existence of an object at an earlier layer does not prove the existence or meaning of a later one, and a fixture-level state should not automatically be substituted for an individual race-level state.
 
 ## Confidence
 
@@ -118,7 +137,8 @@ The existence of an object at an earlier layer does not prove the existence or m
 - sampled 1999 fixture-detail and fixture-race-list resources return direct HTTP 404;
 - sampled 2000 resources are populated through runner-level result data;
 - `resultsAvailable=true` cannot safely be interpreted as “fixture produced results”;
-- programmed race material can survive for an abandoned fixture.
+- programmed race material can survive for an abandoned fixture;
+- the BHA individual race object exposes race-level abandonment/result evidence suitable for targeted execution-state testing.
 
 ### Bounded / unresolved
 
@@ -126,6 +146,7 @@ The existence of an object at an earlier layer does not prove the existence or m
 - the exact first date of fixture-detail/race-list coverage is not established beyond the sampled 1999→2000 split;
 - the direct pre-2000 boundary of race-detail/results endpoints is unresolved because pre-2000 race references are not addressable through the surviving public chain;
 - complete continuity of every resource family across every year has not been proved;
+- the exact population-wide race-level predicate for “realised race” is not yet validated;
 - the observed service is not treated as a formally documented stable API contract.
 
 ## Database consequence
@@ -138,14 +159,14 @@ The durable consequence is the source-usage contract in `docs/BHA_STRUCTURED_SOU
 
 ## Practical implication
 
-The BHA structured service is materially more useful than Source Version 1 for official British source validation, but it cannot be used by simply downloading fixture rows and treating them as completed races.
+The BHA structured service is materially more useful than Source Version 1 for official British source validation, but it cannot be used by simply downloading fixture/race-list rows and treating them as completed races.
 
-For a completed-race population, official result evidence must be the realised-racing signal; fixture/race-list/admin data should explain scheduling and abandonment states around it.
+For an individual programmed race, the **race-level object/result state is the candidate realised-racing signal**. Fixture state should explain administrative context around it, not automatically decide every race's execution state.
 
 ## Next action
 
-The next bounded source question should be:
+The next bounded source question should now be framed as a validation problem rather than a discovery problem:
 
-> **What is the smallest reliable BHA evidence rule for identifying every actually run Great Britain race in the 2015-present period, despite fixture-search `resultsAvailable` semantics?**
+> **Does the BHA race-level execution/result state (`abandonedReasonCode` plus official winner/result/runner evidence) provide a complete and stable realised-race predicate across all addressable Great Britain races in 2015-present?**
 
-This should establish a completed-race population rule before any Database v5 design or repair is attempted.
+Validate that candidate rule across completed races, abandoned/non-realised race cases and whole-fixture abandonment before any Database v5 population repair or design is attempted.
