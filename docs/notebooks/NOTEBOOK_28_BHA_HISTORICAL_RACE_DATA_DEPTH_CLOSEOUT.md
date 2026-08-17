@@ -32,11 +32,16 @@ The investigation established:
 4. sampled 2000 fixture-detail, race-list, race-detail, official-result and runner-level resources are populated;
 5. the direct pre-2000 boundary for race-detail/results endpoints remains unresolved because pre-2000 races are not addressable through the surviving public fixture-race-list chain;
 6. the apparent 2022–2025 hole from the first pass was not reproduced on known racing dates and is not accepted as an archive gap;
-7. fixture-search `resultsAvailable=true` is **not** a safe completed-racing predicate.
+7. fixture-search `resultsAvailable=true` is **not** a safe completed-racing predicate;
+8. the BHA individual race object exposes race-level execution/result evidence and is the more appropriate candidate layer for deciding whether one programmed race went ahead.
 
-The decisive semantic counterexample is Worcester on 25 September 2020. The fixture was recovered through `resultsAvailable=true`, while its own detail reported `resultsAvailable=0`, `abandonedReasonCode=1` and `ABANDONED - Abandoned (72 Hours Before)`. The race-list resource still retained one programmed race.
+The Worcester 25 September 2020 example proves the fixture/programme distinction: the fixture was recovered through `resultsAvailable=true`, while its own detail reported `resultsAvailable=0`, `abandonedReasonCode=1` and `ABANDONED - Abandoned (72 Hours Before)`. The race-list resource still retained one programmed race.
 
-Therefore fixture discovery, fixture administrative state, race programme, realised official result and runner-level result are separate evidence states.
+Notebook 26 had already inspected individual race objects carrying race-level `abandonedReasonCode`, `winnersDetails` and result-group material. Therefore the correct hierarchy is:
+
+> **race list = programmed race; race-level state/result = candidate evidence that the individual race was realised; fixture state = administrative context.**
+
+The exact race-level realised-race predicate remains to be validated population-wide; Notebook 28 does not invent one from field names alone.
 
 ## Confidence and unresolved limits
 
@@ -46,7 +51,8 @@ Therefore fixture discovery, fixture administrative state, race programme, reali
 - the sampled 1999→2000 fixture-detail/race-list split is real;
 - populated result/runner resources are demonstrated from sampled 2000 races;
 - `resultsAvailable=true` does not mean “this fixture produced results”;
-- race-list presence does not prove that a race took place.
+- race-list presence does not prove that a race took place;
+- individual BHA race objects expose race-level abandonment and official-result evidence relevant to execution state.
 
 ### Explicitly unresolved
 
@@ -54,9 +60,10 @@ Therefore fixture discovery, fixture administrative state, race programme, reali
 - exact first fixture-detail/race-list date within the 1999→2000 transition;
 - direct pre-2000 race-detail/result endpoint boundary;
 - complete continuity of every resource family across every historical period;
+- the exact population-wide race-level predicate for a realised race;
 - any formal stability guarantee for the observed public frontend service.
 
-These are not blockers for the stated Notebook 28 question.
+These are not blockers for the stated Notebook 28 historical-depth question.
 
 ## Raw evidence and lineage
 
@@ -80,6 +87,10 @@ Derived local closeout artifacts include:
 - `historical_depth_query_mode_refinement.json`.
 
 They remain local cache evidence rather than database inputs.
+
+Race-level execution/result field inspection is also preserved in:
+
+`notebooks/26_gb_race_population_completeness.ipynb`
 
 ## Manual / external verification decision
 
@@ -119,7 +130,9 @@ Autonomous Notebook 28 execution completed successfully on 17 August 2026 after 
 
 The targeted refinement script also completed successfully and rewrote the notebook with the audited conclusion.
 
-No new database transformation, governed parser, source-wide classification rule or database reference loader was created by Notebook 28. A new source-wide validator is therefore **not applicable** to this closeout.
+No new database transformation, governed parser, source-wide classification rule or database reference loader was created by Notebook 28. A new source-wide validator is therefore **not applicable** to this historical-depth closeout.
+
+The **next** bounded investigation is specifically a population-wide validator of the candidate race-level realised-race semantics. That validation is not smuggled into Notebook 28's closure.
 
 The specialist external-control CSV is documentary provenance only; it is not loaded into Database v4 and does not authorise a transformation.
 
@@ -154,11 +167,12 @@ The report records the conclusion, evidence, confidence, limitations, database c
 ## Lessons learned
 
 1. **Do not infer semantics from an API parameter name.** `resultsAvailable=true` can return an abandoned fixture whose detail says `resultsAvailable=0`.
-2. **Historical depth is a source-family question, not one date.** Fixture discovery, fixture detail, race lists and results have different observed boundaries.
-3. **`not_addressable` is not the same as endpoint absence.** A downstream endpoint cannot be assigned a 404/start boundary when the upstream public chain supplies no identifier with which to test it.
-4. **Zero-result historical probes need positive controls.** The apparent 2022–2025 gap disappeared when independently known racing dates were tested.
-5. **Automation should fail closed and then be audited.** The first generated conclusion over-compressed direct 404s and upstream non-addressability; the audit refinement corrected the wording before closeout.
-6. **Do not build a database because an API exists.** Establish source semantics, continuity and the minimum evidence rule first.
+2. **Use the correct grain for the question.** Fixture state is administrative context; whether one programmed race went ahead should be tested at the individual race/result layer.
+3. **Historical depth is a source-family question, not one date.** Fixture discovery, fixture detail, race lists and results have different observed boundaries.
+4. **`not_addressable` is not the same as endpoint absence.** A downstream endpoint cannot be assigned a 404/start boundary when the upstream public chain supplies no identifier with which to test it.
+5. **Zero-result historical probes need positive controls.** The apparent 2022–2025 gap disappeared when independently known racing dates were tested.
+6. **Automation should fail closed and then be audited.** The first generated conclusion over-compressed direct 404s and upstream non-addressability; the audit refinement corrected the wording before closeout.
+7. **Do not build a database because an API exists.** Establish source semantics, continuity and the minimum evidence rule first.
 
 ## Closeout checklist
 
@@ -169,18 +183,18 @@ The report records the conclusion, evidence, confidence, limitations, database c
 | Persisted evidence | complete | committed executed notebook; cached request/derived evidence locally retained |
 | Reusable code | complete | `src/inside_rails/bha_api.py` |
 | Focused tests | complete | 5 BHA client tests passed |
-| Independent source-wide validator | not applicable | no source-wide transformation/classification or DB integration created |
+| Independent source-wide validator | not applicable to historical-depth question | no source-wide transformation/classification or DB integration created |
 | Database integration consequence | complete | no DB change; usage contract in `docs/BHA_STRUCTURED_SOURCE_USAGE.md` |
 | Manual-verification decision | complete | `specialist_reference` |
 | Reader report | complete | Notebook 28 report |
 | Lessons learned | complete | this closeout record |
-| Audit/status records | complete | post-v4 investigation register + README/project plan updates |
+| Audit/status records | complete when branch status-doc update lands | retrospective audit + README/project plan/source register |
 | Database v5 decision | explicitly out of scope | no candidate or schema design authorised |
 
 ## Next bounded question
 
-Before any Database v5 population repair is designed, establish:
+Before any Database v5 population repair is designed, validate the race-level candidate directly:
 
-> **What is the smallest reliable BHA evidence rule for identifying every actually run Great Britain race in the 2015-present period, despite fixture-search `resultsAvailable` semantics?**
+> **Does the BHA race-level execution/result state (`abandonedReasonCode` plus official winner/result/runner evidence) provide a complete and stable realised-race predicate across all addressable Great Britain races in 2015-present?**
 
-The next investigation should use result evidence as the realised-racing signal and fixture/admin/race-list evidence as explanatory programme state. It should not assume that fixture-search filtering already provides the completed-race population.
+Use fixture administrative state as context and race-list material as programme evidence. Do not substitute either for individual race-level execution evidence when the question is whether one particular race went ahead.
