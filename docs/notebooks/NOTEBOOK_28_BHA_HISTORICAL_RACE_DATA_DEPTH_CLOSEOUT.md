@@ -187,8 +187,8 @@ The report records the conclusion, evidence, confidence, limitations, database c
 | Database integration consequence | complete | no DB change; usage contract in `docs/BHA_STRUCTURED_SOURCE_USAGE.md` |
 | Manual-verification decision | complete | `specialist_reference` |
 | Reader report | complete | Notebook 28 report |
-| Lessons learned | complete | this closeout record |
-| Audit/status records | complete when branch status-doc update lands | retrospective audit + README/project plan/source register |
+| Lessons learned | complete | this closeout record + permanent source-use contract |
+| Audit/status records | complete | `docs/POST_V4_SOURCE_INVESTIGATION_REGISTER.md`; `docs/STUDY_CLOSEOUT_REGISTER.md`; `README.md`; `docs/PROJECT_PLAN.md`; `docs/RESEARCH_DATA_SOURCE_REGISTER.md` |
 | Database v5 decision | explicitly out of scope | no candidate or schema design authorised |
 
 ## Next bounded question
