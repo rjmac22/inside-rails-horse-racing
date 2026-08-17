@@ -228,7 +228,61 @@ For realised source analysis, use the explicitly descriptive **source racecourse
 
 No fixture, meeting or session entity was added to Database v4.
 
-Study 04 also identified a more valuable use for BHA fixture/results evidence: an external completeness audit of the Great Britain race population.
+## Post-v4 source investigations
+
+Status register:
+
+`docs/POST_V4_SOURCE_INVESTIGATION_REGISTER.md`
+
+### Notebook 26 — Great Britain race-population completeness
+
+**Status: fully closed.**
+
+Notebook:
+
+`notebooks/26_gb_race_population_completeness.ipynb`
+
+The audit proved that Source Version 1 / Database v4 is materially incomplete for Great Britain in 2020. The defect is already present in immutable Source Version 1; Database v4 inherited it.
+
+The missing pattern is dominated by **whole missing fixtures**, not races selectively disappearing from otherwise retained fixtures. Database v4 has not been rewritten to hide the defect.
+
+### Notebook 27 — BHA official-source feasibility
+
+**Status: feasibility inventory closed.**
+
+Notebook/report:
+
+- `notebooks/27_bha_official_source_feasibility.ipynb`;
+- `reports/notebook_27_bha_official_source_feasibility.md`.
+
+The BHA public estate exposes multiple official source families covering fixture/race/results information, going/weather/watering, officials, participant/ratings histories, Stewards material and statistical publications. It is not treated as one homogeneous replacement feed and no Database v5 adoption decision was made.
+
+### Notebook 28 — BHA historical race-data depth
+
+**Status: fully closed — archival construction record.**
+
+Evidence/report/closeout:
+
+- `notebooks/28_bha_historical_race_data_depth.ipynb`;
+- `reports/notebook_28_bha_historical_race_data_depth.md`;
+- `docs/notebooks/NOTEBOOK_28_BHA_HISTORICAL_RACE_DATA_DEPTH_CLOSEOUT.md`.
+
+Notebook 28 established:
+
+- fixture discovery observed on a controlled 1995 racing date, with a controlled 1994 racing date empty;
+- a sampled fixture-detail and fixture-race-list lower-edge split between 1999 and 2000;
+- race-detail/result/runner resources demonstrated from sampled 2000 races without claiming a direct pre-2000 endpoint boundary;
+- fixture-search `resultsAvailable=true` is not a safe completed-racing predicate.
+
+The correct evidence hierarchy for “did this programmed race go ahead?” is now explicit:
+
+> **race list = programmed race; race-level state/result = candidate realised-race evidence; fixture state = administrative context.**
+
+Notebook 26 had already exposed race-level `abandonedReasonCode`, `winnersDetails` and result-group material on the individual BHA race object. The exact race-level realised-race predicate still requires population-wide validation before it can govern a repair.
+
+Source-use contract:
+
+`docs/BHA_STRUCTURED_SOURCE_USAGE.md`
 
 ## Database admission rule
 
@@ -264,8 +318,10 @@ Core current controls:
 - `docs/STUDY_DATA_ACCESS.md`;
 - `docs/STUDY_REVISIT_REGISTER.md`;
 - `docs/STUDY_CLOSEOUT_REGISTER.md`;
+- `docs/POST_V4_SOURCE_INVESTIGATION_REGISTER.md`;
 - `docs/NOTEBOOK_WRAP_UP_PROCEDURE.md`;
 - `docs/INSIDE_RAILS_PROJECT_LESSONS_LEARNED.md`;
+- `docs/BHA_STRUCTURED_SOURCE_USAGE.md`;
 - `docs/DATABASE_IMPORT_VALIDATION_GATE.md`;
 - `docs/APPLICABLE_VALIDATOR_GATE.md`;
 - `docs/DATABASE_USER_GUIDE.md`;
@@ -283,11 +339,11 @@ Future database releases should reuse that infrastructure so the normal path is 
 
 ## Next bounded action
 
-Audit Great Britain race-population completeness:
+Validate the **race-level** realised-race candidate before any Database v5 population repair is designed:
 
-**Are any Great Britain races that officially produced results missing from Source Version 1 / Database v4?**
+> **Does the BHA race-level execution/result state (`abandonedReasonCode` plus official winner/result/runner evidence) provide a complete and stable realised-race predicate across all addressable Great Britain races in 2015-present?**
 
-This follows directly from Study 04's discovery that authoritative BHA fixture/results evidence can provide an external population check without requiring a full administrative fixture layer.
+Use fixture state as administrative context and fixture race lists as programme evidence. Do not use fixture-search `resultsAvailable=true` as the completed-race predicate.
 
 ## Working method
 
