@@ -12,6 +12,37 @@ BUILDER = REPO_ROOT / "scripts" / "build_notebook_28_bha_historical_depth.py"
 NOTEBOOK = REPO_ROOT / "notebooks" / "28_bha_historical_race_data_depth.ipynb"
 
 
+def _promote_generated_conclusion(notebook) -> None:
+    """Replace the placeholder Markdown cell with the executed evidence conclusion."""
+    generator = None
+    target = None
+
+    for cell in notebook.cells:
+        tags = set(cell.metadata.get("tags", []))
+        if "conclusion-generator" in tags:
+            generator = cell
+        if "generated-conclusion" in tags:
+            target = cell
+
+    if generator is None or target is None:
+        raise RuntimeError("Notebook 28 conclusion cells are missing expected tags.")
+
+    markdown = None
+    for output in generator.get("outputs", []):
+        if output.get("output_type") not in {"display_data", "execute_result"}:
+            continue
+        value = output.get("data", {}).get("text/markdown")
+        if value is None:
+            continue
+        markdown = "".join(value) if isinstance(value, list) else str(value)
+        break
+
+    if not markdown:
+        raise RuntimeError("Notebook 28 did not emit an evidence-derived Markdown conclusion.")
+
+    target.source = markdown.rstrip() + "\n"
+
+
 def main() -> None:
     # Rebuild the governed notebook first. The builder preserves the user's previous
     # local Notebook 28 once in the ignored cache tree before replacing it.
@@ -29,6 +60,7 @@ def main() -> None:
     print("Executing Notebook 28 autonomously...")
     try:
         client.execute()
+        _promote_generated_conclusion(notebook)
     except Exception:
         # Preserve partial outputs as debugging evidence rather than discarding them.
         nbformat.write(notebook, NOTEBOOK)
