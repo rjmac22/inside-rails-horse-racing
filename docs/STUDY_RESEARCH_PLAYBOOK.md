@@ -1275,6 +1275,29 @@ Externally reported actual-off observations are a separate concept and must not 
 
 ---
 
+## 72. Run a hostile-reader test before publication
+
+Before publishing a reader-facing article, subject the completed, ordinarily subedited draft to an adversarial review. Assume a knowledgeable sceptic will paste the article into an AI assistant and ask whether the author knows what they are talking about.
+
+Ask the reviewer to:
+
+- verify material factual claims, quotations, numbers and historical sequences against primary sources where possible; identify what has **not** actually been checked;
+- distinguish observation, correlation, plausible mechanism and established causation; flag headlines or standfirsts that promise more than the evidence supports;
+- identify alternative explanations, confounders, omitted counterexamples and selective use of cases or data;
+- challenge whether the chosen examples really support the thesis and whether definitions, denominators, baselines and uncertainty are adequately disclosed;
+- check whether the argument contributes an explanation or consequence rather than dressing up an obvious observation;
+- separate verifiable errors and defensible objections from disagreements of interpretation, speculative AI criticism and stylistic preference.
+
+Reusable review prompt:
+
+> Read this as a sceptical, knowledgeable reader who suspects the author is overstating the case. Check material factual claims against primary sources where possible. Identify unsupported conclusions, omitted counterarguments, misleading framing and examples that do not support the thesis. Distinguish genuine errors from differences of interpretation. Do not flatter the author. State what a well-informed critic could legitimately attack, and say clearly what you could not verify.
+
+Treat the AI's objections as **leads to investigate, not verdicts**: it may hallucinate facts, sources or criticisms. Resolve substantive, demonstrable errors and material overclaims; record reasonable limitations when useful. Do not rewrite merely to appease a model or attempt to make the article immune to disagreement.
+
+Run this as a **bounded final pre-publication gate**, after normal fact-checking and subediting. Do not turn it into an indefinite new research project: one focused challenge pass, targeted fixes and a final check of changed claims are usually enough. Aim for work that survives informed scrutiny, not universal approval.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
