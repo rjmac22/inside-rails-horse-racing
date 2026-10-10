@@ -1,5 +1,7 @@
 # Inside Rails: Horse-Racing Database
 
+**Quick file navigation:** [Repository map (human + AI)](REPOSITORY_MAP.md).
+
 A notebook-led data-engineering, database-design and racing-research project using historical horse-racing results.
 
 ## Project aim
