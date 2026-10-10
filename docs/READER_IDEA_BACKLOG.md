@@ -56,3 +56,31 @@ A consumer can want a product but refuse to buy it at the seller's asking price.
 **Editorial guardrail**
 
 The purpose is to teach market reasoning, probability and evidence. It should not become a tipping service or imply that a pricing method is profitable without out-of-sample evidence, transaction-cost treatment and calibration testing.
+
+
+### IR-IDEA-002 — Do lessons from sport transfer to business, other sports or games?
+
+**Status:** Idea — parked until the first articles are published.
+
+**Core reader question**
+
+When Inside Rails uncovers a mechanism in horse racing or another sport, does the *same mechanism* explain decisions or outcomes in business, economics, other sports or games?
+
+**Potential connections to investigate (not conclusions)**
+
+- Scarce resources and constraints: wickets, deliveries and time in cricket versus money, staffing and capacity in business.
+- Prices, probabilities and uncertainty: betting markets versus other forms of market pricing and forecasting.
+- Strategic convergence: what happens when competitors copy the same apparently optimal tactic; the individual competitor's objective may differ from the sport's or market's collective interests.
+- Reverse direction: use accounting, economics, operations research or game theory to ask better questions about sport.
+
+**Evidence test**
+
+1. Specify the observed sporting mechanism precisely, beyond a superficial similarity.
+2. Identify a concrete parallel in another domain and compare incentives, constraints and causal mechanisms.
+3. Determine whether the comparison explains or predicts anything useful.
+4. Identify where it fails, and be willing to reject the analogy.
+5. Publish a cross-disciplinary angle only when the evidence genuinely warrants it; otherwise retain it as a private research observation.
+
+**Editorial guardrail and priority**
+
+No forced 'business lessons from sport' listicles or generic motivational analogies. This is an idea for later, **not a new active research workstream**. The immediate priority is to finish and publish the existing cricket article and other near-ready work; do not allow this idea to delay shipping.
