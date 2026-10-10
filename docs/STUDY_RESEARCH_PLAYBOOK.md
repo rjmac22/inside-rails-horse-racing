@@ -1298,6 +1298,24 @@ Run this as a **bounded final pre-publication gate**, after normal fact-checking
 
 ---
 
+## 73. Never bait-and-switch readers between promotion and article
+
+A headline, standfirst, image, social-media caption, link preview and article must all accurately describe the same central story. A sentence can be factually true yet mislead through selection, emphasis or placement.
+
+Before publishing or promoting an article:
+
+- identify the **main news event or finding** and the people or organisations central to it;
+- make sure the social-media hook points to that central subject, not a recognisable name mentioned only as supporting context;
+- check that the headline, illustration and caption do not each imply a different story;
+- do not promote a secondary anecdote as though it were the article's principal subject merely because it generates more clicks;
+- ask: **If someone clicked because of this caption, would the article deliver what they reasonably expected?**
+
+**Illustrative failure (The Independent, 5 October 2026):** An article chiefly reported Google's temporary pause of part of its open-source vulnerability reward programme after a surge of invalid automated reports. The Facebook promotion instead led with Linus Torvalds's separate complaint about AI-generated Linux security reports; the graphic prominently showed Google's logo. The Torvalds comparison was relevant background, but the promotion changed the apparent subject of the story.
+
+**Editorial rule:** Attention earned by a hook must be repaid by the article. Factual accuracy is necessary but not sufficient: misleading prominence and mismatched expectations are editorial defects. Apply this gate to publication assets and distribution copy during final subediting, not as another open-ended research stage.
+
+---
+
 ## Current study-series rules
 
 Study notebooks live separately from database-construction notebooks under:
