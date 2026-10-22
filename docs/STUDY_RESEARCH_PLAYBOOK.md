@@ -782,6 +782,25 @@ Record material details such as:
 
 Follow the project's manual-verification and provenance rules where external evidence affects governed data or a bounded analytical decision.
 
+
+### Use AI for source discovery, not as the final authority
+
+**Research division of labour:** ChatGPT finds likely evidence, traces claims back to original records, supplies direct links and relevant passages, checks calculations and identifies what each source does and does not establish. The author independently opens and manually assesses the original sources. Finding a citation is not the same as verifying a claim.
+
+For every material external claim or source-dependent interpretation:
+
+1. Seek the closest usable **primary source** first (official records, contemporary accounts, original datasets, rules or research publications). Identify secondary reporting as secondary rather than silently adopting its interpretation.
+2. Supply a **recoverable direct URL or stable reference**, with the precise page, table, passage, relevant dates, definitions and denominators when possible. Record the actual evidence, not merely an article's assertion that the evidence exists.
+3. Separate **what the source states**, **what the figures demonstrate**, and **our inference or opinion**. Test whether its sample, threshold, population, period, causal claim and context really match the proposition; do not use a source as decorative support.
+4. Search for serious **contrary evidence and alternative explanations**, including material that weakens our working hypothesis. An unhelpful or null result is still a result. Correct the thesis rather than cherry-pick sources.
+5. Mark verification candidly: *source located*, *content inspected*, *author independently checked*, or *unresolved/not accessible*, as applicable. Do not pass off search snippets, another writer's citations, invented page numbers or inaccessible documents as personally verified. Human verification is not presumed merely because ChatGPT supplied a link.
+6. Independently recompute consequential numbers from published inputs or notebook outputs. Investigate any mismatch instead of reproducing it confidently.
+
+Capture in the study's source/provenance notes: the claim or question; original source and locator; the specific supporting passage, figure or calculation; the bounded conclusion it permits; limitations or contrary evidence; and who has actually verified it. Keep this contemporaneous with the research, not as a bibliography reconstructed at publication.
+
+**Principle:** *Find the source; read what it actually says; test whether it proves the claim; let the author inspect it. The objective is to discover whether we are right, not find sources that agree with us.*
+
+
 ### Capture sources as the research happens
 
 External-source provenance must be recorded **at the point the source is used**, not reconstructed from memory during study closeout.
